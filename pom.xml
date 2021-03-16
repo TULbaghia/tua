@@ -25,6 +25,11 @@
             <name>Dominik Karski</name>
             <id>224322</id>
         </developer>
+        <developer>
+            <name>Krzysztof Szcześniak</name>
+            <id>224434</id>
+        </developer>
+
     </developers>
     
     <properties>

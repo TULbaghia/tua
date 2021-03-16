@@ -9,7 +9,10 @@
     <name>ssbd06</name>
     
     <developers>
-        
+        <developer>
+            <name>Dominik Kasierski</name>
+            <id>224323</id>
+        </developer>
     </developers>
     
     <properties>

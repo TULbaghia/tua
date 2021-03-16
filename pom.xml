@@ -9,7 +9,10 @@
     <name>ssbd06</name>
     
     <developers>
-        
+        <developer>
+            <name>Paweł Guzek</name>
+            <id>224304</id>
+        </developer>
     </developers>
     
     <properties>

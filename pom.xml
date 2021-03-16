@@ -7,14 +7,19 @@
     <packaging>war</packaging>
     
     <name>ssbd06</name>
+    
+    <developers>
         <developer>
             <name>Marcin Mucha</name>
             <id>216843</id>
         </developer>
-    <developers>
         <developer>
             <name>Mateusz Szewc</name>
             <id>224438</id>
+        </developer>
+        <developer>
+            <name>Dominik Kasierski</name>
+            <id>224323</id>
         </developer>
     </developers>
     

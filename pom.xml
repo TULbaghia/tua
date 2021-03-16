@@ -37,6 +37,10 @@
             <name>Paweł Guzek</name>
             <id>224304</id>
         </developer>
+        <developer>
+            <name>Mateusz Zabroń</name>
+            <id>224464</id>
+        </developer>
     </developers>
     
     <properties>

@@ -7,7 +7,10 @@
     <packaging>war</packaging>
     
     <name>ssbd06</name>
-    
+        <developer>
+            <name>Marcin Mucha</name>
+            <id>216843</id>
+        </developer>
     <developers>
         
     </developers>

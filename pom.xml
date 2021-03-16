@@ -33,6 +33,10 @@
             <name>Michał Maksajda</name>
             <id>224369</id>
         </developer>
+        <developer>
+            <name>Paweł Guzek</name>
+            <id>224304</id>
+        </developer>
     </developers>
     
     <properties>

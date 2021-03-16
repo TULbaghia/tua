@@ -9,7 +9,10 @@
     <name>ssbd06</name>
     
     <developers>
-        
+        <developer>
+            <name>Dominik Karski</name>
+            <id>224322</id>
+        </developer>
     </developers>
     
     <properties>

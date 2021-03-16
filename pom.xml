@@ -9,7 +9,10 @@
     <name>ssbd06</name>
     
     <developers>
-        
+        <developer>
+            <name>Michał Maksajda</name>
+            <id>224369</id>
+        </developer>
     </developers>
     
     <properties>

@@ -29,7 +29,10 @@
             <name>Krzysztof Szcześniak</name>
             <id>224434</id>
         </developer>
-
+        <developer>
+            <name>Michał Maksajda</name>
+            <id>224369</id>
+        </developer>
     </developers>
     
     <properties>

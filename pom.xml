@@ -9,7 +9,10 @@
     <name>ssbd06</name>
     
     <developers>
-        
+        <developer>
+            <name>Mateusz Szewc</name>
+            <id>224438</id>
+        </developer>
     </developers>
     
     <properties>

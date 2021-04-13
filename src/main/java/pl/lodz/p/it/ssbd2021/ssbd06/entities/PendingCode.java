@@ -13,7 +13,9 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "pending_code")
+@Table(name = "pending_code", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"code"})
+})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PendingCode.findAll", query = "SELECT p FROM PendingCode p"),

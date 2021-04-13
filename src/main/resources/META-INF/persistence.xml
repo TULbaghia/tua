@@ -11,7 +11,8 @@
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL10Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="validate"/>
-            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+            <property name="hibernate.transaction.jta.platform"
+                      value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.cache.use_second_level_cache" value="false"/>
         </properties>
@@ -27,13 +28,22 @@
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.AdminDetails</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.CodeType</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.AnimalType</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingStatus</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Box</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.City</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL10Dialect"/>
-            <!--            <property name="hibernate.hbm2ddl.auto" value="create"/>-->
-            <property name="hibernate.hbm2ddl.auto" value="validate"/>
-            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <!--            <property name="hibernate.hbm2ddl.auto" value="validate"/>-->
+            <property name="hibernate.transaction.jta.platform"
+                      value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.cache.use_second_level_cache" value="false"/>
         </properties>
@@ -54,8 +64,10 @@
         <properties>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL10Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="validate"/>
-            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <!--            <property name="hibernate.hbm2ddl.auto" value="validate"/>-->
+            <property name="hibernate.transaction.jta.platform"
+                      value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.cache.use_second_level_cache" value="false"/>
         </properties>

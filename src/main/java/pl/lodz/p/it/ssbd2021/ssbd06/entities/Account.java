@@ -18,7 +18,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "account")
+@Table(name = "account", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"login"}),
+        @UniqueConstraint(columnNames = {"contactNumber"})
+})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
@@ -104,8 +107,9 @@ public class Account extends AbstractEntity implements Serializable {
     @Column(columnDefinition = "integer default 0")
     private Integer failedLoginAttemptsCounter;
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
-//    private List<Booking> bookingList;
+    @Setter
+    @OneToMany(mappedBy = "account")
+    private List<Booking> bookingList;
 
     @Setter
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "account")
@@ -129,14 +133,10 @@ public class Account extends AbstractEntity implements Serializable {
     }
 
 
-//    @XmlTransient
-//    public List<Booking> getBookingList() {
-//        return bookingList;
-//    }
-//
-//    public void setBookingList(List<Booking> bookingList) {
-//        this.bookingList = bookingList;
-//    }
+    @XmlTransient
+    public List<Booking> getBookingList() {
+        return bookingList;
+    }
 
     @XmlTransient
     public List<Role> getRoleList() {

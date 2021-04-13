@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Cascade;
 import pl.lodz.p.it.ssbd2021.ssbd06.common.BaseAbstractEntity;
 
 import java.io.Serializable;
@@ -16,7 +15,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "code_type")
+@Table(name = "code_type", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name"})
+})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CodeType.findAll", query = "SELECT c FROM CodeType c"),

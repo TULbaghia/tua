@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Check;
 import pl.lodz.p.it.ssbd2021.ssbd06.common.AbstractEntity;
 
 import java.io.Serializable;
@@ -14,12 +15,18 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "booking")
+@Table(name = "booking", indexes = {
+        @Index(name = "ix_booking_account", columnList = "account"),
+        @Index(name = "ix_booking_created_by", columnList = "created_by"),
+        @Index(name = "ix_booking_modified_by", columnList = "modified_by")
+})
+@Check(constraints = "date_from < date_to")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
@@ -32,8 +39,9 @@ public class Booking extends AbstractEntity implements Serializable {
 
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_booking_id")
+    @SequenceGenerator(name = "seq_booking_id")
+    @Column(name = "id", updatable = false)
     private Long id;
 
     @NotNull
@@ -41,6 +49,7 @@ public class Booking extends AbstractEntity implements Serializable {
     @Setter
     @Basic(optional = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_from")
     private Date dateFrom;
 
     @NotNull
@@ -48,14 +57,16 @@ public class Booking extends AbstractEntity implements Serializable {
     @Setter
     @Basic(optional = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_to")
     private Date dateTo;
 
     @Getter
     @Setter
-    @DecimalMin(value = "0")
+    @Min(value = 0)
     @Digits(integer = 8, fraction = 2)
     @Basic(optional = false)
     @NotNull
+    @Column(name = "price")
     private BigDecimal price;
 
     @Setter
@@ -76,8 +87,8 @@ public class Booking extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @JoinColumn(name = "status", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status")
     private BookingStatus status;
 
     public Booking(Date dateFrom, Date dateTo, BigDecimal price, Account account) {

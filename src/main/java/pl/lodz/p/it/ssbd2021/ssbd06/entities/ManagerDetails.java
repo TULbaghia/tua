@@ -11,7 +11,9 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "manager_details")
+@Table(name = "manager_details", indexes = {
+        @Index(name = "ix_manager_details_hotel", columnList = "hotel")
+})
 @DiscriminatorValue("Manager")
 @NamedQueries({
     @NamedQuery(name = "ManagerDetails.findAll", query = "SELECT m FROM ManagerDetails m"),

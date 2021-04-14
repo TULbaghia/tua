@@ -14,7 +14,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "pending_code", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"code"})
+        @UniqueConstraint(name = "uq_pending_code_code", columnNames = {"code"})
+}, indexes = {
+        @Index(name = "ix_pending_code_account", columnList = "account"),
+        @Index(name = "ix_pending_code_created_by", columnList = "created_by"),
+        @Index(name = "ix_pending_code_modified_by", columnList = "modified_by")
 })
 @XmlRootElement
 @NamedQueries({
@@ -28,23 +32,23 @@ public class PendingCode extends AbstractEntity implements Serializable {
 
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_pending_code_id")
+    @Column(name = "id", updatable = false)
     private Long id;
 
     @Getter
     @Setter
     @NotNull
-    @Size(min = 1, max = 127)
+    @Size(min = 1, max = 128)
     @Basic(optional = false)
-    @Column(nullable = false, updatable = false)
+    @Column(name = "code", nullable = false, updatable = false)
     private String code;
 
     @Getter
     @Setter
     @NotNull
     @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(name = "used", nullable = false)
     private boolean used;
 
     @Getter
@@ -55,8 +59,8 @@ public class PendingCode extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @JoinColumn(name = "codeType", referencedColumnName = "id", nullable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "code_type")
     private CodeType codeType;
 
     public PendingCode(String code, boolean used) {

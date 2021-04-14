@@ -15,7 +15,11 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "rating")
+@Table(name = "rating", indexes = {
+        @Index(name = "ix_rating_booking_id", columnList = "booking_id"),
+        @Index(name = "ix_rating_created_by", columnList = "created_by"),
+        @Index(name = "ix_rating_modified_by", columnList = "modified_by"),
+})
 @XmlRootElement
 @NamedQueries({
         @NamedQuery(name = "Rating.findAll", query = "SELECT r FROM Rating r"),
@@ -31,7 +35,8 @@ public class Rating extends AbstractEntity implements Serializable {
 
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_rating_id")
+    @SequenceGenerator(name = "seq_rating_id")
     @Column(updatable = false)
     private Long id;
 
@@ -41,17 +46,20 @@ public class Rating extends AbstractEntity implements Serializable {
     @Setter
     @NotNull
     @Basic(optional = false)
+    @Column(name = "rate")
     private short rate;
 
     @Getter
     @Setter
     @Size(min = 4, max = 255)
+    @Column(name = "comment")
     private String comment;
 
     @Getter
     @Setter
     @NotNull
     @Basic(optional = false)
+    @Column(name = "hidden")
     private boolean hidden = false;
 
     @Getter

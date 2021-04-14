@@ -14,12 +14,17 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "box")
+@Table(name = "box", indexes = {
+        @Index(name = "ix_box_hotel", columnList = "hotel"),
+        @Index(name = "ix_box_created_by", columnList = "created_by"),
+        @Index(name = "ix_box_modified_by", columnList = "modified_by")
+})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Box.findAll", query = "SELECT b FROM Box b"),
@@ -33,16 +38,18 @@ public class Box extends AbstractEntity implements Serializable {
 
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_box_id")
+    @SequenceGenerator(name = "seq_box_id")
+    @Column(name = "id", updatable = false)
     private Long id;
 
     @Getter
     @Setter
     @NotNull
-    @DecimalMin(value = "0")
+    @Min(value = 0)
     @Digits(integer = 8, fraction = 2)
     @Basic(optional = false)
+    @Column(name = "price_per_day")
     private BigDecimal pricePerDay;
 
     @Setter
@@ -51,8 +58,8 @@ public class Box extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @JoinColumn(name = "animalType", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "animal_type")
     private AnimalType animalType;
 
     @Getter

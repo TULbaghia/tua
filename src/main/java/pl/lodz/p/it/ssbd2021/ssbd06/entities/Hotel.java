@@ -15,7 +15,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "hotel")
+@Table(name = "hotel", uniqueConstraints = {
+        @UniqueConstraint(name = "uq_hotel_name", columnNames = "name")
+}, indexes = {
+        @Index(name = "ix_hotel_city", columnList = "city"),
+        @Index(name = "ix_hotel_created_by", columnList = "created_by"),
+        @Index(name = "ix_hotel_modified_by", columnList = "modified_by")
+})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Hotel.findAll", query = "SELECT h FROM Hotel h"),
@@ -29,8 +35,9 @@ public class Hotel extends AbstractEntity implements Serializable {
 
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_hotel_id")
+    @SequenceGenerator(name = "seq_hotel_id")
+    @Column(name = "id", updatable = false)
     private Long id;
 
     @Getter
@@ -38,14 +45,16 @@ public class Hotel extends AbstractEntity implements Serializable {
     @NotNull
     @Basic(optional = false)
     @Size(min = 1, max = 63)
+    @Column(name = "name")
     private String name;
 
     @Getter
     @Setter
     @NotNull
-    @DecimalMin(value = "1.0")
-    @DecimalMax(value = "5.0")
+    @Min(value = 1)
+    @Max(value = 5)
     @Digits(integer = 1, fraction = 1)
+    @Column(name = "rating")
     private BigDecimal rating;
 
     @Getter
@@ -53,6 +62,7 @@ public class Hotel extends AbstractEntity implements Serializable {
     @NotNull
     @Basic(optional = false)
     @Size(min = 1, max = 63)
+    @Column(name = "address")
     private String address;
 
     @Setter

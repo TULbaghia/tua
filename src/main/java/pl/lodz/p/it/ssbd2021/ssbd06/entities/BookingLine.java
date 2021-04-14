@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -16,7 +17,11 @@ import lombok.ToString;
 import pl.lodz.p.it.ssbd2021.ssbd06.common.AbstractEntity;
 
 @Entity
-@Table(name = "booking_line")
+@Table(name = "booking_line", indexes = {
+        @Index(name = "ix_booking_line_booking", columnList = "booking"),
+        @Index(name = "ix_booking_line_created_by", columnList = "created_by"),
+        @Index(name = "ix_booking_line_modified_by", columnList = "modified_by")
+})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BookingLine.findAll", query = "SELECT b FROM BookingLine b"),
@@ -30,16 +35,18 @@ public class BookingLine extends AbstractEntity implements Serializable {
 
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_booking_line_id")
+    @SequenceGenerator(name = "seq_booking_line_id")
+    @Column(name = "id", updatable = false)
     private Long id;
 
     @Setter
     @Getter
     @NotNull
-    @DecimalMin(value = "0")
+    @Min(value = 0)
     @Digits(integer = 8, fraction = 2)
     @Basic(optional = false)
+    @Column(name = "price_per_day")
     private BigDecimal pricePerDay;
 
     @Getter

@@ -16,7 +16,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "city", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"name"})
+        @UniqueConstraint(name = "uq_city_name", columnNames = {"name"})
+}, indexes = {
+        @Index(name = "ix_city_created_by", columnList = "created_by"),
+        @Index(name = "ix_city_modified_by", columnList = "modified_by")
 })
 @XmlRootElement
 @NamedQueries({
@@ -31,8 +34,9 @@ public class City extends AbstractEntity implements Serializable {
 
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_city_id")
+    @SequenceGenerator(name = "seq_city_id")
+    @Column(name = "id", updatable = false)
     private Long id;
 
     @Getter
@@ -40,12 +44,14 @@ public class City extends AbstractEntity implements Serializable {
     @NotNull
     @Basic(optional = false)
     @Size(min = 1, max = 31)
+    @Column(name = "name")
     private String name;
 
     @Getter
     @Setter
     @Basic(optional = false)
     @Size(min = 4, max = 255)
+    @Column(name = "description")
     private String description;
 
     @Setter

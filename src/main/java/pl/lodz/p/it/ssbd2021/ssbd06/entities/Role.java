@@ -14,10 +14,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "role", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"accessLevel", "account"})
+        @UniqueConstraint(name = "uq_role_access_level_account", columnNames = {"access_level", "account"})
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "accessLevel")
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "access_level")
 @XmlRootElement
 @NamedQueries({
         @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
@@ -31,20 +31,22 @@ public class Role extends AbstractEntity implements Serializable {
 
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_role_id")
+    @SequenceGenerator(name = "seq_role_id")
+    @Column(name = "id", updatable = false)
     private Long id;
 
     @Getter
     @NotNull
     @Size(min = 1, max = 16)
-    @Column(updatable = false)
+    @Column(name = "access_level", updatable = false)
     @Basic(optional = false)
     private String accessLevel;
 
     @Getter
     @Setter
     @Basic(optional = false)
+    @Column(name = "enabled")
     private boolean enabled = true;
 
     @Getter

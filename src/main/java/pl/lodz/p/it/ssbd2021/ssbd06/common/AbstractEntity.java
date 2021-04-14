@@ -16,25 +16,25 @@ public abstract class AbstractEntity extends BaseAbstractEntity {
     @NotNull
     @Getter
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "creationDate", nullable = false, updatable = false)
+    @Column(name = "creation_date", nullable = false, updatable = false)
     private Date creationDate;
 
     @NotNull
     @Getter
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modificationDate")
+    @Column(name = "modification_date")
     private Date modificationDate;
 
     @Getter
     @Setter
     @OneToOne
-    @JoinColumn(name = "createdBy", updatable = false)
+    @JoinColumn(name = "created_by", updatable = false)
     private Account createdBy;
 
     @Getter
     @Setter
     @OneToOne
-    @JoinColumn(name = "modifiedBy")
+    @JoinColumn(name = "modified_by")
     private Account modifiedBy;
 
     @Getter

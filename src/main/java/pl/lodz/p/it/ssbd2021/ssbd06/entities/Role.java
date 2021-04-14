@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
         @NamedQuery(name = "Role.findByEnabled", query = "SELECT r FROM Role r WHERE r.enabled = :enabled")})
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class Role extends AbstractEntity implements Serializable {
+public abstract class Role extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

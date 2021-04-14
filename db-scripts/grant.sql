@@ -15,3 +15,23 @@ GRANT SELECT, UPDATE ON manager_data TO ssbd06moh;
 GRANT SELECT, UPDATE, DELETE, INSERT ON rating TO ssbd06moh;
 
 GRANT SELECT ON auth_view TO ssbd06auth;
+
+GRANT SELECT ON SEQUENCE seq_account_id TO ssbd06mok;
+GRANT SELECT ON SEQUENCE seq_booking_id TO ssbd06mok;
+GRANT SELECT ON SEQUENCE seq_booking_line_id TO ssbd06mok;
+GRANT SELECT ON SEQUENCE seq_box_id TO ssbd06mok;
+GRANT SELECT ON SEQUENCE seq_city_id TO ssbd06mok;
+GRANT SELECT ON SEQUENCE seq_hotel_id TO ssbd06mok;
+GRANT SELECT ON SEQUENCE seq_pending_code_id TO ssbd06mok;
+GRANT SELECT ON SEQUENCE seq_rating_id TO ssbd06mok;
+GRANT SELECT ON SEQUENCE seq_role_id TO ssbd06mok;
+
+GRANT SELECT ON SEQUENCE seq_account_id TO ssbd06moh;
+GRANT SELECT ON SEQUENCE seq_booking_id TO ssbd06moh;
+GRANT SELECT ON SEQUENCE seq_booking_line_id TO ssbd06moh;
+GRANT SELECT ON SEQUENCE seq_box_id TO ssbd06moh;
+GRANT SELECT ON SEQUENCE seq_city_id TO ssbd06moh;
+GRANT SELECT ON SEQUENCE seq_hotel_id TO ssbd06moh;
+GRANT SELECT ON SEQUENCE seq_pending_code_id TO ssbd06moh;
+GRANT SELECT ON SEQUENCE seq_rating_id TO ssbd06moh;
+GRANT SELECT ON SEQUENCE seq_role_id TO ssbd06moh;

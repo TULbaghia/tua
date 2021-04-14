@@ -7,8 +7,6 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "manager_data", indexes = {

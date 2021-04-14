@@ -1,9 +1,7 @@
-package pl.lodz.p.it.ssbd2021.ssbd06.config;
+package pl.lodz.p.it.ssbd2021.ssbd06.utils.config;
 
 import javax.annotation.sql.DataSourceDefinition;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.sql.Connection;
 
 @DataSourceDefinition(

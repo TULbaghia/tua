@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "role", uniqueConstraints = {
-        @UniqueConstraint(name = "uq_role_access_level_account_id", columnNames = {"access_level", "account_id"})
+        @UniqueConstraint(name = "uk_role_access_level_account_id", columnNames = {"access_level", "account_id"})
 }, indexes = {
         @Index(name = "ix_role_account_id", columnList = "account_id"),
         @Index(name = "ix_role_created_by", columnList = "created_by"),
@@ -36,7 +36,7 @@ public class Role extends AbstractEntity implements Serializable {
     @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_role_id")
-    @SequenceGenerator(name = "seq_role_id")
+    @SequenceGenerator(name = "seq_role_id", allocationSize = 1)
     @Column(name = "id", updatable = false)
     private Long id;
 

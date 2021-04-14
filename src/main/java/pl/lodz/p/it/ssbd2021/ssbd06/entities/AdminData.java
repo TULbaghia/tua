@@ -7,14 +7,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "admin_details")
+@Table(name = "admin_data")
 @DiscriminatorValue("ADMIN")
 @NamedQueries({
-        @NamedQuery(name = "AdminDetails.findAll", query = "SELECT m FROM AdminDetails m"),
-        @NamedQuery(name = "AdminDetails.findById", query = "SELECT m FROM AdminDetails m WHERE m.id = :id")})
+        @NamedQuery(name = "AdminDetails.findAll", query = "SELECT m FROM AdminData m"),
+        @NamedQuery(name = "AdminDetails.findById", query = "SELECT m FROM AdminData m WHERE m.id = :id")})
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class AdminDetails extends Role implements Serializable {
+public class AdminData extends Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 }

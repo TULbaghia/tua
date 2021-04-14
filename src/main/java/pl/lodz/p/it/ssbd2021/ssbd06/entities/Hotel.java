@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "hotel", uniqueConstraints = {
-        @UniqueConstraint(name = "uq_hotel_name", columnNames = "name")
+        @UniqueConstraint(name = "uk_hotel_name", columnNames = "name")
 }, indexes = {
         @Index(name = "ix_hotel_city_id", columnList = "city_id"),
         @Index(name = "ix_hotel_created_by", columnList = "created_by"),
@@ -36,7 +36,7 @@ public class Hotel extends AbstractEntity implements Serializable {
     @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_hotel_id")
-    @SequenceGenerator(name = "seq_hotel_id")
+    @SequenceGenerator(name = "seq_hotel_id", allocationSize = 1)
     @Column(name = "id", updatable = false)
     private Long id;
 
@@ -71,7 +71,7 @@ public class Hotel extends AbstractEntity implements Serializable {
 
     @Setter
     @OneToMany(mappedBy = "hotel")
-    private List<ManagerDetails> managerDetailsList;
+    private List<ManagerData> managerDataList;
 
     @Getter
     @Setter
@@ -94,7 +94,7 @@ public class Hotel extends AbstractEntity implements Serializable {
     }
 
     @XmlTransient
-    public List<ManagerDetails> getManagerDetailsList() {
-        return managerDetailsList;
+    public List<ManagerData> getManagerDataList() {
+        return managerDataList;
     }
 }

@@ -11,16 +11,16 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "manager_details", indexes = {
+@Table(name = "manager_data", indexes = {
         @Index(name = "ix_manager_details_hotel_id", columnList = "hotel_id")
 })
 @DiscriminatorValue("MANAGER")
 @NamedQueries({
-    @NamedQuery(name = "ManagerDetails.findAll", query = "SELECT m FROM ManagerDetails m"),
-    @NamedQuery(name = "ManagerDetails.findById", query = "SELECT m FROM ManagerDetails m WHERE m.id = :id")})
+    @NamedQuery(name = "ManagerDetails.findAll", query = "SELECT m FROM ManagerData m"),
+    @NamedQuery(name = "ManagerDetails.findById", query = "SELECT m FROM ManagerData m WHERE m.id = :id")})
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class ManagerDetails extends Role implements Serializable {
+public class ManagerData extends Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

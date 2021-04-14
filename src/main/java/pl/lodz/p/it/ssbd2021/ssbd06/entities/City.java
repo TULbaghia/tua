@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "city", uniqueConstraints = {
-        @UniqueConstraint(name = "uq_city_name", columnNames = {"name"})
+        @UniqueConstraint(name = "uk_city_name", columnNames = {"name"})
 }, indexes = {
         @Index(name = "ix_city_created_by", columnList = "created_by"),
         @Index(name = "ix_city_modified_by", columnList = "modified_by")
@@ -35,7 +35,7 @@ public class City extends AbstractEntity implements Serializable {
     @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_city_id")
-    @SequenceGenerator(name = "seq_city_id")
+    @SequenceGenerator(name = "seq_city_id", allocationSize = 1)
     @Column(name = "id", updatable = false)
     private Long id;
 

@@ -39,7 +39,7 @@ public class Box extends AbstractEntity implements Serializable {
     @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_box_id")
-    @SequenceGenerator(name = "seq_box_id")
+    @SequenceGenerator(name = "seq_box_id", allocationSize = 1)
     @Column(name = "id", updatable = false)
     private Long id;
 
@@ -47,7 +47,7 @@ public class Box extends AbstractEntity implements Serializable {
     @Setter
     @NotNull
     @Min(value = 0)
-    @Digits(integer = 8, fraction = 2)
+    @Digits(integer = 6, fraction = 2)
     @Basic(optional = false)
     @Column(name = "price_per_day")
     private BigDecimal pricePerDay;

@@ -40,7 +40,7 @@ public class Booking extends AbstractEntity implements Serializable {
     @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_booking_id")
-    @SequenceGenerator(name = "seq_booking_id")
+    @SequenceGenerator(name = "seq_booking_id", allocationSize = 1)
     @Column(name = "id", updatable = false)
     private Long id;
 

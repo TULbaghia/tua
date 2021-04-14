@@ -19,8 +19,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "account", uniqueConstraints = {
-        @UniqueConstraint(name = "uq_account_login", columnNames = {"login"}),
-        @UniqueConstraint(name = "uq_account_contactNumber", columnNames = {"contact_number"})
+        @UniqueConstraint(name = "uk_account_login", columnNames = {"login"}),
+        @UniqueConstraint(name = "uk_account_contactNumber", columnNames = {"contact_number"})
 }, indexes = {
         @Index(name = "ix_account_created_by", columnList = "created_by"),
         @Index(name = "ix_account_modified_by", columnList = "modified_by")
@@ -46,7 +46,7 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_account_id")
-    @SequenceGenerator(name = "seq_account_id")
+    @SequenceGenerator(name = "seq_account_id", allocationSize = 1)
     @Column(name = "id", updatable = false, unique = true)
     private Long id;
 

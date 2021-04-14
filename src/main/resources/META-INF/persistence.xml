@@ -23,9 +23,9 @@
         <jta-data-source>java:app/jdbc/ssbd06mokDS</jta-data-source>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Account</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Role</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.ClientDetails</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerDetails</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.AdminDetails</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.ClientData</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.AdminData</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.CodeType</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.AnimalType</class>
@@ -40,7 +40,7 @@
         <properties>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL10Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
             <!--            <property name="hibernate.hbm2ddl.auto" value="validate"/>-->
             <property name="hibernate.transaction.jta.platform"
                       value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
@@ -54,9 +54,9 @@
         <jta-data-source>java:app/jdbc/ssbd06mohDS</jta-data-source>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Account</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Role</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.ClientDetails</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerDetails</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.AdminDetails</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.ClientData</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.AdminData</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.CodeType</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.AnimalType</class>
@@ -71,7 +71,7 @@
         <properties>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL10Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
             <!--            <property name="hibernate.hbm2ddl.auto" value="validate"/>-->
             <property name="hibernate.transaction.jta.platform"
                       value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>

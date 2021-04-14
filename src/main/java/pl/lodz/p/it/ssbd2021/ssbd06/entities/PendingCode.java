@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "pending_code", uniqueConstraints = {
-        @UniqueConstraint(name = "uq_pending_code_code", columnNames = {"code"})
+        @UniqueConstraint(name = "uk_pending_code_code", columnNames = {"code"})
 }, indexes = {
         @Index(name = "ix_pending_code_account_id", columnList = "account_id"),
         @Index(name = "ix_pending_code_created_by", columnList = "created_by"),
@@ -33,6 +33,7 @@ public class PendingCode extends AbstractEntity implements Serializable {
     @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_pending_code_id")
+    @SequenceGenerator(name = "seq_pending_code_id", allocationSize = 1)
     @Column(name = "id", updatable = false)
     private Long id;
 

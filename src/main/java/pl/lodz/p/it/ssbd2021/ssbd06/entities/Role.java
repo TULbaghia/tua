@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
         @Index(name = "ix_role_modified_by", columnList = "modified_by")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "access_level")
 @XmlRootElement
 @NamedQueries({
         @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),

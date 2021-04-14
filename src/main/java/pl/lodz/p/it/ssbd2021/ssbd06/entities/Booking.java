@@ -88,7 +88,7 @@ public class Booking extends AbstractEntity implements Serializable {
     @Getter
     @Setter
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private BookingStatus status;
 
     public Booking(Date dateFrom, Date dateTo, BigDecimal price, Account account) {

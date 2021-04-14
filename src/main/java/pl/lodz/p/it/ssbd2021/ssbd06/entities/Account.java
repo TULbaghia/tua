@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "account", uniqueConstraints = {
         @UniqueConstraint(name = "uk_account_login", columnNames = {"login"}),
-        @UniqueConstraint(name = "uk_account_contactNumber", columnNames = {"contact_number"})
+        @UniqueConstraint(name = "uk_account_contact_number", columnNames = {"contact_number"})
 }, indexes = {
         @Index(name = "ix_account_created_by", columnList = "created_by"),
         @Index(name = "ix_account_modified_by", columnList = "modified_by")
@@ -127,7 +127,7 @@ public class Account extends AbstractEntity implements Serializable {
     private Set<Role> roleList = new HashSet<>();
 
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "account")
     private Set<PendingCode> pendingCodeList = new HashSet<>();
 
     public Account(String login, String password, boolean enabled, boolean confirmed, String firstname, String lastname) {

@@ -10,8 +10,8 @@ import java.io.Serializable;
 @Table(name = "client_data")
 @DiscriminatorValue("CLIENT")
 @NamedQueries({
-        @NamedQuery(name = "ClientDetails.findAll", query = "SELECT m FROM ClientData m"),
-        @NamedQuery(name = "ClientDetails.findById", query = "SELECT m FROM ClientData m WHERE m.id = :id")})
+        @NamedQuery(name = "ClientData.findAll", query = "SELECT m FROM ClientData m"),
+        @NamedQuery(name = "ClientData.findById", query = "SELECT m FROM ClientData m WHERE m.id = :id")})
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class ClientData extends Role implements Serializable {

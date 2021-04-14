@@ -58,7 +58,7 @@ public class Box extends AbstractEntity implements Serializable {
     @Getter
     @Setter
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "animal_type")
+    @Column(name = "animal_type", nullable = false)
     private AnimalType animalType;
 
     @Getter

@@ -66,7 +66,7 @@ create table account
     id                               bigint       not null,
     creation_date                    timestamp    not null,
     modification_date                timestamp,
-    version                          bigint,
+    version                          bigint       not null,
     confirmed                        boolean      not null,
     contact_number                   varchar(15),
     enabled                          boolean      not null,
@@ -80,11 +80,11 @@ create table account
     lastname                         varchar(31)  not null,
     login                            varchar(127) not null,
     password                         varchar(64)  not null,
-    created_by                       bigint,
+    created_by                       bigint       not null,
     modified_by                      bigint,
     constraint pk_account_id
         primary key (id),
-    constraint uk_account_contactnumber
+    constraint uk_account_contact_number
         unique (contact_number),
     constraint uk_account_login
         unique (login),
@@ -104,17 +104,17 @@ create index ix_account_modified_by
 
 create table booking
 (
-    id                bigint         not null,
-    creation_date     timestamp      not null,
+    id                bigint        not null,
+    creation_date     timestamp     not null,
     modification_date timestamp,
-    version           bigint,
-    date_from         timestamp      not null,
-    date_to           timestamp      not null,
+    version           bigint        not null,
+    date_from         timestamp     not null,
+    date_to           timestamp     not null,
     price             numeric(8, 2) not null,
-    status            integer,
-    created_by        bigint,
+    status            integer       not null,
+    created_by        bigint        not null,
     modified_by       bigint,
-    account_id        bigint         not null,
+    account_id        bigint        not null,
     constraint pk_booking_id
         primary key (id),
     constraint fk_booking_account_created_by
@@ -143,10 +143,10 @@ create table city
     id                bigint       not null,
     creation_date     timestamp    not null,
     modification_date timestamp,
-    version           bigint,
+    version           bigint       not null,
     description       varchar(255) not null,
     name              varchar(31)  not null,
-    created_by        bigint,
+    created_by        bigint       not null,
     modified_by       bigint,
     constraint pk_city_id
         primary key (id),
@@ -169,11 +169,11 @@ create table hotel
     id                bigint        not null,
     creation_date     timestamp     not null,
     modification_date timestamp,
-    version           bigint,
+    version           bigint        not null,
     address           varchar(63)   not null,
     name              varchar(63)   not null,
     rating            numeric(2, 1) not null,
-    created_by        bigint,
+    created_by        bigint        not null,
     modified_by       bigint,
     city_id           bigint        not null,
     constraint pk_hotel_id
@@ -201,15 +201,15 @@ create index ix_hotel_modified_by
 
 create table box
 (
-    id                bigint         not null,
-    creation_date     timestamp      not null,
+    id                bigint        not null,
+    creation_date     timestamp     not null,
     modification_date timestamp,
-    version           bigint,
-    animal_type       integer,
+    version           bigint        not null,
+    animal_type       integer       not null,
     price_per_day     numeric(8, 2) not null,
-    created_by        bigint,
+    created_by        bigint        not null,
     modified_by       bigint,
-    hotel_id          bigint         not null,
+    hotel_id          bigint        not null,
     constraint pk_box_id
         primary key (id),
     constraint fk_box_account_created_by
@@ -220,7 +220,7 @@ create table box
         foreign key (hotel_id) references hotel,
     constraint box_price_per_day_check
         check (price_per_day >= (0)::numeric)
-    );
+);
 
 create index ix_box_hotel_id
     on box (hotel_id);
@@ -233,15 +233,15 @@ create index ix_box_modified_by
 
 create table booking_line
 (
-    id                bigint         not null,
-    creation_date     timestamp      not null,
+    id                bigint        not null,
+    creation_date     timestamp     not null,
     modification_date timestamp,
-    version           bigint,
+    version           bigint        not null,
     price_per_day     numeric(8, 2) not null,
-    created_by        bigint,
+    created_by        bigint        not null,
     modified_by       bigint,
-    booking_id        bigint         not null,
-    box_id            bigint         not null,
+    booking_id        bigint        not null,
+    box_id            bigint        not null,
     constraint pk_booking_line_id
         primary key (id),
     constraint fk_booking_line_account_created_by
@@ -254,7 +254,7 @@ create table booking_line
         foreign key (box_id) references box,
     constraint booking_line_price_per_day_check
         check (price_per_day >= (0)::numeric)
-    );
+);
 
 create index ix_booking_line_booking_id
     on booking_line (booking_id);
@@ -273,11 +273,11 @@ create table pending_code
     id                bigint       not null,
     creation_date     timestamp    not null,
     modification_date timestamp,
-    version           bigint,
+    version           bigint       not null,
     code              varchar(128) not null,
-    code_type         integer,
+    code_type         integer      not null,
     used              boolean      not null,
-    created_by        bigint,
+    created_by        bigint       not null,
     modified_by       bigint,
     account_id        bigint       not null,
     constraint pk_pending_code_id
@@ -306,11 +306,11 @@ create table rating
     id                bigint    not null,
     creation_date     timestamp not null,
     modification_date timestamp,
-    version           bigint,
+    version           bigint    not null,
     comment           varchar(255),
     hidden            boolean   not null,
     rate              smallint  not null,
-    created_by        bigint,
+    created_by        bigint    not null,
     modified_by       bigint,
     booking_id        bigint    not null,
     constraint pk_rating_id
@@ -342,9 +342,9 @@ create table role
     id                bigint      not null,
     creation_date     timestamp   not null,
     modification_date timestamp,
-    version           bigint,
+    version           bigint      not null,
     enabled           boolean     not null,
-    created_by        bigint,
+    created_by        bigint      not null,
     modified_by       bigint,
     account_id        bigint      not null,
     constraint pk_role_id
@@ -407,4 +407,5 @@ select a.login,
        r.access_level as role
 from account a
          join role r on a.id = r.account_id
-where a.confirmed = true and a.enabled = true
+where a.confirmed = true
+  and a.enabled = true

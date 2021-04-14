@@ -7,5 +7,5 @@ VALUES ('ADMIN', 1, now(), null, 1, true, 1, null, 1),
     ('CLIENT', 3, now(), null, 1, true, 1, null, 1);
 
 INSERT INTO admin_data (id) values (1);
-INSERT INTO manager_data (id) values (1);
-INSERT INTO client_data (id) values (1);
+INSERT INTO manager_data (id) values (2);
+INSERT INTO client_data (id) values (3);

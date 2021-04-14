@@ -220,7 +220,7 @@ create table box
         foreign key (hotel_id) references hotel,
     constraint box_price_per_day_check
         check (price_per_day >= (0)::numeric)
-);
+    );
 
 create index ix_box_hotel_id
     on box (hotel_id);
@@ -254,7 +254,7 @@ create table booking_line
         foreign key (box_id) references box,
     constraint booking_line_price_per_day_check
         check (price_per_day >= (0)::numeric)
-);
+    );
 
 create index ix_booking_line_booking_id
     on booking_line (booking_id);
@@ -373,7 +373,7 @@ create table admin_data
     id bigint not null,
     constraint pk_admin_data_id
         primary key (id),
-    constraint fk_admin_data_account_account_id
+    constraint fk_admin_data_role_id
         foreign key (id) references role
 );
 
@@ -382,7 +382,7 @@ create table client_data
     id bigint not null,
     constraint pk_client_data_id
         primary key (id),
-    constraint fk_client_data_account__account_id
+    constraint fk_client_data_role_id
         foreign key (id) references role
 );
 
@@ -392,7 +392,7 @@ create table manager_data
     hotel_id bigint,
     constraint pk_manager_data_id
         primary key (id),
-    constraint fk_manager_data_account_account_id
+    constraint fk_manager_data_role_id
         foreign key (id) references role,
     constraint fk_manager_data_hotel_hotel_id
         foreign key (hotel_id) references hotel
@@ -406,5 +406,5 @@ select a.login,
        a.password,
        r.access_level as role
 from account a
-join role r on a.id = r.account_id
+         join role r on a.id = r.account_id
 where a.confirmed = true and a.enabled = true

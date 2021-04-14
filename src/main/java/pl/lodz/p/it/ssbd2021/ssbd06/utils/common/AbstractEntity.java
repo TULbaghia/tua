@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2021.ssbd06.common;
+package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
 
 import lombok.Getter;
 import lombok.Setter;

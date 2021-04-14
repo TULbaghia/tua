@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -14,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Setter;
 import lombok.ToString;
-import pl.lodz.p.it.ssbd2021.ssbd06.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
 @Entity
 @Table(name = "booking_line", indexes = {

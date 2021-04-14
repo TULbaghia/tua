@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Check;
-import pl.lodz.p.it.ssbd2021.ssbd06.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 
 import java.io.Serializable;

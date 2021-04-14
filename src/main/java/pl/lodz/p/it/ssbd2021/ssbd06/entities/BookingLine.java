@@ -18,7 +18,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.common.AbstractEntity;
 
 @Entity
 @Table(name = "booking_line", indexes = {
-        @Index(name = "ix_booking_line_booking", columnList = "booking"),
+        @Index(name = "ix_booking_line_booking_id", columnList = "booking_id"),
+        @Index(name = "ix_booking_line_box_id", columnList = "box_id"),
         @Index(name = "ix_booking_line_created_by", columnList = "created_by"),
         @Index(name = "ix_booking_line_modified_by", columnList = "modified_by")
 })
@@ -51,13 +52,13 @@ public class BookingLine extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @JoinColumn(name = "booking", referencedColumnName = "id")
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Booking booking;
 
     @Getter
     @Setter
-    @JoinColumn(name = "box", referencedColumnName = "id")
+    @JoinColumn(name = "box_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Box box;
 

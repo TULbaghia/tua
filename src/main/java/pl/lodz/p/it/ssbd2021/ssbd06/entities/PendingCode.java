@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "pending_code", uniqueConstraints = {
         @UniqueConstraint(name = "uq_pending_code_code", columnNames = {"code"})
 }, indexes = {
-        @Index(name = "ix_pending_code_account", columnList = "account"),
+        @Index(name = "ix_pending_code_account_id", columnList = "account_id"),
         @Index(name = "ix_pending_code_created_by", columnList = "created_by"),
         @Index(name = "ix_pending_code_modified_by", columnList = "modified_by")
 })
@@ -53,7 +53,7 @@ public class PendingCode extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @JoinColumn(name = "account", referencedColumnName = "id", nullable = false, updatable = false)
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     private Account account;
 

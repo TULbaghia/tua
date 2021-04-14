@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "booking", indexes = {
-        @Index(name = "ix_booking_account", columnList = "account"),
+        @Index(name = "ix_booking_account_id", columnList = "account_id"),
         @Index(name = "ix_booking_created_by", columnList = "created_by"),
         @Index(name = "ix_booking_modified_by", columnList = "modified_by")
 })
@@ -75,13 +75,13 @@ public class Booking extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @JoinColumn(name = "rating", referencedColumnName = "id")
+    @JoinColumn(name = "rating_id", referencedColumnName = "id")
     @OneToOne(mappedBy = "booking")
     private Rating rating;
 
     @Getter
     @Setter
-    @JoinColumn(name = "account", referencedColumnName = "id")
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Account account;
 

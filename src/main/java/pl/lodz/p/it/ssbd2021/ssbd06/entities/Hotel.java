@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "hotel", uniqueConstraints = {
         @UniqueConstraint(name = "uq_hotel_name", columnNames = "name")
 }, indexes = {
-        @Index(name = "ix_hotel_city", columnList = "city"),
+        @Index(name = "ix_hotel_city_id", columnList = "city_id"),
         @Index(name = "ix_hotel_created_by", columnList = "created_by"),
         @Index(name = "ix_hotel_modified_by", columnList = "modified_by")
 })
@@ -75,7 +75,7 @@ public class Hotel extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @JoinColumn(name = "city", referencedColumnName = "id")
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private City city;
 

@@ -14,7 +14,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "role", uniqueConstraints = {
-        @UniqueConstraint(name = "uq_role_access_level_account", columnNames = {"access_level", "account"})
+        @UniqueConstraint(name = "uq_role_access_level_account_id", columnNames = {"access_level", "account_id"})
+}, indexes = {
+        @Index(name = "ix_role_account_id", columnList = "account_id"),
+        @Index(name = "ix_role_created_by", columnList = "created_by"),
+        @Index(name = "ix_role_modified_by", columnList = "modified_by")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "access_level")
@@ -41,7 +45,8 @@ public class Role extends AbstractEntity implements Serializable {
     @Size(min = 1, max = 16)
     @Column(name = "access_level", updatable = false)
     @Basic(optional = false)
-    private String accessLevel;
+    @Enumerated(EnumType.STRING)
+    private AccessLevel accessLevel;
 
     @Getter
     @Setter
@@ -52,7 +57,7 @@ public class Role extends AbstractEntity implements Serializable {
     @Getter
     @Setter
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "account", referencedColumnName = "id", updatable= false)
+    @JoinColumn(name = "account_id", referencedColumnName = "id", updatable= false)
     private Account account;
 
     @Override

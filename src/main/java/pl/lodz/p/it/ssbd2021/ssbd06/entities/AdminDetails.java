@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "admin_details")
-@DiscriminatorValue("Admin")
+@DiscriminatorValue("ADMIN")
 @NamedQueries({
         @NamedQuery(name = "AdminDetails.findAll", query = "SELECT m FROM AdminDetails m"),
         @NamedQuery(name = "AdminDetails.findById", query = "SELECT m FROM AdminDetails m WHERE m.id = :id")})

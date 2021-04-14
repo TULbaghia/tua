@@ -12,9 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "manager_details", indexes = {
-        @Index(name = "ix_manager_details_hotel", columnList = "hotel")
+        @Index(name = "ix_manager_details_hotel_id", columnList = "hotel_id")
 })
-@DiscriminatorValue("Manager")
+@DiscriminatorValue("MANAGER")
 @NamedQueries({
     @NamedQuery(name = "ManagerDetails.findAll", query = "SELECT m FROM ManagerDetails m"),
     @NamedQuery(name = "ManagerDetails.findById", query = "SELECT m FROM ManagerDetails m WHERE m.id = :id")})
@@ -26,7 +26,7 @@ public class ManagerDetails extends Role implements Serializable {
 
     @Getter
     @Setter
-    @JoinColumn(name = "hotel", referencedColumnName = "id")
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     @ManyToOne()
     private Hotel hotel;
 }

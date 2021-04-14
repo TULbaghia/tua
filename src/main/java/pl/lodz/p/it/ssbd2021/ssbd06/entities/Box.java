@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "box", indexes = {
-        @Index(name = "ix_box_hotel", columnList = "hotel"),
+        @Index(name = "ix_box_hotel_id", columnList = "hotel_id"),
         @Index(name = "ix_box_created_by", columnList = "created_by"),
         @Index(name = "ix_box_modified_by", columnList = "modified_by")
 })
@@ -64,7 +64,7 @@ public class Box extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @JoinColumn(name = "hotel", referencedColumnName = "id")
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Hotel hotel;
 

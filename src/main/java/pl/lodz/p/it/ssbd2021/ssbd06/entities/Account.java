@@ -21,6 +21,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "account", uniqueConstraints = {
         @UniqueConstraint(name = "uq_account_login", columnNames = {"login"}),
         @UniqueConstraint(name = "uq_account_contactNumber", columnNames = {"contact_number"})
+}, indexes = {
+        @Index(name = "ix_account_created_by", columnList = "created_by"),
+        @Index(name = "ix_account_modified_by", columnList = "modified_by")
 })
 @XmlRootElement
 @NamedQueries({

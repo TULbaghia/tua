@@ -34,7 +34,6 @@ public class Role extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_role_id")
     @SequenceGenerator(name = "seq_role_id", allocationSize = 1)

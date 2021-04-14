@@ -7,7 +7,9 @@ import lombok.ToString;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -32,7 +34,6 @@ public class City extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_city_id")
     @SequenceGenerator(name = "seq_city_id", allocationSize = 1)
@@ -56,7 +57,7 @@ public class City extends AbstractEntity implements Serializable {
 
     @Setter
     @OneToMany(mappedBy = "city")
-    private List<Hotel> hotelList;
+    private Set<Hotel> hotelList = new HashSet<>();
 
     public City(String name, String description) {
         this.name = name;
@@ -68,7 +69,7 @@ public class City extends AbstractEntity implements Serializable {
     }
 
     @XmlTransient
-    public List<Hotel> getHotelList() {
+    public Set<Hotel> getHotelList() {
         return hotelList;
     }
 }

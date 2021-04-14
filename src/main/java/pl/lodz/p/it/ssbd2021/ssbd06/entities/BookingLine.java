@@ -33,7 +33,6 @@ public class BookingLine extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_booking_line_id")
     @SequenceGenerator(name = "seq_booking_line_id", allocationSize = 1)

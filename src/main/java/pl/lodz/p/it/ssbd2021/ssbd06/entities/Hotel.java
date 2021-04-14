@@ -8,7 +8,9 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,7 +35,6 @@ public class Hotel extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_hotel_id")
     @SequenceGenerator(name = "seq_hotel_id", allocationSize = 1)
@@ -67,11 +68,11 @@ public class Hotel extends AbstractEntity implements Serializable {
 
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel")
-    private List<Box> boxList;
+    private Set<Box> boxList = new HashSet<>();
 
     @Setter
     @OneToMany(mappedBy = "hotel")
-    private List<ManagerData> managerDataList;
+    private Set<ManagerData> managerDataList = new HashSet<>();
 
     @Getter
     @Setter
@@ -89,12 +90,12 @@ public class Hotel extends AbstractEntity implements Serializable {
     }
 
     @XmlTransient
-    public List<Box> getBoxList() {
+    public Set<Box> getBoxList() {
         return boxList;
     }
 
     @XmlTransient
-    public List<ManagerData> getManagerDataList() {
+    public Set<ManagerData> getManagerDataList() {
         return managerDataList;
     }
 }

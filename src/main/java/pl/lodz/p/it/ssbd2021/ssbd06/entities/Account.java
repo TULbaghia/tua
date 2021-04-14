@@ -9,7 +9,9 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import java.io.Serializable;
 import java.net.Inet4Address;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -43,7 +45,6 @@ public class Account extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_account_id")
     @SequenceGenerator(name = "seq_account_id", allocationSize = 1)
@@ -119,15 +120,15 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Setter
     @OneToMany(mappedBy = "account")
-    private List<Booking> bookingList;
+    private Set<Booking> bookingList = new HashSet<>();
 
     @Setter
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "account")
-    private List<Role> roleList;
+    private Set<Role> roleList = new HashSet<>();
 
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
-    private List<PendingCode> pendingCodeList;
+    private Set<PendingCode> pendingCodeList = new HashSet<>();
 
     public Account(String login, String password, boolean enabled, boolean confirmed, String firstname, String lastname) {
         this.login = login;
@@ -144,17 +145,17 @@ public class Account extends AbstractEntity implements Serializable {
 
 
     @XmlTransient
-    public List<Booking> getBookingList() {
+    public Set<Booking> getBookingList() {
         return bookingList;
     }
 
     @XmlTransient
-    public List<Role> getRoleList() {
+    public Set<Role> getRoleList() {
         return roleList;
     }
 
     @XmlTransient
-    public List<PendingCode> getPendingCodeList() {
+    public Set<PendingCode> getPendingCodeList() {
         return pendingCodeList;
     }
 }

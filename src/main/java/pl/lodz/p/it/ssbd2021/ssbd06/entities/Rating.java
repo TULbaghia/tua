@@ -33,7 +33,6 @@ public class Rating extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_rating_id")
     @SequenceGenerator(name = "seq_rating_id", allocationSize = 1)

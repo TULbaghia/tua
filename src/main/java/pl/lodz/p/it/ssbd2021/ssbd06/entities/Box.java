@@ -9,7 +9,9 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
@@ -34,7 +36,6 @@ public class Box extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_box_id")
     @SequenceGenerator(name = "seq_box_id", allocationSize = 1)
@@ -52,7 +53,7 @@ public class Box extends AbstractEntity implements Serializable {
 
     @Setter
     @OneToMany(mappedBy = "box")
-    private List<BookingLine> bookingLineList;
+    private Set<BookingLine> bookingLineList = new HashSet<>();
 
     @Getter
     @Setter
@@ -77,7 +78,7 @@ public class Box extends AbstractEntity implements Serializable {
     }
 
     @XmlTransient
-    public List<BookingLine> getBookingLineList() {
+    public Set<BookingLine> getBookingLineList() {
         return bookingLineList;
     }
 }

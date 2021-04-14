@@ -11,7 +11,7 @@ import java.util.Date;
 
 @MappedSuperclass
 @ToString(callSuper = true)
-public abstract class AbstractEntity extends BaseAbstractEntity {
+public abstract class AbstractEntity {
 
     @NotNull
     @Getter
@@ -51,4 +51,24 @@ public abstract class AbstractEntity extends BaseAbstractEntity {
         modificationDate = new Date(System.currentTimeMillis());
     }
 
+    public abstract Long getId();
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (this.getId() != null ? this.getId().hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object.getClass() != this.getClass()) {
+            return false;
+        }
+        AbstractEntity other = (AbstractEntity) object;
+        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
+            return false;
+        }
+        return true;
+    }
 }

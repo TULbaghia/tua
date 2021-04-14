@@ -2,4 +2,10 @@ INSERT INTO account (id, creation_date, modification_date, version, confirmed, c
 VALUES (1, now(), null, 1, true, null, true, 0, 'admin', 'PL', null, null, null, null, 'adminski', 'admin', 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', 1, null)
 
 INSERT INTO role (access_level, id, creation_date, modification_date, version, enabled, created_by, modified_by, account_id)
-VALUES ('ADMIN', 1, now(), null, 1, true, 1, null, 1)
+VALUES ('ADMIN', 1, now(), null, 1, true, 1, null, 1),
+    ('MANAGER', 2, now(), null, 1, true, 1, null, 1),
+    ('CLIENT', 3, now(), null, 1, true, 1, null, 1);
+
+INSERT INTO admin_data (id) values (1);
+INSERT INTO manager_data (id) values (1);
+INSERT INTO client_data (id) values (1);

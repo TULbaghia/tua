@@ -19,7 +19,7 @@ create sequence seq_booking_line_id
     minvalue 1
     maxvalue 9223372036854775807;
 
-create sequence seq_box_id;
+create sequence seq_box_id
     as bigint
     increment 1
     start 1

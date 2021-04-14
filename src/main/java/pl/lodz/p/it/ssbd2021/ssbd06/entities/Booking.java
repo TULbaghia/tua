@@ -6,14 +6,13 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Check;
 import pl.lodz.p.it.ssbd2021.ssbd06.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

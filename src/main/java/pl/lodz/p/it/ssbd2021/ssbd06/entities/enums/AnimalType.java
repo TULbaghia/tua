@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2021.ssbd06.entities;
+package pl.lodz.p.it.ssbd2021.ssbd06.entities.enums;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

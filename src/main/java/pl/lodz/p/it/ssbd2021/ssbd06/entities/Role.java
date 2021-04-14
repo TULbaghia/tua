@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2021.ssbd06.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 
 import java.io.Serializable;
 import javax.persistence.*;

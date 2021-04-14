@@ -27,21 +27,13 @@
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.AdminData</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.CodeType</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.AnimalType</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingStatus</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Box</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.City</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL10Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="validate"/>
-            <!--            <property name="hibernate.hbm2ddl.auto" value="validate"/>-->
             <property name="hibernate.transaction.jta.platform"
                       value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
             <property name="hibernate.show_sql" value="false"/>
@@ -53,16 +45,11 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:app/jdbc/ssbd06mohDS</jta-data-source>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Account</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Role</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.ClientData</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.AdminData</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.CodeType</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.AnimalType</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine</class>
-        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingStatus</class>
+        <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Box</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.City</class>
         <class>pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel</class>
@@ -72,7 +59,6 @@
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL10Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="validate"/>
-            <!--            <property name="hibernate.hbm2ddl.auto" value="validate"/>-->
             <property name="hibernate.transaction.jta.platform"
                       value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
             <property name="hibernate.show_sql" value="false"/>

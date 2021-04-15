@@ -61,7 +61,7 @@ public class PendingCode extends AbstractEntity implements Serializable {
     @Getter
     @Setter
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "code_type")
+    @Column(name = "code_type", nullable = false)
     private CodeType codeType;
 
     public PendingCode(String code, boolean used) {

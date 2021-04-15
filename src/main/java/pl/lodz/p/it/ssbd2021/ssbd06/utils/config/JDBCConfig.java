@@ -13,18 +13,22 @@ import java.sql.Connection;
         portNumber = 5432,
         databaseName = "<dbname>",
         isolationLevel = Connection.TRANSACTION_READ_COMMITTED,
-        transactional = true)
+        transactional = true,
+        maxPoolSize = 32,
+        minPoolSize = 8)
 
 @DataSourceDefinition(
         name = "java:app/jdbc/ssbd06mokDS",
         className = "org.postgresql.ds.PGSimpleDataSource",
         user = "<user>",
-        password = "<password>>",
+        password = "<password>",
         serverName = "<server>",
         portNumber = 5432,
         databaseName = "<dbname>",
         isolationLevel = Connection.TRANSACTION_READ_COMMITTED,
-        transactional = true)
+        transactional = true,
+        maxPoolSize = 32,
+        minPoolSize = 8)
 
 @DataSourceDefinition(
         name = "java:app/jdbc/ssbd06mohDS",
@@ -35,7 +39,9 @@ import java.sql.Connection;
         portNumber = 5432,
         databaseName = "<dbname>",
         isolationLevel = Connection.TRANSACTION_READ_COMMITTED,
-        transactional = true)
+        transactional = true,
+        maxPoolSize = 32,
+        minPoolSize = 8)
 
 @Stateless
 public class JDBCConfig {

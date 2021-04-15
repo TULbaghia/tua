@@ -6,20 +6,17 @@ import lombok.ToString;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @MappedSuperclass
 @ToString(callSuper = true)
 public abstract class AbstractEntity {
 
-    @NotNull
     @Getter
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "creation_date", nullable = false, updatable = false)
     private Date creationDate;
 
-    @NotNull
     @Getter
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modification_date")

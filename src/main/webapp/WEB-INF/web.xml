@@ -9,6 +9,12 @@
         </session-timeout>
     </session-config>
 
+    <default-context-path>/</default-context-path>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
     <security-role>
         <role-name>Admin</role-name>
     </security-role>

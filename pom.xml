@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>pl.lodz.p.it.ssbd2021</groupId>
     <artifactId>ssbd06</artifactId>
-    <version>Wv0.0.4-SNAPSHOT</version>
+    <version>Wv0.0.5-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>ssbd06</name>
@@ -56,7 +56,6 @@
 <!--        React-->
         <frontend-src-dir>${project.basedir}/src/main/frontend</frontend-src-dir>
         <node.version>v14.16.1</node.version>
-<!--        <yarn.version>v1.22.10</yarn.version>-->
         <npm.version>6.14.12</npm.version>
         <frontend-maven-plugin.version>1.11.2</frontend-maven-plugin.version>
     </properties>
@@ -207,105 +206,15 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M4</version>
             </plugin>
-<!--&lt;!&ndash;            React&ndash;&gt;-->
-<!--            <plugin>-->
-<!--                <groupId>com.github.eirslett</groupId>-->
-<!--                <artifactId>frontend-maven-plugin</artifactId>-->
-<!--                <version>${frontend-maven-plugin.version}</version>-->
-
-<!--                <configuration>-->
-<!--                    <nodeVersion>${node.version}</nodeVersion>-->
-<!--&lt;!&ndash;                    <yarnVersion>${yarn.version}</yarnVersion>&ndash;&gt;-->
-<!--                    <npmVersion>${npm.version}</npmVersion>-->
-<!--                    <workingDirectory>${frontend-src-dir}</workingDirectory>-->
-<!--                    <installDirectory>${project.build.directory}</installDirectory>-->
-<!--                </configuration>-->
-
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>install-frontend-tools</id>-->
-<!--                        <goals>-->
-<!--                            <goal>install-node-and-npm</goal>-->
-<!--&lt;!&ndash;                            <goal>install-node-and-yarn</goal>&ndash;&gt;-->
-<!--                        </goals>-->
-<!--                        <phase>generate-resources</phase>-->
-<!--                    </execution>-->
-
-<!--&lt;!&ndash;                    <execution>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <id>yarn-install</id>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <goals>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <goal>yarn</goal>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </goals>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <configuration>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <arguments>install</arguments>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </configuration>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </execution>&ndash;&gt;-->
-
-<!--                    <execution>-->
-<!--                        <id>npm-install</id>-->
-<!--                        <goals>-->
-<!--                            <goal>npm</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <arguments>install</arguments>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-
-<!--&lt;!&ndash;                    <execution>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <id>build-frontend</id>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <goals>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <goal>yarn</goal>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </goals>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <phase>prepare-package</phase>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <configuration>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <arguments>build</arguments>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </configuration>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </execution>&ndash;&gt;-->
-<!--                    <execution>-->
-<!--                        <id>build-frontend</id>-->
-<!--                        <goals>-->
-<!--                            <goal>npm</goal>-->
-<!--                        </goals>-->
-<!--                        <phase>prepare-package</phase>-->
-<!--                        <configuration>-->
-<!--                            <arguments>build</arguments>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <artifactId>maven-resources-plugin</artifactId>-->
-<!--                <version>3.2.0</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>position-react-build</id>-->
-<!--                        <goals>-->
-<!--                            <goal>copy-resources</goal>-->
-<!--                        </goals>-->
-<!--                        <phase>prepare-package</phase>-->
-<!--                        <configuration>-->
-<!--                            <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>-->
-<!--                            <resources>-->
-<!--                                <resource>-->
-<!--                                    <directory>${frontend-src-dir}/build</directory>-->
-<!--                                    <filtering>false</filtering>-->
-<!--                                </resource>-->
-<!--                            </resources>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-
-
-
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>1.6</version>
                 <configuration>
-                    <nodeVersion>v14.16.1</nodeVersion>
-                    <npmVersion>6.14.12</npmVersion>
-                    <workingDirectory>src/main/frontend</workingDirectory>
+                    <nodeVersion>${node.version}</nodeVersion>
+                    <npmVersion>${npm.version}</npmVersion>
+                    <workingDirectory>${frontend-src-dir}</workingDirectory>
+                    <installDirectory>${project.build.directory}</installDirectory>
                 </configuration>
                 <executions>
                     <execution>
@@ -343,10 +252,10 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/classes/resources</outputDirectory>
+                            <outputDirectory>${project.basedir}/target/classes/resources</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/src/main/frontend/build</directory>
+                                    <directory>${frontend-src-dir}/build</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
@@ -392,7 +301,7 @@
 
                         <configuration>
                             <environmentVariables>
-                                <PUBLIC_URL>http://my-awesome-production-host/${project.artifactId}</PUBLIC_URL>
+                                <PUBLIC_URL>https://studapp.it.p.lodz.pl:8406/${project.artifactId}</PUBLIC_URL>
                                 <REACT_APP_ROUTER_BASE>/${project.artifactId}</REACT_APP_ROUTER_BASE>
                             </environmentVariables>
                         </configuration>

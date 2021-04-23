@@ -9,6 +9,8 @@
         </session-timeout>
     </session-config>
 
+<!--    <default-context-path>/</default-context-path>-->
+
     <security-role>
         <role-name>Admin</role-name>
     </security-role>
@@ -28,5 +30,10 @@
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
+
+<!--    <error-page>-->
+<!--        <error-code>404</error-code>-->
+<!--        <location>/index.html</location>-->
+<!--    </error-page>-->
 
 </web-app>

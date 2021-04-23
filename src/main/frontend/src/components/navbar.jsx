@@ -17,6 +17,9 @@ class NavigationBar extends Component {
                          <LinkContainer to="/blog">
                             <Nav.Link>Blog</Nav.Link>
                         </LinkContainer>
+                        <LinkContainer to="/pong">
+                            <Nav.Link>Pong</Nav.Link>
+                        </LinkContainer>
                     </Nav>
                     <Nav className="navbar-right">
                         <LinkContainer to="/about">

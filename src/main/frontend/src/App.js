@@ -12,6 +12,7 @@ import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import Home from "./components/home";
 import BlogScreen from "./components/blog";
 import AboutScreen from "./components/about";
+import PingPong from "./components/pingpong";
 
 library.add(fab, faSignInAlt);
 
@@ -22,14 +23,11 @@ class App extends Component {
                 <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
                     <div>
                         <NavigationBar/>
-                        {/*<div className="App-header">*/}
-                        {/*    <img src={logo} className="App-logo" alt="logo"/>*/}
-                        {/*    <h2>Welcome to React</h2>*/}
-                        {/*</div>*/}
                         <Switch>
                             <Route exact path="/" component={Home}/>
                             <Route path="/blog" component={BlogScreen}/>
                             <Route path="/about" component={AboutScreen}/>
+                            <Route path="/pong" component={PingPong}/>
                         </Switch>
                     </div>
                 </Router>

@@ -6,9 +6,8 @@ import lombok.*;
  * Klasa DTO reprezentująca dane konieczne do rejestracji użytkownika
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@AllArgsConstructor
+@Data
 public class RegisterAccountDto {
     private String login;
     private String password;

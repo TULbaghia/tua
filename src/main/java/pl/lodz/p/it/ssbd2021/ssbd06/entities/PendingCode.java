@@ -55,7 +55,7 @@ public class PendingCode extends AbstractEntity implements Serializable {
     @Getter
     @Setter
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     private Account account;
 
     @Getter

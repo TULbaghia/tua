@@ -64,7 +64,7 @@ public class Box extends AbstractEntity implements Serializable {
     @Getter
     @Setter
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     private Hotel hotel;
 
     public Box(BigDecimal pricePerDay, Hotel hotel, AnimalType animalType) {

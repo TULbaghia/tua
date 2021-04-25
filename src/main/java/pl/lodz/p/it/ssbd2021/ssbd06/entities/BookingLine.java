@@ -50,14 +50,14 @@ public class BookingLine extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @JoinColumn(name = "booking_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "booking_id", referencedColumnName = "id", updatable = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     private Booking booking;
 
     @Getter
     @Setter
-    @JoinColumn(name = "box_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "box_id", referencedColumnName = "id", nullable = true)
+    @ManyToOne(optional = true)
     private Box box;
 
     public BookingLine(BigDecimal pricePerDay, Booking booking, Box box) {

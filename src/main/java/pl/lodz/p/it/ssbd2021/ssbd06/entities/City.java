@@ -56,7 +56,7 @@ public class City extends AbstractEntity implements Serializable {
     private String description;
 
     @Setter
-    @OneToMany(mappedBy = "city")
+    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "city")
     private Set<Hotel> hotelList = new HashSet<>();
 
     public City(String name, String description) {

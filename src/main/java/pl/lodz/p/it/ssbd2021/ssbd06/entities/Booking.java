@@ -5,21 +5,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Check;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "booking", indexes = {
@@ -30,8 +29,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Check(constraints = "date_from < date_to")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
-    @NamedQuery(name = "Booking.findById", query = "SELECT b FROM Booking b WHERE b.id = :id")})
+        @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
+        @NamedQuery(name = "Booking.findById", query = "SELECT b FROM Booking b WHERE b.id = :id")})
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class Booking extends AbstractEntity implements Serializable {
@@ -70,19 +69,19 @@ public class Booking extends AbstractEntity implements Serializable {
     private BigDecimal price;
 
     @Setter
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "booking")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "booking")
     private Set<BookingLine> bookingLineList = new HashSet<>();
 
     @Getter
     @Setter
     @JoinColumn(name = "rating_id", referencedColumnName = "id")
-    @OneToOne(mappedBy = "booking")
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "booking")
     private Rating rating;
 
     @Getter
     @Setter
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "account_id", referencedColumnName = "id", updatable = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     private Account account;
 
     @Getter

@@ -56,7 +56,7 @@ public abstract class Role extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "account_id", referencedColumnName = "id", updatable= false)
     private Account account;
 

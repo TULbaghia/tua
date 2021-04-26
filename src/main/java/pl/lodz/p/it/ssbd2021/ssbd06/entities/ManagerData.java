@@ -25,6 +25,6 @@ public class ManagerData extends Role implements Serializable {
     @Getter
     @Setter
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
-    @ManyToOne()
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     private Hotel hotel;
 }

@@ -6,18 +6,17 @@ import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
-import java.io.Serializable;
-import java.net.Inet4Address;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.net.Inet4Address;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "account", uniqueConstraints = {
@@ -34,9 +33,12 @@ import javax.xml.bind.annotation.XmlTransient;
         @NamedQuery(name = "Account.findByLogin", query = "SELECT a FROM Account a WHERE a.login = :login"),
         @NamedQuery(name = "Account.findByEnabled", query = "SELECT a FROM Account a WHERE a.enabled = :enabled"),
         @NamedQuery(name = "Account.findByConfirmed", query = "SELECT a FROM Account a WHERE a.confirmed = :confirmed"),
-        @NamedQuery(name = "Account.findByContactNumber", query = "SELECT a FROM Account a WHERE a.contactNumber = :contactNumber"),
-        @NamedQuery(name = "Account.findByLastSuccessfulLoginIpAddress", query = "SELECT a FROM Account a WHERE a.lastSuccessfulLoginIpAddress = :lastSuccessfulLoginIpAddress"),
-        @NamedQuery(name = "Account.findByLastFailedLoginIpAddress", query = "SELECT a FROM Account a WHERE a.lastFailedLoginIpAddress = :lastFailedLoginIpAddress"),
+        @NamedQuery(name = "Account.findByContactNumber",
+                query = "SELECT a FROM Account a WHERE a.contactNumber = :contactNumber"),
+        @NamedQuery(name = "Account.findByLastSuccessfulLoginIpAddress",
+                query = "SELECT a FROM Account a WHERE a.lastSuccessfulLoginIpAddress = :lastSuccessfulLoginIpAddress"),
+        @NamedQuery(name = "Account.findByLastFailedLoginIpAddress",
+                query = "SELECT a FROM Account a WHERE a.lastFailedLoginIpAddress = :lastFailedLoginIpAddress"),
 })
 @NoArgsConstructor
 @ToString(callSuper = true)
@@ -119,18 +121,20 @@ public class Account extends AbstractEntity implements Serializable {
     private Integer failedLoginAttemptsCounter = 0;
 
     @Setter
-    @OneToMany(mappedBy = "account")
+    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "account")
     private Set<Booking> bookingList = new HashSet<>();
 
     @Setter
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "account")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "account")
     private Set<Role> roleList = new HashSet<>();
 
     @Setter
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "account")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE},
+            mappedBy = "account", orphanRemoval = true)
     private Set<PendingCode> pendingCodeList = new HashSet<>();
 
-    public Account(String login, String password, boolean enabled, boolean confirmed, String firstname, String lastname) {
+    public Account(String login, String password, boolean enabled, boolean confirmed, String firstname,
+                   String lastname) {
         this.login = login;
         this.password = password;
         this.enabled = enabled;

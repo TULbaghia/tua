@@ -12,8 +12,8 @@ import java.util.Date;
 @Data
 public class AccountDto {
     private String login;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private String language;
     private String contactNumber;
     private boolean enabled;

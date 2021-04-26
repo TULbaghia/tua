@@ -1,46 +1,45 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.io.Serializable;
+import java.text.MessageFormat;
 
-@ApplicationScoped
-@Getter
 public class EmailConfig implements Serializable {
 
-    // Application properties bundle
-    private static final String CONFIG_BUNDLE_NAME = "config";
-    private static final String MAIL_HOST = "mail.host";
-    private static final String MAIL_PORT = "mail.port";
-    private static final String MAIL_SENDER = "mail.sender";
-    private static final String MAIL_PASSWORD = "mail.password";
-    // Email resources bundle
     private static final String MAIL_BUNDLE_NAME = "emailResources";
-    private static final String ACTIVATION_MAIL_SUBJECT = "mail.activation.subject";
-    private static final String ACTIVATION_MAIL_CONTENT = "mail.activation.content";
+    private static final String MAIL_CONTENT_SCHEME = "mail.%s.content";
+    private static final String MAIL_SUBJECT_SCHEME = "mail.%s.subject";
 
-    public String getMailHost() {
-        return PropertyReader.getBundleProperty(CONFIG_BUNDLE_NAME, MAIL_HOST);
+    private static final String MAIL_CONFIG_BUNDLE_NAME = "config";
+    private static final String MAIL_CONFIG_PROPERTY_SCHEME = "mail.%s";
+
+    public static String getContentForType(MailType type, String... param) {
+        String mailType = String.format(MAIL_CONTENT_SCHEME, type.getValue());
+        String pattern = PropertyReader.getBundleProperty(MAIL_BUNDLE_NAME, mailType);
+        return MessageFormat.format(pattern, (Object[]) param);
     }
 
-    public String getMailPort() {
-        return PropertyReader.getBundleProperty(CONFIG_BUNDLE_NAME, MAIL_PORT);
+    public static String getSubjectForType(MailType type) {
+        String mailType = String.format(MAIL_SUBJECT_SCHEME, type.getValue());
+        return PropertyReader.getBundleProperty(MAIL_BUNDLE_NAME, mailType);
     }
 
-    public String getMailSender() {
-        return PropertyReader.getBundleProperty(CONFIG_BUNDLE_NAME, MAIL_SENDER);
+    public static String getConfigProperty(String param) {
+        String property = String.format(MAIL_CONFIG_PROPERTY_SCHEME, param);
+        return PropertyReader.getBundleProperty(MAIL_CONFIG_BUNDLE_NAME, property);
     }
 
-    public String getMailPassword() {
-        return PropertyReader.getBundleProperty(CONFIG_BUNDLE_NAME, MAIL_PASSWORD);
-    }
+    @AllArgsConstructor
+    public enum MailType {
+        GRANT_ACCESS("grantaccess"), DENY_ACCESS("denyaccess"),
+        LOCK_ACCOUNT("lock"), UNLOCK_ACCOUNT("unlock"),
+        RESET_PASSWORD("passwordreset"),
+        DELETE_UNCONFIRMED("delete"),
+        ACTIVATE_ACCOUNT("activate");
 
-    public String getActivationMailSubject() {
-        return PropertyReader.getBundleProperty(MAIL_BUNDLE_NAME, ACTIVATION_MAIL_SUBJECT);
-    }
-
-    public String getActivationMailContent(String username, String activationLink) {
-        return PropertyReader.getBundleProperty(MAIL_BUNDLE_NAME, ACTIVATION_MAIL_CONTENT, username, activationLink);
+        @Getter
+        private final String value;
     }
 }

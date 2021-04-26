@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2021.ssbd06.utils.config;
+package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
 
 import javax.annotation.PostConstruct;
 import java.io.FileNotFoundException;
@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class Config {
+public class JWTConfig {
     private static final String CONFIG_FILE = "config.properties";
     private static final String JWT_SECRET_KEY = "jwt.secretKey";
     private static final String JWT_EXPIRE_TIMEOUT = "jwt.expire";

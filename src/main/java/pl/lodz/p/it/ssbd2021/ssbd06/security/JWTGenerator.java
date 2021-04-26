@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.security;
 
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.config.Config;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.JWTConfig;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -14,7 +14,7 @@ import java.util.Date;
  * Klasa służąca do generowania, odświeżania oraz weryfikacji JWT
  */
 public class JWTGenerator {
-    private static Config config;
+    private static JWTConfig config;
 
     private static final String SECRET_KEY = config.getJWTSecretKey();
     private static final long JWT_EXPIRE_TIMEOUT = config.getJWTExpireTimeout();

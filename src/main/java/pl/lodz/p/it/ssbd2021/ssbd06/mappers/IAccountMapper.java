@@ -6,15 +6,15 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.*;
 @Mapper
 public interface IAccountMapper {
 
-    AccountDto accountToAccountDto(Account account);
-    Account accountDtoToAccount(AccountDto accountDto);
+    AccountDto toAccountDto(Account account);
+    Account toAccount(AccountDto accountDto);
 
-    AccountPersonalDetailsDto accountToAccountPersonalDetailsDto(Account account);
-    Account accountPersonalDetailsDtoToAccount(AccountPersonalDetailsDto accountPersonalDetailsDto);
+    AccountPersonalDetailsDto toAccountPersonalDetailsDto(Account account);
+    Account toAccount(AccountPersonalDetailsDto accountPersonalDetailsDto);
 
-    PasswordChangeDto accountToPasswordChangeDto(Account account);
-    Account passwordChangeDtoToAccount(PasswordChangeDto passwordChangeDto);
+    PasswordChangeDto toPasswordChangeDto(Account account);
+    Account toAccount(PasswordChangeDto passwordChangeDto);
 
-    RegisterAccountDto accountToRegisterAccountDto(Account account);
-    Account registerAccountDtoToAccount(RegisterAccountDto registerAccountDto);
+    RegisterAccountDto toRegisterAccountDto(Account account);
+    Account toAccount(RegisterAccountDto registerAccountDto);
 }

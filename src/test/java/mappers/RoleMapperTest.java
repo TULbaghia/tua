@@ -36,10 +36,10 @@ public class RoleMapperTest {
 
     @Test
     public void managerDataToManagerDataDtoTest(){
-        ManagerDataDto managerDataDto = mapper.managerDatatoManagerDataDto(managerData);
+        ManagerDataDto managerDataDto = mapper.toManagerDataDto(managerData);
 
         Assertions.assertEquals(managerData.getHotel().getName(), managerDataDto.getHotelName());
-        Assertions.assertEquals(managerData.getAccount().getLogin(), managerDataDto.getLogin());
+        Assertions.assertEquals(managerData.getAccount().getId(), managerDataDto.getId());
         Assertions.assertEquals(managerData.isEnabled(), managerDataDto.isEnabled());
     }
 }

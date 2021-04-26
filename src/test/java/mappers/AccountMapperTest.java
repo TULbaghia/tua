@@ -5,12 +5,9 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
-import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRoleMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.ManagerDataDto;
+
 import java.util.Date;
 
 public class AccountMapperTest {
@@ -32,7 +29,7 @@ public class AccountMapperTest {
 
     @Test
     public void accountToAccountDtoTest(){
-        AccountDto accountDto = mapper.accountToAccountDto(account);
+        AccountDto accountDto = mapper.toAccountDto(account);
 
         Assertions.assertEquals(account.getLogin(), accountDto.getLogin());
         Assertions.assertEquals(account.getFirstname(), accountDto.getFirstname());
@@ -44,8 +41,8 @@ public class AccountMapperTest {
 
     @Test
     public void accountDtoToAccountTest(){
-        AccountDto accountDto = mapper.accountToAccountDto(account);
-        Account account2 = mapper.accountDtoToAccount(accountDto);
+        AccountDto accountDto = mapper.toAccountDto(account);
+        Account account2 = mapper.toAccount(accountDto);
 
         Assertions.assertEquals(account.getLogin(), account2.getLogin());
         Assertions.assertEquals(account.getFirstname(), account2.getFirstname());

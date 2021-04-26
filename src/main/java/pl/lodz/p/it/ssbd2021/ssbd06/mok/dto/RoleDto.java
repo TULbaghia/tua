@@ -10,7 +10,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 @AllArgsConstructor
 @Data
 public abstract class RoleDto {
-    private String login;
+    private Long id;
     private AccessLevel accessLevel;
     private boolean enabled;
 }

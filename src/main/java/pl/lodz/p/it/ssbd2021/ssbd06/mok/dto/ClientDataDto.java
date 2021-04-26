@@ -12,7 +12,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 @NoArgsConstructor
 @Data
 public class ClientDataDto extends RoleDto{
-    public ClientDataDto(String login, AccessLevel accessLevel, boolean enabled) {
-        super(login, accessLevel, enabled);
+    public ClientDataDto(Long id, AccessLevel accessLevel, boolean enabled) {
+        super(id, accessLevel, enabled);
     }
 }

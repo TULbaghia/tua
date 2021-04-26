@@ -12,8 +12,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 public class ManagerDataDto extends RoleDto{
     private String hotelName;
 
-    public ManagerDataDto(String login, AccessLevel accessLevel, boolean enabled, String hotelName) {
-        super(login, accessLevel, enabled);
+    public ManagerDataDto(Long id, AccessLevel accessLevel, boolean enabled, String hotelName) {
+        super(id, accessLevel, enabled);
         this.hotelName = hotelName;
     }
 }

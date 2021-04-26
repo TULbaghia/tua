@@ -10,17 +10,26 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AdminDataDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.ClientDataDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.ManagerDataDto;
 
-@Mapper
+@Mapper(componentModel = "cdi", uses = ReferenceMapper.class)
 public interface IRoleMapper {
     @Mappings({
             @Mapping(target = "hotelName", source = "hotel.name"),
-            @Mapping(target = "login", source = "account.login")
+            @Mapping(target = "id", source = "account.id")
     })
-    ManagerDataDto managerDatatoManagerDataDto(ManagerData managerData);
+    ManagerDataDto toManagerDataDto(ManagerData managerData);
 
-    @Mapping(target = "login", source = "account.login")
-    ClientDataDto clientDataToClientDataDto(ClientData clientData);
+    @Mapping(target = "account", source = "id")
+    ManagerData toManagerData(ManagerDataDto managerDataDto);
 
-    @Mapping(target = "login", source = "account.login")
-    AdminDataDto adminDataToAdminDataDto(AdminData adminData);
+    @Mapping(target = "id", source = "account.id")
+    ClientDataDto toClientDataDto(ClientData clientData);
+
+    @Mapping(target = "account", source = "id")
+    ClientData toClientData(ClientDataDto clientDataDto);
+
+    @Mapping(target = "id", source = "account.id")
+    AdminDataDto toAdminDataDto(AdminData adminData);
+
+    @Mapping(target = "account", source = "id")
+    AdminData toAdminData(AdminDataDto adminDataDto);
 }

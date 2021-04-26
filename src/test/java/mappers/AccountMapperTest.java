@@ -2,8 +2,8 @@ package mappers;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.mapstruct.factory.Mappers;
+import org.testng.Assert;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
@@ -31,12 +31,12 @@ public class AccountMapperTest {
     public void accountToAccountDtoTest(){
         AccountDto accountDto = mapper.toAccountDto(account);
 
-        Assertions.assertEquals(account.getLogin(), accountDto.getLogin());
-        Assertions.assertEquals(account.getFirstname(), accountDto.getFirstname());
-        Assertions.assertEquals(account.getLastname(), accountDto.getLastname());
-        Assertions.assertEquals(account.getContactNumber(), accountDto.getContactNumber());
-        Assertions.assertEquals(account.getLastFailedLoginDate(), accountDto.getLastFailedLoginDate());
-        Assertions.assertEquals(account.isConfirmed(), accountDto.isConfirmed());
+        Assert.assertEquals(account.getLogin(), accountDto.getLogin());
+        Assert.assertEquals(account.getFirstname(), accountDto.getFirstname());
+        Assert.assertEquals(account.getLastname(), accountDto.getLastname());
+        Assert.assertEquals(account.getContactNumber(), accountDto.getContactNumber());
+        Assert.assertEquals(account.getLastFailedLoginDate(), accountDto.getLastFailedLoginDate());
+        Assert.assertEquals(account.isConfirmed(), accountDto.isConfirmed());
     }
 
     @Test
@@ -44,11 +44,11 @@ public class AccountMapperTest {
         AccountDto accountDto = mapper.toAccountDto(account);
         Account account2 = mapper.toAccount(accountDto);
 
-        Assertions.assertEquals(account.getLogin(), account2.getLogin());
-        Assertions.assertEquals(account.getFirstname(), account2.getFirstname());
-        Assertions.assertEquals(account.getLastname(), account2.getLastname());
-        Assertions.assertEquals(account.getContactNumber(), account2.getContactNumber());
-        Assertions.assertEquals(account.getLastFailedLoginDate(), account2.getLastFailedLoginDate());
-        Assertions.assertEquals(account.isConfirmed(), account2.isConfirmed());
+        Assert.assertEquals(account.getLogin(), account2.getLogin());
+        Assert.assertEquals(account.getFirstname(), account2.getFirstname());
+        Assert.assertEquals(account.getLastname(), account2.getLastname());
+        Assert.assertEquals(account.getContactNumber(), account2.getContactNumber());
+        Assert.assertEquals(account.getLastFailedLoginDate(), account2.getLastFailedLoginDate());
+        Assert.assertEquals(account.isConfirmed(), account2.isConfirmed());
     }
 }

@@ -2,8 +2,8 @@ package mappers;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.mapstruct.factory.Mappers;
+import org.testng.Assert;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
@@ -38,8 +38,8 @@ public class RoleMapperTest {
     public void managerDataToManagerDataDtoTest(){
         ManagerDataDto managerDataDto = mapper.toManagerDataDto(managerData);
 
-        Assertions.assertEquals(managerData.getHotel().getName(), managerDataDto.getHotelName());
-        Assertions.assertEquals(managerData.getAccount().getId(), managerDataDto.getId());
-        Assertions.assertEquals(managerData.isEnabled(), managerDataDto.isEnabled());
+        Assert.assertEquals(managerData.getHotel().getName(), managerDataDto.getHotelName());
+        Assert.assertEquals(managerData.getAccount().getId(), managerDataDto.getId());
+        Assert.assertEquals(managerData.isEnabled(), managerDataDto.isEnabled());
     }
 }

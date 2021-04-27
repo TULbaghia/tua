@@ -11,8 +11,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
-//TODO: Zastanowic sie nad tymi adnotacjami
-
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccountManager {
@@ -29,12 +27,12 @@ public class AccountManager {
      * @param login ogin konta, które ma zostać zablokowane.
      * @throws AppBaseException gdy nie udało się zablokowanie konta.
      */
-//    @RolesAllowed("blockAccount")
+    @RolesAllowed("blockAccount")
     public void blockAccount(String login) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
         account.setEnabled(false);
         account.setFailedLoginAttemptsCounter(0);
         accountFacade.edit(account);
-//        emailSender.sendLockAccountEmail(account.getFirstname(), login);
+        emailSender.sendLockAccountEmail(account.getFirstname(), login);
     }
 }

@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 
 import javax.inject.Inject;
@@ -29,7 +28,6 @@ public class AccountController extends AbstractController {
     @PUT
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
-//    @Login przy parametrze
     public void changeAccountActiveStatus(@NotNull @PathParam("login") @Valid String login) throws AppBaseException {
 //        metoda repeat() z abstractController;
         accountEndpoint.blockAccount(login);

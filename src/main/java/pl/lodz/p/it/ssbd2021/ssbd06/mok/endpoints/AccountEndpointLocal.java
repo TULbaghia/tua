@@ -6,8 +6,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 
-// TODO: Czy tutaj tez dajemy roles allowed?
-
 @Local
 public interface AccountEndpointLocal {
     /**
@@ -16,6 +14,6 @@ public interface AccountEndpointLocal {
      * @param login login konta, które ma zostać zablokowane.
      * @throws AppBaseException gdy nie udało się zablokowanie konta.
      */
-//    @RolesAllowed("blockAccount")
+    @RolesAllowed("blockAccount")
     void blockAccount(String login) throws AppBaseException;
 }

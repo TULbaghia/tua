@@ -1,9 +1,10 @@
 package mappers;
 
-import org.junit.Before;
-import org.junit.Test;
+
 import org.mapstruct.factory.Mappers;
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
@@ -16,7 +17,7 @@ public class RoleMapperTest {
     private ManagerData managerData;
     private final IRoleMapper mapper =Mappers.getMapper(IRoleMapper.class);
 
-    @Before
+    @BeforeTest
     public void init(){
         Account account = new Account();
         account.setLogin("adam231@gmail.com");

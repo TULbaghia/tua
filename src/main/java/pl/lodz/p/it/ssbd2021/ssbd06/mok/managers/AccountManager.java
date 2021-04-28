@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
@@ -10,6 +12,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import java.util.UUID;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -34,5 +37,31 @@ public class AccountManager {
         account.setFailedLoginAttemptsCounter(0);
         accountFacade.edit(account);
         emailSender.sendLockAccountEmail(account.getFirstname(), login);
+    }
+
+    /**
+     * Rejestruje konto użytkownika oraz wysyła żeton na adres e-mail.
+     *
+     * @param account obiekt encji konta
+     * @throws AppBaseException podczas wystąpienia błędu związanego z istniejącym loginem lub problemem z bazą danych.
+     */
+    public void register(Account account) throws AppBaseException {
+        //TODO: Hash password
+//        account.setPassword(new ShaHash().generate(account.getPassword().toCharArray()));
+        account.setEnabled(true);
+        account.setConfirmed(false);
+        account.setCreatedBy(account);
+
+        PendingCode pendingCode = new PendingCode();
+        pendingCode.setCode(UUID.randomUUID().toString());
+        pendingCode.setUsed(false);
+        pendingCode.setAccount(account);
+        pendingCode.setCodeType(CodeType.ACCOUNT_ACTIVATION);
+        pendingCode.setCreatedBy(account);
+
+        account.getPendingCodeList().add(pendingCode);
+
+        accountFacade.create(account);
+        emailSender.sendActivationEmail(account.getFirstname(), account.getLogin(), pendingCode.getCode());
     }
 }

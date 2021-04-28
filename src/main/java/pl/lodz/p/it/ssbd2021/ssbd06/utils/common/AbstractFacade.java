@@ -5,10 +5,10 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
 
 import java.util.List;
-import javax.annotation.security.DenyAll;
 import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
+import javax.validation.ConstraintViolationException;
 
 public abstract class AbstractFacade<T> {
 
@@ -20,8 +20,13 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(T entity) {
-        getEntityManager().persist(entity);
+    public void create(T entity) throws AppBaseException{
+        try {
+            getEntityManager().persist(entity);
+            getEntityManager().flush();
+        } catch (PersistenceException e) {
+            throw new DatabaseQueryException(e.getMessage());
+        }
     }
 
     /**

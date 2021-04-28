@@ -1,14 +1,20 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
+import org.mapstruct.factory.Mappers;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 
 @Stateful
@@ -18,9 +24,20 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Inject
     private AccountManager accountManager;
 
+    @Inject
+    private HttpServletRequest servletRequest;
+
     @Override
     @RolesAllowed("blockAccount")
     public void blockAccount(String login) throws AppBaseException {
         accountManager.blockAccount(login);
+    }
+
+    @Override
+    @PermitAll
+    public void registerAccount(RegisterAccountDto registerAccountDto) throws AppBaseException {
+        Account account = Mappers.getMapper(IAccountMapper.class).toAccount(registerAccountDto);
+        account.setLanguage(servletRequest.getLocale().getLanguage());
+        accountManager.register(account);
     }
 }

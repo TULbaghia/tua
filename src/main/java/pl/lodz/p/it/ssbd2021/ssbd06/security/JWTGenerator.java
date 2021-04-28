@@ -1,11 +1,15 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.security;
 
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.JWTConfig;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.JWTConfig;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import java.text.ParseException;
 import java.util.Date;
@@ -13,12 +17,21 @@ import java.util.Date;
 /**
  * Klasa służąca do generowania, odświeżania oraz weryfikacji JWT
  */
+@RequestScoped
 public class JWTGenerator {
-    private static JWTConfig config;
+    @Inject
+    private JWTConfig config;
 
-    private static final String SECRET_KEY = config.getJWTSecretKey();
-    private static final long JWT_EXPIRE_TIMEOUT = config.getJWTExpireTimeout();
-    private static final String JWT_ISS = config.getJWTIss();
+    private static String SECRET_KEY;
+    private static long JWT_EXPIRE_TIMEOUT;
+    private static String JWT_ISS;
+
+    @PostConstruct
+    private void init() {
+        this.SECRET_KEY = config.getJWTSecretKey();
+        this.JWT_EXPIRE_TIMEOUT = config.getJWTExpireTimeout();
+        this.JWT_ISS = config.getJWTIss();
+    }
 
     public static String generateJWTString(CredentialValidationResult result) {
         try {

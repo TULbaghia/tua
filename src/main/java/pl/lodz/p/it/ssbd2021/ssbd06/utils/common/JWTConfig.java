@@ -1,12 +1,15 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Properties;
 
-public class JWTConfig {
+@ApplicationScoped
+public class JWTConfig implements Serializable {
     private static final String CONFIG_FILE = "config.properties";
     private static final String JWT_SECRET_KEY = "jwt.secretKey";
     private static final String JWT_EXPIRE_TIMEOUT = "jwt.expire";

@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.security;
 
 import com.nimbusds.jwt.SignedJWT;
+
+import javax.enterprise.context.RequestScoped;
 import javax.security.enterprise.AuthenticationStatus;
 import javax.security.enterprise.authentication.mechanism.http.HttpAuthenticationMechanism;
 import javax.security.enterprise.authentication.mechanism.http.HttpMessageContext;
@@ -14,6 +16,7 @@ import java.util.HashSet;
 /**
  * Klasa służąca weryfikacji żądań
  */
+@RequestScoped
 public class JWTAuthenticationMechanism implements HttpAuthenticationMechanism {
     public static final String AUTHORIZATION = "Authorization";
     public static final String BEARER = "Bearer ";

@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 
-@DenyAll
 public abstract class AbstractFacade<T> {
 
     private Class<T> entityClass;

@@ -74,7 +74,6 @@ public class Booking extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @JoinColumn(name = "rating_id", referencedColumnName = "id")
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "booking")
     private Rating rating;
 

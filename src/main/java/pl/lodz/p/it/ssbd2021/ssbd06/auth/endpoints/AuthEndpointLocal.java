@@ -11,7 +11,8 @@ public interface AuthEndpointLocal {
      *
      * @param login  login użytkownika
      * @param password hasło użytkownika
+     * @return token jwt
      * @throws AppBaseException gdy uwierzytelnianie się nie powiedzie
      */
-    void login(String login, String password) throws AppBaseException;
+    String login(String login, String password) throws AppBaseException;
 }

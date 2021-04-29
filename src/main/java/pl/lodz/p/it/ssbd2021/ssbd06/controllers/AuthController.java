@@ -1,13 +1,22 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.auth.dto.LoginDataDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.auth.endpoints.AuthEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AuthValidationException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpoint;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.Instant;
+import java.util.Date;
 
 @Path("/auth")
 public class AuthController {
@@ -15,26 +24,35 @@ public class AuthController {
     @Inject
     private AuthEndpoint authEndpoint;
 
+    @Inject
+    private AccountEndpoint accountEndpoint;
+
+    @Context
+    private HttpServletRequest httpServletRequest;
+
     /**
-     * Przeprowadza proces uwierzytelnienia użytkownika
+     * Przeprowadza proces uwierzytelnienia użytkownika.
      *
-     * @param login login użytkownika
-     * @param password hasło użytkownika
-     * @return token jwt
+     * @param loginDataDto objekt zawierający login i hasło użytkownika
+     * @return w przypadku powodzenia operacji uwierzytelnienia token jwt
+     * @throws AppBaseException gdy aktualizacja danych dotyczących uwierzytelnienia się nie powiedzie
      */
     @POST
     @Path("auth")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.TEXT_PLAIN})
-    public Response login(@NotNull @QueryParam("login") String login, @NotNull @QueryParam("password") String password) {
+    public Response login(@NotNull @Valid LoginDataDto loginDataDto) throws AppBaseException {
         try {
-            String token = authEndpoint.login(login, password);
+            String passwordHash = PasswordHasher.generate(loginDataDto.getPassword());
+            String token = authEndpoint.login(loginDataDto.getLogin(), passwordHash);
+            accountEndpoint.updateValidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(), Date.from(Instant.now()));
             return Response.accepted()
                     .type("application/json")
                     .entity(token)
                     .build();
-        } catch (AppBaseException e) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        } catch (AuthValidationException e) {
+            accountEndpoint.updateInvalidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(), Date.from(Instant.now()));
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 }

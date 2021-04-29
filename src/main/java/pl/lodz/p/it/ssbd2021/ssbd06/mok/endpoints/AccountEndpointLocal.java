@@ -16,4 +16,11 @@ public interface AccountEndpointLocal {
      */
     @RolesAllowed("blockAccount")
     void blockAccount(String login) throws AppBaseException;
+
+    /**
+     * Potwierdza konto użytkownika odpowiadające podanemu kodowi aktywacyjnemu
+     *
+     * @param code kod aktywacyjny konta
+     */
+    void confirmAccount(String code) throws AppBaseException;
 }

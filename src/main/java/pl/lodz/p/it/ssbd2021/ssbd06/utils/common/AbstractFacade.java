@@ -4,16 +4,13 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
 
-import java.util.List;
-import javax.annotation.security.DenyAll;
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
-
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceException;
 
 public abstract class AbstractFacade<T> {
 

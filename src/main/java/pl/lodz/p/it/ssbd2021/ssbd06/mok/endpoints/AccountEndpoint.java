@@ -1,9 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.interfaces.AccountEndpointLocal;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.services.AccountService;
-
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 
@@ -29,6 +26,6 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
 
     @Override
     public void confirmAccount(String code) throws AppBaseException {
-        accountService.confirm(code);
+        accountManager.confirm(code);
     }
 }

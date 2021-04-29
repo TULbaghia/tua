@@ -1,8 +1,11 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountAlreadyActivatedException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeExpiredException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.security.RolesAllowed;
@@ -21,6 +24,9 @@ public class AccountManager {
     @Inject
     private EmailSender emailSender;
 
+    @Inject
+    private PendingCodeFacade pendingCodeFacade;
+
     /**
      * Blokuje konto użytkownika o podanym loginie.
      *
@@ -34,5 +40,28 @@ public class AccountManager {
         account.setFailedLoginAttemptsCounter(0);
         accountFacade.edit(account);
         emailSender.sendLockAccountEmail(account.getFirstname(), login);
+    }
+
+    /**
+     * Potwierdza konto użytkownika odpowiadające podanemu kodowi aktywacyjnemu
+     *
+     * @param code kod aktywacyjny konta
+     * @throws CodeExpiredException             gdy podany kod został już zużyty lub wygasł
+     * @throws AccountAlreadyActivatedException gdy konto zostało już aktywowane
+     * @throws AppBaseException                 gdy utrwalenie potwierdzenia się nie powiodło
+     */
+    public void confirm(String code) throws AppBaseException {
+        var pendingCode = pendingCodeFacade.findByCode(code);
+        if (pendingCode.isUsed()) {
+            throw new CodeExpiredException("Code has been used or expired");
+        }
+        var account = pendingCode.getAccount();
+        if (account.isConfirmed()) {
+            throw new AccountAlreadyActivatedException("Account already activated");
+        }
+        account.setConfirmed(true);
+        pendingCode.setUsed(true);
+        pendingCodeFacade.edit(pendingCode);
+        accountFacade.edit(account);
     }
 }

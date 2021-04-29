@@ -7,10 +7,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/accounts")
@@ -29,14 +26,19 @@ public class AccountController extends AbstractController {
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changeAccountActiveStatus(@NotNull @PathParam("login") @Valid String login) throws AppBaseException {
-//        metoda repeat() z abstractController;
+        // todo metoda repeat() z abstractController;
         accountEndpoint.blockAccount(login);
     }
 
+
+    /**
+     * @param code kod aktywacyjny konta
+     * @throws AppBaseException gdzy potwierdzenie konta się nie powiodło
+     */
     @POST
     @Path("/confirm/{code}")
     public void confirm(@PathParam("code") String code) throws AppBaseException {
-        // todo metoda repeat
+        // todo metoda repeat() z abstractController;
         accountEndpoint.confirmAccount(code);
     }
 }

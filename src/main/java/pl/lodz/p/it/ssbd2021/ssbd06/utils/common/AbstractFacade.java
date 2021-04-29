@@ -1,11 +1,19 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
+
+import java.util.List;
+import javax.annotation.security.DenyAll;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+import javax.persistence.OptimisticLockException;
+import javax.persistence.PersistenceException;
 
 public abstract class AbstractFacade<T> {
 
@@ -21,8 +29,21 @@ public abstract class AbstractFacade<T> {
         getEntityManager().persist(entity);
     }
 
-    public void edit(T entity) {
-        getEntityManager().merge(entity);
+    /**
+     * Aktualizuje encję w bazie danych.
+     *
+     * @param entity obiekt encji.
+     * @throws AppBaseException gdy wystąpił błąd blokady optymistycznej lub błąd związany z bazą danych.
+     */
+    public void edit(T entity) throws AppBaseException {
+        try {
+            getEntityManager().merge(entity);
+            getEntityManager().flush();
+        } catch (OptimisticLockException e) {
+            throw new AppOptimisticLockException(e.getMessage());
+        } catch (PersistenceException e) {
+            throw new DatabaseQueryException(e.getMessage());
+        }
     }
 
     public void remove(T entity) {

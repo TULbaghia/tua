@@ -1,9 +1,10 @@
 package mappers;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
 import org.mapstruct.factory.Mappers;
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
@@ -16,8 +17,8 @@ public class RoleMapperTest {
     private final IRoleMapper mapper = Mappers.getMapper(IRoleMapper.class);
     private ManagerData managerData;
 
-    @BeforeEach
-    public void init() {
+    @BeforeTest
+    public void init(){
         Account account = new Account();
         account.setLogin("adam231@gmail.com");
         account.setFirstname("Adam");

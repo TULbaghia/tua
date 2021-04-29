@@ -1,9 +1,9 @@
 package mappers;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
@@ -14,8 +14,8 @@ public class AccountMapperTest {
     private final IAccountMapper mapper = Mappers.getMapper(IAccountMapper.class);
     private Account account;
 
-    @BeforeEach
-    public void init() {
+    @BeforeTest
+    public void init(){
         account = new Account();
         account.setLogin("adam231@gmail.com");
         account.setFirstname("Adam");

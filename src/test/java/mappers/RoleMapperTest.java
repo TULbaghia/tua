@@ -1,7 +1,7 @@
 package mappers;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.testng.Assert;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
@@ -13,11 +13,11 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.ManagerDataDto;
 import java.util.Date;
 
 public class RoleMapperTest {
+    private final IRoleMapper mapper = Mappers.getMapper(IRoleMapper.class);
     private ManagerData managerData;
-    private final IRoleMapper mapper =Mappers.getMapper(IRoleMapper.class);
 
-    @Before
-    public void init(){
+    @BeforeEach
+    public void init() {
         Account account = new Account();
         account.setLogin("adam231@gmail.com");
         account.setFirstname("Adam");
@@ -35,7 +35,7 @@ public class RoleMapperTest {
     }
 
     @Test
-    public void managerDataToManagerDataDtoTest(){
+    public void managerDataToManagerDataDtoTest() {
         ManagerDataDto managerDataDto = mapper.toManagerDataDto(managerData);
 
         Assert.assertEquals(managerData.getHotel().getName(), managerDataDto.getHotelName());

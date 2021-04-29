@@ -1,7 +1,7 @@
 package mappers;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.testng.Assert;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
@@ -11,11 +11,11 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import java.util.Date;
 
 public class AccountMapperTest {
-    private Account account;
     private final IAccountMapper mapper = Mappers.getMapper(IAccountMapper.class);
+    private Account account;
 
-    @Before
-    public void init(){
+    @BeforeEach
+    public void init() {
         account = new Account();
         account.setLogin("adam231@gmail.com");
         account.setFirstname("Adam");
@@ -28,7 +28,7 @@ public class AccountMapperTest {
     }
 
     @Test
-    public void accountToAccountDtoTest(){
+    public void accountToAccountDtoTest() {
         AccountDto accountDto = mapper.toAccountDto(account);
 
         Assert.assertEquals(account.getLogin(), accountDto.getLogin());
@@ -40,7 +40,7 @@ public class AccountMapperTest {
     }
 
     @Test
-    public void accountDtoToAccountTest(){
+    public void accountDtoToAccountTest() {
         AccountDto accountDto = mapper.toAccountDto(account);
         Account account2 = mapper.toAccount(accountDto);
 

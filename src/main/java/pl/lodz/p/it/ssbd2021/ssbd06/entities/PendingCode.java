@@ -24,7 +24,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PendingCode.findAll", query = "SELECT p FROM PendingCode p"),
-    @NamedQuery(name = "PendingCode.findById", query = "SELECT p FROM PendingCode p WHERE p.id = :id")})
+    @NamedQuery(name = "PendingCode.findById", query = "SELECT p FROM PendingCode p WHERE p.id = :id"),
+    @NamedQuery(name = "PendingCode.findByCode", query = "SELECT p FROM PendingCode p WHERE p.code = :code")})
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class PendingCode extends AbstractEntity implements Serializable {

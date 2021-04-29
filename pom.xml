@@ -133,6 +133,12 @@
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>9.8.1</version>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.11</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

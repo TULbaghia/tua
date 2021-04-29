@@ -26,34 +26,31 @@ public class JWTAuthenticationMechanism implements HttpAuthenticationMechanism {
                                                 HttpServletResponse httpServletResponse,
                                                 HttpMessageContext httpMessageContext) {
 
-        if (!httpServletRequest.getRequestURL().toString().endsWith("/auth")) {
-            String authHeader = httpServletRequest.getHeader(AUTHORIZATION);
+        String authHeader = httpServletRequest.getHeader(AUTHORIZATION);
 
-            if (authHeader == null || !authHeader.startsWith(BEARER)) {
-                return httpMessageContext.responseUnauthorized();
-            }
+        if (authHeader == null || !authHeader.startsWith(BEARER)) {
+            return httpMessageContext.doNothing();
+        }
 
-            String tokenToValidate = authHeader.substring(BEARER.length());
-            if (JWTGenerator.validateJWT(tokenToValidate)) {
-                try {
-                    SignedJWT jwtToken = SignedJWT.parse(tokenToValidate);
-                    String login = jwtToken.getJWTClaimsSet().getSubject();
-                    String roles = jwtToken.getJWTClaimsSet().getStringClaim("roles");
-                    Date expirationTime = (Date) (jwtToken.getJWTClaimsSet().getClaim("exp"));
-                    String iss = jwtToken.getJWTClaimsSet().getIssuer();
+        String tokenToValidate = authHeader.substring(BEARER.length());
+        if (JWTGenerator.validateJWT(tokenToValidate)) {
+            try {
+                SignedJWT jwtToken = SignedJWT.parse(tokenToValidate);
+                String login = jwtToken.getJWTClaimsSet().getSubject();
+                String roles = jwtToken.getJWTClaimsSet().getStringClaim("roles");
+                Date expirationTime = (Date) (jwtToken.getJWTClaimsSet().getClaim("exp"));
+                String iss = jwtToken.getJWTClaimsSet().getIssuer();
 
-                    if (new Date().after(expirationTime)) {
-                        return httpMessageContext.responseUnauthorized();
-                    }
-                    return httpMessageContext
-                            .notifyContainerAboutLogin(login, new HashSet<>(Arrays.asList(roles.split(","))));
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                if (new Date().after(expirationTime)) {
                     return httpMessageContext.responseUnauthorized();
                 }
+                return httpMessageContext
+                        .notifyContainerAboutLogin(login, new HashSet<>(Arrays.asList(roles.split(","))));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return httpMessageContext.responseUnauthorized();
             }
-            return httpMessageContext.responseUnauthorized();
         }
-        return httpMessageContext.doNothing();
+        return httpMessageContext.responseUnauthorized();
     }
 }

@@ -9,7 +9,7 @@ import javax.security.enterprise.identitystore.DatabaseIdentityStoreDefinition;
         dataSourceLookup = "java:app/jdbc/ssbd06authDS",
         callerQuery = "SELECT DISTINCT password FROM auth_view WHERE login = ?",
         groupsQuery = "SELECT role FROM auth_view WHERE login = ?",
-        hashAlgorithm = ShaHash.class
+        hashAlgorithm = PasswordHasher.class
 )
 public class AuthenticationIdentityStore {
 

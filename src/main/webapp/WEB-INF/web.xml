@@ -30,6 +30,123 @@
         <role-name>Client</role-name>
     </security-role>
 
+    <security-role>
+        <role-name>addAccessLevel</role-name>
+    </security-role>
+    <security-role>
+        <role-name>deleteAccessLevel</role-name>
+    </security-role>
+    <security-role>
+        <role-name>editOwnAccountDetails</role-name>
+    </security-role>
+    <security-role>
+        <role-name>editOtherAccountDetails</role-name>
+    </security-role>
+    <security-role>
+        <role-name>blockAccount</role-name>
+    </security-role>
+    <security-role>
+        <role-name>unblockAccount</role-name>
+    </security-role>
+    <security-role>
+        <role-name>editOwnPassword</role-name>
+    </security-role>
+    <security-role>
+        <role-name>editOtherPassword</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getAccountAuthInfo</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getAllAccounts</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getOwnAccountInfo</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getOtherAccountInfo</role-name>
+    </security-role>
+    <security-role>
+        <role-name>changeAccessLevel</role-name>
+    </security-role>
+    <security-role>
+        <role-name>refreshToken</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>addHotel</role-name>
+    </security-role>
+    <security-role>
+        <role-name>deleteHotel</role-name>
+    </security-role>
+    <security-role>
+        <role-name>updateHotel</role-name>
+    </security-role>
+    <security-role>
+        <role-name>addManagerToHotel</role-name>
+    </security-role>
+    <security-role>
+        <role-name>deleteManagerFromHotel</role-name>
+    </security-role>
+    <security-role>
+        <role-name>generateReport</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>addHotelRating</role-name>
+    </security-role>
+    <security-role>
+        <role-name>deleteHotelRating</role-name>
+    </security-role>
+    <security-role>
+        <role-name>updateHotelRating</role-name>
+    </security-role>
+    <security-role>
+        <role-name>hideHotelRating</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>bookReservation</role-name>
+    </security-role>
+    <security-role>
+        <role-name>cancelReservation</role-name>
+    </security-role>
+    <security-role>
+        <role-name>endReservation</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getAllActiveReservations</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getAllArchiveReservations</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>addCity</role-name>
+    </security-role>
+    <security-role>
+        <role-name>deleteCity</role-name>
+    </security-role>
+    <security-role>
+        <role-name>updateCity</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getAllCities</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>addBox</role-name>
+    </security-role>
+    <security-role>
+        <role-name>deleteBox</role-name>
+    </security-role>
+    <security-role>
+        <role-name>updateBox</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getAllBoxes</role-name>
+    </security-role>
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Common</web-resource-name>

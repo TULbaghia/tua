@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -55,13 +56,13 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Setter
     @NotNull
-    @Size(min = 6, max = 127)
+    @Login
     @Column(name = "login", nullable = false)
     private String login;
 
     @Setter
     @NotNull
-    @Size(min = 64, max = 64)
+    @Password
     @Column(name = "password", nullable = false, length = 64)
     private String password;
 
@@ -77,23 +78,23 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Setter
     @NotNull
-    @Size(min = 3, max = 31)
+    @Firstname
     @Column(name = "firstname", nullable = false)
     private String firstname;
 
     @Setter
     @NotNull
-    @Size(min = 2, max = 31)
+    @Lastname
     @Column(name = "lastname", nullable = false)
     private String lastname;
 
     @Setter
-    @Size(min = 2, max = 2)
+    @Language
     @Column(name = "language")
     private String language;
 
     @Setter
-    @Size(min = 9, max = 15)
+    @ContactNumber
     @Column(name = "contact_number")
     private String contactNumber;
 

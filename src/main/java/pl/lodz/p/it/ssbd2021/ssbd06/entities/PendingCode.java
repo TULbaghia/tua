@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.PenCode;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -40,7 +41,7 @@ public class PendingCode extends AbstractEntity implements Serializable {
     @Getter
     @Setter
     @NotNull
-    @Size(min = 1, max = 128)
+    @PenCode
     @Basic(optional = false)
     @Column(name = "code", nullable = false, updatable = false)
     private String code;

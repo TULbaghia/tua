@@ -15,6 +15,8 @@ import javax.security.enterprise.identitystore.IdentityStoreHandler;
 @Stateful
 public class AuthEndpoint implements AuthEndpointLocal {
 
+    @Inject JWTGenerator jwtGenerator;
+
     @Inject
     private IdentityStoreHandler identityStoreHandler;
 
@@ -23,7 +25,7 @@ public class AuthEndpoint implements AuthEndpointLocal {
         Credential credential = new UsernamePasswordCredential(login, new Password(password));
         CredentialValidationResult result = identityStoreHandler.validate(credential);
         if(result.getStatus() == CredentialValidationResult.Status.VALID) {
-            return JWTGenerator.generateJWTString(result);
+            return jwtGenerator.generateJWTString(result);
         } else {
             throw new AuthValidationException("Invalid credential");
         }

@@ -28,15 +28,14 @@ public class JWTGenerator {
 
     @PostConstruct
     private void init() {
-        this.SECRET_KEY = config.getJWTSecretKey();
-        this.JWT_EXPIRE_TIMEOUT = config.getJWTExpireTimeout();
-        this.JWT_ISS = config.getJWTIss();
+        SECRET_KEY = config.getJWTSecretKey();
+        JWT_EXPIRE_TIMEOUT = config.getJWTExpireTimeout();
+        JWT_ISS = config.getJWTIss();
     }
 
-    public static String generateJWTString(CredentialValidationResult result) {
+    public String generateJWTString(CredentialValidationResult result) {
         try {
             final JWSSigner signer = new MACSigner(SECRET_KEY);
-
             final JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                     .subject(result.getCallerPrincipal().getName())
                     .claim("roles", String.join(",", result.getCallerGroups()))
@@ -53,7 +52,7 @@ public class JWTGenerator {
         }
     }
 
-    public static String updateJWTString(String tokenToUpdate) {
+    public String updateJWTString(String tokenToUpdate) {
         try {
             final JWSSigner signer = new MACSigner(SECRET_KEY);
             SignedJWT oldToken = SignedJWT.parse(tokenToUpdate);
@@ -76,7 +75,7 @@ public class JWTGenerator {
         }
     }
 
-    public static boolean validateJWT(String tokenToValidate) {
+    public boolean validateJWT(String tokenToValidate) {
         try {
             JWSObject jwsObject = JWSObject.parse(tokenToValidate);
             JWSVerifier jwsVerifier = new MACVerifier(SECRET_KEY);

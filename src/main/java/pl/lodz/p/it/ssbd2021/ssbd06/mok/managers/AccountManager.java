@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 
@@ -57,7 +58,7 @@ public class AccountManager {
         int incorrectLoginAttempts = account.getFailedLoginAttemptsCounter() + 1;
         if(incorrectLoginAttempts == 3) {
             account.setEnabled(false);
-            emailSender.sendLockAccountEmail(account.getFirstname(), login);
+//            emailSender.sendLockAccountEmail(account.getFirstname(), login); // TODO: uncomment when login == email
             incorrectLoginAttempts = 0;
         }
         account.setFailedLoginAttemptsCounter(incorrectLoginAttempts);
@@ -87,7 +88,11 @@ public class AccountManager {
     private Inet4Address Inet4AddressFromString(String ipAddress) {
         Inet4Address address = null;
         try {
-            address = (Inet4Address) Inet4Address.getByName(ipAddress);
+            for(InetAddress addr : Inet4Address.getAllByName(ipAddress)){
+                if(addr instanceof Inet4Address) {
+                    address = (Inet4Address) addr;
+                }
+            }
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

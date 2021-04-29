@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
 
+import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
@@ -8,7 +9,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
-import javax.validation.ConstraintViolationException;
 
 public abstract class AbstractFacade<T> {
 
@@ -20,12 +20,21 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(T entity) throws AppBaseException{
+    /**
+     * Utrwala encję w bazie danych.
+     *
+     * @param entity obiekt encji
+     * @throws AppBaseException podczas wystąpienia błędu utrwalania w bazie danych
+     */
+    public void create(T entity) throws AppBaseException {
         try {
             getEntityManager().persist(entity);
             getEntityManager().flush();
         } catch (PersistenceException e) {
-            throw new DatabaseQueryException(e.getMessage());
+            if (e.getCause() instanceof ConstraintViolationException) {
+                throw (ConstraintViolationException) e.getCause();
+            }
+            throw new DatabaseQueryException(e.getMessage(), e.getCause());
         }
     }
 
@@ -76,5 +85,5 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
+
 }

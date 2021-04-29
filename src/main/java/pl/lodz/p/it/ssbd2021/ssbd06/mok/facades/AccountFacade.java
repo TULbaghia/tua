@@ -1,9 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.facades;
 
+import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 
 import javax.annotation.security.PermitAll;
@@ -26,6 +25,26 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     public AccountFacade() {
         super(Account.class);
+    }
+
+    /**
+     * Utrwala encję w bazie danych oraz sprawdza warunki poprawności.
+     *
+     * @param entity obiekt encji konta
+     * @throws AppBaseException podczas wystąpienia błędu utrwalania w bazie danych
+     */
+    @Override
+    public void create(Account entity) throws AppBaseException {
+        try {
+            super.create(entity);
+        } catch (ConstraintViolationException e) {
+            if (e.getCause().getMessage().contains("uk_account_login")) {
+                throw AccountException.loginExists(e.getCause());
+            } else if (e.getCause().getMessage().contains("uk_account_contact_number")) {
+                throw AccountException.contactNumberException(e.getCause());
+            }
+            throw new DatabaseQueryException(e.getMessage(), e.getCause());
+        }
     }
 
     public Account findByLogin(String login) throws AppBaseException {

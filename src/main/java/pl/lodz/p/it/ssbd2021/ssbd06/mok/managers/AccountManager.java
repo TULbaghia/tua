@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.ShaHash;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.security.RolesAllowed;
@@ -46,8 +47,7 @@ public class AccountManager {
      * @throws AppBaseException podczas wystąpienia błędu związanego z istniejącym loginem lub problemem z bazą danych.
      */
     public void register(Account account) throws AppBaseException {
-        //TODO: Hash password
-//        account.setPassword(new ShaHash().generate(account.getPassword().toCharArray()));
+        account.setPassword(new ShaHash().generate(account.getPassword().toCharArray()));
         account.setEnabled(true);
         account.setConfirmed(false);
         account.setCreatedBy(account);

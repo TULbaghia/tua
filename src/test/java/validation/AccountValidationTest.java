@@ -19,6 +19,14 @@ public class AccountValidationTest {
     }
 
     @Test
+    public void validDtoShouldSuccess(){
+        AccountPersonalDetailsDto accountPersonalDetailsDto = new AccountPersonalDetailsDto("andrzej1973@onet.pl",
+                "Adrian", "Duda", "515789642");
+        Set<ConstraintViolation<AccountPersonalDetailsDto>> cons = VALIDATOR.validate(accountPersonalDetailsDto);
+        Assert.assertEquals(cons.size(), 0);
+    }
+
+    @Test
     public void nonValidEmail(){
         AccountPersonalDetailsDto accountPersonalDetailsDto = new AccountPersonalDetailsDto("marek",
                 "Adrian", "Duda", "123456789");

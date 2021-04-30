@@ -32,6 +32,8 @@ public class AccountController extends AbstractController {
 
 
     /**
+     * Potwierdza konto użytkownika odpowiadające podanemu kodowi aktywacyjnemu
+     *
      * @param code kod aktywacyjny konta
      * @throws AppBaseException gdzy potwierdzenie konta się nie powiodło
      */

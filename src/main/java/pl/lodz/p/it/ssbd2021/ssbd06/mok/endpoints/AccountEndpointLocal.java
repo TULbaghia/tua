@@ -22,5 +22,6 @@ public interface AccountEndpointLocal {
      *
      * @param code kod aktywacyjny konta
      */
+    @RolesAllowed("confirmAccount")
     void confirmAccount(String code) throws AppBaseException;
 }

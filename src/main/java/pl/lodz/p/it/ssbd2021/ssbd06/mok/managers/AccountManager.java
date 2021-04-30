@@ -1,9 +1,12 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountAlreadyActivatedException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeExpiredException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.InvalidCodeException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
@@ -50,8 +53,12 @@ public class AccountManager {
      * @throws AccountAlreadyActivatedException gdy konto zostało już aktywowane
      * @throws AppBaseException                 gdy utrwalenie potwierdzenia się nie powiodło
      */
+    @RolesAllowed("confirmAccount")
     public void confirm(String code) throws AppBaseException {
-        var pendingCode = pendingCodeFacade.findByCode(code);
+        PendingCode pendingCode = pendingCodeFacade.findByCode(code);
+        if(pendingCode.getCodeType() != CodeType.ACCOUNT_ACTIVATION){
+            throw new InvalidCodeException("Invalid code type");
+        }
         if (pendingCode.isUsed()) {
             throw new CodeExpiredException("Code has been used or expired");
         }

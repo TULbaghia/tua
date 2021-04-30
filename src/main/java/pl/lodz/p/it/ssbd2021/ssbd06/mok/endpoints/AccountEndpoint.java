@@ -25,6 +25,7 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     }
 
     @Override
+    @RolesAllowed("confirmAccount")
     public void confirmAccount(String code) throws AppBaseException {
         accountManager.confirm(code);
     }

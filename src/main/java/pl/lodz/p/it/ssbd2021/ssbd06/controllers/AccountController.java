@@ -39,7 +39,6 @@ public class AccountController extends AbstractController {
      */
     @POST
     @Path("/register")
-    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     public void registerAccount(@NotNull @Valid RegisterAccountDto registerAccountDto) throws AppBaseException {
         accountEndpoint.registerAccount(registerAccountDto);

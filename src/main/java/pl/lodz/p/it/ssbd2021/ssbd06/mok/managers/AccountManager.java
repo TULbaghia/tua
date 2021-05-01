@@ -11,6 +11,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -53,7 +54,7 @@ public class AccountManager {
      * @throws AccountAlreadyActivatedException gdy konto zostało już aktywowane
      * @throws AppBaseException                 gdy utrwalenie potwierdzenia się nie powiodło
      */
-    @RolesAllowed("confirmAccount")
+    @PermitAll
     public void confirm(String code) throws AppBaseException {
         PendingCode pendingCode = pendingCodeFacade.findByCode(code);
         if(pendingCode.getCodeType() != CodeType.ACCOUNT_ACTIVATION){

@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -25,7 +26,7 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     }
 
     @Override
-    @RolesAllowed("confirmAccount")
+    @PermitAll
     public void confirmAccount(String code) throws AppBaseException {
         accountManager.confirm(code);
     }

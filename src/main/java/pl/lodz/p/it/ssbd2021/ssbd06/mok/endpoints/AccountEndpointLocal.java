@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 
@@ -22,6 +23,6 @@ public interface AccountEndpointLocal {
      *
      * @param code kod aktywacyjny konta
      */
-    @RolesAllowed("confirmAccount")
+    @PermitAll
     void confirmAccount(String code) throws AppBaseException;
 }

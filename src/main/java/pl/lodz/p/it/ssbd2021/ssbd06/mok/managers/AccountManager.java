@@ -58,7 +58,7 @@ public class AccountManager {
         int incorrectLoginAttempts = account.getFailedLoginAttemptsCounter() + 1;
         if(incorrectLoginAttempts == 3) {
             account.setEnabled(false);
-//            emailSender.sendLockAccountEmail(account.getFirstname(), login); // TODO: uncomment when login == email
+            emailSender.sendLockAccountEmail(account.getFirstname(), login);
             incorrectLoginAttempts = 0;
         }
         account.setFailedLoginAttemptsCounter(incorrectLoginAttempts);

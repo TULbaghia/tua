@@ -27,4 +27,12 @@ public interface AccountEndpointLocal {
      */
     @PermitAll
     void registerAccount(RegisterAccountDto registerAccountDto) throws AppBaseException;
+
+    /**
+     * Potwierdza konto użytkownika odpowiadające podanemu kodowi aktywacyjnemu
+     *
+     * @param code kod aktywacyjny konta
+     */
+    @PermitAll
+    void confirmAccount(String code) throws AppBaseException;
 }

@@ -3,9 +3,15 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountAlreadyActivatedException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeExpiredException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.InvalidCodeException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.security.PermitAll;
@@ -25,6 +31,9 @@ public class AccountManager {
 
     @Inject
     private EmailSender emailSender;
+
+    @Inject
+    private PendingCodeFacade pendingCodeFacade;
 
     /**
      * Blokuje konto użytkownika o podanym loginie.
@@ -65,5 +74,32 @@ public class AccountManager {
 
         accountFacade.create(account);
         emailSender.sendActivationEmail(account.getFirstname(), account.getLogin(), pendingCode.getCode());
+    }
+
+    /**
+     * Potwierdza konto użytkownika odpowiadające podanemu kodowi aktywacyjnemu
+     *
+     * @param code kod aktywacyjny konta
+     * @throws CodeExpiredException             gdy podany kod został już zużyty lub wygasł
+     * @throws AccountAlreadyActivatedException gdy konto zostało już aktywowane
+     * @throws AppBaseException                 gdy utrwalenie potwierdzenia się nie powiodło
+     */
+    @PermitAll
+    public void confirm(String code) throws AppBaseException {
+        PendingCode pendingCode = pendingCodeFacade.findByCode(code);
+        if(pendingCode.getCodeType() != CodeType.ACCOUNT_ACTIVATION){
+            throw new InvalidCodeException("Invalid code type");
+        }
+        if (pendingCode.isUsed()) {
+            throw new CodeExpiredException("Code has been used or expired");
+        }
+        var account = pendingCode.getAccount();
+        if (account.isConfirmed()) {
+            throw new AccountAlreadyActivatedException("Account already activated");
+        }
+        account.setConfirmed(true);
+        pendingCode.setUsed(true);
+        pendingCodeFacade.edit(pendingCode);
+        accountFacade.edit(account);
     }
 }

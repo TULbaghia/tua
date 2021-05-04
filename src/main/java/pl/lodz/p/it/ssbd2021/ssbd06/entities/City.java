@@ -8,7 +8,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

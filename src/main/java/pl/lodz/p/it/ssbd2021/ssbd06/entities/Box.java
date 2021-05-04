@@ -10,7 +10,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;

@@ -40,4 +40,10 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
         account.setLanguage(servletRequest.getLocale().getLanguage());
         accountManager.register(account);
     }
+
+    @Override
+    @PermitAll
+    public void confirmAccount(String code) throws AppBaseException {
+        accountManager.confirm(code);
+    }
 }

@@ -14,8 +14,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.ManagerDataDto;
 import java.util.Date;
 
 public class RoleMapperTest {
+    private final IRoleMapper mapper = Mappers.getMapper(IRoleMapper.class);
     private ManagerData managerData;
-    private final IRoleMapper mapper =Mappers.getMapper(IRoleMapper.class);
 
     @BeforeTest
     public void init(){
@@ -36,7 +36,7 @@ public class RoleMapperTest {
     }
 
     @Test
-    public void managerDataToManagerDataDtoTest(){
+    public void managerDataToManagerDataDtoTest() {
         ManagerDataDto managerDataDto = mapper.toManagerDataDto(managerData);
 
         Assert.assertEquals(managerData.getHotel().getName(), managerDataDto.getHotelName());

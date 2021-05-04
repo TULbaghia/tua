@@ -11,8 +11,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import java.util.Date;
 
 public class AccountMapperTest {
-    private Account account;
     private final IAccountMapper mapper = Mappers.getMapper(IAccountMapper.class);
+    private Account account;
 
     @BeforeTest
     public void init(){
@@ -28,7 +28,7 @@ public class AccountMapperTest {
     }
 
     @Test
-    public void accountToAccountDtoTest(){
+    public void accountToAccountDtoTest() {
         AccountDto accountDto = mapper.toAccountDto(account);
 
         Assert.assertEquals(account.getLogin(), accountDto.getLogin());
@@ -40,7 +40,7 @@ public class AccountMapperTest {
     }
 
     @Test
-    public void accountDtoToAccountTest(){
+    public void accountDtoToAccountTest() {
         AccountDto accountDto = mapper.toAccountDto(account);
         Account account2 = mapper.toAccount(accountDto);
 

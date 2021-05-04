@@ -1,10 +1,10 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 
-import javax.annotation.security.PermitAll;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -27,8 +27,22 @@ public class AccountController extends AbstractController {
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changeAccountActiveStatus(@NotNull @PathParam("login") @Valid String login) throws AppBaseException {
-//        metoda repeat() z abstractController;
+        // todo metoda repeat() z abstractController;
         accountEndpoint.blockAccount(login);
+    }
+
+
+    /**
+     * Potwierdza konto użytkownika odpowiadające podanemu kodowi aktywacyjnemu
+     *
+     * @param code kod aktywacyjny konta
+     * @throws AppBaseException gdzy potwierdzenie konta się nie powiodło
+     */
+    @POST
+    @Path("/confirm/{code}")
+    public void confirm(@PathParam("code") String code) throws AppBaseException {
+        // todo metoda repeat() z abstractController;
+        accountEndpoint.confirmAccount(code);
     }
 
     /**

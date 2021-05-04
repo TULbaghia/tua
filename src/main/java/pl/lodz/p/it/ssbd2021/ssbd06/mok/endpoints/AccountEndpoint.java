@@ -15,6 +15,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 
 @Stateful
@@ -45,5 +46,17 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @PermitAll
     public void confirmAccount(String code) throws AppBaseException {
         accountManager.confirm(code);
+    }
+
+    @Override
+    @PermitAll
+    public void updateValidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
+        accountManager.updateValidAuth(login, ipAddress, authDate);
+    }
+
+    @Override
+    @PermitAll
+    public void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
+        accountManager.updateInvalidAuth(login, ipAddress, authDate);
     }
 }

@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.security;
 import com.nimbusds.jwt.SignedJWT;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.security.enterprise.AuthenticationStatus;
 import javax.security.enterprise.authentication.mechanism.http.HttpAuthenticationMechanism;
 import javax.security.enterprise.authentication.mechanism.http.HttpMessageContext;
@@ -21,6 +22,9 @@ public class JWTAuthenticationMechanism implements HttpAuthenticationMechanism {
     public static final String AUTHORIZATION = "Authorization";
     public static final String BEARER = "Bearer ";
 
+    @Inject
+    JWTGenerator jwtGenerator;
+
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest httpServletRequest,
                                                 HttpServletResponse httpServletResponse,
@@ -33,7 +37,7 @@ public class JWTAuthenticationMechanism implements HttpAuthenticationMechanism {
         }
 
         String tokenToValidate = authHeader.substring(BEARER.length());
-        if (JWTGenerator.validateJWT(tokenToValidate)) {
+        if (jwtGenerator.validateJWT(tokenToValidate)) {
             try {
                 SignedJWT jwtToken = SignedJWT.parse(tokenToValidate);
                 String login = jwtToken.getJWTClaimsSet().getSubject();

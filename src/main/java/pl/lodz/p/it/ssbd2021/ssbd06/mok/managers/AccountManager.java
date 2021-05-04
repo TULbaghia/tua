@@ -3,8 +3,6 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountAlreadyActivatedException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeExpiredException;
@@ -21,6 +19,10 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.util.UUID;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Date;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -101,5 +103,63 @@ public class AccountManager {
         pendingCode.setUsed(true);
         pendingCodeFacade.edit(pendingCode);
         accountFacade.edit(account);
+    }
+
+    /**
+     * Aktualizuje dane związane z niepoprawnym uwierzytelnieniem oraz blokuje konto po trzech nieudanych próbach uwierzytelnienia.
+     *
+     * @param login login użytkownika
+     * @param ipAddress adres ip użytkownika
+     * @param authDate data nieudanego uwierzytelnienia
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @PermitAll
+    public void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
+        Account account = accountFacade.findByLogin(login);
+        Inet4Address address = Inet4AddressFromString(ipAddress);
+        account.setLastFailedLoginIpAddress (address);
+        account.setLastFailedLoginDate(authDate);
+        int incorrectLoginAttempts = account.getFailedLoginAttemptsCounter() + 1;
+        if(incorrectLoginAttempts == 3) {
+            account.setEnabled(false);
+            emailSender.sendLockAccountEmail(account.getFirstname(), login);
+            incorrectLoginAttempts = 0;
+        }
+        account.setFailedLoginAttemptsCounter(incorrectLoginAttempts);
+
+        accountFacade.edit(account);
+    }
+
+    /**
+     * Aktualizuje dane związane z poprawnym uwierzytelnieniem się użytkownika
+     *
+     * @param login login użytkownika
+     * @param ipAddress adres ip użytkownika
+     * @param authDate data udanego uwierzytelnienia
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @PermitAll
+    public void updateValidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
+        Account account = accountFacade.findByLogin(login);
+        Inet4Address address = Inet4AddressFromString(ipAddress);
+        account.setLastSuccessfulLoginIpAddress(address);
+        account.setLastSuccessfulLoginDate(authDate);
+        account.setFailedLoginAttemptsCounter(0);
+
+        accountFacade.edit(account);
+    }
+
+    private Inet4Address Inet4AddressFromString(String ipAddress) {
+        Inet4Address address = null;
+        try {
+            for(InetAddress addr : Inet4Address.getAllByName(ipAddress)){
+                if(addr instanceof Inet4Address) {
+                    address = (Inet4Address) addr;
+                }
+            }
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return address;
     }
 }

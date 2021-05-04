@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.dto;
 
 import lombok.*;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.*;
 
 /**
  * Klasa DTO reprezentująca dane konieczne do rejestracji użytkownika
@@ -9,9 +10,14 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 public class RegisterAccountDto {
+    @Login
     private String login;
+    @Password
     private String password;
-    private String firstname;
-    private String lastname;
+    @Firstname
+    private String firstName;
+    @Lastname
+    private String lastName;
+    @ContactNumber
     private String contactNumber;
 }

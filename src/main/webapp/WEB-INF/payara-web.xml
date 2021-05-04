@@ -3,218 +3,218 @@
 <payara-web-app error-url="">
     <security-role-mapping>
         <role-name>Admin</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>Manager</role-name>
-        <group-name>Managers</group-name>
+        <group-name>MANAGER</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>Client</role-name>
-        <group-name>Clients</group-name>
+        <group-name>CLIENT</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>addAccessLevel</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>deleteAccessLevel</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>editOwnAccountDetails</role-name>
-        <group-name>Clients</group-name>
-        <group-name>Managers</group-name>
-        <group-name>Admins</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>editOtherAccountDetails</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>blockAccount</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>unblockAccount</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>editOwnPassword</role-name>
-        <group-name>Clients</group-name>
-        <group-name>Managers</group-name>
-        <group-name>Admins</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>editOtherPassword</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>getAccountAuthInfo</role-name>
-        <group-name>Clients</group-name>
-        <group-name>Managers</group-name>
-        <group-name>Admins</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>getAllAccounts</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>getOwnAccountInfo</role-name>
-        <group-name>Clients</group-name>
-        <group-name>Managers</group-name>
-        <group-name>Admins</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>getOtherAccountInfo</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>changeAccessLevel</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>refreshToken</role-name>
-        <group-name>Clients</group-name>
-        <group-name>Managers</group-name>
-        <group-name>Admins</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>addHotel</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>deleteHotel</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>updateHotel</role-name>
-        <group-name>Managers</group-name>
-        <group-name>Admins</group-name>
+        <group-name>MANAGER</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>addManagerToHotel</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>deleteManagerFromHotel</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>generateReport</role-name>
-        <group-name>Managers</group-name>
+        <group-name>MANAGER</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>addHotelRating</role-name>
-        <group-name>Clients</group-name>
+        <group-name>CLIENT</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>deleteHotelRating</role-name>
-        <group-name>Clients</group-name>
+        <group-name>CLIENT</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>updateHotelRating</role-name>
-        <group-name>Clients</group-name>
+        <group-name>CLIENT</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>hideHotelRating</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>bookReservation</role-name>
-        <group-name>Clients</group-name>
+        <group-name>CLIENT</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>cancelReservation</role-name>
-        <group-name>Clients</group-name>
-        <group-name>Managers</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>endReservation</role-name>
-        <group-name>Managers</group-name>
+        <group-name>MANAGER</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>getAllActiveReservations</role-name>
-        <group-name>Clients</group-name>
-        <group-name>Managers</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>getAllArchiveReservations</role-name>
-        <group-name>Clients</group-name>
-        <group-name>Managers</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>addCity</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>deleteCity</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>updateCity</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>getAllCities</role-name>
-        <group-name>Clients</group-name>
-        <group-name>Managers</group-name>
-        <group-name>Admins</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>addBox</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>deleteBox</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>updateBox</role-name>
-        <group-name>Admins</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>getAllBoxes</role-name>
-        <group-name>Clients</group-name>
-        <group-name>Managers</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
     </security-role-mapping>
 </payara-web-app>

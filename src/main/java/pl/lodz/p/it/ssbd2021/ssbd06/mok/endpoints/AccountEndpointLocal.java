@@ -2,7 +2,9 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 
@@ -16,4 +18,13 @@ public interface AccountEndpointLocal {
      */
     @RolesAllowed("blockAccount")
     void blockAccount(String login) throws AppBaseException;
+
+    /**
+     * Rejestruje konto użytkownika.
+     *
+     * @param registerAccountDto obiekt zawierający dane wymagane do utworzenia konta
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @PermitAll
+    void registerAccount(RegisterAccountDto registerAccountDto) throws AppBaseException;
 }

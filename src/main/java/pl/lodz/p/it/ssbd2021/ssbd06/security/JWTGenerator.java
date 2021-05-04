@@ -67,7 +67,7 @@ public class JWTGenerator {
                     .build();
 
             final SignedJWT newSignedJWT =
-                    new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), newClaimsSet);
+                    new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.HS256).type(JOSEObjectType.JWT).build(), newClaimsSet);
             newSignedJWT.sign(signer);
             return newSignedJWT.serialize();
         } catch (ParseException | JOSEException e) {

@@ -21,13 +21,13 @@
     </error-page>
 
     <security-role>
-        <role-name>Admin</role-name>
+        <role-name>ADMIN</role-name>
     </security-role>
     <security-role>
-        <role-name>Manager</role-name>
+        <role-name>MANAGER</role-name>
     </security-role>
     <security-role>
-        <role-name>Client</role-name>
+        <role-name>CLIENT</role-name>
     </security-role>
 
     <security-role>

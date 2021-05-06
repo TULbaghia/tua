@@ -27,7 +27,7 @@ public class AuthEndpoint implements AuthEndpointLocal {
         if(result.getStatus() == CredentialValidationResult.Status.VALID) {
             return jwtGenerator.generateJWTString(result);
         } else {
-            throw new AuthValidationException("Invalid credential");
+            throw AuthValidationException.invalidCredentials();
         }
     }
 }

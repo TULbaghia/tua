@@ -3,10 +3,9 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountAlreadyActivatedException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeExpiredException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.InvalidCodeException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
@@ -82,22 +81,22 @@ public class AccountManager {
      * Potwierdza konto użytkownika odpowiadające podanemu kodowi aktywacyjnemu
      *
      * @param code kod aktywacyjny konta
-     * @throws CodeExpiredException             gdy podany kod został już zużyty lub wygasł
-     * @throws AccountAlreadyActivatedException gdy konto zostało już aktywowane
+     * @throws CodeException             gdy podany kod został już zużyty lub wygasł
+     * @throws AccountException                 gdy konto zostało już aktywowane
      * @throws AppBaseException                 gdy utrwalenie potwierdzenia się nie powiodło
      */
     @PermitAll
     public void confirm(String code) throws AppBaseException {
         PendingCode pendingCode = pendingCodeFacade.findByCode(code);
         if(pendingCode.getCodeType() != CodeType.ACCOUNT_ACTIVATION){
-            throw new InvalidCodeException("Invalid code type");
+            throw CodeException.codeInvalid();
         }
         if (pendingCode.isUsed()) {
-            throw new CodeExpiredException("Code has been used or expired");
+            throw CodeException.codeExpired();
         }
         var account = pendingCode.getAccount();
         if (account.isConfirmed()) {
-            throw new AccountAlreadyActivatedException("Account already activated");
+            throw AccountException.alreadyActivated();
         }
         account.setConfirmed(true);
         pendingCode.setUsed(true);

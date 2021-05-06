@@ -38,9 +38,9 @@ public class AccountFacade extends AbstractFacade<Account> {
         try {
             super.create(entity);
         } catch (ConstraintViolationException e) {
-            if (e.getCause().getMessage().contains("uk_account_login")) {
+            if (e.getCause().getMessage().contains(Account.LOGIN_CONSTRAINT)) {
                 throw AccountException.loginExists(e.getCause());
-            } else if (e.getCause().getMessage().contains("uk_account_contact_number")) {
+            } else if (e.getCause().getMessage().contains(Account.CONTACT_NUMBER_CONSTRAINT)) {
                 throw AccountException.contactNumberException(e.getCause());
             }
             throw new DatabaseQueryException(e.getMessage(), e.getCause());

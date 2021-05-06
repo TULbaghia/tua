@@ -13,9 +13,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Role.ROLE_ACCESS_LEVEL_ACCOUNT_ID_CONSTRAINT;
+
 @Entity
 @Table(name = "role", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_role_access_level_account_id", columnNames = {"access_level", "account_id"})
+        @UniqueConstraint(name = ROLE_ACCESS_LEVEL_ACCOUNT_ID_CONSTRAINT, columnNames = {"access_level", "account_id"})
 }, indexes = {
         @Index(name = "ix_role_account_id", columnList = "account_id"),
         @Index(name = "ix_role_created_by", columnList = "created_by"),
@@ -31,6 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public abstract class Role extends AbstractEntity implements Serializable {
+
+    public static final String ROLE_ACCESS_LEVEL_ACCOUNT_ID_CONSTRAINT = "uk_role_access_level_account_id";
 
     private static final long serialVersionUID = 1L;
 

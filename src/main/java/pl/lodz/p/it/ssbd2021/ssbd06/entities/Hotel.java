@@ -15,9 +15,11 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel.HOTEL_NAME_CONSTRAINT;
+
 @Entity
 @Table(name = "hotel", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_hotel_name", columnNames = "name")
+        @UniqueConstraint(name = HOTEL_NAME_CONSTRAINT, columnNames = "name")
 }, indexes = {
         @Index(name = "ix_hotel_city_id", columnList = "city_id"),
         @Index(name = "ix_hotel_created_by", columnList = "created_by"),
@@ -31,6 +33,8 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class Hotel extends AbstractEntity implements Serializable {
+
+    public static final String HOTEL_NAME_CONSTRAINT = "uk_hotel_name";
 
     private static final long serialVersionUID = 1L;
 

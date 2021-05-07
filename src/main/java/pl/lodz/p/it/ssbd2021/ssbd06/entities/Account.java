@@ -19,10 +19,13 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.CONTACT_NUMBER_CONSTRAINT;
+import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.LOGIN_CONSTRAINT;
+
 @Entity
 @Table(name = "account", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_account_login", columnNames = {"login"}),
-        @UniqueConstraint(name = "uk_account_contact_number", columnNames = {"contact_number"})
+        @UniqueConstraint(name = LOGIN_CONSTRAINT, columnNames = {"login"}),
+        @UniqueConstraint(name = CONTACT_NUMBER_CONSTRAINT, columnNames = {"contact_number"})
 }, indexes = {
         @Index(name = "ix_account_created_by", columnList = "created_by"),
         @Index(name = "ix_account_modified_by", columnList = "modified_by")
@@ -45,6 +48,10 @@ import java.util.Set;
 @ToString(callSuper = true)
 @Getter
 public class Account extends AbstractEntity implements Serializable {
+
+    public static final String LOGIN_CONSTRAINT = "uk_account_login";
+
+    public static final String CONTACT_NUMBER_CONSTRAINT = "uk_account_contact_number";
 
     private static final long serialVersionUID = 1L;
 

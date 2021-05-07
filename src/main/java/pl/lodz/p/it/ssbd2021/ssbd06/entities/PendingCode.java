@@ -14,9 +14,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import static pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode.PENDING_CODE_CONSTRAINT;
+
 @Entity
 @Table(name = "pending_code", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_pending_code_code", columnNames = {"code"})
+        @UniqueConstraint(name = PENDING_CODE_CONSTRAINT, columnNames = {"code"})
 }, indexes = {
         @Index(name = "ix_pending_code_account_id", columnList = "account_id"),
         @Index(name = "ix_pending_code_created_by", columnList = "created_by"),
@@ -30,6 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class PendingCode extends AbstractEntity implements Serializable {
+
+    public static final String PENDING_CODE_CONSTRAINT = "uk_pending_code_code";
 
     private static final long serialVersionUID = 1L;
 

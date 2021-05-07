@@ -37,7 +37,7 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
             if (e.getCause() instanceof ConstraintViolationException) {
                 throw (ConstraintViolationException) e.getCause();
             }
-            throw new DatabaseQueryException(e.getMessage(), e.getCause());
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
         }
     }
 
@@ -52,9 +52,9 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
             getEntityManager().merge(entity);
             getEntityManager().flush();
         } catch (OptimisticLockException e) {
-            throw new AppOptimisticLockException(e.getMessage());
+            throw AppOptimisticLockException.optimisticLockException(e);
         } catch (PersistenceException e) {
-            throw new DatabaseQueryException(e.getMessage());
+            throw DatabaseQueryException.databaseQueryException(e);
         }
     }
 

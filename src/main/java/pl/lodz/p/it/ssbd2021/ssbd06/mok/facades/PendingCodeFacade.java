@@ -33,9 +33,9 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
             query.setParameter("code", code);
             return query.getSingleResult();
         } catch (NoResultException e) {
-            throw new NotFoundException(e.getMessage());
+            throw NotFoundException.pendingCodeNotFound(e);
         } catch (PersistenceException e) {
-            throw new DatabaseQueryException(e.getMessage());
+            throw DatabaseQueryException.databaseQueryException(e);
         }
     }
 }

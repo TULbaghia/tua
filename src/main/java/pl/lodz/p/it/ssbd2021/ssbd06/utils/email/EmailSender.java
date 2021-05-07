@@ -62,7 +62,7 @@ public class EmailSender {
             message.setText(content, "UTF-8", "html");
             Transport.send(message);
         } catch (MessagingException e) {
-            throw new EmailException(e.getMessage());
+            throw EmailException.emailNotSent(e);
         }
     }
 

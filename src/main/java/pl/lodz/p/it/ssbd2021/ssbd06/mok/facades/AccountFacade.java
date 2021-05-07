@@ -43,7 +43,7 @@ public class AccountFacade extends AbstractFacade<Account> {
             } else if (e.getCause().getMessage().contains(Account.CONTACT_NUMBER_CONSTRAINT)) {
                 throw AccountException.contactNumberException(e.getCause());
             }
-            throw new DatabaseQueryException(e.getMessage(), e.getCause());
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
         }
     }
 
@@ -53,9 +53,9 @@ public class AccountFacade extends AbstractFacade<Account> {
             accountTypedQuery.setParameter("login", login);
             return accountTypedQuery.getSingleResult();
         } catch (NoResultException e) {
-            throw new NotFoundException(e.getMessage());
+            throw NotFoundException.accountNotFound(e);
         } catch (PersistenceException e) {
-            throw new DatabaseQueryException(e.getMessage());
+            throw DatabaseQueryException.databaseQueryException(e);
         }
     }
 

@@ -13,7 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-public abstract class AbstractFacade<T> {
+public abstract class AbstractFacade<T extends AbstractEntity> {
 
     private final Class<T> entityClass;
 

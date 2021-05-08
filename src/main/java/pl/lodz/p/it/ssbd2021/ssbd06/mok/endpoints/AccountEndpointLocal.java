@@ -77,4 +77,13 @@ public interface AccountEndpointLocal {
      */
     @PermitAll
     void sendResetPassword(String email) throws AppBaseException;
+
+    /**
+     * Zmienia hasło innego użytkownika.
+     *
+     * @param passwordResetDto obiekt zawierający dane wymagane do zmiany hasła
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @RolesAllowed("editOwnPassword")
+    void changeOtherPassword(PasswordResetDto passwordResetDto) throws AppBaseException;
 }

@@ -2,8 +2,10 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordResetDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -56,5 +58,31 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void registerAccount(@NotNull @Valid RegisterAccountDto registerAccountDto) throws AppBaseException {
         accountEndpoint.registerAccount(registerAccountDto);
+    }
+
+    /**
+     * Resetuje hasło użytkownika w systemie.
+     *
+     * @param passwordResetDto dane użytkownika do rejestracji
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @POST
+    @Path("/reset/{code}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void resetPassword(@NotNull @Valid PasswordResetDto passwordResetDto) throws AppBaseException {
+        accountEndpoint.resetPassword(passwordResetDto);
+    }
+
+    /**
+     * Wysyła na istniejący w systemie email wiadomość o resetoawniu hasła.
+     *
+     * @param email email na który zostanie wysłana wiadomość
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @POST
+    @Path("/{email}/reset")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void sendResetPassword(@NotNull @Valid @Login String email) throws AppBaseException {
+        accountEndpoint.sendResetPassword(email);
     }
 }

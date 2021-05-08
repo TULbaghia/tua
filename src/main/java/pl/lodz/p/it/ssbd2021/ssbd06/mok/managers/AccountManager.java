@@ -6,22 +6,27 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordResetDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CodeConfig;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import java.util.UUID;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -35,6 +40,20 @@ public class AccountManager {
 
     @Inject
     private PendingCodeFacade pendingCodeFacade;
+
+    @Inject
+    private CodeConfig config;
+
+    private static int RESET_EXPIRATION_MINUTES;
+
+    @PostConstruct
+    private void init() {
+        RESET_EXPIRATION_MINUTES = config.getResetExpirationMinutes();
+    }
+
+    public Account findByLogin(String login) throws AppBaseException {
+        return accountFacade.findByLogin(login);
+    }
 
     /**
      * Blokuje konto użytkownika o podanym loginie.
@@ -160,5 +179,29 @@ public class AccountManager {
             e.printStackTrace();
         }
         return address;
+    }
+
+    /**
+     * Resetuje hasło użytkownika
+     *
+     * @param passwordResetDto token resetujący i nowe hasło
+     * @throws AppBaseException w przypadku nieudanej operacji
+     */
+    public void resetPassword(PasswordResetDto passwordResetDto) throws AppBaseException {
+        PendingCode resetCode = pendingCodeFacade.findByCode(passwordResetDto.getResetCode().getCode());
+        Account account = accountFacade.findByLogin(resetCode.getAccount().getLogin());
+        if(!account.isConfirmed()) throw AccountException.notConfirmed();
+        if(!account.isEnabled()) throw AccountException.notEnabled();
+
+        if(resetCode.getCodeType().toString() != "PASSWORD_RESET") {
+            throw CodeException.codeInvalid();
+        }
+        Date expirationTime = new Date(resetCode.getCreationDate().getTime() + (RESET_EXPIRATION_MINUTES * 60000));
+        Date localTime = Timestamp.valueOf(LocalDateTime.now());
+        if(localTime.after(expirationTime)) {
+            throw CodeException.codeExpired();
+        }
+        pendingCodeFacade.codeUsed(resetCode);
+        changePassword(account, passwordResetDto.getPassword());
     }
 }

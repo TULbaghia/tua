@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordResetDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 
 import javax.annotation.security.PermitAll;
@@ -58,4 +59,22 @@ public interface AccountEndpointLocal {
      */
     @PermitAll
     void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException;
+
+    /**
+     * Resetuje hasło użytkownika.
+     *
+     * @param passwordResetDto obiekt zawierający dane wymagane do resetowania hasła
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @PermitAll
+    void resetPassword(PasswordResetDto passwordResetDto) throws AppBaseException;
+
+    /**
+     * Wysyła token resetujący hasło użytkownika o podanym emailu.
+     *
+     * @param email email użytkownika
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @PermitAll
+    void sendResetPassword(String email) throws AppBaseException;
 }

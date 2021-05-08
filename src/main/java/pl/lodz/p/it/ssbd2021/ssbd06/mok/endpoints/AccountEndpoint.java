@@ -2,10 +2,13 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordResetDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.PendingCodeManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 
 import javax.annotation.security.PermitAll;
@@ -24,6 +27,9 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
 
     @Inject
     private AccountManager accountManager;
+
+    @Inject
+    private PendingCodeManager pendingCodeManager;
 
     @Inject
     private HttpServletRequest servletRequest;
@@ -58,5 +64,21 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @PermitAll
     public void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
         accountManager.updateInvalidAuth(login, ipAddress, authDate);
+    }
+
+    @Override
+    @PermitAll
+    public void resetPassword(PasswordResetDto passwordResetDto) throws AppBaseException {
+        accountManager.resetPassword(passwordResetDto);
+    }
+
+    @Override
+    @PermitAll
+    public void sendResetPassword(String email) throws AppBaseException {
+        Account account = accountManager.findByLogin(email);
+        if(!account.isEnabled()) throw AccountException.notEnabled();
+        if(!account.isConfirmed()) throw AccountException.notConfirmed();
+
+        pendingCodeManager.sendResetPassword(account);
     }
 }

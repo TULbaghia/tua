@@ -2,10 +2,15 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 
 import javax.annotation.security.PermitAll;
@@ -58,5 +63,19 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @PermitAll
     public void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
         accountManager.updateInvalidAuth(login, ipAddress, authDate);
+    }
+
+    @Override
+    @RolesAllowed("editOwnPassword")
+    public void changePassword(PasswordChangeDto passwordChangeDto) throws AppBaseException {
+        Account account = Mappers.getMapper(IAccountMapper.class).toAccount(passwordChangeDto);
+        AccountDto accountDto = new AccountDto(account.getLogin(), account.getFirstname(), account.getLastname(), account.getLanguage(),
+                account.getContactNumber(), account.isEnabled(), account.isConfirmed(), account.getLastSuccessfulLoginDate(),
+                account.getLastSuccessfulLoginIpAddress(), account.getLastFailedLoginDate(), account.getLastFailedLoginIpAddress());
+
+        if(!verifyEtag(accountDto)) throw AppOptimisticLockException.optimisticLockException();
+        if(PasswordHasher.check(passwordChangeDto.getOldPassword(), PasswordHasher.generate(account.getPassword()))) throw AccountException.passwordsDontMatch();
+
+        accountManager.changePassword(account, passwordChangeDto.getNewPassword());
     }
 }

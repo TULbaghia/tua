@@ -12,6 +12,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.validation.Password;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PasswordChangeDto {
+    @Password
     private String oldPassword;
     @Password
     private String newPassword;

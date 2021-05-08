@@ -161,4 +161,20 @@ public class AccountManager {
         }
         return address;
     }
+
+    /**
+     * Aktualizuje dane związane ze zmianą hasła przez użytkownika
+     *
+     * @param account  konto, dla którego zmienione ma zostać hasło
+     * @param password nowe hasło
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @RolesAllowed("editOwnPassword")
+    public void changePassword(Account account, String password) throws AppBaseException {
+        if(PasswordHasher.check(password, PasswordHasher.generate(account.getPassword()))) {
+            throw AccountException.samePassword();
+        }
+        account.setPassword(PasswordHasher.generate(password));
+        accountFacade.edit(account);
+    }
 }

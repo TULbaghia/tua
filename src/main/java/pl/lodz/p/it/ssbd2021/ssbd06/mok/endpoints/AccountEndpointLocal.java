@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 
 import javax.annotation.security.PermitAll;
@@ -58,4 +59,13 @@ public interface AccountEndpointLocal {
      */
     @PermitAll
     void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException;
+
+    /**
+     * Aktualizuje dane związane z poprawnym uwierzytelnieniem się użytkownika.
+     *
+     * @param passwordChangeDto obiekt zawierający dane wymagane do zmiany hasła
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @RolesAllowed("editOwnPassword")
+    void changePassword(PasswordChangeDto passwordChangeDto) throws AppBaseException;
 }

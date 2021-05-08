@@ -2,8 +2,9 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -56,5 +57,18 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void registerAccount(@NotNull @Valid RegisterAccountDto registerAccountDto) throws AppBaseException {
         accountEndpoint.registerAccount(registerAccountDto);
+    }
+
+    /**
+     * Zmienia hasło użytkownika w systemie.
+     *
+     * @param passwordChangeDto dane użytkownika do rejestracji
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @POST
+    @Path("/{login}/password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void changePassword(@NotNull @Valid PasswordChangeDto passwordChangeDto) throws AppBaseException {
+        accountEndpoint.changePassword(passwordChangeDto);
     }
 }

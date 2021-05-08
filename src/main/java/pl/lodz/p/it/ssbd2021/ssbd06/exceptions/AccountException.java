@@ -53,7 +53,7 @@ public class AccountException extends AppBaseException {
     }
 
     /**
-     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że podane nowe hasło nie są identyczne.
+     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że podane nowe hasła nie są identyczne.
      * @return wyjątek AccountException
      */
     public static AccountException passwordsDontMatch() {

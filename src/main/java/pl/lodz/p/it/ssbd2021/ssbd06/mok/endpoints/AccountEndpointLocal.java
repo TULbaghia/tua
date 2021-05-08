@@ -61,7 +61,7 @@ public interface AccountEndpointLocal {
     void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException;
 
     /**
-     * Aktualizuje dane związane z poprawnym uwierzytelnieniem się użytkownika.
+     * Aktualizuje dane związane ze zmainą hasła przez użytkownika.
      *
      * @param passwordChangeDto obiekt zawierający dane wymagane do zmiany hasła
      * @throws AppBaseException gdy nie udało się zaktualizować danych

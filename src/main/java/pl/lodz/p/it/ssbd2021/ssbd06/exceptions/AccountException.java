@@ -45,7 +45,7 @@ public class AccountException extends AppBaseException {
     }
 
     /**
-     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że konto użytkownika zostało nie jest aktywowane.
+     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że konto użytkownika nie jest aktywowane.
      * @return wyjątek AccountException
      */
     public static AccountException notEnabled() {
@@ -53,7 +53,7 @@ public class AccountException extends AppBaseException {
     }
 
     /**
-     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że konto użytkownika zostało nie jest potwierdzone.
+     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że konto użytkownika nie jest potwierdzone.
      * @return wyjątek AccountException
      */
     public static AccountException notConfirmed() {

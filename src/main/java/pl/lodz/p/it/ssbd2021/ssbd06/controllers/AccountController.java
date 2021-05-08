@@ -63,7 +63,7 @@ public class AccountController extends AbstractController {
     /**
      * Resetuje hasło użytkownika w systemie.
      *
-     * @param passwordResetDto dane użytkownika do rejestracji
+     * @param passwordResetDto obiekt zawierający dane wymagane do resetowania hasła
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @POST
@@ -74,7 +74,7 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Wysyła na istniejący w systemie email wiadomość o resetoawniu hasła.
+     * Wysyła na istniejący w systemie email wiadomość o resetowaniu hasła.
      *
      * @param email email na który zostanie wysłana wiadomość
      * @throws AppBaseException podczas błędu związanego z bazą danych

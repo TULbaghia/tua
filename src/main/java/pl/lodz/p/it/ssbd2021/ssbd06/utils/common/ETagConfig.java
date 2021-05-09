@@ -22,7 +22,6 @@ public class ETagConfig implements Serializable {
             if (inputStream == null) {
                 throw new FileNotFoundException("Couldn't find file: " + CONFIG_FILE);
             }
-
             properties.load(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);

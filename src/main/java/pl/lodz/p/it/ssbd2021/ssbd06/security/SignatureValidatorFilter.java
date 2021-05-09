@@ -6,6 +6,9 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
+/**
+ * Filtr sprawdzający nagłówek odpowiedzialny za kontrolę wersji
+ */
 @Provider
 @SignatureValidatorFilterBinding
 public class SignatureValidatorFilter implements ContainerRequestFilter {
@@ -18,7 +21,7 @@ public class SignatureValidatorFilter implements ContainerRequestFilter {
         String header = requestContext.getHeaderString("If-Match");
         if (header == null || header.isEmpty()) {
             requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).build());
-        } else if (!messageVerifier.validateEntitySignature(header)) {
+        } else if (!messageVerifier.validateSignature(header)) {
             requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).build());
         }
     }

@@ -4,26 +4,49 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.MACVerifier;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.SignatureException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.ETagConfig;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.text.ParseException;
 
+/**
+ * Klasa służąca do weryfikacji podpisu
+ */
 @ApplicationScoped
 public class MessageVerifier {
 
     @Inject
     private ETagConfig config;
 
-    public boolean validateEntitySignature(String eTag) {
+    private JWSVerifier verifier;
+
+    /**
+     * Metoda inicjalizująca mechanizm weryfikacji
+     */
+    @PostConstruct
+    public void init() {
         try {
-            final JWSObject jwsObject = JWSObject.parse(eTag);
-            final JWSVerifier verifier = new MACVerifier(config.getEtagSecretKey());
+            verifier = new MACVerifier(config.getEtagSecretKey());
+        } catch (JOSEException e) {
+            throw SignatureException.verifierException(e);
+        }
+    }
+
+    /**
+     * Metoda weryfikująca podpis wiadomości
+     *
+     * @param message wiadomość do weryfikacji
+     * @return rezultat weryfikacji
+     */
+    public boolean validateSignature(String message) {
+        try {
+            final JWSObject jwsObject = JWSObject.parse(message);
             return jwsObject.verify(verifier);
         } catch (ParseException | JOSEException e) {
-            e.printStackTrace();
-            return false;
+            throw SignatureException.verifierException(e);
         }
     }
 }

@@ -70,8 +70,8 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     public void changePassword(PasswordChangeDto passwordChangeDto) throws AppBaseException {
         Account account = passwordChangeDto.getAccount();
         AccountDto accountDto = Mappers.getMapper(IAccountMapper.class).toAccountDto(account);
-        if(!MessageVerifier.validateSignature(accountDto.getMessageToSign())) throw AppOptimisticLockException.optimisticLockException();
-        if(PasswordHasher.check(passwordChangeDto.getOldPassword(), PasswordHasher.generate(account.getPassword()))) throw AccountException.passwordsDontMatch();
+        if(!verifyIntegrity(accountDto)) throw AppOptimisticLockException.optimisticLockException();
+        if(PasswordHasher.check(passwordChangeDto.getOldPassword(), account.getPassword())) throw AccountException.passwordsDontMatch();
 
         accountManager.changePassword(account, passwordChangeDto.getNewPassword());
     }

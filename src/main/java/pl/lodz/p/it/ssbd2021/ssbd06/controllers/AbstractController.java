@@ -21,7 +21,7 @@ public abstract class AbstractController {
      * @param callingClass klasa wywołująca metodę przetwarzaną transakcyjnie
      * @throws AppBaseException w momencie niepowodzenia
      */
-    protected void repeat(MethodExecutor executor, CallingClass callingClass) throws AppBaseException {
+    protected void repeat(VoidMethodExecutor executor, CallingClass callingClass) throws AppBaseException {
         int transactionLimit = Integer.parseInt(PropertyReader.getBundleProperty("config", "transaction_limit"));
         int callMethodCounter = 0;
         boolean rollback;
@@ -33,8 +33,7 @@ public abstract class AbstractController {
                 rollback = true;
             }
             if (callMethodCounter > 0) {
-//                TODO: logowanie do dziennika
-                log.warning(String.format("Method invoke in class: %s is being repeated ", callingClass.getClass().getName()));
+                log.warning(String.format("Transaction: %s is being repeated %s time", callingClass.getTransactionId(), callMethodCounter));
             }
             callMethodCounter++;
         } while (rollback && callMethodCounter <= transactionLimit);
@@ -44,12 +43,54 @@ public abstract class AbstractController {
         }
     }
 
+    /**
+     * Metoda powtarzająca transakcję aplikacyjną
+     *
+     * @param executor wyrażenie lambda wywołane po użyciu metody run()
+     * @param callingClass klasa wywołująca metodę przetwarzaną transakcyjnie
+     * @param <T> typ zwracany
+     * @return wartość zwracana przez funkcję przekazaną w parametrze executor
+     * @throws AppBaseException w momencie niepowodzenia
+     */
+    protected <T> T repeat(ReturnMethodExecutor<T> executor, CallingClass callingClass) throws AppBaseException {
+        int transactionLimit = Integer.parseInt(PropertyReader.getBundleProperty("config", "transaction_limit"));
+        int callMethodCounter = 0;
+        boolean rollback;
+        T result = null;
+        do {
+            try {
+                result = executor.run();
+                rollback = callingClass.isLastTransactionRollback();
+            } catch (EJBTransactionRolledbackException e) {
+                rollback = true;
+            }
+            if (callMethodCounter > 0) {
+                log.warning(String.format("Transaction: %s is being repeated %s time", callingClass.getTransactionId(), callMethodCounter));
+            }
+            callMethodCounter++;
+        } while (rollback && callMethodCounter <= transactionLimit);
+
+        if(callMethodCounter > transactionLimit) {
+            throw TransactionException.unexpectedFail();
+        }
+        return result;
+    }
+
+    /**
+     * Interfejs funkcyjny przeznaczony dla metod typu void
+     */
     @FunctionalInterface
-    public interface MethodExecutor {
+    public interface VoidMethodExecutor {
         void run() throws AppBaseException;
     }
-//    @FunctionalInterface
-//    public interface CallingClass {
-//        void run() throws AppBaseException;
-//    }
+
+    /**
+     * Interfejs funkcyjny przeznaczony dla metod zwracających obiekt określonego typu
+     *
+     * @param <T> typ zwracanego przez metodę obiektu
+     */
+    @FunctionalInterface
+    public interface ReturnMethodExecutor<T> {
+        T run() throws AppBaseException;
+    }
 }

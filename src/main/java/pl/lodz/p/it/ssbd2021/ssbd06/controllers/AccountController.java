@@ -28,9 +28,7 @@ public class AccountController extends AbstractController {
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changeAccountActiveStatus(@NotNull @PathParam("login") @Valid String login) throws AppBaseException {
-        // todo metoda repeat() z abstractController;
         repeat(()-> accountEndpoint.blockAccount(login), accountEndpoint);
-//        accountEndpoint.blockAccount(login);
     }
 
 
@@ -43,8 +41,7 @@ public class AccountController extends AbstractController {
     @POST
     @Path("/confirm/{code}")
     public void confirm(@PathParam("code") String code) throws AppBaseException {
-        // todo metoda repeat() z abstractController;
-        accountEndpoint.confirmAccount(code);
+        repeat(()-> accountEndpoint.confirmAccount(code), accountEndpoint);
     }
 
     /**
@@ -57,6 +54,6 @@ public class AccountController extends AbstractController {
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     public void registerAccount(@NotNull @Valid RegisterAccountDto registerAccountDto) throws AppBaseException {
-        accountEndpoint.registerAccount(registerAccountDto);
+        repeat(()-> accountEndpoint.registerAccount(registerAccountDto), accountEndpoint);
     }
 }

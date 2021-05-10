@@ -33,9 +33,9 @@ public class EmailConfig implements Serializable {
 
     @AllArgsConstructor
     public enum MailType {
-        GRANT_ACCESS("grantaccess"), DENY_ACCESS("denyaccess"),
+        GRANT_ACCESS("grant_access"), DENY_ACCESS("deny_access"),
         LOCK_ACCOUNT("lock"), UNLOCK_ACCOUNT("unlock"),
-        RESET_PASSWORD("passwordreset"),
+        RESET_PASSWORD("password_reset"),
         DELETE_UNCONFIRMED("delete"),
         ACTIVATE_ACCOUNT("activate");
 

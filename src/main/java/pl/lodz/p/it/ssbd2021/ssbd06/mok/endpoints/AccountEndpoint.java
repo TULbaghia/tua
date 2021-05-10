@@ -97,6 +97,5 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     public void changeOtherPassword(PasswordResetDto passwordResetDto) throws AppBaseException {
         Account account = accountManager.findByLogin(passwordResetDto.getResetCode().getAccount().getLogin());
         pendingCodeManager.sendResetPassword(account);
-        accountManager.resetPassword(passwordResetDto);
     }
 }

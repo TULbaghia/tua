@@ -4,6 +4,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -28,7 +29,8 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void changeAccountActiveStatus(@NotNull @PathParam("login") @Valid String login) throws AppBaseException {
         // todo metoda repeat() z abstractController;
-        accountEndpoint.blockAccount(login);
+        repeat(()-> accountEndpoint.blockAccount(login), accountEndpoint);
+//        accountEndpoint.blockAccount(login);
     }
 
 

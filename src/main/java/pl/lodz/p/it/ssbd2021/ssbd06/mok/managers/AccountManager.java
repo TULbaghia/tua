@@ -48,7 +48,7 @@ public class AccountManager {
         account.setEnabled(false);
         account.setFailedLoginAttemptsCounter(0);
         accountFacade.edit(account);
-//        emailSender.sendLockAccountEmail(account.getFirstname(), login);
+        emailSender.sendLockAccountEmail(account.getFirstname(), login);
     }
 
     /**

@@ -42,8 +42,33 @@ public class PendingCodeManager {
 
         account.getPendingCodeList().add(pendingCode);
 
-        accountFacade.edit(account);
         pendingCodeFacade.create(pendingCode);
+        accountFacade.edit(account);
+        emailSender.sendResetPasswordEmail(account.getFirstname(), account.getLogin(), pendingCode.getCode());
+    }
+
+    /**
+     * Ponownie wysyła wiadomość dotyczącą resetowania hasła na e-mail odpowiadający kontu.
+     *
+     * @param account - konto, którego hasło ma zostać zresetowane
+     * @throws AppBaseException - jeżeli nie uda się wysłać maila
+     */
+    public void sendResetPasswordAgain(Account account) throws AppBaseException {
+        PendingCode previousResetCode = pendingCodeFacade.findResetCodeByAccount(account);
+        previousResetCode.setUsed(true);
+        pendingCodeFacade.edit(previousResetCode);
+
+        PendingCode pendingCode = new PendingCode();
+        pendingCode.setCode(UUID.randomUUID().toString());
+        pendingCode.setUsed(false);
+        pendingCode.setAccount(account);
+        pendingCode.setCodeType(CodeType.PASSWORD_RESET);
+        pendingCode.setCreatedBy(account);
+
+        account.getPendingCodeList().add(pendingCode);
+
+        pendingCodeFacade.create(pendingCode);
+        accountFacade.edit(account);
         emailSender.sendResetPasswordEmail(account.getFirstname(), account.getLogin(), pendingCode.getCode());
     }
 }

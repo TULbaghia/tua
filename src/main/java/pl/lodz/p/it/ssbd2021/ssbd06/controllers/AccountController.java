@@ -85,4 +85,17 @@ public class AccountController extends AbstractController {
     public void sendResetPassword(@NotNull @Valid @Login String email) throws AppBaseException {
         accountEndpoint.sendResetPassword(email);
     }
+
+    /**
+     * Wysyła ponownie na istniejący w systemie email wiadomość o resetowaniu hasła.
+     *
+     * @param email email na który zostanie wysłana wiadomość
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @POST
+    @Path("/{email}/reset")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void sendResetPasswordAgain(@NotNull @Valid @Login String email) throws AppBaseException {
+        accountEndpoint.sendResetPasswordAgain(email);
+    }
 }

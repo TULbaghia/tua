@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.facades;
 
 import org.hibernate.exception.ConstraintViolationException;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
@@ -33,6 +34,18 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         try {
             TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findByCode", PendingCode.class);
             query.setParameter("code", code);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            throw NotFoundException.pendingCodeNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
+    }
+
+    public PendingCode findResetCodeByAccount(Account account) throws AppBaseException {
+        try {
+            TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findResetCodeByAccount", PendingCode.class);
+            query.setParameter("account", account);
             return query.getSingleResult();
         } catch (NoResultException e) {
             throw NotFoundException.pendingCodeNotFound(e);

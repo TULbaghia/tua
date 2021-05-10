@@ -81,4 +81,14 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
 
         pendingCodeManager.sendResetPassword(account);
     }
+
+    @Override
+    @PermitAll
+    public void sendResetPasswordAgain(String email) throws AppBaseException {
+        Account account = accountManager.findByLogin(email);
+        if(!account.isEnabled()) throw AccountException.notEnabled();
+        if(!account.isConfirmed()) throw AccountException.notConfirmed();
+
+        pendingCodeManager.sendResetPasswordAgain(account);
+    }
 }

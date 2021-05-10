@@ -4,15 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.PenCode;
 
-import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 import static pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode.PENDING_CODE_CONSTRAINT;
 
@@ -28,7 +27,8 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode.PENDING_CODE_CON
 @NamedQueries({
     @NamedQuery(name = "PendingCode.findAll", query = "SELECT p FROM PendingCode p"),
     @NamedQuery(name = "PendingCode.findById", query = "SELECT p FROM PendingCode p WHERE p.id = :id"),
-    @NamedQuery(name = "PendingCode.findByCode", query = "SELECT p FROM PendingCode p WHERE p.code = :code")})
+    @NamedQuery(name = "PendingCode.findByCode", query = "SELECT p FROM PendingCode p WHERE p.code = :code"),
+    @NamedQuery(name = "PendingCode.findResetCodeByAccount", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.codeType = 'PASSWORD_RESET'")})
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class PendingCode extends AbstractEntity implements Serializable {

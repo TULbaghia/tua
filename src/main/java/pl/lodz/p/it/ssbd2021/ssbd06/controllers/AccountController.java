@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.SignatureValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 
 import javax.inject.Inject;
@@ -66,6 +67,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
     @PUT
+    @SignatureValidatorFilterBinding
     @Path("/self/edit")
     @Consumes(MediaType.APPLICATION_JSON)
     public void editOwnAccountDetails(@NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {

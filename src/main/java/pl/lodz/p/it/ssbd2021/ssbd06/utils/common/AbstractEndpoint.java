@@ -7,12 +7,10 @@ import pl.lodz.p.it.ssbd2021.ssbd06.security.Signable;
 
 import javax.ejb.AfterBegin;
 import javax.ejb.AfterCompletion;
-import javax.ejb.EJBException;
 import javax.inject.Inject;
 import javax.security.enterprise.SecurityContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import java.rmi.RemoteException;
 import java.security.Principal;
 import java.util.concurrent.ThreadLocalRandom;
 

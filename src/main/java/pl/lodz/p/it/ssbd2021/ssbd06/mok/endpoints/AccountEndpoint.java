@@ -68,11 +68,8 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("editOwnPassword")
     public void changePassword(PasswordChangeDto passwordChangeDto) throws AppBaseException {
-        Account account = Mappers.getMapper(IAccountMapper.class).toAccount(passwordChangeDto);
-        AccountDto accountDto = new AccountDto(account.getLogin(), account.getFirstname(), account.getLastname(), account.getLanguage(),
-                account.getContactNumber(), account.isEnabled(), account.isConfirmed(), account.getLastSuccessfulLoginDate(),
-                account.getLastSuccessfulLoginIpAddress(), account.getLastFailedLoginDate(), account.getLastFailedLoginIpAddress());
-
+        Account account = passwordChangeDto.getAccount();
+        AccountDto accountDto = Mappers.getMapper(IAccountMapper.class).toAccountDto(account);
         if(!MessageVerifier.validateSignature(accountDto.getMessageToSign())) throw AppOptimisticLockException.optimisticLockException();
         if(PasswordHasher.check(passwordChangeDto.getOldPassword(), PasswordHasher.generate(account.getPassword()))) throw AccountException.passwordsDontMatch();
 

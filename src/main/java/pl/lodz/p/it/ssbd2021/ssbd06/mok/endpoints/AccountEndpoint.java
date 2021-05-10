@@ -72,9 +72,7 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
         accountPersonalDetailsDto.setLogin(authUser);
 
         Account editAccount = accountManager.findByLogin(authUser);
-        editAccount.setFirstname(accountPersonalDetailsDto.getFirstname());
-        editAccount.setLastname(accountPersonalDetailsDto.getLastname());
-        editAccount.setContactNumber(accountPersonalDetailsDto.getContactNumber());
+        Mappers.getMapper(IAccountMapper.class).toAccount(accountPersonalDetailsDto, editAccount);
 
         accountManager.editAccountDetails(editAccount);
     }

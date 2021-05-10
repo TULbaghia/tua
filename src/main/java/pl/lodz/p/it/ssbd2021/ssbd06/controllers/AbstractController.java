@@ -7,12 +7,18 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.PropertyReader;
 
 import javax.ejb.EJBTransactionRolledbackException;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.ws.rs.core.Context;
 
 /**
  * Do powtarzania transakcji aplikacyjnych.
  */
 @Log
 public abstract class AbstractController {
+
+    @Context
+    ServletContext servletContext;
 
     /**
      * Metoda powtarzająca transakcję aplikacyjną
@@ -22,7 +28,7 @@ public abstract class AbstractController {
      * @throws AppBaseException w momencie niepowodzenia
      */
     protected void repeat(VoidMethodExecutor executor, CallingClass callingClass) throws AppBaseException {
-        int transactionLimit = Integer.parseInt(PropertyReader.getBundleProperty("config", "transaction_limit"));
+        int transactionLimit = Integer.parseInt(getInitialParameter("repeatTransactionNumber"));
         int callMethodCounter = 0;
         boolean rollback;
         do {
@@ -53,7 +59,7 @@ public abstract class AbstractController {
      * @throws AppBaseException w momencie niepowodzenia
      */
     protected <T> T repeat(ReturnMethodExecutor<T> executor, CallingClass callingClass) throws AppBaseException {
-        int transactionLimit = Integer.parseInt(PropertyReader.getBundleProperty("config", "transaction_limit"));
+        int transactionLimit = Integer.parseInt(getInitialParameter("repeatTransactionNumber"));
         int callMethodCounter = 0;
         boolean rollback;
         T result = null;
@@ -92,5 +98,9 @@ public abstract class AbstractController {
     @FunctionalInterface
     public interface ReturnMethodExecutor<T> {
         T run() throws AppBaseException;
+    }
+
+    private String getInitialParameter(String paramName) {
+        return servletContext.getInitParameter(paramName);
     }
 }

@@ -48,7 +48,7 @@ public class PendingCodeManager {
     }
 
     /**
-     * Ponownie ysyła wiadomość dotyczącą resetowania hasła na e-mail odpowiadający kontu.
+     * Ponownie wysyła wiadomość dotyczącą resetowania hasła na e-mail odpowiadający kontu.
      *
      * @param account - konto, którego hasło ma zostać zresetowane
      * @throws AppBaseException - jeżeli nie uda się wysłać maila

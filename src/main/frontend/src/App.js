@@ -11,8 +11,8 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import Home from "./components/home";
 import BlogScreen from "./components/blog";
-import AboutScreen from "./components/about";
 import PingPong from "./components/pingpong";
+import Login from "./components/login";
 
 library.add(fab, faSignInAlt);
 
@@ -26,7 +26,7 @@ class App extends Component {
                         <Switch>
                             <Route exact path="/" component={Home}/>
                             <Route path="/blog" component={BlogScreen}/>
-                            <Route path="/about" component={AboutScreen}/>
+                            <Route path="/login" component={Login}/>
                             <Route path="/pong" component={PingPong}/>
                         </Switch>
                     </div>

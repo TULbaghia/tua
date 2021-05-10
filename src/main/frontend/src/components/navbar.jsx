@@ -22,10 +22,10 @@ class NavigationBar extends Component {
                         </LinkContainer>
                     </Nav>
                     <Nav className="navbar-right">
-                        <LinkContainer to="/about">
+                        <LinkContainer to="/login">
                             <Nav.Link>
                                 <FontAwesomeIcon className="mr-1" icon="sign-in-alt" />
-                                About
+                                Sign In
                             </Nav.Link>
                         </LinkContainer>
                     </Nav>

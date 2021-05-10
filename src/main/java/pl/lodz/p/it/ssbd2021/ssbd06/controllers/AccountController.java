@@ -1,9 +1,11 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.RoleEndpointLocal;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -16,6 +18,9 @@ public class AccountController extends AbstractController {
 
     @Inject
     private AccountEndpointLocal accountEndpoint;
+
+    @Inject
+    private RoleEndpointLocal roleEndpoint;
 
     /**
      * Blokuje konto użytkownika o podanym loginie.
@@ -56,5 +61,18 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void registerAccount(@NotNull @Valid RegisterAccountDto registerAccountDto) throws AppBaseException {
         accountEndpoint.registerAccount(registerAccountDto);
+    }
+
+    /**
+     * Przyznaje uprawnienia użytkownikowi.
+     *
+     * @param userId identyfikator użytkownika
+     * @param accessLevel rola, która zostanie przydzielona użytkownikowi
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @PATCH
+    @Path("/{userId}/grant/{accessLevel}")
+    public void grantAccessLevel(@NotNull @PathParam("userId") Long userId, @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
+        roleEndpoint.grantAccessLevel(userId, accessLevel);
     }
 }

@@ -73,7 +73,7 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
                 account.getContactNumber(), account.isEnabled(), account.isConfirmed(), account.getLastSuccessfulLoginDate(),
                 account.getLastSuccessfulLoginIpAddress(), account.getLastFailedLoginDate(), account.getLastFailedLoginIpAddress());
 
-        if(!verifyEtag(accountDto)) throw AppOptimisticLockException.optimisticLockException();
+        if(!MessageVerifier.validateSignature(accountDto.getMessageToSign())) throw AppOptimisticLockException.optimisticLockException();
         if(PasswordHasher.check(passwordChangeDto.getOldPassword(), PasswordHasher.generate(account.getPassword()))) throw AccountException.passwordsDontMatch();
 
         accountManager.changePassword(account, passwordChangeDto.getNewPassword());

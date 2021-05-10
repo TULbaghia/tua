@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 
@@ -56,5 +57,18 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void registerAccount(@NotNull @Valid RegisterAccountDto registerAccountDto) throws AppBaseException {
         accountEndpoint.registerAccount(registerAccountDto);
+    }
+
+    /**
+     * Zmienia dane użytkownika wykonującego przypadek użycia w zakresie: imienia, nazwiska oraz numeru kontaktowego.
+     *
+     * @param accountPersonalDetailsDto obiekt konta zmodyfikowany w dostępnym zakresie.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @PUT
+    @Path("/self/edit")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void editOwnAccountDetails(@NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+        accountEndpoint.editOwnAccountDetails(accountPersonalDetailsDto);
     }
 }

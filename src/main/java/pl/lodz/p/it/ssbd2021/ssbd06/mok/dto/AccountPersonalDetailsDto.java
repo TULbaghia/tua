@@ -16,9 +16,9 @@ public class AccountPersonalDetailsDto {
     @Login
     private String login;
     @Firstname
-    private String firstName;
+    private String firstname;
     @Lastname
-    private String lastName;
+    private String lastname;
     @ContactNumber
     private String contactNumber;
 }

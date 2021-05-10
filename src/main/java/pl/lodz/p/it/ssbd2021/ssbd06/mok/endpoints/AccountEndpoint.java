@@ -4,9 +4,11 @@ import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
+import javax.security.enterprise.SecurityContext;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -27,6 +29,9 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
 
     @Inject
     private HttpServletRequest servletRequest;
+
+    @Inject
+    private SecurityContext securityContext;
 
     @Override
     @RolesAllowed("blockAccount")
@@ -58,5 +63,19 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @PermitAll
     public void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
         accountManager.updateInvalidAuth(login, ipAddress, authDate);
+    }
+
+    @Override
+    @RolesAllowed("editOwnAccountDetails")
+    public void editOwnAccountDetails(AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+        String authUser = securityContext.getCallerPrincipal().getName();
+        accountPersonalDetailsDto.setLogin(authUser);
+
+        Account editAccount = accountManager.findByLogin(authUser);
+        editAccount.setFirstname(accountPersonalDetailsDto.getFirstname());
+        editAccount.setLastname(accountPersonalDetailsDto.getLastname());
+        editAccount.setContactNumber(accountPersonalDetailsDto.getContactNumber());
+
+        accountManager.editAccountDetails(editAccount);
     }
 }

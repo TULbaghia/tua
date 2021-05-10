@@ -161,4 +161,26 @@ public class AccountManager {
         }
         return address;
     }
+
+    /**
+     * Zmienia dane użytkownika wykonującego przypadek użycia w zakresie: imienia, nazwiska oraz numeru kontaktowego.
+     *
+     * @param account obiekt konta zmodyfikowany w dostępnym zakresie.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @RolesAllowed("editOwnAccountDetails")
+    public void editAccountDetails(Account account) throws AppBaseException {
+        accountFacade.edit(account);
+    }
+
+    /**
+     * Wyszukuje obiekt Acccount o podanym loginie.
+     *
+     * @param login login wyszukiwanego konta użytkownika.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @PermitAll
+    public Account findByLogin(String login) throws AppBaseException {
+        return accountFacade.findByLogin(login);
+    }
 }

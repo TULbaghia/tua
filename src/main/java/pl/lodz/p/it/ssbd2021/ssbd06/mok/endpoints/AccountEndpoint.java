@@ -9,8 +9,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageVerifier;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.SignatureValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import javax.security.enterprise.SecurityContext;
 
@@ -22,8 +20,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-
-import static pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException.optimisticLockException;
 
 
 @Stateful
@@ -75,14 +71,22 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @RolesAllowed("editOwnAccountDetails")
     public void editOwnAccountDetails(AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
         String authUser = securityContext.getCallerPrincipal().getName();
-        Account editAccount = accountManager.findByLogin(authUser);
+        accountPersonalDetailsDto.setLogin(authUser);
+        processEditDetails(accountPersonalDetailsDto);
+    }
 
+    @RolesAllowed("editOtherAccountDetails")
+    public void editOtherAccountDetails(AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+        processEditDetails(accountPersonalDetailsDto);
+    }
+
+    private void processEditDetails(AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+        Account editAccount = accountManager.findByLogin(accountPersonalDetailsDto.getLogin());
         AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(editAccount);
         if (!verifyIntegrity(accountIntegrity)) {
             throw AppOptimisticLockException.optimisticLockException();
         }
 
-        accountPersonalDetailsDto.setLogin(authUser);
         Mappers.getMapper(IAccountMapper.class).toAccount(accountPersonalDetailsDto, editAccount);
         accountManager.editAccountDetails(editAccount);
     }

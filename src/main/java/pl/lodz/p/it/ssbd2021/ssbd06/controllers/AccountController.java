@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.SignatureValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -72,5 +73,19 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void editOwnAccountDetails(@NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
         accountEndpoint.editOwnAccountDetails(accountPersonalDetailsDto);
+    }
+
+    /**
+     * Zmienia dane wskazanego konta użytkownika w zakresie: imienia, nazwiska oraz numeru kontaktowego.
+     *
+     * @param accountPersonalDetailsDto obiekt konta zmodyfikowany w dostępnym zakresie.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @PUT
+    @SignatureValidatorFilterBinding
+    @Path("/edit")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void editOtherAccountDetails(@NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+        accountEndpoint.editOtherAccountDetails(accountPersonalDetailsDto);
     }
 }

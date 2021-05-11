@@ -168,7 +168,7 @@ public class AccountManager {
      * @param account obiekt konta zmodyfikowany w dostępnym zakresie.
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
-    @RolesAllowed("editOwnAccountDetails")
+    @RolesAllowed({"editOwnAccountDetails", "editOtherAccountDetails"})
     public void editAccountDetails(Account account) throws AppBaseException {
         accountFacade.edit(account);
     }

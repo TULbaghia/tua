@@ -28,7 +28,8 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode.PENDING_CODE_CON
 @NamedQueries({
     @NamedQuery(name = "PendingCode.findAll", query = "SELECT p FROM PendingCode p"),
     @NamedQuery(name = "PendingCode.findById", query = "SELECT p FROM PendingCode p WHERE p.id = :id"),
-    @NamedQuery(name = "PendingCode.findByCode", query = "SELECT p FROM PendingCode p WHERE p.code = :code")})
+    @NamedQuery(name = "PendingCode.findByCode", query = "SELECT p FROM PendingCode p WHERE p.code = :code"),
+    @NamedQuery(name = "PendingCode.findNotUsedByAccount", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.used = true AND p.codeType = 0")})
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class PendingCode extends AbstractEntity implements Serializable {

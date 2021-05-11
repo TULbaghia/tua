@@ -67,9 +67,10 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     @PermitAll
-    public List<Account> findUnverifiedBefore() throws AppBaseException {
+    public List<Account> findUnverifiedBefore(long expirationDate) throws AppBaseException {
         try {
             TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findUnverified", Account.class);
+            accountTypedQuery.setParameter("date", expirationDate);
             return accountTypedQuery.getResultList();
         } catch (NoResultException e) {
             throw NotFoundException.accountNotFound(e);

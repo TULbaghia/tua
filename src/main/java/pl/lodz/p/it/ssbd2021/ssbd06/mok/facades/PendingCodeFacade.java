@@ -5,6 +5,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.*;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
@@ -31,6 +32,18 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         try {
             TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findByCode", PendingCode.class);
             query.setParameter("code", code);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            throw NotFoundException.pendingCodeNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
+    }
+
+    public PendingCode findNotUsedByAccount(Account account) throws AppBaseException {
+        try {
+            TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findNotUsedByAccount", PendingCode.class);
+            query.setParameter("account", account);
             return query.getSingleResult();
         } catch (NoResultException e) {
             throw NotFoundException.pendingCodeNotFound(e);

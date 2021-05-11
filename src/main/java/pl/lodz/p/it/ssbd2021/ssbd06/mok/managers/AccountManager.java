@@ -7,8 +7,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.security.PermitAll;
@@ -17,11 +17,12 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import java.util.UUID;
+import javax.security.enterprise.SecurityContext;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.UUID;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -35,6 +36,9 @@ public class AccountManager {
 
     @Inject
     private PendingCodeFacade pendingCodeFacade;
+
+    @Inject
+    private SecurityContext securityContext;
 
     /**
      * Blokuje konto użytkownika o podanym loginie.
@@ -171,10 +175,24 @@ public class AccountManager {
      */
     @RolesAllowed("editOwnPassword")
     public void changePassword(Account account, String password) throws AppBaseException {
-        if(PasswordHasher.check(password, PasswordHasher.generate(account.getPassword()))) {
+        if(PasswordHasher.check(password, account.getPassword())) {
             throw AccountException.samePassword();
         }
         account.setPassword(PasswordHasher.generate(password));
         accountFacade.edit(account);
+    }
+
+    /**
+     * Zwraca obecnego użytkownika
+     *
+     * @throws AppBaseException gdy operacja się nie powiedzie
+     */
+    @PermitAll
+    public Account getCurrentUser() throws AppBaseException {
+        try {
+            return accountFacade.findByLogin(securityContext.getCallerPrincipal().getName());
+        } catch (AppBaseException e) {
+            return null;
+        }
     }
 }

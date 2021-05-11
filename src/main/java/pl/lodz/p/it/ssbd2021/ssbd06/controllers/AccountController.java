@@ -65,7 +65,7 @@ public class AccountController extends AbstractController {
      * @param passwordChangeDto dane użytkownika do rejestracji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @POST
+    @PUT
     @SignatureValidatorFilterBinding
     @Path("/{login}/password")
     @Consumes(MediaType.APPLICATION_JSON)

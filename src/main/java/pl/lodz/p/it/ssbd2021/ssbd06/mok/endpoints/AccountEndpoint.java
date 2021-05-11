@@ -4,7 +4,6 @@ import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeDto;
@@ -68,10 +67,10 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("editOwnPassword")
     public void changePassword(PasswordChangeDto passwordChangeDto) throws AppBaseException {
-        Account account = passwordChangeDto.getAccount();
+        Account account = accountManager.getCurrentUser();
         AccountDto accountDto = Mappers.getMapper(IAccountMapper.class).toAccountDto(account);
         if(!verifyIntegrity(accountDto)) throw AppOptimisticLockException.optimisticLockException();
-        if(PasswordHasher.check(passwordChangeDto.getOldPassword(), account.getPassword())) throw AccountException.passwordsDontMatch();
+        if(!PasswordHasher.check(passwordChangeDto.getOldPassword(), account.getPassword())) throw AccountException.passwordsDontMatch();
 
         accountManager.changePassword(account, passwordChangeDto.getNewPassword());
     }

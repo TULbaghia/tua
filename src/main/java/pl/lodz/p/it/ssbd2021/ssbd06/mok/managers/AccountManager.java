@@ -39,7 +39,7 @@ public class AccountManager {
     /**
      * Blokuje konto użytkownika o podanym loginie.
      *
-     * @param login ogin konta, które ma zostać zablokowane.
+     * @param login login konta, które ma zostać zablokowane.
      * @throws AppBaseException gdy nie udało się zablokowanie konta.
      */
     @RolesAllowed("blockAccount")
@@ -49,6 +49,19 @@ public class AccountManager {
         account.setFailedLoginAttemptsCounter(0);
         accountFacade.edit(account);
         emailSender.sendLockAccountEmail(account.getFirstname(), login);
+    }
+
+    /**
+     * Odblokowywuje konto użytkownika o podanym loginie.
+     *
+     * @param login login konta, które ma zostać odblokowane.
+     * @throws AppBaseException gdy nie udało się odblokowanie konta.
+     */
+    @RolesAllowed("unblockAccount")
+    public void unblockAccount(String login) throws AppBaseException {
+        Account account = accountFacade.findByLogin(login);
+        account.setEnabled(true);
+        accountFacade.edit(account);
     }
 
     /**

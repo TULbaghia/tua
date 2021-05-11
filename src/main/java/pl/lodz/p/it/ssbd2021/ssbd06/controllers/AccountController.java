@@ -33,6 +33,20 @@ public class AccountController extends AbstractController {
 
 
     /**
+     * Odblokowywuje konto użytkownika o podanym loginie.
+     *
+     * @param login login konta, które ma zostać odblokowane.
+     * @throws AppBaseException gdy nie udało się odblokowanie konta.
+     */
+    @PUT
+    @Path("/{login}/block")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void unblockAccount(@NotNull @PathParam("login") @Valid String login) throws AppBaseException {
+        accountEndpoint.unblockAccount(login);
+    }
+
+
+    /**
      * Potwierdza konto użytkownika odpowiadające podanemu kodowi aktywacyjnemu
      *
      * @param code kod aktywacyjny konta

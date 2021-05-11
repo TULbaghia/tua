@@ -21,6 +21,15 @@ public interface AccountEndpointLocal {
     void blockAccount(String login) throws AppBaseException;
 
     /**
+     * Odblokowywuje konto użytkownika o podanym loginie.
+     *
+     * @param login login konta, które ma zostać odblokowane.
+     * @throws AppBaseException gdy nie udało się odblokowanie konta.
+     */
+    @RolesAllowed("unblockAccount")
+    void unblockAccount(String login) throws AppBaseException;
+
+    /**
      * Rejestruje konto użytkownika.
      *
      * @param registerAccountDto obiekt zawierający dane wymagane do utworzenia konta

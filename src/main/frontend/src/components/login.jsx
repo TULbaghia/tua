@@ -46,10 +46,6 @@ const Login = () => {
                     Sign in
                 </button>
             </form>
-            {/*TODO: Testing purpose*/}
-            <button onClick={handleShowToken} className="btn btn-lg btn-primary btn-block">
-                Show token
-            </button>
         </div>
     );
 

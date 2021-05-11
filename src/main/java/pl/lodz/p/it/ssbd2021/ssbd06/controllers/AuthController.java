@@ -56,4 +56,11 @@ public class AuthController {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
+
+    @GET
+    @Path("logout")
+    public Response logout() {
+        authEndpoint.logout();
+        return Response.ok().build();
+    }
 }

@@ -15,4 +15,6 @@ public interface AuthEndpointLocal {
      * @throws AppBaseException gdy uwierzytelnianie się nie powiedzie
      */
     String login(String login, String password) throws AppBaseException;
+
+    void logout();
 }

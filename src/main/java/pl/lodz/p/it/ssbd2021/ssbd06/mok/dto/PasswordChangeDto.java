@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.Password;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Klasa DTO reprezentująca proces zmiany hasła użytkownika
  */
@@ -14,8 +16,11 @@ import pl.lodz.p.it.ssbd2021.ssbd06.validation.Password;
 @NoArgsConstructor
 public class PasswordChangeDto {
     @Password
+    @NotNull
     private String oldPassword;
     @Password
+    @NotNull
     private String newPassword;
+    @NotNull
     private Account account;
 }

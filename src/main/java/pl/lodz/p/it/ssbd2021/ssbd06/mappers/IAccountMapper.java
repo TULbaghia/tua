@@ -13,7 +13,6 @@ public interface IAccountMapper {
     Account toAccount(AccountDto accountDto);
 
     AccountPersonalDetailsDto toAccountPersonalDetailsDto(Account account);
-    @Mapping(ignore = true, target = "login")
     void toAccount(AccountPersonalDetailsDto detailsDto, @MappingTarget Account account) throws AppBaseException;
 
     PasswordChangeDto toPasswordChangeDto(Account account);

@@ -15,9 +15,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountPersonalDetailsDto {
-    @Login
-    @NotNull
-    private String login;
     @Firstname
     @NotNull
     private String firstname;

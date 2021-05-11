@@ -1,15 +1,19 @@
 import React, {useState} from "react";
 import logo from "../logo.svg";
 import AuthService from "../AuthService"
+import {useHistory} from "react-router";
 
 const Login = () => {
 
+    const history = useHistory();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = e => {
         e.preventDefault()
         AuthService.authorize(email, password)
+        localStorage.setItem("isLogged", "true");
+        history.push("/")
     }
 
     const handleShowToken = () => {

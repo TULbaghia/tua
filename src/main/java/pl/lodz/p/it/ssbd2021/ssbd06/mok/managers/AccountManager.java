@@ -62,6 +62,7 @@ public class AccountManager {
         Account account = accountFacade.findByLogin(login);
         account.setEnabled(true);
         accountFacade.edit(account);
+        emailSender.sendUnlockAccountEmail(account.getFirstname(), account.getLogin());
     }
 
     /**

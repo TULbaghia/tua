@@ -72,7 +72,7 @@ public abstract class AbstractEndpoint {
                 getLogin());
     }
 
-    private String getLogin() {
+    protected String getLogin() {
         Principal principal = securityContext.getCallerPrincipal();
         if (principal != null) {
             return principal.getName();

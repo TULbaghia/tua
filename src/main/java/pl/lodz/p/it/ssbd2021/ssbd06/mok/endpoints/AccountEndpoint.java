@@ -82,7 +82,6 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
             throw AppOptimisticLockException.optimisticLockException();
         }
 
-        accountPersonalDetailsDto.setLogin(authUser);
         Mappers.getMapper(IAccountMapper.class).toAccount(accountPersonalDetailsDto, editAccount);
         accountManager.editAccountDetails(editAccount);
     }

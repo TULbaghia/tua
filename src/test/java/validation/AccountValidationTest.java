@@ -23,33 +23,20 @@ public class AccountValidationTest {
 
     @Test
     public void validDtoShouldSuccess(){
-        AccountPersonalDetailsDto accountPersonalDetailsDto = new AccountPersonalDetailsDto("andrzej1973@onet.pl",
-                "Adrian", "Duda", "515789642");
+        AccountPersonalDetailsDto accountPersonalDetailsDto = new AccountPersonalDetailsDto("Adrian",
+                "Duda", "515789642");
         Set<ConstraintViolation<AccountPersonalDetailsDto>> cons = VALIDATOR.validate(accountPersonalDetailsDto);
         Assert.assertEquals(cons.size(), 0);
     }
 
     @Test
-    public void nonValidEmail(){
-        AccountPersonalDetailsDto accountPersonalDetailsDto = new AccountPersonalDetailsDto("marek",
-                "Adrian", "Duda", "123456789");
-        Set<ConstraintViolation<AccountPersonalDetailsDto>> cons = VALIDATOR.validate(accountPersonalDetailsDto);
-        Assert.assertEquals(cons.size(), 2);
-
-        AccountPersonalDetailsDto account2 = new AccountPersonalDetailsDto("marek123o2", "Marek",
-                "Lewarek", "123456789");
-        cons = VALIDATOR.validate(account2);
-        Assert.assertEquals(cons.size(), 1);
-    }
-
-    @Test
     public void nonValidFirstnameAndLastname(){
-        AccountPersonalDetailsDto account = new AccountPersonalDetailsDto("marek1@o2.pl", "marek",
+        AccountPersonalDetailsDto account = new AccountPersonalDetailsDto("marek",
                 "L", "123456789");
         Set<ConstraintViolation<AccountPersonalDetailsDto>> cons = VALIDATOR.validate(account);
         Assert.assertEquals(cons.size(), 2);
 
-        AccountPersonalDetailsDto account2 = new AccountPersonalDetailsDto("marek1@o2.pl", "Ma",
+        AccountPersonalDetailsDto account2 = new AccountPersonalDetailsDto("Ma",
                 "Lewarekowskilewarkiewiczowskilewandowskilambert", "123456789");
         cons = VALIDATOR.validate(account2);
         Assert.assertEquals(cons.size(), 2);
@@ -57,12 +44,12 @@ public class AccountValidationTest {
 
     @Test
     public void nonValidContactNumber(){
-        AccountPersonalDetailsDto account = new AccountPersonalDetailsDto("marek1@o2.pl", "Marek",
+        AccountPersonalDetailsDto account = new AccountPersonalDetailsDto("Marek",
                 "Lewarek", "3456789");
         Set<ConstraintViolation<AccountPersonalDetailsDto>> cons = VALIDATOR.validate(account);
         Assert.assertEquals(cons.size(), 2);
 
-        AccountPersonalDetailsDto account2 = new AccountPersonalDetailsDto("marek1@o2.pl", "Marek",
+        AccountPersonalDetailsDto account2 = new AccountPersonalDetailsDto("Marek",
                 "Lewarek", "123456Z89");
         cons = VALIDATOR.validate(account2);
         Assert.assertEquals(cons.size(), 1);

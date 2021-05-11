@@ -15,17 +15,28 @@ public class NotFoundException extends AppBaseException {
 
     /**
      * Tworzy wyjątek reprezentujący nieznalezienie encji account.
+     *
      * @param cause wyjątek, który zostanie opakowany
-     * @return wyjątek EmailException
+     * @return wyjątek NotFoundException
      */
     public static NotFoundException accountNotFound(Throwable cause) {
         return new NotFoundException(ACCOUNT_NOT_FOUND, cause);
     }
 
     /**
+     * Tworzy wyjątek reprezentujący nieznalezienie encji account.
+     *
+     * @return wyjątek NotFoundException
+     */
+    public static NotFoundException accountNotFound() {
+        return new NotFoundException(ACCOUNT_NOT_FOUND);
+    }
+
+    /**
      * Tworzy wyjątek reprezentujący nieznalezienie encji pending code.
+     *
      * @param cause wyjątek, który zostanie opakowany
-     * @return wyjątek EmailException
+     * @return wyjątek NotFoundException
      */
     public static NotFoundException pendingCodeNotFound(Throwable cause) {
         return new NotFoundException(PENDING_CODE_NOT_FOUND, cause);

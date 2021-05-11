@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.*;
+import java.util.List;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -63,5 +64,17 @@ public class AccountFacade extends AbstractFacade<Account> {
     @PermitAll
     public void edit(Account entity) throws AppBaseException {
         super.edit(entity);
+    }
+
+    @PermitAll
+    public List<Account> findUnverifiedBefore() throws AppBaseException {
+        try {
+            TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findUnverified", Account.class);
+            return accountTypedQuery.getResultList();
+        } catch (NoResultException e) {
+            throw NotFoundException.accountNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
     }
 }

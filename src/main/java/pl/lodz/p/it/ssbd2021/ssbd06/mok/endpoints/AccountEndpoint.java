@@ -32,9 +32,6 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Inject
     private HttpServletRequest servletRequest;
 
-    @Inject
-    private SecurityContext securityContext;
-
     @Override
     @RolesAllowed("blockAccount")
     public void blockAccount(String login) throws AppBaseException {
@@ -70,18 +67,17 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("editOwnAccountDetails")
     public void editOwnAccountDetails(AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
-        String authUser = securityContext.getCallerPrincipal().getName();
-        accountPersonalDetailsDto.setLogin(authUser);
-        processEditDetails(accountPersonalDetailsDto);
+        processEditDetails(getLogin(), accountPersonalDetailsDto);
     }
 
+    @Override
     @RolesAllowed("editOtherAccountDetails")
-    public void editOtherAccountDetails(AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
-        processEditDetails(accountPersonalDetailsDto);
+    public void editOtherAccountDetails(String login, AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+        processEditDetails(login, accountPersonalDetailsDto);
     }
 
-    private void processEditDetails(AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
-        Account editAccount = accountManager.findByLogin(accountPersonalDetailsDto.getLogin());
+    private void processEditDetails(String login, AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+        Account editAccount = accountManager.findByLogin(login);
         AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(editAccount);
         if (!verifyIntegrity(accountIntegrity)) {
             throw AppOptimisticLockException.optimisticLockException();

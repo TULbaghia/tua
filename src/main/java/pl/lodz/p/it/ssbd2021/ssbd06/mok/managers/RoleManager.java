@@ -28,9 +28,16 @@ public class RoleManager {
     @Inject
     private EmailSender emailSender;
 
+    /**
+     * Przyznaje użytkownikowi poziom dostępu.
+     *
+     * @param login login użytkownika
+     * @param accessLevel poziom dostępu
+     * @throws AppBaseException gdy nie udało się przyznać poziomu dostępu
+     */
     @RolesAllowed("addAccessLevel")
-    public void grantAccessLevel(Long userId, AccessLevel accessLevel) throws AppBaseException {
-        Account account = accountFacade.find(userId);
+    public void grantAccessLevel(String login, AccessLevel accessLevel) throws AppBaseException {
+        Account account = accountFacade.findByLogin(login);
 
         if (account == null) {
             throw NotFoundException.accountNotFound();
@@ -58,6 +65,13 @@ public class RoleManager {
         emailSender.sendGrantAccessLevelEmail(account.getFirstname(), account.getLogin(), accessLevel.toString());
     }
 
+    /**
+     * Tworzy obiekt roli użytkownika w zależności od poziomu dostępu
+     *
+     * @param accessLevel poziom dostępu
+     * @return obiekt roli uzytkownika
+     * @throws RoleException gdy poziom dostępu nie istnieje
+     */
     private Role createUserRole(AccessLevel accessLevel) throws RoleException {
         switch (accessLevel) {
             case ADMIN:

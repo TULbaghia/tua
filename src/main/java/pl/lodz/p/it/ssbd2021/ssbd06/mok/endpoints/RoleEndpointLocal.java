@@ -13,12 +13,12 @@ public interface RoleEndpointLocal {
     /**
      * Odbiera uprawnienia użytkownikowi.
      *
-     * @param userId      identyfikator użytkownika
+     * @param login      identyfikator użytkownika
      * @param accessLevel poziom dostępu do odebrania
      * @throws AppBaseException gdy nie udało się zaktualizować danych
      */
     @RolesAllowed("deleteAccessLevel")
-    void revokeAccessLevel(Long userId, AccessLevel accessLevel) throws AppBaseException;
+    void revokeAccessLevel(String login, AccessLevel accessLevel) throws AppBaseException;
 
     /**
      * Przyznaje uprawnienia użytkownikowi.

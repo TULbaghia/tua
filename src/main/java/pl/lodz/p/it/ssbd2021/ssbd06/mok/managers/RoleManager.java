@@ -28,9 +28,17 @@ public class RoleManager {
     @Inject
     private EmailSender emailSender;
 
+
+    /**
+     * Odbiera użytkownikowi poziom dostępu.
+     *
+     * @param login       login użytkownika
+     * @param accessLevel poziom dostępu
+     * @throws AppBaseException gdy nie udało się odebrać poziomu dostępu
+     */
     @RolesAllowed("deleteAccessLevel")
-    public void revokeAccessLevel(Long userId, AccessLevel accessLevel) throws AppBaseException {
-        Account account = accountFacade.find(userId);
+    public void revokeAccessLevel(String login, AccessLevel accessLevel) throws AppBaseException {
+        Account account = accountFacade.findByLogin(login);
 
         if (account == null) {
             throw NotFoundException.accountNotFound();

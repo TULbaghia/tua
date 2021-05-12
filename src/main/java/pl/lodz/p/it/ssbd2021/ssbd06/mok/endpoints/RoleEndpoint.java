@@ -40,6 +40,16 @@ public class RoleEndpoint extends AbstractEndpoint implements RoleEndpointLocal 
     }
 
     @Override
+    @RolesAllowed("deleteAccessLevel")
+    public void revokeAccessLevel(String login, AccessLevel accessLevel) throws AppBaseException {
+        if (!verifyIntegrity(mapToRolesDto(accountManager.getAccountByLogin(login)))) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        roleManager.revokeAccessLevel(login, accessLevel);
+    }
+
+    @Override
     @RolesAllowed("getOtherAccountInfo")
     public RolesDto getUserRole(String login) throws AppBaseException {
         return mapToRolesDto(accountManager.getAccountByLogin(login));
@@ -59,12 +69,6 @@ public class RoleEndpoint extends AbstractEndpoint implements RoleEndpointLocal 
      */
     private RolesDto mapToRolesDto(Account account) {
         return roleMapper.toRolesDto(account);
-    }
-
-    @Override
-    @RolesAllowed("deleteAccessLevel")
-    public void revokeAccessLevel(Long userId, AccessLevel accessLevel) throws AppBaseException {
-        roleManager.revokeAccessLevel(userId, accessLevel);
     }
 
 }

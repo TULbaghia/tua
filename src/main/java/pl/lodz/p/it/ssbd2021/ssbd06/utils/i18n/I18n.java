@@ -6,6 +6,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
@@ -28,7 +29,7 @@ public class I18n {
     public String getMessage(String key) {
         try {
             return getMessage(servletRequest.getLocale(), key);
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | MissingResourceException | ClassCastException e) {
             log.warning("Exception during translation of '" + key + "' :: " + e.getMessage());
         }
         return key;
@@ -44,7 +45,7 @@ public class I18n {
     public String getMessage(Locale locale, String key) {
         try {
             return getBundle(locale).getString(key);
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | MissingResourceException | ClassCastException e) {
             log.warning("Exception during translation of '" + key + "' :: " + e.getMessage());
         }
         return key;

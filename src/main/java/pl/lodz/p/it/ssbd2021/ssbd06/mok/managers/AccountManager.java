@@ -159,13 +159,13 @@ public class AccountManager {
      * @return dane konta wybranego użytkownika
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
-    @PermitAll
+    @RolesAllowed({"getOwnAccountInfo", "getOtherAccountInfo"})
     public AccountDto getAccount(String login) throws AppBaseException {
         try {
             return Mappers.getMapper(IAccountMapper.class).toAccountDto(accountFacade.findByLogin(login));
         }
         catch (NotFoundException e){
-            throw new NotFoundException(e.getMessage());
+            throw NotFoundException.accountNotFound(e.getCause());
         }
     }
 

@@ -48,7 +48,7 @@ public class AccountManager {
         account.setEnabled(false);
         account.setFailedLoginAttemptsCounter(0);
         accountFacade.edit(account);
-        emailSender.sendLockAccountEmail(account.getFirstname(), login);
+        emailSender.sendLockAccountEmail(account);
     }
 
     /**
@@ -74,7 +74,7 @@ public class AccountManager {
         account.getPendingCodeList().add(pendingCode);
 
         accountFacade.create(account);
-        emailSender.sendActivationEmail(account.getFirstname(), account.getLogin(), pendingCode.getCode());
+        emailSender.sendActivationEmail(account, pendingCode.getCode());
     }
 
     /**
@@ -121,7 +121,7 @@ public class AccountManager {
         int incorrectLoginAttempts = account.getFailedLoginAttemptsCounter() + 1;
         if(incorrectLoginAttempts == 3) {
             account.setEnabled(false);
-            emailSender.sendLockAccountEmail(account.getFirstname(), login);
+            emailSender.sendLockAccountEmail(account);
             incorrectLoginAttempts = 0;
         }
         account.setFailedLoginAttemptsCounter(incorrectLoginAttempts);

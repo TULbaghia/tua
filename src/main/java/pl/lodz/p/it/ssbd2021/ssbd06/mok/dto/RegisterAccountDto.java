@@ -15,9 +15,9 @@ public class RegisterAccountDto {
     @Password
     private String password;
     @Firstname
-    private String firstName;
+    private String firstname;
     @Lastname
-    private String lastName;
+    private String lastname;
     @ContactNumber
     private String contactNumber;
 }

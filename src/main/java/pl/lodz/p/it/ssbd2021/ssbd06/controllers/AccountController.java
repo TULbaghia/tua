@@ -59,21 +59,6 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Zwraca dane konkretnego użytkownika
-     *
-     * @param login login użytkownika
-     * @return dane konta wybranego użytkownika
-     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
-     */
-    @GET
-    @Path("/{login}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response showAccount(@PathParam("login") String login) throws AppBaseException {
-        AccountDto accountDto = accountEndpoint.getAccount(login);
-        return Response.ok().entity(accountDto).build();
-    }
-
-    /**
      * Zwraca dane konta użytkownika, który wygenerował żądanie
      *
      * @return dane konta

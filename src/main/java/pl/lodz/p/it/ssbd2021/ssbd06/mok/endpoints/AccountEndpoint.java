@@ -62,18 +62,6 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     }
 
     /**
-     * Zwraca dane konkretnego użytkownika
-     *
-     * @param login login użytkownika
-     * @return dane konta wybranego użytkownika
-     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
-     */
-    @RolesAllowed("getOtherAccountInfo")
-    public AccountDto getAccount(String login) throws AppBaseException {
-        return accountManager.getAccount(login);
-    }
-
-    /**
      * Zwraca dane konta użytkownika, który wygenerował żądanie
      *
      * @return dane konta

@@ -62,16 +62,6 @@ public interface AccountEndpointLocal extends CallingClass {
     void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException;
 
     /**
-     * Zwraca dane konkretnego użytkownika
-     *
-     * @param login login użytkownika
-     * @return dane konta wybranego użytkownika
-     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
-     */
-    @RolesAllowed("getOtherAccountInfo")
-    AccountDto getAccount(String login) throws AppBaseException;
-
-    /**
      * Zwraca dane konta użytkownika, który wygenerował żądanie
      *
      * @return dane konta

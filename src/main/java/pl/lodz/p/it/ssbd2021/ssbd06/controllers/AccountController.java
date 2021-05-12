@@ -4,6 +4,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -26,11 +27,10 @@ public class AccountController extends AbstractController {
     @PUT
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changeAccountActiveStatus(@NotNull @PathParam("login") @Valid String login) throws AppBaseException {
+    public void changeAccountActiveStatus(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {
         // todo metoda repeat() z abstractController;
         accountEndpoint.blockAccount(login);
     }
-
 
     /**
      * Potwierdza konto użytkownika odpowiadające podanemu kodowi aktywacyjnemu

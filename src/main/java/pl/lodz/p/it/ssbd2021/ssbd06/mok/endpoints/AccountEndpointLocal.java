@@ -70,13 +70,4 @@ public interface AccountEndpointLocal extends CallingClass {
      */
     @RolesAllowed("getOtherAccountInfo")
     AccountDto getAccount(String login) throws AppBaseException;
-
-    /**
-     * Zwraca dane konta użytkownika, który wygenerował żądanie
-     *
-     * @return dane konta
-     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
-     */
-    @RolesAllowed("getOwnAccountInfo")
-    AccountDto getOwnAccountInfo() throws AppBaseException;
 }

@@ -72,18 +72,4 @@ public class AccountController extends AbstractController {
         AccountDto accountDto = accountEndpoint.getAccount(login);
         return Response.ok().entity(accountDto).build();
     }
-
-    /**
-     * Zwraca dane konta użytkownika, który wygenerował żądanie
-     *
-     * @return dane konta
-     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
-     */
-    @GET
-    @Path("/self")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response showAccountInformation() throws AppBaseException {
-        AccountDto accountDto = accountEndpoint.getOwnAccountInfo();
-        return Response.ok().entity(accountDto).build();
-    }
 }

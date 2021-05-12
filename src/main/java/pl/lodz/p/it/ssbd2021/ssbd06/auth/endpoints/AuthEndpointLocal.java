@@ -16,5 +16,8 @@ public interface AuthEndpointLocal {
      */
     String login(String login, String password) throws AppBaseException;
 
+    /**
+     * Zapisuje w dzienniku zdarzeń fakt wylogowanie użytkownika
+     */
     void logout();
 }

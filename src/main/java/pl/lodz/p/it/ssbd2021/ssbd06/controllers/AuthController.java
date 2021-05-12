@@ -57,6 +57,11 @@ public class AuthController {
         }
     }
 
+    /**
+     * Wywoływany w celu zapisania w dzienniku zdarzeń faktu wylogowanie użytkownika
+     *
+     * @return kod odpowiedzi HTTP 200
+     */
     @GET
     @Path("logout")
     public Response logout() {

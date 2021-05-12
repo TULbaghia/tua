@@ -34,6 +34,9 @@ public class AuthEndpoint extends AbstractEndpoint implements AuthEndpointLocal 
         }
     }
 
+    /**
+     * Zapisuje w dzienniku zdarzeń fakt wylogowanie użytkownika
+     */
     @Override
     public void logout() {
         log.info(String.format("User %s was logged out", getLogin()));

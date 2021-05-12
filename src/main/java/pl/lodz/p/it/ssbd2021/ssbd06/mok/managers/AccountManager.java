@@ -1,14 +1,17 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 
+import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.security.PermitAll;
@@ -17,11 +20,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import java.util.UUID;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.UUID;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -146,6 +149,18 @@ public class AccountManager {
         account.setFailedLoginAttemptsCounter(0);
 
         accountFacade.edit(account);
+    }
+
+    /**
+     * Zwraca dane konkretnego użytkownika
+     *
+     * @param login login użytkownika, którego dane chcemy wyświetlić
+     * @return dane konta wybranego użytkownika
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getOtherAccountInfo")
+    public AccountDto getAccount(String login) throws AppBaseException {
+        return Mappers.getMapper(IAccountMapper.class).toAccountDto(accountFacade.findByLogin(login));
     }
 
     private Inet4Address Inet4AddressFromString(String ipAddress) {

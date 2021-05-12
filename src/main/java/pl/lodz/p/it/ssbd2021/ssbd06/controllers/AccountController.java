@@ -2,14 +2,16 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/accounts")
 public class AccountController extends AbstractController {
@@ -56,5 +58,20 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void registerAccount(@NotNull @Valid RegisterAccountDto registerAccountDto) throws AppBaseException {
         accountEndpoint.registerAccount(registerAccountDto);
+    }
+
+    /**
+     * Zwraca dane konkretnego użytkownika
+     *
+     * @param login login użytkownika, którego dane chcemy wyświetlić
+     * @return dane konta wybranego użytkownika
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @GET
+    @Path("/{login}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response showAccount(@PathParam("login") String login) throws AppBaseException {
+        AccountDto accountDto = accountEndpoint.getAccount(login);
+        return Response.ok().entity(accountDto).build();
     }
 }

@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 
 import javax.annotation.security.PermitAll;
@@ -58,4 +59,14 @@ public interface AccountEndpointLocal {
      */
     @PermitAll
     void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException;
+
+    /**
+     * Zwraca dane konkretnego użytkownika
+     *
+     * @param login login użytkownika, którego dane chcemy wyświetlić
+     * @return dane konta wybranego użytkownika
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getOtherAccountInfo")
+    AccountDto getAccount(String login) throws AppBaseException;
 }

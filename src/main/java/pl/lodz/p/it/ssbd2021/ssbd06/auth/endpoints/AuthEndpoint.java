@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AuthValidationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.security.enterprise.credential.Credential;
@@ -38,6 +39,7 @@ public class AuthEndpoint extends AbstractEndpoint implements AuthEndpointLocal 
      * Zapisuje w dzienniku zdarzeń fakt wylogowanie użytkownika
      */
     @Override
+    @RolesAllowed("logoutUser")
     public void logout() {
         log.info(String.format("User %s was logged out", getLogin()));
     }

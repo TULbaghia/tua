@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.auth.endpoints;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 
 @Local
@@ -19,5 +20,6 @@ public interface AuthEndpointLocal {
     /**
      * Zapisuje w dzienniku zdarzeń fakt wylogowanie użytkownika
      */
+    @RolesAllowed("logoutUser")
     void logout();
 }

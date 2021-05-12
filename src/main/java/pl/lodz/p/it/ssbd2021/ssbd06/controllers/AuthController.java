@@ -58,7 +58,7 @@ public class AuthController {
     }
 
     /**
-     * Wywoływany w celu zapisania w dzienniku zdarzeń faktu wylogowanie użytkownika
+     * Wywoływany w celu zapisania w dzienniku zdarzeń faktu wylogowania użytkownika
      *
      * @return kod odpowiedzi HTTP 200
      */

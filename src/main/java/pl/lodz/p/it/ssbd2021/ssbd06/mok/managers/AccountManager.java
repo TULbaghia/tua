@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
@@ -154,13 +155,18 @@ public class AccountManager {
     /**
      * Zwraca dane konkretnego użytkownika
      *
-     * @param login login użytkownika, którego dane chcemy wyświetlić
+     * @param login login użytkownika
      * @return dane konta wybranego użytkownika
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
-    @RolesAllowed("getOtherAccountInfo")
+    @PermitAll
     public AccountDto getAccount(String login) throws AppBaseException {
-        return Mappers.getMapper(IAccountMapper.class).toAccountDto(accountFacade.findByLogin(login));
+        try {
+            return Mappers.getMapper(IAccountMapper.class).toAccountDto(accountFacade.findByLogin(login));
+        }
+        catch (NotFoundException e){
+            throw new NotFoundException(e.getMessage());
+        }
     }
 
     private Inet4Address Inet4AddressFromString(String ipAddress) {

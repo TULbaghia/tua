@@ -64,10 +64,19 @@ public interface AccountEndpointLocal extends CallingClass {
     /**
      * Zwraca dane konkretnego użytkownika
      *
-     * @param login login użytkownika, którego dane chcemy wyświetlić
+     * @param login login użytkownika
      * @return dane konta wybranego użytkownika
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @RolesAllowed("getOtherAccountInfo")
     AccountDto getAccount(String login) throws AppBaseException;
+
+    /**
+     * Zwraca dane konta użytkownika, który wygenerował żądanie
+     *
+     * @return dane konta
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getOwnAccountInfo")
+    AccountDto getOwnAccountInfo() throws AppBaseException;
 }

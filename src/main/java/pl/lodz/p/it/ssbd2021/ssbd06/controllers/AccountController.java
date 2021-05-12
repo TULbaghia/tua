@@ -2,11 +2,10 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -62,7 +61,7 @@ public class AccountController extends AbstractController {
     /**
      * Zwraca dane konkretnego użytkownika
      *
-     * @param login login użytkownika, którego dane chcemy wyświetlić
+     * @param login login użytkownika
      * @return dane konta wybranego użytkownika
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
@@ -71,6 +70,20 @@ public class AccountController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response showAccount(@PathParam("login") String login) throws AppBaseException {
         AccountDto accountDto = accountEndpoint.getAccount(login);
+        return Response.ok().entity(accountDto).build();
+    }
+
+    /**
+     * Zwraca dane konta użytkownika, który wygenerował żądanie
+     *
+     * @return dane konta
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @GET
+    @Path("/self")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response showAccountInformation() throws AppBaseException {
+        AccountDto accountDto = accountEndpoint.getOwnAccountInfo();
         return Response.ok().entity(accountDto).build();
     }
 }

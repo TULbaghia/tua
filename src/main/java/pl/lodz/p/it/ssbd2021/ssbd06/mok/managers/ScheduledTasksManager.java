@@ -36,7 +36,7 @@ public class ScheduledTasksManager {
      * @param time
      * @throws AppBaseException
      */
-    @Schedule(hour = "*", minute = "0", second = "*", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
+    @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private void deleteUnverifiedAccounts(Timer time) throws AppBaseException {
         Calendar calendar1 = Calendar.getInstance();

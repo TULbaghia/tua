@@ -11,8 +11,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Data
-public class ClientDataDto extends RoleDto{
-    public ClientDataDto(Long id, AccessLevel accessLevel, boolean enabled) {
-        super(id, accessLevel, enabled);
+public class ClientDataDto extends RoleDto {
+    public ClientDataDto(Long id, AccessLevel accessLevel, boolean enabled, Long version) {
+        super(id, accessLevel, enabled, version);
     }
 }

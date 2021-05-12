@@ -5,14 +5,14 @@ import {
     Switch
 } from 'react-router-dom';
 import './App.css';
-import NavigationBar from "./components/navbar";
+import NavigationBar from "./components/Navbar";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {fab} from "@fortawesome/free-brands-svg-icons";
 import {faSignInAlt, faUserPlus} from "@fortawesome/free-solid-svg-icons";
-import Home from "./components/home";
-import BlogScreen from "./components/blog";
-import PingPong from "./components/pingpong";
-import Login from "./components/login";
+import Home from "./components/Home";
+import BlogScreen from "./components/Blog";
+import PingPong from "./components/PingPong";
+import Login from "./components/Login";
 
 library.add(fab, faSignInAlt, faUserPlus);
 

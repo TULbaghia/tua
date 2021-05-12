@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.*;
+import java.util.List;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -42,11 +43,11 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         }
     }
 
-    public PendingCode findResetCodeByAccount(Account account) throws AppBaseException {
+    public List<PendingCode> findResetCodesByAccount(Account account) throws AppBaseException {
         try {
-            TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findResetCodeByAccount", PendingCode.class);
+            TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findResetCodesByAccount", PendingCode.class);
             query.setParameter("account", account);
-            return query.getSingleResult();
+            return query.getResultList();
         } catch (NoResultException e) {
             throw NotFoundException.pendingCodeNotFound(e);
         } catch (PersistenceException e) {
@@ -67,11 +68,5 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
     @PermitAll
     public void edit(PendingCode entity) throws AppBaseException {
         super.edit(entity);
-    }
-
-    @PermitAll
-    public void codeUsed(PendingCode pendingCode) throws AppBaseException {
-        pendingCode.setUsed(true);
-        edit(pendingCode);
     }
 }

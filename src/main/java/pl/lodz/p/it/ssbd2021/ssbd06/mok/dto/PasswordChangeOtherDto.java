@@ -3,22 +3,22 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.Password;
-import pl.lodz.p.it.ssbd2021.ssbd06.validation.PenCode;
 
 import javax.validation.constraints.NotNull;
 
 /**
- * Klasa DTO reprezentująca proces resetowania hasła użytkownika
+ * Klasa DTO reprezentująca proces zmiany hasła innego użytkownika
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PasswordResetDto {
+public class PasswordChangeOtherDto {
+    @Login
+    @NotNull
+    private String login;
     @Password
     @NotNull
-    private String password;
-    @PenCode
-    @NotNull
-    private String resetCode;
+    private String givenPassword;
 }

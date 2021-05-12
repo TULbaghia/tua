@@ -70,7 +70,12 @@ public class AccountFacade extends AbstractFacade<Account> {
      */
     @Override
     public List<Account> findAll() throws AppBaseException{
-        return super.findAll();
+        try {
+            return super.findAll();
+        }
+        catch (AppBaseException e){
+            throw new AppBaseException(e.getMessage());
+        }
     }
 
     @Override

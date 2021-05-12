@@ -72,18 +72,18 @@ public interface AccountEndpointLocal {
     /**
      * Wysyła token resetujący hasło użytkownika o podanym emailu.
      *
-     * @param email email użytkownika
+     * @param login login konta, na którego email zostanie wysłana wiadomość dotycząca resetowania
      * @throws AppBaseException gdy nie udało się zaktualizować danych
      */
     @PermitAll
-    void sendResetPassword(String email) throws AppBaseException;
+    void sendResetPassword(String login) throws AppBaseException;
 
     /**
      * Wysyła ponownie token resetujący hasło użytkownika o podanym emailu.
      *
-     * @param email email użytkownika
+     * @param login login konta, na którego email zostanie wysłana wiadomość dotycząca resetowania
      * @throws AppBaseException gdy nie udało się zaktualizować danych
      */
     @PermitAll
-    void sendResetPasswordAgain(String email) throws AppBaseException;
+    void sendResetPasswordAgain(String login) throws AppBaseException;
 }

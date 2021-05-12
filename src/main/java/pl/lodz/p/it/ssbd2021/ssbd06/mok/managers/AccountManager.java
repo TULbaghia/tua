@@ -6,7 +6,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordResetDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
@@ -49,10 +48,6 @@ public class AccountManager {
     @PostConstruct
     private void init() {
         RESET_EXPIRATION_MINUTES = config.getResetExpirationMinutes();
-    }
-
-    public Account findByLogin(String login) throws AppBaseException {
-        return accountFacade.findByLogin(login);
     }
 
     /**
@@ -184,11 +179,13 @@ public class AccountManager {
     /**
      * Resetuje hasło użytkownika
      *
-     * @param passwordResetDto token resetujący i nowe hasło
+     * @param password nowe hasło
+     * @param code token służący resetowniu
      * @throws AppBaseException w przypadku nieudanej operacji
      */
-    public void resetPassword(PasswordResetDto passwordResetDto) throws AppBaseException {
-        PendingCode resetCode = pendingCodeFacade.findByCode(passwordResetDto.getResetCode().getCode());
+    @PermitAll
+    public void resetPassword(String password, String code) throws AppBaseException {
+        PendingCode resetCode = pendingCodeFacade.findByCode(code);
         Account account = accountFacade.findByLogin(resetCode.getAccount().getLogin());
         if(!account.isConfirmed()) throw AccountException.notConfirmed();
         if(!account.isEnabled()) throw AccountException.notEnabled();
@@ -201,7 +198,8 @@ public class AccountManager {
         if(localTime.after(expirationTime)) {
             throw CodeException.codeExpired();
         }
-        pendingCodeFacade.codeUsed(resetCode);
-        changePassword(account, passwordResetDto.getPassword());
+        resetCode.setUsed(true);
+        pendingCodeFacade.edit(resetCode);
+        changePassword(account, password);
     }
 }

@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordResetDto;
@@ -69,26 +68,20 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @PermitAll
     public void resetPassword(PasswordResetDto passwordResetDto) throws AppBaseException {
-        accountManager.resetPassword(passwordResetDto);
+        String password = passwordResetDto.getPassword();
+        String code = passwordResetDto.getResetCode();
+        accountManager.resetPassword(password, code);
     }
 
     @Override
     @PermitAll
-    public void sendResetPassword(String email) throws AppBaseException {
-        Account account = accountManager.findByLogin(email);
-        if(!account.isEnabled()) throw AccountException.notEnabled();
-        if(!account.isConfirmed()) throw AccountException.notConfirmed();
-
-        pendingCodeManager.sendResetPassword(account);
+    public void sendResetPassword(String login) throws AppBaseException {
+        pendingCodeManager.sendResetPassword(login);
     }
 
     @Override
     @PermitAll
-    public void sendResetPasswordAgain(String email) throws AppBaseException {
-        Account account = accountManager.findByLogin(email);
-        if(!account.isEnabled()) throw AccountException.notEnabled();
-        if(!account.isConfirmed()) throw AccountException.notConfirmed();
-
-        pendingCodeManager.sendResetPasswordAgain(account);
+    public void sendResetPasswordAgain(String login) throws AppBaseException {
+        pendingCodeManager.sendResetPasswordAgain(login);
     }
 }

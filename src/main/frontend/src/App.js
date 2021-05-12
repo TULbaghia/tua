@@ -17,16 +17,12 @@ import Login from "./components/login";
 library.add(fab, faSignInAlt, faUserPlus);
 
 class App extends Component {
-    state = {
-        loggedIn: localStorage.getItem('isLogged')
-    }
-
     render() {
         return (
             <div className="App">
                 <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
                     <div>
-                        <NavigationBar isAuthenticated={this.state.loggedIn}/>
+                        <NavigationBar />
                         <Switch>
                             <Route exact path="/" component={Home}/>
                             <Route path="/blog" component={BlogScreen}/>

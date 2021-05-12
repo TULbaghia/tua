@@ -2,23 +2,39 @@ import React, {useState} from "react";
 import logo from "../logo.svg";
 import AuthService from "../AuthService"
 import {useHistory} from "react-router";
+import {useLocale} from "./LoginContext";
 
 const Login = () => {
 
     const history = useHistory();
+    const { token, setToken } = useLocale();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = e => {
         e.preventDefault()
-        AuthService.authorize(email, password)
-        localStorage.setItem("isLogged", "true");
         history.push("/")
+
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ login: email, password: password }),
+        };
+
+        fetch('/resources/auth/auth', requestOptions)
+            .then((res) => res.text())
+            .then((token) => {
+                const tokenBearer = 'Bearer ' + token;
+                setToken(tokenBearer);
+                localStorage.setItem('token', tokenBearer)
+            })
     }
 
-    const handleShowToken = () => {
-        console.log(AuthService.token)
-    }
+    // const handleShowToken = () => {
+    //     console.log(AuthService.token)
+    // }
 
     return (
         <div className="text-center">

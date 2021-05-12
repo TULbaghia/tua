@@ -1,10 +1,13 @@
 import React from "react";
 import AuthService from "../AuthService";
+import {useLocale} from "./LoginContext";
 
 function BlogScreen() {
 
+    const { token, setToken } = useLocale();
+
     const handleShowToken = () => {
-        console.log(AuthService.token)
+        console.log(token)
     }
 
     return (

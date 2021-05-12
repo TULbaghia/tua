@@ -4,21 +4,25 @@ import {LinkContainer} from "react-router-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import AuthService from "../AuthService";
 import {useHistory} from "react-router-dom";
+import {useLocale} from "./LoginContext";
 
 function NavigationBar(props) {
     const history = useHistory();
+    const {token, setToken} = useLocale();
 
     const handleLogout = () => {
-        localStorage.removeItem("isLogged");
         history.push("/login")
         const requestOptions = {
             method: "GET",
             headers: {
-                Authorization: AuthService.token,
+                Authorization: token,
             }
         };
         fetch('/resources/auth/logout', requestOptions)
-            .then((res) => AuthService.setToken(''))
+            .then((res) => {
+                setToken('');
+                localStorage.removeItem('token')
+            })
             .catch(err => console.log(err))
     }
 
@@ -39,7 +43,7 @@ function NavigationBar(props) {
                     </LinkContainer>
                 </Nav>
                 <Nav className="navbar-right">
-                    {isAuthenticated ? (
+                    {token !== '' ? (
                         <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                     ) : (
                         <>

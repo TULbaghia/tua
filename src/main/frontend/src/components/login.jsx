@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import logo from "../logo.svg";
-import AuthService from "../AuthService"
 import {useHistory} from "react-router";
 import {useLocale} from "./LoginContext";
 
@@ -24,17 +23,21 @@ const Login = () => {
         };
 
         fetch('/resources/auth/auth', requestOptions)
-            .then((res) => res.text())
+            .then((res) => {
+                if(res.status !== 202) {
+                    throw Error('Invalid credentials')
+                }
+                return res.text()
+            })
             .then((token) => {
                 const tokenBearer = 'Bearer ' + token;
                 setToken(tokenBearer);
                 localStorage.setItem('token', tokenBearer)
             })
+            .catch(err => {
+                console.log(err.message)
+            })
     }
-
-    // const handleShowToken = () => {
-    //     console.log(AuthService.token)
-    // }
 
     return (
         <div className="text-center">

@@ -1,5 +1,4 @@
 import React from "react";
-import AuthService from "../AuthService";
 import {useLocale} from "./LoginContext";
 
 function BlogScreen() {

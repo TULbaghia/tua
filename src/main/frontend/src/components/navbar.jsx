@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {Navbar, Nav} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import AuthService from "../AuthService";
 import {useHistory} from "react-router-dom";
 import {useLocale} from "./LoginContext";
 
@@ -43,7 +42,7 @@ function NavigationBar(props) {
                     </LinkContainer>
                 </Nav>
                 <Nav className="navbar-right">
-                    {token !== '' ? (
+                    {token!==null && token !== '' ? (
                         <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                     ) : (
                         <>

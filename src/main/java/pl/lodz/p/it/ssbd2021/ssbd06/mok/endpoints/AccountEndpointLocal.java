@@ -2,12 +2,14 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import java.util.Date;
+import java.util.List;
 
 @Local
 public interface AccountEndpointLocal {
@@ -58,4 +60,13 @@ public interface AccountEndpointLocal {
      */
     @PermitAll
     void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException;
+
+    /**
+     * Zwraca listę wszystkich użytkowników systemu reprezentowanych jako DTO.
+     *
+     * @return lista użytkowników w formie DTO
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getAllAccounts")
+    List<AccountDto> getAllAccounts() throws AppBaseException;
 }

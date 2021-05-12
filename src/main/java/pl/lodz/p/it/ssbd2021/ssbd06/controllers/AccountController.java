@@ -2,14 +2,16 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 @Path("/accounts")
 public class AccountController extends AbstractController {
@@ -56,5 +58,17 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void registerAccount(@NotNull @Valid RegisterAccountDto registerAccountDto) throws AppBaseException {
         accountEndpoint.registerAccount(registerAccountDto);
+    }
+
+    /**
+     * Zwraca listę wszystkich użytkowników systemu reprezentowanych jako DTO.
+     *
+     * @return lista użytkowników w formie DTO
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @GET
+    @Path("")
+    public List<AccountDto> getAllAccountsList() throws AppBaseException {
+        return accountEndpoint.getAllAccounts();
     }
 }

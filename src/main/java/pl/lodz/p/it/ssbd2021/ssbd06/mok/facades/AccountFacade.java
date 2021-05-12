@@ -2,7 +2,10 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.facades;
 
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.*;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 
 import javax.annotation.security.PermitAll;
@@ -10,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.*;
+import java.util.List;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -57,6 +61,16 @@ public class AccountFacade extends AbstractFacade<Account> {
         } catch (PersistenceException e) {
             throw DatabaseQueryException.databaseQueryException(e);
         }
+    }
+
+    /**
+     * Zwraca listę wszystkich kont w systemie.
+     * @return lista kont
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @Override
+    public List<Account> findAll() throws AppBaseException{
+        return super.findAll();
     }
 
     @Override

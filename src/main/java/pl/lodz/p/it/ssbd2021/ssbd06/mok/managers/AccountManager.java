@@ -159,7 +159,7 @@ public class AccountManager {
      * @return dane konta wybranego użytkownika
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
-    @RolesAllowed({"getAccountAuthInfo", "getOwnAccountInfo"})
+    @RolesAllowed({"getOtherAccountInfo", "getOwnAccountInfo"})
     public AccountDto getAccount(String login) throws AppBaseException {
         try {
             return Mappers.getMapper(IAccountMapper.class).toAccountDto(accountFacade.findByLogin(login));

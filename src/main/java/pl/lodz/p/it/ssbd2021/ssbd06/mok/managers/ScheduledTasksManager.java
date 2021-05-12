@@ -7,6 +7,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.ejb.*;
 import javax.inject.Inject;
 import java.util.Calendar;
@@ -25,6 +27,8 @@ public class ScheduledTasksManager {
     @Inject
     private EmailSender emailSender;
 
+    @Resource
+    TimerService timerService;
 
     /**
      *  Usuwa konta użytkowników nie potwierdzonych
@@ -32,7 +36,7 @@ public class ScheduledTasksManager {
      * @param time
      * @throws AppBaseException
      */
-    @Schedule(info = "Usuwa nieaktywne konta")
+    @Schedule(hour = "*", minute = "0", second = "*", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private void deleteUnverifiedAccounts(Timer time) throws AppBaseException {
         Calendar calendar1 = Calendar.getInstance();

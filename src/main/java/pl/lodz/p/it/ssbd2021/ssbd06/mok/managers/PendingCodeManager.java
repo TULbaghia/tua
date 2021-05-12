@@ -59,7 +59,7 @@ public class PendingCodeManager {
         pendingCodeFacade.create(pendingCode);
         accountFacade.edit(account);
         emailSender.sendResetPasswordEmail(account.getFirstname(), account.getLogin(), pendingCode.getCode());
-            }
+    }
 
     /**
      * Ponownie wysyła wiadomość dotyczącą resetowania hasła na e-mail odpowiadający kontu.

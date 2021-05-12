@@ -4,6 +4,8 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 
 import javax.inject.Inject;
@@ -28,11 +30,9 @@ public class AccountController extends AbstractController {
     @PUT
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changeAccountActiveStatus(@NotNull @PathParam("login") @Valid String login) throws AppBaseException {
-        // todo metoda repeat() z abstractController;
-        accountEndpoint.blockAccount(login);
+    public void changeAccountActiveStatus(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {
+        repeat(()-> accountEndpoint.blockAccount(login), accountEndpoint);
     }
-
 
     /**
      * Potwierdza konto użytkownika odpowiadające podanemu kodowi aktywacyjnemu
@@ -43,8 +43,7 @@ public class AccountController extends AbstractController {
     @POST
     @Path("/confirm/{code}")
     public void confirm(@PathParam("code") String code) throws AppBaseException {
-        // todo metoda repeat() z abstractController;
-        accountEndpoint.confirmAccount(code);
+        repeat(()-> accountEndpoint.confirmAccount(code), accountEndpoint);
     }
 
     /**
@@ -57,7 +56,7 @@ public class AccountController extends AbstractController {
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     public void registerAccount(@NotNull @Valid RegisterAccountDto registerAccountDto) throws AppBaseException {
-        accountEndpoint.registerAccount(registerAccountDto);
+        repeat(()-> accountEndpoint.registerAccount(registerAccountDto), accountEndpoint);
     }
 
     /**

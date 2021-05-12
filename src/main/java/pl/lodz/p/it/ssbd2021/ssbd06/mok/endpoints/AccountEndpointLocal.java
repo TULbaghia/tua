@@ -4,6 +4,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -12,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Local
-public interface AccountEndpointLocal {
+public interface AccountEndpointLocal extends CallingClass {
     /**
      * Blokuje konto użytkownika o podanym loginie.
      *

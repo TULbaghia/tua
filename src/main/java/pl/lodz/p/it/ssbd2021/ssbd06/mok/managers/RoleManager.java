@@ -50,4 +50,60 @@ public class RoleManager {
         emailSender.sendDenyAccessLevelEmail(account.getFirstname(), account.getLogin(), accessLevel.toString());
     }
 
+    /**
+     * Przyznaje użytkownikowi poziom dostępu.
+     *
+     * @param login       login użytkownika
+     * @param accessLevel poziom dostępu
+     * @throws AppBaseException gdy nie udało się przyznać poziomu dostępu
+     */
+    @RolesAllowed("addAccessLevel")
+    public void grantAccessLevel(String login, AccessLevel accessLevel) throws AppBaseException {
+        Account account = accountFacade.findByLogin(login);
+
+        if (account == null) {
+            throw NotFoundException.accountNotFound();
+        }
+
+        Role role = account.getRoleList().stream()
+                .filter(x -> accessLevel.equals(x.getAccessLevel()))
+                .findFirst()
+                .orElse(null);
+
+        if (role != null) {
+            if (role.isEnabled()) {
+                throw RoleException.alreadyGranted();
+            } else {
+                role.setModifiedBy(accountFacade.findByLogin(servletRequest.getUserPrincipal().getName()));
+            }
+        } else {
+            role = createUserRole(accessLevel);
+            role.setAccount(account);
+            role.setCreatedBy(accountFacade.findByLogin(servletRequest.getUserPrincipal().getName()));
+            account.getRoleList().add(role);
+        }
+        role.setEnabled(true);
+        accountFacade.edit(account);
+        emailSender.sendGrantAccessLevelEmail(account.getFirstname(), account.getLogin(), accessLevel.toString());
+    }
+
+    /**
+     * Tworzy obiekt roli użytkownika w zależności od poziomu dostępu
+     *
+     * @param accessLevel poziom dostępu
+     * @return obiekt roli uzytkownika
+     * @throws RoleException gdy poziom dostępu nie istnieje
+     */
+    private Role createUserRole(AccessLevel accessLevel) throws RoleException {
+        switch (accessLevel) {
+            case ADMIN:
+                return new AdminData();
+            case MANAGER:
+                return new ManagerData();
+            case CLIENT:
+                return new ClientData();
+        }
+        throw RoleException.unsupportedAccessLevel();
+    }
+
 }

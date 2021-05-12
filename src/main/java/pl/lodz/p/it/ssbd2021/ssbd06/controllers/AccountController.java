@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 
 import javax.inject.Inject;
@@ -19,6 +20,9 @@ public class AccountController extends AbstractController {
 
     @Inject
     private AccountEndpointLocal accountEndpoint;
+
+    @Inject
+    private MessageSigner messageSigner;
 
     /**
      * Blokuje konto użytkownika o podanym loginie.
@@ -69,6 +73,9 @@ public class AccountController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response showAccountInformation() throws AppBaseException {
         AccountDto accountDto = accountEndpoint.getOwnAccountInfo();
-        return Response.ok().entity(accountDto).build();
+        return Response.ok()
+                .entity(accountDto)
+                .tag(messageSigner.sign(accountDto))
+                .build();
     }
 }

@@ -18,8 +18,9 @@ public class LoggingInterceptor {
 
     /**
      * Metoda logująca szczegóły wywołania metod do dziennika zdarzeń.
+     *
      * @param invocationContext informację o opakowanej metodzie
-     * @return  wartość zwracana przez opakowywaną metodę
+     * @return wartość zwracana przez opakowywaną metodę
      * @throws Exception wyjątek rzucany przez opakowaną metodę
      */
     @AroundInvoke
@@ -33,7 +34,7 @@ public class LoggingInterceptor {
             for(Object o : invocationContext.getParameters()) {
                 params.append(o.getClass().getSimpleName()).append(", ");
             }
-            params.delete(params.length()-2,params.length());
+            params.delete(params.length() - 2, params.length());
         }
 
         LOGGER.log(Level.INFO, "{0}.{1}({2}) is called by {3}", new Object[]{className, methodName, params.toString(), caller});

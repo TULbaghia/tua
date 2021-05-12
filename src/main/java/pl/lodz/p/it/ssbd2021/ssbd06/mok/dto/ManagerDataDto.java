@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.dto;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 
 /**
@@ -9,11 +11,11 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Data
-public class ManagerDataDto extends RoleDto{
+public class ManagerDataDto extends RoleDto {
     private String hotelName;
 
-    public ManagerDataDto(Long id, AccessLevel accessLevel, boolean enabled, String hotelName) {
-        super(id, accessLevel, enabled);
+    public ManagerDataDto(Long id, AccessLevel accessLevel, boolean enabled, Long version, String hotelName) {
+        super(id, accessLevel, enabled, version);
         this.hotelName = hotelName;
     }
 }

@@ -67,7 +67,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @GET
-    @Path("")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<AccountDto> getAllAccountsList() throws AppBaseException {
         return accountEndpoint.getAllAccounts();
     }

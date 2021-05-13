@@ -3,14 +3,14 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RolesDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.SignatureValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.RoleEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.SignatureValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 
 import javax.inject.Inject;
@@ -18,8 +18,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/accounts")
 public class AccountController extends AbstractController {
@@ -42,8 +42,9 @@ public class AccountController extends AbstractController {
     @PUT
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changeAccountActiveStatus(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {
-        repeat(()-> accountEndpoint.blockAccount(login), accountEndpoint);
+    public void changeAccountActiveStatus(@NotNull @Login @PathParam("login") @Valid String login)
+            throws AppBaseException {
+        repeat(() -> accountEndpoint.blockAccount(login), accountEndpoint);
     }
 
     /**
@@ -69,7 +70,7 @@ public class AccountController extends AbstractController {
     @POST
     @Path("/confirm/{code}")
     public void confirm(@PathParam("code") String code) throws AppBaseException {
-        repeat(()-> accountEndpoint.confirmAccount(code), accountEndpoint);
+        repeat(() -> accountEndpoint.confirmAccount(code), accountEndpoint);
     }
 
     /**
@@ -82,7 +83,7 @@ public class AccountController extends AbstractController {
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     public void registerAccount(@NotNull @Valid RegisterAccountDto registerAccountDto) throws AppBaseException {
-        repeat(()-> accountEndpoint.registerAccount(registerAccountDto), accountEndpoint);
+        repeat(() -> accountEndpoint.registerAccount(registerAccountDto), accountEndpoint);
     }
 
     /**
@@ -95,14 +96,15 @@ public class AccountController extends AbstractController {
     @SignatureValidatorFilterBinding
     @Path("/edit")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void editOwnAccountDetails(@NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+    public void editOwnAccountDetails(@NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto)
+            throws AppBaseException {
         accountEndpoint.editOwnAccountDetails(accountPersonalDetailsDto);
     }
 
     /**
      * Zmienia dane wskazanego konta użytkownika w zakresie: imienia, nazwiska oraz numeru kontaktowego.
      *
-     * @param login login użytkownika, którego konto podlega modyfikacji.
+     * @param login                     login użytkownika, którego konto podlega modyfikacji.
      * @param accountPersonalDetailsDto obiekt konta zmodyfikowany w dostępnym zakresie.
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
@@ -111,7 +113,8 @@ public class AccountController extends AbstractController {
     @Path("/edit/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void editOtherAccountDetails(@NotNull @PathParam("login") String login,
-                                        @NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+                                        @NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto)
+            throws AppBaseException {
         accountEndpoint.editOtherAccountDetails(login, accountPersonalDetailsDto);
     }
 
@@ -159,20 +162,22 @@ public class AccountController extends AbstractController {
      */
     @PATCH
     @Path("/{login}/grant/{accessLevel}")
-    public void grantAccessLevel(@NotNull @Login @PathParam("login") String login, @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
+    public void grantAccessLevel(@NotNull @Login @PathParam("login") String login,
+                                 @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
         roleEndpoint.grantAccessLevel(login, accessLevel);
     }
 
     /**
      * Odbiera uprawnienia użytkownikowi.
      *
-     * @param login identyfikator użytkownika
+     * @param login       identyfikator użytkownika
      * @param accessLevel rola, która zostanie odebrana użytkownikowi
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PATCH
     @Path("/{login}/revoke/{accessLevel}")
-    public void revokeAccessLevel(@NotNull @Login @PathParam("login") String login, @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
+    public void revokeAccessLevel(@NotNull @Login @PathParam("login") String login,
+                                  @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
         roleEndpoint.revokeAccessLevel(login, accessLevel);
     }
 
@@ -200,6 +205,23 @@ public class AccountController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response showAccount(@PathParam("login") String login) throws AppBaseException {
         AccountDto accountDto = accountEndpoint.getAccount(login);
+        return Response.ok()
+                .entity(accountDto)
+                .tag(messageSigner.sign(accountDto))
+                .build();
+    }
+
+    /**
+     * Zwraca dane konta użytkownika, który wygenerował żądanie
+     *
+     * @return dane konta
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @GET
+    @Path("/self")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response showAccountInformation() throws AppBaseException {
+        AccountDto accountDto = accountEndpoint.getOwnAccountInfo();
         return Response.ok()
                 .entity(accountDto)
                 .tag(messageSigner.sign(accountDto))

@@ -113,4 +113,14 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     public AccountDto getAccount(String login) throws AppBaseException {
         return accountManager.getAccount(login);
     }
+    /**
+     * Zwraca dane konta użytkownika, który wygenerował żądanie
+     *
+     * @return dane konta
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getOwnAccountInfo")
+    public AccountDto getOwnAccountInfo() throws AppBaseException {
+        return accountManager.getAccount(super.getLogin());
+    }
 }

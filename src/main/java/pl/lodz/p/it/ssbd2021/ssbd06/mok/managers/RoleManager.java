@@ -55,7 +55,7 @@ public class RoleManager {
         role.setModifiedBy(accountFacade.findByLogin(servletRequest.getUserPrincipal().getName()));
         role.setEnabled(false);
         accountFacade.edit(account);
-        emailSender.sendDenyAccessLevelEmail(account.getFirstname(), account.getLogin(), accessLevel.toString());
+        emailSender.sendDenyAccessLevelEmail(account, accessLevel.toString());
     }
 
     /**
@@ -92,7 +92,7 @@ public class RoleManager {
         }
         role.setEnabled(true);
         accountFacade.edit(account);
-        emailSender.sendGrantAccessLevelEmail(account.getFirstname(), account.getLogin(), accessLevel.toString());
+        emailSender.sendGrantAccessLevelEmail(account, accessLevel.toString());
     }
 
     /**

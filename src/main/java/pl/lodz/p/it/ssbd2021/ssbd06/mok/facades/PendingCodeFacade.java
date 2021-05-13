@@ -31,6 +31,7 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         super(PendingCode.class);
     }
 
+    @PermitAll
     public PendingCode findByCode(String code) throws AppBaseException {
         try {
             TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findByCode", PendingCode.class);
@@ -43,6 +44,7 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         }
     }
 
+    @PermitAll
     public List<PendingCode> findResetCodesByAccount(Account account) throws AppBaseException {
         try {
             TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findResetCodesByAccount", PendingCode.class);

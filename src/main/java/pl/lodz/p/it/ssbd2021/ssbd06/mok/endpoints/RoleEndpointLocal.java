@@ -11,6 +11,16 @@ import javax.ejb.Local;
 public interface RoleEndpointLocal {
 
     /**
+     * Odbiera uprawnienia użytkownikowi.
+     *
+     * @param login      identyfikator użytkownika
+     * @param accessLevel poziom dostępu do odebrania
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @RolesAllowed("deleteAccessLevel")
+    void revokeAccessLevel(String login, AccessLevel accessLevel) throws AppBaseException;
+
+    /**
      * Przyznaje uprawnienia użytkownikowi.
      *
      * @param login      identyfikator użytkownika

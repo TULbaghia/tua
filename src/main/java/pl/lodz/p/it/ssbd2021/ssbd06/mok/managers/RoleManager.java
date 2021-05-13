@@ -28,10 +28,40 @@ public class RoleManager {
     @Inject
     private EmailSender emailSender;
 
+
+    /**
+     * Odbiera użytkownikowi poziom dostępu.
+     *
+     * @param login       login użytkownika
+     * @param accessLevel poziom dostępu
+     * @throws AppBaseException gdy nie udało się odebrać poziomu dostępu
+     */
+    @RolesAllowed("deleteAccessLevel")
+    public void revokeAccessLevel(String login, AccessLevel accessLevel) throws AppBaseException {
+        Account account = accountFacade.findByLogin(login);
+
+        if (account == null) {
+            throw NotFoundException.accountNotFound();
+        }
+
+        Role role = account.getRoleList().stream()
+                .filter(x -> accessLevel.equals(x.getAccessLevel()))
+                .findFirst()
+                .orElse(null);
+
+        if (role == null || !role.isEnabled()) {
+            throw RoleException.alreadyRevoked();
+        }
+        role.setModifiedBy(accountFacade.findByLogin(servletRequest.getUserPrincipal().getName()));
+        role.setEnabled(false);
+        accountFacade.edit(account);
+        emailSender.sendDenyAccessLevelEmail(account.getFirstname(), account.getLogin(), accessLevel.toString());
+    }
+
     /**
      * Przyznaje użytkownikowi poziom dostępu.
      *
-     * @param login login użytkownika
+     * @param login       login użytkownika
      * @param accessLevel poziom dostępu
      * @throws AppBaseException gdy nie udało się przyznać poziomu dostępu
      */
@@ -83,4 +113,5 @@ public class RoleManager {
         }
         throw RoleException.unsupportedAccessLevel();
     }
+
 }

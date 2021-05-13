@@ -183,7 +183,7 @@ public class AccountManager {
      * @return encja użytkownika
      * @throws AppBaseException gdy nie udało się pobrać danych
      */
-    @RolesAllowed({"getOtherAccountInfo", "getOwnAccountInfo", "addAccessLevel"})
+    @RolesAllowed({"getOtherAccountInfo", "getOwnAccountInfo", "addAccessLevel", "deleteAccessLevel"})
     public Account getAccountByLogin(String login) throws AppBaseException {
         return accountFacade.findByLogin(login);
     }

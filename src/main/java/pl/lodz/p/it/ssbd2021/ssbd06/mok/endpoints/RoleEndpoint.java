@@ -1,8 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRoleMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RolesDto;
@@ -37,6 +37,16 @@ public class RoleEndpoint extends AbstractEndpoint implements RoleEndpointLocal 
         }
 
         roleManager.grantAccessLevel(login, accessLevel);
+    }
+
+    @Override
+    @RolesAllowed("deleteAccessLevel")
+    public void revokeAccessLevel(String login, AccessLevel accessLevel) throws AppBaseException {
+        if (!verifyIntegrity(mapToRolesDto(accountManager.getAccountByLogin(login)))) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        roleManager.revokeAccessLevel(login, accessLevel);
     }
 
     @Override

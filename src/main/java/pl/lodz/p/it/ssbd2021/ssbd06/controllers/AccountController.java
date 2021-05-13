@@ -160,4 +160,17 @@ public class AccountController extends AbstractController {
     public void grantAccessLevel(@NotNull @Login @PathParam("login") String login, @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
         roleEndpoint.grantAccessLevel(login, accessLevel);
     }
+
+    /**
+     * Odbiera uprawnienia użytkownikowi.
+     *
+     * @param login identyfikator użytkownika
+     * @param accessLevel rola, która zostanie odebrana użytkownikowi
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @PATCH
+    @Path("/{login}/revoke/{accessLevel}")
+    public void revokeAccessLevel(@NotNull @Login @PathParam("login") String login, @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
+        roleEndpoint.revokeAccessLevel(login, accessLevel);
+    }
 }

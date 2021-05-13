@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 
 public class RoleException extends AppBaseException {
 
+    private static final String ALREADY_REVOKED = "exception.role_exception.already_revoked";
     private static final String ALREADY_GRANTED = "exception.role_exception.already_granted";
     private static final String UNSUPPORTED_ACCESS_LEVEL = "exception.role_exception.unsupported_access_level";
 
@@ -11,6 +12,15 @@ public class RoleException extends AppBaseException {
 
     private RoleException(String message) {
         super(message);
+    }
+
+    /**
+     * Tworzy wyjątek, gdy rola jest już odebrana użytkownikowi.
+     *
+     * @return wyjątek RoleException
+     */
+    public static RoleException alreadyRevoked() {
+        return new RoleException(ALREADY_REVOKED);
     }
 
     /**

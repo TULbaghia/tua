@@ -10,7 +10,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
-import javax.security.enterprise.SecurityContext;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -20,6 +19,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 
 @Stateful
@@ -91,5 +91,11 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
 
         Mappers.getMapper(IAccountMapper.class).toAccount(accountPersonalDetailsDto, editAccount);
         accountManager.editAccountDetails(editAccount);
+    }
+
+    @Override
+    @RolesAllowed("getAllAccounts")
+    public List<AccountDto> getAllAccounts() throws AppBaseException {
+        return accountManager.getAllAccounts();
     }
 }

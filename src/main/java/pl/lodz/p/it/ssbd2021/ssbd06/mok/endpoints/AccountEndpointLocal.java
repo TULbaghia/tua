@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
@@ -10,6 +11,7 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import java.util.Date;
+import java.util.List;
 
 @Local
 public interface AccountEndpointLocal extends CallingClass {
@@ -88,4 +90,13 @@ public interface AccountEndpointLocal extends CallingClass {
      */
     @RolesAllowed("editOtherAccountDetails")
     void editOtherAccountDetails(String login, AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException;
+
+    /**
+     * Zwraca listę wszystkich użytkowników systemu reprezentowanych jako DTO.
+     *
+     * @return lista użytkowników w formie DTO
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getAllAccounts")
+    List<AccountDto> getAllAccounts() throws AppBaseException;
 }

@@ -1,14 +1,17 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 
+import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.security.PermitAll;
@@ -17,11 +20,13 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import java.util.UUID;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -160,6 +165,21 @@ public class AccountManager {
         account.setFailedLoginAttemptsCounter(0);
 
         accountFacade.edit(account);
+    }
+
+    /**
+     * Zwraca listę wszystkich kont w systemie w formacie DTO.
+     *
+     * @return lista kont jako DTO
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getAllAccounts")
+    public List<AccountDto> getAllAccounts() throws AppBaseException {
+        List<AccountDto> resultList = new ArrayList<>();
+        for (Account account: accountFacade.findAll()){
+            resultList.add(Mappers.getMapper(IAccountMapper.class).toAccountDto(account));
+        }
+        return resultList;
     }
 
     private Inet4Address Inet4AddressFromString(String ipAddress) {

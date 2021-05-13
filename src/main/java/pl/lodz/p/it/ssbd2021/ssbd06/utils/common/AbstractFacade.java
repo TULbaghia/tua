@@ -69,7 +69,13 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
         return getEntityManager().find(entityClass, id);
     }
 
-    public List<T> findAll() {
+    /**
+     * Zwraca wszystkie encje
+     *
+     * @return lista encji
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    public List<T> findAll() throws AppBaseException {
         CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();

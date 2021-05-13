@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RolesDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.SignatureValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.RoleEndpointLocal;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 import javax.ws.rs.core.Response;
 
 @Path("/accounts")
@@ -172,5 +174,17 @@ public class AccountController extends AbstractController {
     @Path("/{login}/revoke/{accessLevel}")
     public void revokeAccessLevel(@NotNull @Login @PathParam("login") String login, @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
         roleEndpoint.revokeAccessLevel(login, accessLevel);
+    }
+
+    /**
+     * Zwraca listę wszystkich użytkowników systemu reprezentowanych jako DTO.
+     *
+     * @return lista użytkowników w formie DTO
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<AccountDto> getAllAccountsList() throws AppBaseException {
+        return accountEndpoint.getAllAccounts();
     }
 }

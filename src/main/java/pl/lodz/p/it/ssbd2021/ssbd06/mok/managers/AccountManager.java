@@ -173,7 +173,7 @@ public class AccountManager {
      * @param password nowe hasło
      * @throws AppBaseException gdy nie udało się zaktualizować danych
      */
-    @RolesAllowed("editOwnPassword")
+    @RolesAllowed({"editOwnPassword", "editOtherPassword"})
     public void changePassword(Account account, String password) throws AppBaseException {
         if(PasswordHasher.check(password, account.getPassword())) {
             throw AccountException.samePassword();

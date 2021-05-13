@@ -56,4 +56,16 @@ public class AuthController {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
+
+    /**
+     * Wywoływany w celu zapisania w dzienniku zdarzeń faktu wylogowania użytkownika
+     *
+     * @return kod odpowiedzi HTTP 200
+     */
+    @GET
+    @Path("logout")
+    public Response logout() {
+        authEndpoint.logout();
+        return Response.ok().build();
+    }
 }

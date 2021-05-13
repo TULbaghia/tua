@@ -1,6 +1,14 @@
 import React from "react";
+import {useLocale} from "./LoginContext";
 
 function BlogScreen() {
+
+    const { token, setToken } = useLocale();
+
+    const handleShowToken = () => {
+        console.log(token)
+    }
+
     return (
         <div>
             <h1>Blog</h1>
@@ -15,6 +23,10 @@ function BlogScreen() {
             <h4>Even more blog post</h4>
             <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
                 laborum.</p>
+            {/*TODO: Testing purpose*/}
+            <button onClick={handleShowToken} className="btn btn-lg btn-primary btn-block">
+                Show token
+            </button>
         </div>
     );
 }

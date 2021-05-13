@@ -2,13 +2,16 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -122,5 +125,16 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @RolesAllowed("getOwnAccountInfo")
     public AccountDto getOwnAccountInfo() throws AppBaseException {
         return accountManager.getAccount(super.getLogin());
+    }
+
+    @Override
+    @RolesAllowed("editOwnPassword")
+    public void changePassword(PasswordChangeDto passwordChangeDto) throws AppBaseException {
+        Account account = accountManager.getCurrentUser();
+        AccountDto accountDto = Mappers.getMapper(IAccountMapper.class).toAccountDto(account);
+        if(!verifyIntegrity(accountDto)) throw AppOptimisticLockException.optimisticLockException();
+        if(!PasswordHasher.check(passwordChangeDto.getOldPassword(), account.getPassword())) throw AccountException.passwordsDontMatch();
+
+        accountManager.changePassword(account, passwordChangeDto.getNewPassword());
     }
 }

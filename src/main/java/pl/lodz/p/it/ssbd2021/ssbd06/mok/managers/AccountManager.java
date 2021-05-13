@@ -11,9 +11,9 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.security.PermitAll;
@@ -24,6 +24,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.UUID;
+import javax.security.enterprise.SecurityContext;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -44,6 +45,9 @@ public class AccountManager {
 
     @Inject
     private PendingCodeFacade pendingCodeFacade;
+
+    @Inject
+    private SecurityContext securityContext;
 
     /**
      * Blokuje konto użytkownika o podanym loginie.
@@ -249,5 +253,35 @@ public class AccountManager {
     @PermitAll
     public Account findByLogin(String login) throws AppBaseException {
         return accountFacade.findByLogin(login);
+    }
+
+    /**
+     * Aktualizuje dane związane ze zmianą hasła przez użytkownika
+     *
+     * @param account  konto, dla którego zmienione ma zostać hasło
+     * @param password nowe hasło
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @RolesAllowed({"editOwnPassword", "editOtherPassword"})
+    public void changePassword(Account account, String password) throws AppBaseException {
+        if(PasswordHasher.check(password, account.getPassword())) {
+            throw AccountException.samePassword();
+        }
+        account.setPassword(PasswordHasher.generate(password));
+        accountFacade.edit(account);
+    }
+
+    /**
+     * Zwraca obecnego użytkownika
+     *
+     * @throws AppBaseException gdy operacja się nie powiedzie
+     */
+    @PermitAll
+    public Account getCurrentUser() throws AppBaseException {
+        try {
+            return accountFacade.findByLogin(securityContext.getCallerPrincipal().getName());
+        } catch (AppBaseException e) {
+            return null;
+        }
     }
 }

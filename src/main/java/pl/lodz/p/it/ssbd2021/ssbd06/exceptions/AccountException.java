@@ -4,6 +4,8 @@ public class AccountException extends AppBaseException {
     private static final String ACCOUNT_LOGIN_EXISTS = "exception.account.login_exists";
     private static final String ACCOUNT_CONTACT_NUMBER = "exception.account.contact_number";
     private static final String ACCOUNT_ALREADY_ACTIVATED = "exception.account_already_activated.already_activated";
+    private static final String ACCOUNT_SAME_PASSWORD = "exception.account_same_password.account_same_password";
+    private static final String ACCOUNT_PASSWORDS_DONT_MATCH = "exception.passwords_dont_match.passwords_dont_match";
 
     public AccountException(String message, Throwable cause) {
         super(message, cause);
@@ -40,5 +42,21 @@ public class AccountException extends AppBaseException {
      */
     public static AccountException alreadyActivated() {
         return new AccountException(ACCOUNT_ALREADY_ACTIVATED);
+    }
+
+    /**
+     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że podane nowe hasło jest takie samo jak stare hasło.
+     * @return wyjątek AccountException
+     */
+    public static AccountException samePassword() {
+        return new AccountException(ACCOUNT_SAME_PASSWORD);
+    }
+
+    /**
+     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że podane nowe hasła nie są identyczne.
+     * @return wyjątek AccountException
+     */
+    public static AccountException passwordsDontMatch() {
+        return new AccountException(ACCOUNT_PASSWORDS_DONT_MATCH);
     }
 }

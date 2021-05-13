@@ -32,4 +32,11 @@ public class PasswordHasher implements PasswordHash {
         return DigestUtils.sha256Hex(password);
     }
 
+    public static boolean check(String password, String hashedPassword) {
+        String toVerify = generate(password);
+        if(hashedPassword.equals(toVerify)) {
+            return true;
+        }
+        else return false;
+    }
 }

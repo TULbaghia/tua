@@ -39,6 +39,12 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     }
 
     @Override
+    @RolesAllowed("unblockAccount")
+    public void unblockAccount(String login) throws AppBaseException {
+        accountManager.unblockAccount(login);
+    }
+
+    @Override
     @PermitAll
     public void registerAccount(RegisterAccountDto registerAccountDto) throws AppBaseException {
         Account account = Mappers.getMapper(IAccountMapper.class).toAccount(registerAccountDto);

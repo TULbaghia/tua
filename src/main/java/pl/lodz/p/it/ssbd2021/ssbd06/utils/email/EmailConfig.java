@@ -1,32 +1,40 @@
-package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
+package pl.lodz.p.it.ssbd2021.ssbd06.utils.email;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.PropertyReader;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.i18n.I18n;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.Serializable;
 import java.text.MessageFormat;
+import java.util.Locale;
 
+@ApplicationScoped
 public class EmailConfig implements Serializable {
 
-    private static final String MAIL_BUNDLE_NAME = "emailResources";
+    @Inject
+    private I18n i18n;
+
     private static final String MAIL_CONTENT_SCHEME = "mail.%s.content";
     private static final String MAIL_SUBJECT_SCHEME = "mail.%s.subject";
 
     private static final String MAIL_CONFIG_BUNDLE_NAME = "config";
     private static final String MAIL_CONFIG_PROPERTY_SCHEME = "mail.%s";
 
-    public static String getContentForType(MailType type, String... param) {
+    public String getContentForType(String language, MailType type, String... param) {
         String mailType = String.format(MAIL_CONTENT_SCHEME, type.getValue());
-        String pattern = PropertyReader.getBundleProperty(MAIL_BUNDLE_NAME, mailType);
+        String pattern = i18n.getMessage(new Locale(language), mailType);
         return MessageFormat.format(pattern, (Object[]) param);
     }
 
-    public static String getSubjectForType(MailType type) {
+    public String getSubjectForType(String language, MailType type) {
         String mailType = String.format(MAIL_SUBJECT_SCHEME, type.getValue());
-        return PropertyReader.getBundleProperty(MAIL_BUNDLE_NAME, mailType);
+        return i18n.getMessage(new Locale(language), mailType);
     }
 
-    public static String getConfigProperty(String param) {
+    public String getConfigProperty(String param) {
         String property = String.format(MAIL_CONFIG_PROPERTY_SCHEME, param);
         return PropertyReader.getBundleProperty(MAIL_CONFIG_BUNDLE_NAME, property);
     }

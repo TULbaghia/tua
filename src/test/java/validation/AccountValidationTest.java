@@ -34,7 +34,7 @@ public class AccountValidationTest {
         AccountPersonalDetailsDto account = new AccountPersonalDetailsDto("marek",
                 "L", "123456789");
         Set<ConstraintViolation<AccountPersonalDetailsDto>> cons = VALIDATOR.validate(account);
-        Assert.assertEquals(cons.size(), 2);
+        Assert.assertEquals(cons.size(), 3);
 
         AccountPersonalDetailsDto account2 = new AccountPersonalDetailsDto("Ma",
                 "Lewarekowskilewarkiewiczowskilewandowskilambert", "123456789");

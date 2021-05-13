@@ -161,4 +161,16 @@ public class AccountManager {
         }
         return address;
     }
+
+    /**
+     * Zwraca encję użytkownika
+     *
+     * @param login login użytkownika
+     * @return encja użytkownika
+     * @throws AppBaseException gdy nie udało się pobrać danych
+     */
+    @RolesAllowed({"getOtherAccountInfo", "getOwnAccountInfo", "addAccessLevel"})
+    public Account getAccountByLogin(String login) throws AppBaseException {
+        return accountFacade.findByLogin(login);
+    }
 }

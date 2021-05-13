@@ -45,9 +45,7 @@ public abstract class Role extends AbstractEntity implements Serializable {
     private Long id;
 
     @Getter
-    @NotNull
-    @Size(min = 1, max = 16)
-    @Column(name = "access_level", updatable = false, nullable = false)
+    @Column(name = "access_level", updatable = false, nullable = false, insertable = false)
     @Basic(optional = false)
     @Enumerated(EnumType.STRING)
     private AccessLevel accessLevel;

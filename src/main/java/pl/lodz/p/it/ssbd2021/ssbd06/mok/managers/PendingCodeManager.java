@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -34,6 +35,7 @@ public class PendingCodeManager {
      * @param login login konta, którego resetowanie hasła dotyczy
      * @throws AppBaseException - jeżeli nie uda się wysłać maila
      */
+    @PermitAll
     public void sendResetPassword(String login) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
         if(!account.isEnabled()) throw AccountException.notEnabled();
@@ -67,6 +69,7 @@ public class PendingCodeManager {
      * @param login login konta, którego resetowanie hasła dotyczy
      * @throws AppBaseException - jeżeli nie uda się wysłać maila
      */
+    @PermitAll
     public void sendResetPasswordAgain(String login) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
         if(!account.isEnabled()) throw AccountException.notEnabled();

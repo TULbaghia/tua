@@ -39,7 +39,7 @@ public class AccountManager {
     /**
      * Blokuje konto użytkownika o podanym loginie.
      *
-     * @param login ogin konta, które ma zostać zablokowane.
+     * @param login login konta, które ma zostać zablokowane.
      * @throws AppBaseException gdy nie udało się zablokowanie konta.
      */
     @RolesAllowed("blockAccount")
@@ -49,6 +49,20 @@ public class AccountManager {
         account.setFailedLoginAttemptsCounter(0);
         accountFacade.edit(account);
         emailSender.sendLockAccountEmail(account.getFirstname(), login);
+    }
+
+    /**
+     * Odblokowywuje konto użytkownika o podanym loginie.
+     *
+     * @param login login konta, które ma zostać odblokowane.
+     * @throws AppBaseException gdy nie udało się odblokowanie konta.
+     */
+    @RolesAllowed("unblockAccount")
+    public void unblockAccount(String login) throws AppBaseException {
+        Account account = accountFacade.findByLogin(login);
+        account.setEnabled(true);
+        accountFacade.edit(account);
+        emailSender.sendUnlockAccountEmail(account.getFirstname(), account.getLogin());
     }
 
     /**
@@ -171,6 +185,28 @@ public class AccountManager {
      */
     @RolesAllowed({"getOtherAccountInfo", "getOwnAccountInfo", "addAccessLevel"})
     public Account getAccountByLogin(String login) throws AppBaseException {
+        return accountFacade.findByLogin(login);
+    }
+
+    /**
+     * Zmienia dane użytkownika wykonującego przypadek użycia w zakresie: imienia, nazwiska oraz numeru kontaktowego.
+     *
+     * @param account obiekt konta zmodyfikowany w dostępnym zakresie.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @RolesAllowed({"editOwnAccountDetails", "editOtherAccountDetails"})
+    public void editAccountDetails(Account account) throws AppBaseException {
+        accountFacade.edit(account);
+    }
+
+    /**
+     * Wyszukuje obiekt Acccount o podanym loginie.
+     *
+     * @param login login wyszukiwanego konta użytkownika.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @PermitAll
+    public Account findByLogin(String login) throws AppBaseException {
         return accountFacade.findByLogin(login);
     }
 }

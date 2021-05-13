@@ -1,20 +1,20 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {
     BrowserRouter as Router,
     Route,
     Switch
 } from 'react-router-dom';
 import './App.css';
-import NavigationBar from "./components/navbar";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { fab } from "@fortawesome/free-brands-svg-icons";
-import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
-import Home from "./components/home";
-import BlogScreen from "./components/blog";
-import AboutScreen from "./components/about";
-import PingPong from "./components/pingpong";
+import NavigationBar from "./components/Navbar";
+import {library} from "@fortawesome/fontawesome-svg-core";
+import {fab} from "@fortawesome/free-brands-svg-icons";
+import {faSignInAlt, faUserPlus} from "@fortawesome/free-solid-svg-icons";
+import Home from "./components/Home";
+import BlogScreen from "./components/Blog";
+import PingPong from "./components/PingPong";
+import Login from "./components/Login";
 
-library.add(fab, faSignInAlt);
+library.add(fab, faSignInAlt, faUserPlus);
 
 class App extends Component {
     render() {
@@ -22,11 +22,11 @@ class App extends Component {
             <div className="App">
                 <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
                     <div>
-                        <NavigationBar/>
+                        <NavigationBar />
                         <Switch>
                             <Route exact path="/" component={Home}/>
                             <Route path="/blog" component={BlogScreen}/>
-                            <Route path="/about" component={AboutScreen}/>
+                            <Route path="/login" component={Login}/>
                             <Route path="/pong" component={PingPong}/>
                         </Switch>
                     </div>
@@ -35,9 +35,6 @@ class App extends Component {
         );
     }
 }
-
-
-
 
 
 export default App;

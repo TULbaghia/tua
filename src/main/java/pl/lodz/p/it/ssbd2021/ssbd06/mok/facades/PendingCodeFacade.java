@@ -6,12 +6,17 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
 
+import org.hibernate.exception.ConstraintViolationException;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
+
+import javax.annotation.security.PermitAll;
+import java.util.List;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class})
@@ -30,6 +35,7 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         super(PendingCode.class);
     }
 
+    @PermitAll
     public PendingCode findByCode(String code) throws AppBaseException {
         try {
             TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findByCode", PendingCode.class);
@@ -40,5 +46,33 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         } catch (PersistenceException e) {
             throw DatabaseQueryException.databaseQueryException(e);
         }
+    }
+
+    @PermitAll
+    public List<PendingCode> findResetCodesByAccount(Account account) throws AppBaseException {
+        try {
+            TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findResetCodesByAccount", PendingCode.class);
+            query.setParameter("account", account);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            throw NotFoundException.pendingCodeNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
+    }
+
+    @Override
+    public void create(PendingCode entity) throws AppBaseException {
+        try {
+            super.create(entity);
+        } catch (ConstraintViolationException e) {
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
+    }
+
+    @Override
+    @PermitAll
+    public void edit(PendingCode entity) throws AppBaseException {
+        super.edit(entity);
     }
 }

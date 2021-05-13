@@ -6,6 +6,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeOtherDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordResetDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RolesDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
@@ -66,7 +68,7 @@ public class AccountController extends AbstractController {
      * Potwierdza konto użytkownika odpowiadające podanemu kodowi aktywacyjnemu
      *
      * @param code kod aktywacyjny konta
-     * @throws AppBaseException gdzy potwierdzenie konta się nie powiodło
+     * @throws AppBaseException gdy potwierdzenie konta się nie powiodło
      */
     @POST
     @Path("/confirm/{code}")
@@ -241,5 +243,55 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void changePassword(@NotNull @Valid PasswordChangeDto passwordChangeDto) throws AppBaseException {
         accountEndpoint.changePassword(passwordChangeDto);
+    }
+
+    /**
+     * Resetuje hasło użytkownika w systemie.
+     *
+     * @param passwordResetDto obiekt zawierający dane wymagane do resetowania hasła
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @POST
+    @Path("/reset/{code}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void resetPassword(@NotNull @Valid PasswordResetDto passwordResetDto) throws AppBaseException {
+        accountEndpoint.resetPassword(passwordResetDto);
+    }
+
+    /**
+     * Wysyła na istniejący w systemie email wiadomość o resetowaniu hasła.
+     *
+     * @param login login konta, na którego email zostanie wysłana wiadomość dotycząca resetowania
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @PUT
+    @Path("/{login}/reset")
+    public void sendResetPassword(@NotNull @PathParam("login") @Valid String login) throws AppBaseException {
+        accountEndpoint.sendResetPassword(login);
+    }
+
+    /**
+     * Wysyła ponownie na istniejący w systemie email wiadomość o resetowaniu hasła.
+     *
+     * @param login login konta, na którego email zostanie wysłana wiadomość dotycząca resetowania
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @PUT
+    @Path("/{login}/resetagain")
+    public void sendResetPasswordAgain(@NotNull @PathParam("login") @Valid String login) throws AppBaseException {
+        accountEndpoint.sendResetPasswordAgain(login);
+    }
+
+    /**
+     * Zmienia hasło innego użytkownika w systemie.
+     *
+     * @param passwordChangeOtherDto obiekt zawierający dane wymagane do zmiany hasła innego użytkownika
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @PUT
+    @Path("/other/{login}/password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void changeOtherPassword(@NotNull @Valid PasswordChangeOtherDto passwordChangeOtherDto) throws AppBaseException {
+        accountEndpoint.changeOtherPassword(passwordChangeOtherDto);
     }
 }

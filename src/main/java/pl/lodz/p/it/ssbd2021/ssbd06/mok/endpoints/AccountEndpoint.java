@@ -9,9 +9,12 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeOtherDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordResetDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.PendingCodeManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -34,6 +37,9 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
 
     @Inject
     private AccountManager accountManager;
+
+    @Inject
+    private PendingCodeManager pendingCodeManager;
 
     @Inject
     private HttpServletRequest servletRequest;
@@ -136,5 +142,33 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
         if(!PasswordHasher.check(passwordChangeDto.getOldPassword(), account.getPassword())) throw AccountException.passwordsDontMatch();
 
         accountManager.changePassword(account, passwordChangeDto.getNewPassword());
+    }
+
+    @Override
+    @PermitAll
+    public void resetPassword(PasswordResetDto passwordResetDto) throws AppBaseException {
+        String password = passwordResetDto.getPassword();
+        String code = passwordResetDto.getResetCode();
+        accountManager.resetPassword(password, code);
+    }
+
+    @Override
+    @PermitAll
+    public void sendResetPassword(String login) throws AppBaseException {
+        pendingCodeManager.sendResetPassword(login);
+    }
+
+    @Override
+    @PermitAll
+    public void sendResetPasswordAgain(String login) throws AppBaseException {
+        pendingCodeManager.sendResetPasswordAgain(login);
+    }
+
+    @Override
+    @RolesAllowed("editOtherPassword")
+    public void changeOtherPassword(PasswordChangeOtherDto passwordChangeOtherDto) throws AppBaseException {
+        pendingCodeManager.sendResetPassword(passwordChangeOtherDto.getLogin());
+        Account account = accountManager.findByLogin(passwordChangeOtherDto.getLogin());
+        accountManager.changePassword(account, passwordChangeOtherDto.getGivenPassword());
     }
 }

@@ -15,7 +15,9 @@ import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CodeConfig;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -28,6 +30,8 @@ import javax.security.enterprise.SecurityContext;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +52,21 @@ public class AccountManager {
 
     @Inject
     private SecurityContext securityContext;
+
+    @Inject
+    private CodeConfig config;
+
+    private static int RESET_EXPIRATION_MINUTES;
+
+    @PostConstruct
+    private void init() {
+        RESET_EXPIRATION_MINUTES = config.getResetExpirationMinutes();
+    }
+
+    @PermitAll
+    public Account findByLogin(String login) throws AppBaseException {
+        return accountFacade.findByLogin(login);
+    }
 
     /**
      * Blokuje konto użytkownika o podanym loginie.
@@ -283,5 +302,32 @@ public class AccountManager {
         } catch (AppBaseException e) {
             return null;
         }
+    }
+
+    /**
+     * Resetuje hasło użytkownika
+     *
+     * @param password nowe hasło
+     * @param code token służący resetowniu
+     * @throws AppBaseException w przypadku nieudanej operacji
+     */
+    @PermitAll
+    public void resetPassword(String password, String code) throws AppBaseException {
+        PendingCode resetCode = pendingCodeFacade.findByCode(code);
+        Account account = accountFacade.findByLogin(resetCode.getAccount().getLogin());
+        if(!account.isConfirmed()) throw AccountException.notConfirmed();
+        if(!account.isEnabled()) throw AccountException.notEnabled();
+
+        if(resetCode.getCodeType().toString() != "PASSWORD_RESET") {
+            throw CodeException.codeInvalid();
+        }
+        Date expirationTime = new Date(resetCode.getCreationDate().getTime() + (RESET_EXPIRATION_MINUTES * 60000));
+        Date localTime = Timestamp.valueOf(LocalDateTime.now());
+        if(localTime.after(expirationTime)) {
+            throw CodeException.codeExpired();
+        }
+        resetCode.setUsed(true);
+        pendingCodeFacade.edit(resetCode);
+        changePassword(account, password);
     }
 }

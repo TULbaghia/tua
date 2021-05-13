@@ -5,6 +5,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeOtherDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordResetDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
@@ -127,4 +129,40 @@ public interface AccountEndpointLocal extends CallingClass {
      */
     @RolesAllowed("editOwnPassword")
     void changePassword(PasswordChangeDto passwordChangeDto) throws AppBaseException;
+
+    /**
+     * Resetuje hasło użytkownika.
+     *
+     * @param passwordResetDto obiekt zawierający dane wymagane do resetowania hasła
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @PermitAll
+    void resetPassword(PasswordResetDto passwordResetDto) throws AppBaseException;
+
+    /**
+     * Wysyła token resetujący hasło użytkownika o podanym emailu.
+     *
+     * @param login login konta, na którego email zostanie wysłana wiadomość dotycząca resetowania
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @PermitAll
+    void sendResetPassword(String login) throws AppBaseException;
+
+    /**
+     * Wysyła ponownie token resetujący hasło użytkownika o podanym emailu.
+     *
+     * @param login login konta, na którego email zostanie wysłana wiadomość dotycząca resetowania
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @PermitAll
+    void sendResetPasswordAgain(String login) throws AppBaseException;
+
+    /**
+     * Zmienia hasło innego użytkownika.
+     *
+     * @param passwordChangeOtherDto obiekt zawierający dane wymagane do zmiany hasła
+     * @throws AppBaseException gdy nie udało się zaktualizować danych
+     */
+    @RolesAllowed("editOtherPassword")
+    void changeOtherPassword(PasswordChangeOtherDto passwordChangeOtherDto) throws AppBaseException;
 }

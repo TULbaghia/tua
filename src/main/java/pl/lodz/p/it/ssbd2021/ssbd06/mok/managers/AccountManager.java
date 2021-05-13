@@ -11,8 +11,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CodeConfig;
@@ -61,11 +61,6 @@ public class AccountManager {
     @PostConstruct
     private void init() {
         RESET_EXPIRATION_MINUTES = config.getResetExpirationMinutes();
-    }
-
-    @PermitAll
-    public Account findByLogin(String login) throws AppBaseException {
-        return accountFacade.findByLogin(login);
     }
 
     /**

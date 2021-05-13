@@ -59,12 +59,11 @@ public class PendingCodeManager {
         pendingCode.setAccount(account);
         pendingCode.setCodeType(CodeType.PASSWORD_RESET);
         pendingCode.setCreatedBy(account);
-
         account.getPendingCodeList().add(pendingCode);
 
         pendingCodeFacade.create(pendingCode);
         accountFacade.edit(account);
-        emailSender.sendResetPasswordEmail(account.getFirstname(), account.getLogin(), pendingCode.getCode());
+        emailSender.sendResetPasswordEmail(account, pendingCode.getCode());
     }
 
     /**
@@ -94,6 +93,6 @@ public class PendingCodeManager {
 
         pendingCodeFacade.create(pendingCode);
         accountFacade.edit(account);
-        emailSender.sendResetPasswordEmail(account.getFirstname(), account.getLogin(), pendingCode.getCode());
+        emailSender.sendResetPasswordEmail(account, pendingCode.getCode());
     }
 }

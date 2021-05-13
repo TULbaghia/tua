@@ -3,8 +3,8 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.SignatureValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
@@ -67,9 +67,25 @@ public class AccountController extends AbstractController {
      */
     @PUT
     @SignatureValidatorFilterBinding
-    @Path("/self/edit")
+    @Path("/edit")
     @Consumes(MediaType.APPLICATION_JSON)
     public void editOwnAccountDetails(@NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
         accountEndpoint.editOwnAccountDetails(accountPersonalDetailsDto);
+    }
+
+    /**
+     * Zmienia dane wskazanego konta użytkownika w zakresie: imienia, nazwiska oraz numeru kontaktowego.
+     *
+     * @param login login użytkownika, którego konto podlega modyfikacji.
+     * @param accountPersonalDetailsDto obiekt konta zmodyfikowany w dostępnym zakresie.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @PUT
+    @SignatureValidatorFilterBinding
+    @Path("/edit/{login}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void editOtherAccountDetails(@NotNull @PathParam("login") String login,
+                                        @NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+        accountEndpoint.editOtherAccountDetails(login, accountPersonalDetailsDto);
     }
 }

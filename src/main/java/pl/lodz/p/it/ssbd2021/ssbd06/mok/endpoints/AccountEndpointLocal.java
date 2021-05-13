@@ -69,4 +69,14 @@ public interface AccountEndpointLocal extends CallingClass {
      */
     @RolesAllowed("editOwnAccountDetails")
     void editOwnAccountDetails(AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException;
+
+    /**
+     * Zmienia dane wskazanego konta użytkownika użytkownika w zakresie: imienia, nazwiska oraz numeru kontaktowego.
+     *
+     * @param login login użytkownika, którego konto podlega modyfikacji.
+     * @param accountPersonalDetailsDto obiekt konta zmodyfikowany w dostępnym zakresie.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @RolesAllowed("editOtherAccountDetails")
+    void editOtherAccountDetails(String login, AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException;
 }

@@ -50,6 +50,7 @@ public class AccountManager {
         RESET_EXPIRATION_MINUTES = config.getResetExpirationMinutes();
     }
 
+    @PermitAll
     public Account findByLogin(String login) throws AppBaseException {
         return accountFacade.findByLogin(login);
     }

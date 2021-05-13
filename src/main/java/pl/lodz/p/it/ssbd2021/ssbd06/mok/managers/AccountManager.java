@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
@@ -29,7 +30,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class})
@@ -71,7 +71,7 @@ public class AccountManager {
         Account account = accountFacade.findByLogin(login);
         account.setEnabled(true);
         accountFacade.edit(account);
-        emailSender.sendUnlockAccountEmail(account.getFirstname(), account.getLogin());
+        emailSender.sendUnlockAccountEmail(account);
     }
 
     /**
@@ -184,6 +184,23 @@ public class AccountManager {
             resultList.add(Mappers.getMapper(IAccountMapper.class).toAccountDto(account));
         }
         return resultList;
+    }
+
+    /**
+     * Zwraca dane konkretnego użytkownika
+     *
+     * @param login login użytkownika
+     * @return dane konta wybranego użytkownika
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed({"getOwnAccountInfo", "getOtherAccountInfo"})
+    public AccountDto getAccount(String login) throws AppBaseException {
+        try {
+            return Mappers.getMapper(IAccountMapper.class).toAccountDto(accountFacade.findByLogin(login));
+        }
+        catch (NotFoundException e){
+            throw NotFoundException.accountNotFound(e.getCause());
+        }
     }
 
     private Inet4Address Inet4AddressFromString(String ipAddress) {

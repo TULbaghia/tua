@@ -187,4 +187,22 @@ public class AccountController extends AbstractController {
     public List<AccountDto> getAllAccountsList() throws AppBaseException {
         return accountEndpoint.getAllAccounts();
     }
+
+    /**
+     * Zwraca dane konkretnego użytkownika
+     *
+     * @param login login użytkownika
+     * @return dane konta wybranego użytkownika
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @GET
+    @Path("/{login}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response showAccount(@PathParam("login") String login) throws AppBaseException {
+        AccountDto accountDto = accountEndpoint.getAccount(login);
+        return Response.ok()
+                .entity(accountDto)
+                .tag(messageSigner.sign(accountDto))
+                .build();
+    }
 }

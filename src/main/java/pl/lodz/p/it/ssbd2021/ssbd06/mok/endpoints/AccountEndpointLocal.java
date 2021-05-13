@@ -99,4 +99,14 @@ public interface AccountEndpointLocal extends CallingClass {
      */
     @RolesAllowed("getAllAccounts")
     List<AccountDto> getAllAccounts() throws AppBaseException;
+
+    /**
+     * Zwraca dane konkretnego użytkownika
+     *
+     * @param login login użytkownika
+     * @return dane konta wybranego użytkownika
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getOtherAccountInfo")
+    AccountDto getAccount(String login) throws AppBaseException;
 }

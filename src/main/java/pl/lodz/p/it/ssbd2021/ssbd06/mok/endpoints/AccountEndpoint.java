@@ -3,10 +3,16 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageVerifier;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.SignatureValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
+import javax.security.enterprise.SecurityContext;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -16,6 +22,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+
+import static pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException.optimisticLockException;
 
 
 @Stateful
@@ -27,6 +35,9 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
 
     @Inject
     private HttpServletRequest servletRequest;
+
+    @Inject
+    private SecurityContext securityContext;
 
     @Override
     @RolesAllowed("blockAccount")
@@ -58,5 +69,20 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @PermitAll
     public void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
         accountManager.updateInvalidAuth(login, ipAddress, authDate);
+    }
+
+    @Override
+    @RolesAllowed("editOwnAccountDetails")
+    public void editOwnAccountDetails(AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+        String authUser = securityContext.getCallerPrincipal().getName();
+        Account editAccount = accountManager.findByLogin(authUser);
+
+        AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(editAccount);
+        if (!verifyIntegrity(accountIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        Mappers.getMapper(IAccountMapper.class).toAccount(accountPersonalDetailsDto, editAccount);
+        accountManager.editAccountDetails(editAccount);
     }
 }

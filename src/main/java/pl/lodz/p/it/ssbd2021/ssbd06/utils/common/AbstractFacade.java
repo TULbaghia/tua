@@ -54,7 +54,10 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
         } catch (OptimisticLockException e) {
             throw AppOptimisticLockException.optimisticLockException(e);
         } catch (PersistenceException e) {
-            throw DatabaseQueryException.databaseQueryException(e);
+            if (e.getCause() instanceof ConstraintViolationException) {
+                throw (ConstraintViolationException) e.getCause();
+            }
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
         }
     }
 

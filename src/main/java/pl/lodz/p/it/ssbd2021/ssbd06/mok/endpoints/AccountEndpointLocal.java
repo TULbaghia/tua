@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
@@ -59,4 +60,13 @@ public interface AccountEndpointLocal extends CallingClass {
      */
     @PermitAll
     void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException;
+
+    /**
+     * Zmienia dane użytkownika wykonującego przypadek użycia w zakresie: imienia, nazwiska oraz numeru kontaktowego.
+     *
+     * @param accountPersonalDetailsDto obiekt konta zmodyfikowany w dostępnym zakresie.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @RolesAllowed("editOwnAccountDetails")
+    void editOwnAccountDetails(AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException;
 }

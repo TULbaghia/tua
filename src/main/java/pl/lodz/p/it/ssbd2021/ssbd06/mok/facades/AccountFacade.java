@@ -62,6 +62,15 @@ public class AccountFacade extends AbstractFacade<Account> {
     @Override
     @PermitAll
     public void edit(Account entity) throws AppBaseException {
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (ConstraintViolationException e) {
+            if (e.getCause().getMessage().contains(Account.LOGIN_CONSTRAINT)) {
+                throw AccountException.loginExists(e.getCause());
+            } else if (e.getCause().getMessage().contains(Account.CONTACT_NUMBER_CONSTRAINT)) {
+                throw AccountException.contactNumberException(e.getCause());
+            }
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 }

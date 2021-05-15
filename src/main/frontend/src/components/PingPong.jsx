@@ -1,4 +1,5 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import { DefaultApi, Configuration } from "api-client"
 
 class PingPong extends Component {
     state = {
@@ -10,13 +11,20 @@ class PingPong extends Component {
             method: "GET",
         };
 
-        fetch("/resources/javaee8", requestOptions)
-            .then((result) => result.text())
-            .then((text) => {
-                this.setState({text})
-            }, (error) => {
-                console.log(error)
-            })
+
+        const conf = new Configuration()
+        const api = new DefaultApi(conf)
+        api.ping().then((res) => {
+            console.log(res)
+        })
+
+        // fetch("/resources/javaee8", requestOptions)
+        //     .then((result) => result.text())
+        //     .then((text) => {
+        //         this.setState({text})
+        //     }, (error) => {
+        //         console.log(error)
+        //     })
     }
 
     render() {

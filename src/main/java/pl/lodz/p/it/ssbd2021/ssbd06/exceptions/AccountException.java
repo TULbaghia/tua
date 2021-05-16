@@ -9,6 +9,7 @@ public class AccountException extends AppBaseException {
     private static final String ACCOUNT_NOT_ENABLED = "exception.account_not_enabled.account_not_enabled";
     private static final String ACCOUNT_NOT_CONFIRMED = "exception.account_not_confirmed.account_not_confirmed";
     private static final String ACCOUNT_EMAIL_EXISTS = "exception.account.email_exists";
+    private static final String ACCOUNT_IS_CONFIRMED = "exception.account.account_confirmed";
 
     public AccountException(String message, Throwable cause) {
         super(message, cause);
@@ -86,5 +87,14 @@ public class AccountException extends AppBaseException {
      */
     public static AccountException notConfirmed() {
         return new AccountException(ACCOUNT_NOT_CONFIRMED);
+    }
+
+
+    /**
+     *  Tworzy wyjątek reprezentujący niepowodzenie usunięcia konta ze względu na to, że konto zostało zweryfikowane
+     * @return
+     */
+    public static AccountException confirmed(){
+        return new AccountException(ACCOUNT_IS_CONFIRMED);
     }
 }

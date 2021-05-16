@@ -46,6 +46,8 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.EMAIL_CONSTRAINT;
                 query = "SELECT a FROM Account a WHERE a.lastSuccessfulLoginIpAddress = :lastSuccessfulLoginIpAddress"),
         @NamedQuery(name = "Account.findByLastFailedLoginIpAddress",
                 query = "SELECT a FROM Account a WHERE a.lastFailedLoginIpAddress = :lastFailedLoginIpAddress"),
+        @NamedQuery(name = "Account.findUnverified",
+                query = "SELECT a FROM Account a WHERE a.confirmed = false AND a.creationDate < :date")
 })
 @NoArgsConstructor
 @ToString(callSuper = true)

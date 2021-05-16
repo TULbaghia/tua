@@ -75,4 +75,16 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
     public void edit(PendingCode entity) throws AppBaseException {
         super.edit(entity);
     }
+
+    public PendingCode findNotUsedByAccount(Account account) throws AppBaseException {
+        try {
+            TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findNotUsedByAccount", PendingCode.class);
+            query.setParameter("account", account);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            throw NotFoundException.pendingCodeNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
+    }
 }

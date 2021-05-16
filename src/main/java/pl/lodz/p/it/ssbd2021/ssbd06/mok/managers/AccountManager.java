@@ -313,10 +313,10 @@ public class AccountManager {
         if(!account.isConfirmed()) throw AccountException.notConfirmed();
         if(!account.isEnabled()) throw AccountException.notEnabled();
 
-        if(resetCode.getCodeType().toString() != "PASSWORD_RESET") {
+        if(!resetCode.getCodeType().equals(CodeType.PASSWORD_RESET)) {
             throw CodeException.codeInvalid();
         }
-        Date expirationTime = new Date(resetCode.getCreationDate().getTime() + (RESET_EXPIRATION_MINUTES * 60000));
+        Date expirationTime = new Date(resetCode.getCreationDate().getTime() + (RESET_EXPIRATION_MINUTES * 60000L));
         Date localTime = Timestamp.valueOf(LocalDateTime.now());
         if(localTime.after(expirationTime)) {
             throw CodeException.codeExpired();

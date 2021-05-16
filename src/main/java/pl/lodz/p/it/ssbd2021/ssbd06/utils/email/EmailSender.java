@@ -29,9 +29,9 @@ public class EmailSender {
      */
     public void sendActivationEmail(Account account, String activationLink) throws AppBaseException {
         String lang = account.getLanguage();
-        String activationContent = emailConfig.getContentForType(lang, EmailConfig.MailType.ACTIVATE_ACCOUNT, account.getFirstname(), activationLink);
+        String activationContent = emailConfig.getContentForType(lang, EmailConfig.MailType.ACTIVATE_ACCOUNT, account.getLogin(), activationLink);
         String activationSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.ACTIVATE_ACCOUNT);
-        sendEmail(account.getLogin(), activationSubject, activationContent);
+        sendEmail(account.getEmail(), activationSubject, activationContent);
     }
 
     /**
@@ -42,9 +42,9 @@ public class EmailSender {
      */
     public void sendLockAccountEmail(Account account) throws AppBaseException {
         String lang = account.getLanguage();
-        String lockContent = emailConfig.getContentForType(lang, EmailConfig.MailType.LOCK_ACCOUNT, account.getFirstname());
+        String lockContent = emailConfig.getContentForType(lang, EmailConfig.MailType.LOCK_ACCOUNT, account.getLogin());
         String lockSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.LOCK_ACCOUNT);
-        sendEmail(account.getLogin(), lockSubject, lockContent);
+        sendEmail(account.getEmail(), lockSubject, lockContent);
     }
 
     /**
@@ -55,9 +55,9 @@ public class EmailSender {
      */
     public void sendUnlockAccountEmail(Account account) throws AppBaseException {
         String lang = account.getLanguage();
-        String lockContent = emailConfig.getContentForType(lang, EmailConfig.MailType.UNLOCK_ACCOUNT, account.getFirstname());
+        String lockContent = emailConfig.getContentForType(lang, EmailConfig.MailType.UNLOCK_ACCOUNT, account.getLogin());
         String lockSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.UNLOCK_ACCOUNT);
-        sendEmail(account.getLogin(), lockSubject, lockContent);
+        sendEmail(account.getEmail(), lockSubject, lockContent);
     }
 
     /**
@@ -69,9 +69,9 @@ public class EmailSender {
      */
     public void sendGrantAccessLevelEmail(Account account, String accessLevel) throws AppBaseException {
         String lang = account.getLanguage();
-        String grantAccessContent = emailConfig.getContentForType(lang, EmailConfig.MailType.GRANT_ACCESS, account.getFirstname(), accessLevel);
+        String grantAccessContent = emailConfig.getContentForType(lang, EmailConfig.MailType.GRANT_ACCESS, account.getLogin(), accessLevel);
         String grantAccessSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.GRANT_ACCESS);
-        sendEmail(account.getLogin(), grantAccessSubject, grantAccessContent);
+        sendEmail(account.getEmail(), grantAccessSubject, grantAccessContent);
     }
 
     /**
@@ -83,9 +83,9 @@ public class EmailSender {
      */
     public void sendDenyAccessLevelEmail(Account account, String accessLevel) throws AppBaseException {
         String lang = account.getLanguage();
-        String denyAccessContent = emailConfig.getContentForType(lang, EmailConfig.MailType.DENY_ACCESS, account.getFirstname(), accessLevel);
+        String denyAccessContent = emailConfig.getContentForType(lang, EmailConfig.MailType.DENY_ACCESS, account.getLogin(), accessLevel);
         String denyAccessSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.DENY_ACCESS);
-        sendEmail(account.getLogin(), denyAccessSubject, denyAccessContent);
+        sendEmail(account.getEmail(), denyAccessSubject, denyAccessContent);
     }
 
     /**
@@ -97,9 +97,9 @@ public class EmailSender {
      */
     public void sendResetPasswordEmail(Account account, String resetPasswordLink) throws AppBaseException {
         String lang = account.getLanguage();
-        String resetContent = emailConfig.getContentForType(lang, EmailConfig.MailType.RESET_PASSWORD, account.getFirstname(), resetPasswordLink);
+        String resetContent = emailConfig.getContentForType(lang, EmailConfig.MailType.RESET_PASSWORD, account.getLogin(), resetPasswordLink);
         String resetSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.RESET_PASSWORD);
-        sendEmail(account.getLogin(), resetSubject, resetContent);
+        sendEmail(account.getEmail(), resetSubject, resetContent);
     }
 
     /**
@@ -110,9 +110,9 @@ public class EmailSender {
      */
     public void sendDeleteUnconfirmedAccountEmail(Account account) throws AppBaseException {
         String lang = account.getLanguage();
-        String deleteUnconfirmedContent = emailConfig.getContentForType(lang, EmailConfig.MailType.DELETE_UNCONFIRMED, account.getFirstname());
+        String deleteUnconfirmedContent = emailConfig.getContentForType(lang, EmailConfig.MailType.DELETE_UNCONFIRMED, account.getLogin());
         String deleteUnconfirmedSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.DELETE_UNCONFIRMED);
-        sendEmail(account.getLogin(), deleteUnconfirmedSubject, deleteUnconfirmedContent);
+        sendEmail(account.getEmail(), deleteUnconfirmedSubject, deleteUnconfirmedContent);
     }
 
     /**

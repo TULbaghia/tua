@@ -60,7 +60,7 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @PermitAll
     public void registerAccount(RegisterAccountDto registerAccountDto) throws AppBaseException {
         Account account = Mappers.getMapper(IAccountMapper.class).toAccount(registerAccountDto);
-        account.setLanguage(servletRequest.getLocale().getLanguage());
+        account.setLanguage(servletRequest.getLocale().getLanguage().toLowerCase());
         accountManager.register(account);
     }
 

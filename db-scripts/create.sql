@@ -79,6 +79,8 @@ create table account
     last_successful_login_ip_address bytea,
     lastname                         varchar(31)  not null,
     login                            varchar(127) not null,
+    email                            varchar(127) not null,
+    new_email                        varchar(127),
     password                         varchar(64)  not null,
     created_by                       bigint       not null,
     modified_by                      bigint,
@@ -88,6 +90,8 @@ create table account
         unique (contact_number),
     constraint uk_account_login
         unique (login),
+    constraint uk_account_email
+        unique (email),
     constraint fk_account_account_created_by
         foreign key (created_by) references account,
     constraint fk_account_account_modified_by

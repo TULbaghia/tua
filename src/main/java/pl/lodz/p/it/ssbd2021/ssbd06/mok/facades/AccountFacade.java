@@ -49,6 +49,8 @@ public class AccountFacade extends AbstractFacade<Account> {
                 throw AccountException.loginExists(e.getCause());
             } else if (e.getCause().getMessage().contains(Account.CONTACT_NUMBER_CONSTRAINT)) {
                 throw AccountException.contactNumberException(e.getCause());
+            } else if (e.getCause().getMessage().contains(Account.EMAIL_CONSTRAINT)) {
+                throw AccountException.emailExists(e.getCause());
             }
             throw DatabaseQueryException.databaseQueryException(e.getCause());
         }
@@ -86,6 +88,8 @@ public class AccountFacade extends AbstractFacade<Account> {
                 throw AccountException.loginExists(e.getCause());
             } else if (e.getCause().getMessage().contains(Account.CONTACT_NUMBER_CONSTRAINT)) {
                 throw AccountException.contactNumberException(e.getCause());
+            } else if (e.getCause().getMessage().contains(Account.EMAIL_CONSTRAINT)) {
+                throw AccountException.emailExists(e.getCause());
             }
             throw DatabaseQueryException.databaseQueryException(e.getCause());
         }

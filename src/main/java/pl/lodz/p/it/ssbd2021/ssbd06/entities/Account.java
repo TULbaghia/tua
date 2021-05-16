@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,11 +22,13 @@ import java.util.Set;
 
 import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.CONTACT_NUMBER_CONSTRAINT;
 import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.LOGIN_CONSTRAINT;
+import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.EMAIL_CONSTRAINT;
 
 @Entity
 @Table(name = "account", uniqueConstraints = {
         @UniqueConstraint(name = LOGIN_CONSTRAINT, columnNames = {"login"}),
-        @UniqueConstraint(name = CONTACT_NUMBER_CONSTRAINT, columnNames = {"contact_number"})
+        @UniqueConstraint(name = CONTACT_NUMBER_CONSTRAINT, columnNames = {"contact_number"}),
+        @UniqueConstraint(name = EMAIL_CONSTRAINT, columnNames = {"email"})
 }, indexes = {
         @Index(name = "ix_account_created_by", columnList = "created_by"),
         @Index(name = "ix_account_modified_by", columnList = "modified_by")
@@ -53,6 +56,8 @@ public class Account extends AbstractEntity implements Serializable {
 
     public static final String CONTACT_NUMBER_CONSTRAINT = "uk_account_contact_number";
 
+    public static final String EMAIL_CONSTRAINT = "uk_account_email";
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -66,6 +71,17 @@ public class Account extends AbstractEntity implements Serializable {
     @Login
     @Column(name = "login", nullable = false)
     private String login;
+
+    @Setter
+    @NotNull
+    @UserEmail
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Setter
+    @UserEmail
+    @Column(name = "new_email")
+    private String newEmail = null;
 
     @Setter
     @NotNull

@@ -16,6 +16,8 @@ import java.util.Date;
 public class AccountDto implements Signable {
     @Login
     private String login;
+    @UserEmail
+    private String email;
     @Firstname
     private String firstname;
     @Lastname

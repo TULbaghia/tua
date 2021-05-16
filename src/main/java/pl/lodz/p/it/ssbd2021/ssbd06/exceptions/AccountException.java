@@ -8,6 +8,7 @@ public class AccountException extends AppBaseException {
     private static final String ACCOUNT_PASSWORDS_DONT_MATCH = "exception.passwords_dont_match.passwords_dont_match";
     private static final String ACCOUNT_NOT_ENABLED = "exception.account_not_enabled.account_not_enabled";
     private static final String ACCOUNT_NOT_CONFIRMED = "exception.account_not_confirmed.account_not_confirmed";
+    private static final String ACCOUNT_EMAIL_EXISTS = "exception.account.email_exists";
 
     public AccountException(String message, Throwable cause) {
         super(message, cause);
@@ -35,6 +36,16 @@ public class AccountException extends AppBaseException {
      */
     public static AccountException contactNumberException(Throwable cause) {
         return new AccountException(ACCOUNT_CONTACT_NUMBER, cause);
+    }
+
+    /**
+     * Wyjątek reprezentuje błąd podczas zakładania konta związany z zajętym adresem email.
+     *
+     * @param cause wyjątek, który zostanie opakowany
+     * @return wyjątek AccountException
+     */
+    public static AccountException emailExists(Throwable cause) {
+        return new AccountException(ACCOUNT_EMAIL_EXISTS, cause);
     }
 
     /**

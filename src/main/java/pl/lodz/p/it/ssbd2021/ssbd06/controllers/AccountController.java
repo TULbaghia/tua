@@ -45,7 +45,7 @@ public class AccountController extends AbstractController {
     @PUT
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changeAccountActiveStatus(@NotNull @Login @PathParam("login") @Valid String login)
+    public void blockAccount(@NotNull @Login @PathParam("login") @Valid String login)
             throws AppBaseException {
         repeat(() -> accountEndpoint.blockAccount(login), accountEndpoint);
     }

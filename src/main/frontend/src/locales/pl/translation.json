@@ -1,3 +1,9 @@
 {
-    "Example Welcome Message": "Witaj"
+    "Example Welcome Message": "Witaj",
+    "animalHotel": "Hotel dla zwierząt",
+    "mainPage": "Strona główna",
+    "hotels": "Hotele",
+    "regulations": "Regulamin",
+    "signUp": "Zarejestruj się",
+    "signIn": "Zaloguj się"
 }

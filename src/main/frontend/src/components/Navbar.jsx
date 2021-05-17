@@ -30,17 +30,18 @@ function NavigationBar(props) {
     const {isAuthenticated} = props;
     return (
         <Navbar bg="light" expand="lg">
-            <LinkContainer to="/">
-                <Navbar.Brand>Animal Hotel - {t('Example Welcome Message')}</Navbar.Brand>
-            </LinkContainer>
+            <Navbar.Brand>{t('animalHotel')}</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    <LinkContainer to="/blog">
-                        <Nav.Link>Blog</Nav.Link>
+                    <LinkContainer to="/">
+                        <Nav.Link>{t('mainPage')}</Nav.Link>
                     </LinkContainer>
-                    <LinkContainer to="/pong">
-                        <Nav.Link>Pong</Nav.Link>
+                    <LinkContainer to="/hotele">
+                        <Nav.Link>{t('hotels')}</Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to="/regulamin">
+                        <Nav.Link>{t('regulations')}</Nav.Link>
                     </LinkContainer>
                 </Nav>
                 <Nav className="navbar-right">
@@ -48,16 +49,16 @@ function NavigationBar(props) {
                         <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                     ) : (
                         <>
-                            <LinkContainer to="/login">
+                            <LinkContainer to="/signUp">
                                 <Nav.Link>
                                     <FontAwesomeIcon className="mr-1" icon="user-plus"/>
-                                    Signup
+                                    {t('signUp')}
                                 </Nav.Link>
                             </LinkContainer>
                             <LinkContainer to="/login">
                                 <Nav.Link>
                                     <FontAwesomeIcon className="mr-1" icon="sign-in-alt"/>
-                                    Login
+                                    {t('signIn')}
                                 </Nav.Link>
                             </LinkContainer>
                         </>

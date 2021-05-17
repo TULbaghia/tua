@@ -4,12 +4,11 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.PropertyReader;
 
 import javax.ejb.EJBTransactionRolledbackException;
-import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
+import java.util.logging.Level;
 
 /**
  * Do powtarzania transakcji aplikacyjnych.
@@ -23,7 +22,7 @@ public abstract class AbstractController {
     /**
      * Metoda powtarzająca transakcję aplikacyjną
      *
-     * @param executor wyrażenie lambda wywołane po użyciu metody run()
+     * @param executor     wyrażenie lambda wywołane po użyciu metody run()
      * @param callingClass klasa wywołująca metodę przetwarzaną transakcyjnie
      * @throws AppBaseException w momencie niepowodzenia
      */
@@ -39,12 +38,13 @@ public abstract class AbstractController {
                 rollback = true;
             }
             if (callMethodCounter > 0) {
-                log.warning(String.format("Transaction: %s is being repeated %s time", callingClass.getTransactionId(), callMethodCounter));
+                log.log(Level.WARNING, "Transaction with ID: {0} is being repeated {1} time",
+                        new Object[]{callingClass.getTransactionId(), callMethodCounter});
             }
             callMethodCounter++;
         } while (rollback && callMethodCounter <= transactionLimit);
 
-        if(callMethodCounter > transactionLimit) {
+        if (callMethodCounter > transactionLimit) {
             throw TransactionException.unexpectedFail();
         }
     }
@@ -52,9 +52,9 @@ public abstract class AbstractController {
     /**
      * Metoda powtarzająca transakcję aplikacyjną
      *
-     * @param executor wyrażenie lambda wywołane po użyciu metody run()
+     * @param executor     wyrażenie lambda wywołane po użyciu metody run()
      * @param callingClass klasa wywołująca metodę przetwarzaną transakcyjnie
-     * @param <T> typ zwracany
+     * @param <T>          typ zwracany
      * @return wartość zwracana przez funkcję przekazaną w parametrze executor
      * @throws AppBaseException w momencie niepowodzenia
      */
@@ -71,12 +71,13 @@ public abstract class AbstractController {
                 rollback = true;
             }
             if (callMethodCounter > 0) {
-                log.warning(String.format("Transaction: %s is being repeated %s time", callingClass.getTransactionId(), callMethodCounter));
+                log.log(Level.WARNING, "Transaction with ID: {0} is being repeated {1} time",
+                        new Object[]{callingClass.getTransactionId(), callMethodCounter});
             }
             callMethodCounter++;
         } while (rollback && callMethodCounter <= transactionLimit);
 
-        if(callMethodCounter > transactionLimit) {
+        if (callMethodCounter > transactionLimit) {
             throw TransactionException.unexpectedFail();
         }
         return result;

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Setter;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
 @Entity
@@ -28,7 +28,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
     @NamedQuery(name = "BookingLine.findById", query = "SELECT b FROM BookingLine b WHERE b.id = :id"),
     @NamedQuery(name = "BookingLine.findByPricePerDay", query = "SELECT b FROM BookingLine b WHERE b.pricePerDay = :pricePerDay")})
 @NoArgsConstructor
-@ToString(callSuper = true)
 public class BookingLine extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,5 +67,15 @@ public class BookingLine extends AbstractEntity implements Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    @Override public String toString() {
+        return new ToStringBuilder(this)
+                .append(super.toString())
+                .append("id", id)
+                .append("pricePerDay", pricePerDay)
+                .append("booking", booking.getId())
+                .append("box", box.getId())
+                .toString();
     }
 }

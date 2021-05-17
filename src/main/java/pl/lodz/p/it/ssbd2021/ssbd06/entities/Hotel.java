@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
 import javax.persistence.*;
@@ -31,7 +31,6 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel.HOTEL_NAME_CONSTRAINT;
         @NamedQuery(name = "Hotel.findById", query = "SELECT h FROM Hotel h WHERE h.id = :id"),
         @NamedQuery(name = "Hotel.findByName", query = "SELECT h FROM Hotel h WHERE h.name = :name")})
 @NoArgsConstructor
-@ToString(callSuper = true)
 public class Hotel extends AbstractEntity implements Serializable {
 
     public static final String HOTEL_NAME_CONSTRAINT = "uk_hotel_name";
@@ -91,6 +90,19 @@ public class Hotel extends AbstractEntity implements Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    @Override public String toString() {
+        return new ToStringBuilder(this)
+                .append(super.toString())
+                .append("id", id)
+                .append("name", name)
+                .append("rating", rating)
+                .append("address", address)
+                .append("boxList", boxList)
+                .append("managerDataList", managerDataList)
+                .append("city", city.getName())
+                .toString();
     }
 
     @XmlTransient

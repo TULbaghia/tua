@@ -2,9 +2,8 @@ package pl.lodz.p.it.ssbd2021.ssbd06.security;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.SignatureException;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.ETagConfig;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -17,7 +16,7 @@ import javax.inject.Inject;
 public class MessageSigner {
 
     @Inject
-    private ETagConfig config;
+    private Config eTagConfig;
 
     private JWSSigner signer;
 
@@ -27,7 +26,7 @@ public class MessageSigner {
     @PostConstruct
     public void init() {
         try {
-            signer = new MACSigner(config.getEtagSecretKey());
+            signer = new MACSigner(eTagConfig.getEtagSecretKey());
         } catch (KeyLengthException e) {
             throw SignatureException.signerException(e);
         }

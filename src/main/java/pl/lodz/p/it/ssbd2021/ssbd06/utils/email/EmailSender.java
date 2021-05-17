@@ -116,6 +116,20 @@ public class EmailSender {
     }
 
     /**
+     * Wysyła wiadomość z linkiem do zmiany adresu email konta użytkownika.
+     *
+     * @param account odbiorca wiadomości.
+     * @param emailChange link do zmiany adresu email konta użytkownika.
+     * @throws AppBaseException wysyłanie wiadomości email nie powiodło się.
+     */
+    public void sendEmailChange(Account account, String emailChange) throws AppBaseException {
+        String lang = account.getLanguage();
+        String changeContent = emailConfig.getContentForType(lang, EmailConfig.MailType.CHANGE_EMAIL, account.getLogin(), emailChange);
+        String changeSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.CHANGE_EMAIL);
+        sendEmail(account.getEmail(), changeSubject, changeContent);
+    }
+
+    /**
      * Przygotowuje elementy wysyłanej wiadomości email oraz wysyła wiadomość.
      * Tworzenie obiektu wiadomości: ustalenie nadawcy, odbiorcy oraz tematu i zawartości tekstowej wiadomości.
      *

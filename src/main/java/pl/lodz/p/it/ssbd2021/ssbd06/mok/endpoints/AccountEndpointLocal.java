@@ -2,17 +2,14 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeOtherDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordResetDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -165,4 +162,31 @@ public interface AccountEndpointLocal extends CallingClass {
      */
     @RolesAllowed("editOtherPassword")
     void changeOtherPassword(PasswordChangeOtherDto passwordChangeOtherDto) throws AppBaseException;
+
+    /**
+     * Zmienia adres email wskazanego konta użytkownika.
+     *
+     * @param emailDto obiekt zawierający zmodyfikowany adres email oraz aktualny login użytkownika.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @RolesAllowed("editOwnAccountEmail")
+    void editOwnAccountEmail(EmailDto emailDto) throws AppBaseException;
+
+    /**
+     * Zmienia adres email wskazanego konta użytkownika.
+     *
+     * @param emailDto obiekt zawierający zmodyfikowany adres email oraz aktualny login użytkownika.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @RolesAllowed("editOtherAccountEmail")
+    void editOtherAccountEmail(EmailDto emailDto, String login) throws AppBaseException;
+
+    /**
+     * Przy użyciu podanego kodu aktywującego kończy procedurę zmiany adresu email przypisanego do konta.
+     *
+     * @param code żeton zmiany adresu email przypisanego do konta.
+     * @throws AppBaseException proces zmiany adresu email przypisanego do konta zakończył się niepowodzeniem.
+     */
+    @PermitAll
+    void confirmEmail(String code) throws AppBaseException;
 }

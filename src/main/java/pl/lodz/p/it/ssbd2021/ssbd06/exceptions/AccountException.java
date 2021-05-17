@@ -1,5 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 
+/**
+ * Reprezentuje błąd dotyczący encji Account
+ */
 public class AccountException extends AppBaseException {
     private static final String ACCOUNT_LOGIN_EXISTS = "exception.account.login_exists";
     private static final String ACCOUNT_CONTACT_NUMBER = "exception.account.contact_number";
@@ -11,11 +14,11 @@ public class AccountException extends AppBaseException {
     private static final String ACCOUNT_EMAIL_EXISTS = "exception.account.email_exists";
     private static final String ACCOUNT_IS_CONFIRMED = "exception.account.account_confirmed";
 
-    public AccountException(String message, Throwable cause) {
+    private AccountException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public AccountException(String message) {
+    private AccountException(String message) {
         super(message);
     }
 
@@ -88,7 +91,6 @@ public class AccountException extends AppBaseException {
     public static AccountException notConfirmed() {
         return new AccountException(ACCOUNT_NOT_CONFIRMED);
     }
-
 
     /**
      *  Tworzy wyjątek reprezentujący niepowodzenie usunięcia konta ze względu na to, że konto zostało zweryfikowane

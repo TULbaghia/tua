@@ -1,14 +1,17 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 
+/**
+ * Reprezentuje błąd dotyczący kodów aktywacyjnych
+ */
 public class CodeException extends AppBaseException {
     private static final String CODE_EXPIRED = "exception.code.code_expired";
     private static final String CODE_INVALID = "exception.code.code_invalid";
 
-    public CodeException(String message, Throwable cause) {
+    private CodeException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public CodeException(String message) {
+    private CodeException(String message) {
         super(message);
     }
 

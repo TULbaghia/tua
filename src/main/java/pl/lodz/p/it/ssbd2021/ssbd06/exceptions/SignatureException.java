@@ -8,7 +8,7 @@ public class SignatureException extends RuntimeException {
     private static final String SIGNER = "exception.signature.signer";
     private static final String VERIFIER = "exception.signature.verifier";
 
-    public SignatureException(String message, Throwable cause) {
+    private SignatureException(String message, Throwable cause) {
         super(message, cause);
     }
 

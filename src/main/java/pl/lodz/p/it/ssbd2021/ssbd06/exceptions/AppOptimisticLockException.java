@@ -1,14 +1,17 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 
+/**
+ * Reprezentuje błąd dotyczący blokady optymistycznej
+ */
 public class AppOptimisticLockException extends AppBaseException {
 
     private static final String OPTIMISTIC_LOCK = "exception.app_optimistic_lock.optimistic_lock";
 
-    public AppOptimisticLockException(String message, Throwable cause) {
+    private AppOptimisticLockException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public AppOptimisticLockException(String message) {
+    private AppOptimisticLockException(String message) {
         super(message);
     }
 
@@ -16,8 +19,8 @@ public class AppOptimisticLockException extends AppBaseException {
      * Tworzy wyjątek reprezentujący konflikt z mechanizmem blokady optymistycznej.
      * @return wyjątek AppBaseException
      */
-    public static AppBaseException optimisticLockException() {
-        return new AppBaseException(OPTIMISTIC_LOCK);
+    public static AppOptimisticLockException optimisticLockException() {
+        return new AppOptimisticLockException(OPTIMISTIC_LOCK);
     }
 
     /**
@@ -25,7 +28,7 @@ public class AppOptimisticLockException extends AppBaseException {
      * @param cause wyjątek, który zostanie opakowany
      * @return wyjątek AppBaseException
      */
-    public static AppBaseException optimisticLockException(Throwable cause) {
-        return new AppBaseException(OPTIMISTIC_LOCK, cause);
+    public static AppOptimisticLockException optimisticLockException(Throwable cause) {
+        return new AppOptimisticLockException(OPTIMISTIC_LOCK, cause);
     }
 }

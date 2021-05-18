@@ -52,8 +52,7 @@ function Login(props) {
                 <form className="form-signin" onSubmit={handleLogin}>
                     <h1 className="h3">{t('logging')}</h1>
                     <input
-                        type="email"
-                        id="inputEmail"
+                        id="inputLogin"
                         className="form-control"
                         placeholder={t('login')}
                         required

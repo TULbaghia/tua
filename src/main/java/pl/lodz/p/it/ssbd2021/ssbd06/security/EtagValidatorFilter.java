@@ -10,8 +10,8 @@ import javax.ws.rs.ext.Provider;
  * Filtr sprawdzający nagłówek odpowiedzialny za kontrolę wersji
  */
 @Provider
-@SignatureValidatorFilterBinding
-public class SignatureValidatorFilter implements ContainerRequestFilter {
+@EtagValidatorFilterBinding
+public class EtagValidatorFilter implements ContainerRequestFilter {
 
     @Inject
     private MessageVerifier messageVerifier;

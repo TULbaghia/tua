@@ -8,8 +8,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.PendingCodeManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -85,12 +85,14 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
 
     @Override
     @RolesAllowed("editOtherAccountDetails")
-    public void editOtherAccountDetails(String login, AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+    public void editOtherAccountDetails(String login, AccountPersonalDetailsDto accountPersonalDetailsDto)
+            throws AppBaseException {
         processEditDetails(login, accountPersonalDetailsDto);
     }
 
     @RolesAllowed({"editOwnAccountDetails", "editOtherAccountDetails"})
-    private void processEditDetails(String login, AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
+    private void processEditDetails(String login, AccountPersonalDetailsDto accountPersonalDetailsDto)
+            throws AppBaseException {
         Account editAccount = accountManager.findByLogin(login);
         AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(editAccount);
         if (!verifyIntegrity(accountIntegrity)) {
@@ -107,23 +109,13 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
         return accountManager.getAllAccounts();
     }
 
-    /**
-     * Zwraca dane konkretnego użytkownika
-     *
-     * @param login login użytkownika
-     * @return dane konta wybranego użytkownika
-     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
-     */
+    @Override
     @RolesAllowed("getOtherAccountInfo")
     public AccountDto getAccount(String login) throws AppBaseException {
         return accountManager.getAccount(login);
     }
-    /**
-     * Zwraca dane konta użytkownika, który wygenerował żądanie
-     *
-     * @return dane konta
-     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
-     */
+
+    @Override
     @RolesAllowed("getOwnAccountInfo")
     public AccountDto getOwnAccountInfo() throws AppBaseException {
         return accountManager.getAccount(super.getLogin());
@@ -132,12 +124,15 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("editOwnPassword")
     public void changePassword(PasswordChangeDto passwordChangeDto) throws AppBaseException {
-        Account account = accountManager.getCurrentUser();
-        AccountDto accountDto = Mappers.getMapper(IAccountMapper.class).toAccountDto(account);
-        if(!verifyIntegrity(accountDto)) throw AppOptimisticLockException.optimisticLockException();
-        if(!PasswordHasher.check(passwordChangeDto.getOldPassword(), account.getPassword())) throw AccountException.passwordsDontMatch();
-
-        accountManager.changePassword(account, passwordChangeDto.getNewPassword());
+        Account editAccount = accountManager.getCurrentUser();
+        AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(editAccount);
+        if (!verifyIntegrity(accountIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+        if (!PasswordHasher.check(passwordChangeDto.getOldPassword(), editAccount.getPassword())) {
+            throw AccountException.passwordsDontMatch();
+        }
+        accountManager.changePassword(editAccount, passwordChangeDto.getNewPassword());
     }
 
     @Override

@@ -7,7 +7,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.RoleEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.SignatureValidatorFilterBinding;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 
 import javax.inject.Inject;
@@ -90,7 +90,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
     @PUT
-    @SignatureValidatorFilterBinding
+    @EtagValidatorFilterBinding
     @Path("/edit")
     @Consumes(MediaType.APPLICATION_JSON)
     public void editOwnAccountDetails(@NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto)
@@ -106,7 +106,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
     @PUT
-    @SignatureValidatorFilterBinding
+    @EtagValidatorFilterBinding
     @Path("/edit/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void editOtherAccountDetails(@NotNull @Login @PathParam("login") String login,
@@ -158,6 +158,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PATCH
+    @EtagValidatorFilterBinding
     @Path("/user/{login}/grant/{accessLevel}")
     public void grantAccessLevel(@NotNull @Login @PathParam("login") String login,
                                  @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
@@ -172,6 +173,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PATCH
+    @EtagValidatorFilterBinding
     @Path("/user/{login}/revoke/{accessLevel}")
     public void revokeAccessLevel(@NotNull @Login @PathParam("login") String login,
                                   @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
@@ -232,7 +234,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PUT
-    @SignatureValidatorFilterBinding
+    @EtagValidatorFilterBinding
     @Path("/self/{login}/password")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changePassword(@NotNull @Valid PasswordChangeDto passwordChangeDto) throws AppBaseException {
@@ -296,6 +298,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
     @PUT
+    @EtagValidatorFilterBinding
     @Path("/self/edit/email")
     @Consumes(MediaType.APPLICATION_JSON)
     public void editOwnAccountEmail(@NotNull @Valid EmailDto emailDto) throws AppBaseException {
@@ -309,6 +312,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
     @PUT
+    @EtagValidatorFilterBinding
     @Path("/user/edit/email/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void editOtherAccountEmail(@NotNull @Login @PathParam("login") String login,

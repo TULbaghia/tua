@@ -125,8 +125,8 @@ public class EmailSender {
      */
     public void sendEmailChange(Account account, String emailChange) throws AppBaseException {
         String lang = account.getLanguage();
-        String changeContent = emailConfig.getContentForType(lang, EmailConfig.MailType.CHANGE_EMAIL, account.getLogin(), emailChange);
-        String changeSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.CHANGE_EMAIL);
+        String changeContent = emailConfig.getContentForType(lang, Config.MailType.CHANGE_EMAIL, account.getLogin(), emailChange);
+        String changeSubject = emailConfig.getSubjectForType(lang, Config.MailType.CHANGE_EMAIL);
         sendEmail(account.getEmail(), changeSubject, changeContent);
     }
 

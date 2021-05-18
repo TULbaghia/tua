@@ -1,9 +1,11 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
+import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRoleMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RolesDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
@@ -25,9 +27,6 @@ public class RoleEndpoint extends AbstractEndpoint implements RoleEndpointLocal 
 
     @Inject
     private AccountManager accountManager;
-
-    @Inject
-    private IRoleMapper roleMapper;
 
     @Override
     @RolesAllowed("addAccessLevel")
@@ -68,7 +67,7 @@ public class RoleEndpoint extends AbstractEndpoint implements RoleEndpointLocal 
      * @return dto zawierające poziomy dostępu przypisane danemu użytkownikowi
      */
     private RolesDto mapToRolesDto(Account account) {
-        return roleMapper.toRolesDto(account);
+        return Mappers.getMapper(IRoleMapper.class).toRolesDto(account);
     }
 
 }

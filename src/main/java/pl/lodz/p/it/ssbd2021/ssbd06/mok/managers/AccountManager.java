@@ -35,7 +35,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class})
@@ -222,6 +221,12 @@ public class AccountManager {
         }
     }
 
+    /**
+     * Konwertuje adres IP z String na Inet4Address
+     *
+     * @param ipAddress adres ip jako String
+     * @return adres ip jako Inet4Address
+     */
     private Inet4Address Inet4AddressFromString(String ipAddress) {
         Inet4Address address = null;
         try {
@@ -234,18 +239,6 @@ public class AccountManager {
             e.printStackTrace();
         }
         return address;
-    }
-
-    /**
-     * Zwraca encję użytkownika
-     *
-     * @param login login użytkownika
-     * @return encja użytkownika
-     * @throws AppBaseException gdy nie udało się pobrać danych
-     */
-    @RolesAllowed({"getOtherAccountInfo", "getOwnAccountInfo", "addAccessLevel", "deleteAccessLevel"})
-    public Account getAccountByLogin(String login) throws AppBaseException {
-        return accountFacade.findByLogin(login);
     }
 
     /**
@@ -263,7 +256,8 @@ public class AccountManager {
      * Wyszukuje obiekt Acccount o podanym loginie.
      *
      * @param login login wyszukiwanego konta użytkownika.
-     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     * @return encja użytkownika
+     * @throws AppBaseException gdy nie udało się pobrać danych
      */
     @PermitAll
     public Account findByLogin(String login) throws AppBaseException {
@@ -291,7 +285,7 @@ public class AccountManager {
      *
      * @throws AppBaseException gdy operacja się nie powiedzie
      */
-    @PermitAll
+    @RolesAllowed("editOwnPassword")
     public Account getCurrentUser() throws AppBaseException {
         try {
             return accountFacade.findByLogin(securityContext.getCallerPrincipal().getName());

@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AuthValidationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
@@ -25,6 +26,7 @@ public class AuthEndpoint extends AbstractEndpoint implements AuthEndpointLocal 
     private IdentityStoreHandler identityStoreHandler;
 
     @Override
+    @PermitAll
     public String login(String login, String password) throws AppBaseException {
         Credential credential = new UsernamePasswordCredential(login, new Password(password));
         CredentialValidationResult result = identityStoreHandler.validate(credential);

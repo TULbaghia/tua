@@ -72,6 +72,11 @@ public abstract class AbstractEndpoint {
                 getLogin());
     }
 
+    /**
+     * Zwraca login użytkownika
+     *
+     * @return login użytkownika lub 'guest' dla gościa
+     */
     protected String getLogin() {
         Principal principal = securityContext.getCallerPrincipal();
         if (principal != null) {
@@ -80,6 +85,11 @@ public abstract class AbstractEndpoint {
         return "guest";
     }
 
+    /**
+     * Informuje czy ostatnia trasakcja została zatwierdzona
+     *
+     * @return status zatwierdzenia ostatniej transakcji
+     */
     private String getResult() {
         if (lastTransactionRollback) {
             return "rollback";

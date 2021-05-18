@@ -4,10 +4,8 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.PropertyReader;
 
 import javax.ejb.EJBTransactionRolledbackException;
-import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 
@@ -100,6 +98,12 @@ public abstract class AbstractController {
         T run() throws AppBaseException;
     }
 
+    /**
+     * Pozwala odczytać parametr uruchomieniowy z desktryptora wdrożenia
+     *
+     * @param paramName nazwa parametru, który chcemy wczytać
+     * @return wartość wczytanego parametru
+     */
     private String getInitialParameter(String paramName) {
         return servletContext.getInitParameter(paramName);
     }

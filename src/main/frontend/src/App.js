@@ -13,6 +13,7 @@ import Home from "./components/Home";
 import BlogScreen from "./components/Blog";
 import PingPong from "./components/PingPong";
 import Login from "./components/Login";
+import NotFound from "./components/NotFound";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -28,6 +29,7 @@ class App extends Component {
                             <Route path="/blog" component={BlogScreen}/>
                             <Route path="/login" component={Login}/>
                             <Route path="/pong" component={PingPong}/>
+                            <Route component={NotFound}/>
                         </Switch>
                     </div>
                 </Router>

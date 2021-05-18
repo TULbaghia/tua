@@ -48,7 +48,7 @@
 .cat {
   position: absolute;
   align-items: center;
-  top: 20%;
+  top: 150px;
   left: 10%;
   height: 62%;
   width: 82%;
@@ -67,14 +67,16 @@
   line-height: 44px;
   display: flex;
   align-items: center;
+  text-align: left;
   color: #152536;
+  margin: 5%;
 }
 
 .columnLeft {
   background-color: white;
   position: absolute;
   height: 100%;
-  top: 65%;
+  top: 61%;
   width: 55%;
   aspectRatio: 1;
 }
@@ -82,7 +84,7 @@
 .hand {
   position: absolute;
   align-items: center;
-  top: 20%;
+  top: 150px;
   right: 7%;
   height: 62%;
   width: 80%;
@@ -92,7 +94,7 @@
 .textRight {
   position: absolute;
   top: 5%;
-  left: 5%;
+  left: 3%;
   right: 10%;
   font-family: Inter;
   font-style: normal;
@@ -101,7 +103,9 @@
   line-height: 44px;
   display: flex;
   align-items: center;
+  text-align: left;
   color: #152536;
+  margin: 5%;
 }
 
 .columnRight{
@@ -109,7 +113,7 @@
   position: absolute;
   height: 100%;
   right: 0;
-  top: 65%;
+  top: 61%;
   width: 55%;
   aspectRatio: 1;
 }

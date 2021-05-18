@@ -1,0 +1,15 @@
+.floating-box {
+    background: #FFFFFF;
+    color: black;
+    box-shadow: 0 0 0.3rem 0.1rem rgba(0, 0, 0, 0.5);
+    margin: auto;
+    padding: 2.6rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 1.2rem;
+    min-width: 23rem;
+    min-height: 15rem;
+    max-width: 90%;
+}

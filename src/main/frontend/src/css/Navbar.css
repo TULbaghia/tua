@@ -1,0 +1,91 @@
+.name {
+  font-weight: bold;
+}
+
+.signUp {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 4px;
+  position: absolute;
+  right: 170px;
+  top: 10px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+  color: #7749F8;
+  border: 1px solid #7749F8;
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 140px;
+}
+
+.login {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 4px;
+  position: absolute;
+  right: 30px;
+  top: 10px;
+  background: #7749F8;
+  border: 1px solid #7749F8;
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 120px;
+}
+
+.signUpIcon {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 14px;
+  color: #7749F8;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 6px;
+}
+
+.loginIcon {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 14px;
+  color: #FFFFFF;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 6px;
+}
+
+.signUpText {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 14px;
+  color: #7749F8;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 6px;
+}
+
+
+.loginText{
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 14px;
+  color: #FFFFFF;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 6px;
+}

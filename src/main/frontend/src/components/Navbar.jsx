@@ -5,9 +5,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useHistory} from "react-router-dom";
 import {useLocale} from "./LoginContext";
 import { withNamespaces } from 'react-i18next';
+import "../css/Navbar.css";
 
 function NavigationBar(props) {
-    const  {t,i18n} = props
+    const {t,i18n} = props
     const history = useHistory();
     const {token, setToken} = useLocale();
 
@@ -30,7 +31,9 @@ function NavigationBar(props) {
     const {isAuthenticated} = props;
     return (
         <Navbar bg="light" expand="lg">
-            <Navbar.Brand>{t('animalHotel')}</Navbar.Brand>
+            <Navbar.Brand>
+                <div className="name">{t('animalHotel')}</div>
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
@@ -50,15 +53,15 @@ function NavigationBar(props) {
                     ) : (
                         <>
                             <LinkContainer to="/signUp">
-                                <Nav.Link>
-                                    <FontAwesomeIcon className="mr-1" icon="user-plus"/>
-                                    {t('signUp')}
+                                <Nav.Link className="signUp">
+                                    <FontAwesomeIcon className="signUpIcon" icon="user-plus"/>
+                                    <div className="signUpText">{t('signUp')}</div>
                                 </Nav.Link>
                             </LinkContainer>
                             <LinkContainer to="/login">
-                                <Nav.Link>
-                                    <FontAwesomeIcon className="mr-1" icon="sign-in-alt"/>
-                                    {t('signIn')}
+                                <Nav.Link className="login">
+                                    <FontAwesomeIcon className="loginIcon" icon="sign-in-alt"/>
+                                    <div className="loginText">{t('signIn')}</div>
                                 </Nav.Link>
                             </LinkContainer>
                         </>

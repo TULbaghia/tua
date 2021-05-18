@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
@@ -64,5 +66,33 @@ public class ScheduledTasksManager {
     public void sendRepeatedEmailNotification(Account account) throws AppBaseException {
         var activationCode = pendingCodeFacade.findNotUsedByAccount(account);
         emailSender.sendActivationEmail(account, activationCode.getCode());
+    }
+
+    /**
+     *  Ponownie wysyła email z informacją o rozpoczęciu procesu zmiany adresu email dla konta użytkownka.
+     *
+     * @param time
+     * @throws AppBaseException
+     */
+    @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    private void sendRepeatedEmailChange(Timer time) throws AppBaseException {
+        Calendar calendarRemoveCode = Calendar.getInstance();
+        calendarRemoveCode.add(Calendar.HOUR, -2);
+        long expirationDate = calendarRemoveCode.getTimeInMillis();
+        List<Account> accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, expirationDate);
+        for (Account account : accountsUnusedCodes) {
+            PendingCode pc = pendingCodeFacade.findUnusedCodeByAccount(account, CodeType.EMAIL_CHANGE);
+            pendingCodeFacade.remove(pc);
+        }
+
+        Calendar calendarRepeat = Calendar.getInstance();
+        calendarRepeat.add(Calendar.HOUR, -1);
+        expirationDate = calendarRepeat.getTimeInMillis();
+        accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, expirationDate);
+        for (Account account : accountsUnusedCodes) {
+            PendingCode pc = pendingCodeFacade.findUnusedCodeByAccount(account, CodeType.EMAIL_CHANGE);
+            emailSender.sendEmailChange(account, pc.getCode());
+        }
     }
 }

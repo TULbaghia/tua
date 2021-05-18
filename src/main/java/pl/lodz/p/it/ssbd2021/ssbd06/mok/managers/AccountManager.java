@@ -35,6 +35,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class})
@@ -324,5 +325,81 @@ public class AccountManager {
         resetCode.setUsed(true);
         pendingCodeFacade.edit(resetCode);
         changePassword(account, password);
+    }
+
+    /**
+     * Zmienia adres email przypisany do konta użytkownika.
+     * Wysyła żeton na aktualny adres email w celu potwierdzenia procesu zmiany adresu email na nowy.
+     * Sprawdza, czy docelowy email nie jest loginem żadnego z aktualnych użytkowników.
+     *
+     * @param login login użytkownika, którego email podlega zmianie.
+     * @param newEmail nowy adres email.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @RolesAllowed({"editOwnAccountEmail", "editOtherAccountEmail"})
+    public void editAccountEmail(String login, String newEmail) throws AppBaseException {
+        Account accountEmail = accountFacade.findByLogin(login);
+        Account accountExists = null;
+
+        try {
+            accountExists = accountFacade.findByEmail(newEmail);
+        } catch (NotFoundException ignore) {}
+
+        if (accountExists != null) {
+            throw AccountException.emailExists();
+        }
+
+        accountEmail.getPendingCodeList().stream()
+                .filter(x -> x.getCodeType().equals(CodeType.EMAIL_CHANGE) && !x.isUsed())
+                .forEach(x -> x.setUsed(true));
+
+        PendingCode pendingCode = createPendingCode(accountEmail, CodeType.EMAIL_CHANGE);
+        accountEmail.getPendingCodeList().add(pendingCode);
+        accountEmail.setNewEmail(newEmail);
+
+        accountFacade.edit(accountEmail);
+        emailSender.sendEmailChange(accountEmail, pendingCode.getCode());
+    }
+
+    /**
+     * Tworzy obiekt PendingCode o podanym typie.
+     *
+     * @param account konto użytkownika, które ma być właścicielem kodu.
+     * @param codeType typ kodu.
+     */
+    private PendingCode createPendingCode(Account account, CodeType codeType) {
+        PendingCode pendingCode = new PendingCode();
+        pendingCode.setCode(UUID.randomUUID().toString());
+        pendingCode.setUsed(false);
+        pendingCode.setAccount(account);
+        pendingCode.setCodeType(codeType);
+        pendingCode.setCreatedBy(account);
+
+        return pendingCode;
+    }
+
+    /**
+     * Przypisuje nowy adres email do konta użytkownika, które jest właścicielem żetonu. (aktualizacja loginu użytkownika)
+     * Dezaktywuje żeton.
+     * Czyści pole odpowiedzialne za przechowywanie adresu email na potrzeby procesu weryfikacji (pole Account.newEmail).
+     *
+     * @param code żeton zmiany adresu email przypisanego do konta.
+     * @throws AppBaseException proces zmiany adresu email przypisanego do konta zakończył się niepowodzeniem.
+     */
+    @PermitAll
+    public void confirmEmail(String code) throws AppBaseException {
+        PendingCode pendingCode = pendingCodeFacade.findByCode(code);
+        if(pendingCode.getCodeType() != CodeType.EMAIL_CHANGE){
+            throw CodeException.codeInvalid();
+        }
+        if (pendingCode.isUsed()) {
+            throw CodeException.codeExpired();
+        }
+
+        Account account = pendingCode.getAccount();
+        account.setEmail(account.getNewEmail());
+        account.setNewEmail(null);
+        pendingCode.setUsed(true);
+        accountFacade.edit(account);
     }
 }

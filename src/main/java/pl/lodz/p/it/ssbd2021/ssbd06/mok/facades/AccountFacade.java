@@ -69,6 +69,23 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     /**
+     * Zwraca konto o podanym adresie email.
+     * @return obiekt Account.
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
+     */
+    public Account findByEmail(String email) throws AppBaseException {
+        try {
+            TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findByEmail", Account.class);
+            accountTypedQuery.setParameter("email", email);
+            return accountTypedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw NotFoundException.accountNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
+    }
+
+    /**
      * Zwraca listę wszystkich kont w systemie.
      * @return lista kont
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych

@@ -4,8 +4,10 @@ import {LinkContainer} from "react-router-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useHistory} from "react-router-dom";
 import {useLocale} from "./LoginContext";
+import { withNamespaces } from 'react-i18next';
 
 function NavigationBar(props) {
+    const  {t,i18n} = props
     const history = useHistory();
     const {token, setToken} = useLocale();
 
@@ -29,7 +31,7 @@ function NavigationBar(props) {
     return (
         <Navbar bg="light" expand="lg">
             <LinkContainer to="/">
-                <Navbar.Brand>Animal Hotel</Navbar.Brand>
+                <Navbar.Brand>Animal Hotel - {t('Example Welcome Message')}</Navbar.Brand>
             </LinkContainer>
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav">
@@ -67,4 +69,4 @@ function NavigationBar(props) {
     );
 }
 
-export default NavigationBar;
+export default withNamespaces()(NavigationBar);

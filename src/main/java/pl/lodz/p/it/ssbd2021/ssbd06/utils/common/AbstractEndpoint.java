@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
@@ -9,6 +10,7 @@ import javax.ejb.AfterBegin;
 import javax.ejb.AfterCompletion;
 import javax.inject.Inject;
 import javax.security.enterprise.SecurityContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import java.security.Principal;
@@ -30,6 +32,10 @@ public abstract class AbstractEndpoint {
 
     @Inject
     private SecurityContext securityContext;
+
+    @Getter(AccessLevel.PROTECTED)
+    @Inject
+    private HttpServletRequest httpServletRequest;
 
     @Getter
     private String transactionId;
@@ -86,5 +92,4 @@ public abstract class AbstractEndpoint {
         }
         return "commit";
     }
-
 }

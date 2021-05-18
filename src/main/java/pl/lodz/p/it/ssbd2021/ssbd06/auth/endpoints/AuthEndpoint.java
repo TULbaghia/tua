@@ -29,6 +29,8 @@ public class AuthEndpoint extends AbstractEndpoint implements AuthEndpointLocal 
         Credential credential = new UsernamePasswordCredential(login, new Password(password));
         CredentialValidationResult result = identityStoreHandler.validate(credential);
         if(result.getStatus() == CredentialValidationResult.Status.VALID) {
+            log.info(String.format("User: %s has logged in. Session started with address: %s",
+                    login, getHttpServletRequest().getRemoteAddr()));
             return jwtGenerator.generateJWTString(result);
         } else {
             throw AuthValidationException.invalidCredentials();

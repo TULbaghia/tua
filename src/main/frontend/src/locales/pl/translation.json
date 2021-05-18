@@ -1,5 +1,10 @@
 {
     "Example Welcome Message": "Witaj",
     "mainPage": "Strona główna",
-    "cryingCat": "Kot płaczący"
+    "cryingCat": "Kot płaczący",
+    "staringCat": "Kot patrzący",
+    "hamster": "Chomik",
+    "pageNotFound": "NIE ZNALEZIONO STRONY",
+    "forbidden": "BRAK UPRAWNIEŃ",
+    "internal": "WEWNĘTRZNY BŁĄD SERWERA"
 }

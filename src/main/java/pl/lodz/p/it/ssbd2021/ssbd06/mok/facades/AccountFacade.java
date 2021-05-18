@@ -56,6 +56,13 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Wyszukuje konto na podstawie loginu
+     *
+     * @param login login użytkownika
+     * @return obiekt encji konta o podanym loginie
+     * @throws AppBaseException gdy konto nie zostało znalezione, lub wystąpił problem z bazą danych.
+     */
     public Account findByLogin(String login) throws AppBaseException {
         try {
             TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findByLogin", Account.class);

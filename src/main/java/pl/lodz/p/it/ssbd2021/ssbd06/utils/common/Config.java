@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppRuntimeException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.i18n.I18n;
 
 import javax.annotation.PostConstruct;
@@ -40,11 +41,6 @@ public class Config implements Serializable {
     private static final String MAIL_HOST = "mail.host";
     private static final String MAIL_PORT = "mail.port";
     private static final String MAIL_PASSWORD = "mail.password";
-
-//    public String getConfigProperty(String param) {
-//        String property = String.format(MAIL_CONFIG_PROPERTY_SCHEME, param);
-//        return PropertyReader.getBundleProperty(MAIL_CONFIG_BUNDLE_NAME, property);
-//    }
 
     private String get(String key) {
         return properties.getProperty(key);
@@ -110,12 +106,11 @@ public class Config implements Serializable {
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(CONFIG_FILE);
             if (inputStream == null) {
-                throw new FileNotFoundException("Couldn't find file: " + CONFIG_FILE);
+                throw AppRuntimeException.configException();
             }
-
             properties.load(inputStream);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw AppRuntimeException.configException(e);
         }
     }
 

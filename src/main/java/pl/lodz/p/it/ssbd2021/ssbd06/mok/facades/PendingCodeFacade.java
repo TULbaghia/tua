@@ -73,7 +73,11 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
     @Override
     @PermitAll
     public void edit(PendingCode entity) throws AppBaseException {
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (ConstraintViolationException e) {
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
     public PendingCode findNotUsedByAccount(Account account) throws AppBaseException {

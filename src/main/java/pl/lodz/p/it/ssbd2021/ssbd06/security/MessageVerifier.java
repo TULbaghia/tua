@@ -4,7 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.MACVerifier;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.SignatureException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppRuntimeException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 
 import javax.annotation.PostConstruct;
@@ -31,7 +31,7 @@ public class MessageVerifier {
         try {
             verifier = new MACVerifier(eTagConfig.getEtagSecretKey());
         } catch (JOSEException e) {
-            throw SignatureException.verifierException(e);
+            throw AppRuntimeException.verifierException(e);
         }
     }
 
@@ -46,7 +46,7 @@ public class MessageVerifier {
             final JWSObject jwsObject = JWSObject.parse(message);
             return jwsObject.verify(verifier);
         } catch (ParseException | JOSEException e) {
-            throw SignatureException.verifierException(e);
+            throw AppRuntimeException.verifierException(e);
         }
     }
 }

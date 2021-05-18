@@ -5,6 +5,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppRuntimeException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 
 import javax.annotation.PostConstruct;
@@ -43,12 +44,13 @@ public class JWTGenerator {
                     .issuer(JWT_ISS)
                     .build();
 
-            final SignedJWT signedJWT = new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.HS256).type(JOSEObjectType.JWT).build(), claimsSet);
+            final SignedJWT signedJWT =
+                    new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.HS256).type(JOSEObjectType.JWT).build(),
+                            claimsSet);
             signedJWT.sign(signer);
             return signedJWT.serialize();
         } catch (JOSEException e) {
-            e.printStackTrace();
-            return "JWT error";
+            throw AppRuntimeException.jwtException(e);
         }
     }
 
@@ -66,12 +68,12 @@ public class JWTGenerator {
                     .build();
 
             final SignedJWT newSignedJWT =
-                    new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.HS256).type(JOSEObjectType.JWT).build(), newClaimsSet);
+                    new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.HS256).type(JOSEObjectType.JWT).build(),
+                            newClaimsSet);
             newSignedJWT.sign(signer);
             return newSignedJWT.serialize();
         } catch (ParseException | JOSEException e) {
-            e.printStackTrace();
-            return "JWT error";
+            throw AppRuntimeException.jwtException(e);
         }
     }
 
@@ -81,8 +83,7 @@ public class JWTGenerator {
             JWSVerifier jwsVerifier = new MACVerifier(SECRET_KEY);
             return jwsObject.verify(jwsVerifier);
         } catch (ParseException | JOSEException e) {
-            e.printStackTrace();
-            return false;
+            throw AppRuntimeException.jwtException(e);
         }
     }
 }

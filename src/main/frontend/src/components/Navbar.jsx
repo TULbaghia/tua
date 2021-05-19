@@ -5,9 +5,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useHistory} from "react-router-dom";
 import {useLocale} from "./LoginContext";
 import { withNamespaces } from 'react-i18next';
+import "../css/Navbar.css";
 
 function NavigationBar(props) {
-    const  {t,i18n} = props
+    const {t,i18n} = props
     const history = useHistory();
     const {token, setToken} = useLocale();
 
@@ -30,17 +31,20 @@ function NavigationBar(props) {
     const {isAuthenticated} = props;
     return (
         <Navbar bg="light" expand="lg">
-            <LinkContainer to="/">
-                <Navbar.Brand>Animal Hotel - {t('Example Welcome Message')}</Navbar.Brand>
-            </LinkContainer>
+            <Navbar.Brand>
+                <div className="name">{t('animalHotel')}</div>
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    <LinkContainer to="/blog">
-                        <Nav.Link>Blog</Nav.Link>
+                    <LinkContainer to="/">
+                        <Nav.Link>{t('mainPage')}</Nav.Link>
                     </LinkContainer>
-                    <LinkContainer to="/pong">
-                        <Nav.Link>Pong</Nav.Link>
+                    <LinkContainer to="/hotele">
+                        <Nav.Link>{t('hotels')}</Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to="/regulamin">
+                        <Nav.Link>{t('regulations')}</Nav.Link>
                     </LinkContainer>
                 </Nav>
                 <Nav className="navbar-right">
@@ -48,16 +52,16 @@ function NavigationBar(props) {
                         <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                     ) : (
                         <>
-                            <LinkContainer to="/login">
-                                <Nav.Link>
-                                    <FontAwesomeIcon className="mr-1" icon="user-plus"/>
-                                    Signup
+                            <LinkContainer to="/signUp">
+                                <Nav.Link className="signUp">
+                                    <FontAwesomeIcon className="signUpIcon" icon="user-plus"/>
+                                    <div className="signUpText">{t('signUp')}</div>
                                 </Nav.Link>
                             </LinkContainer>
                             <LinkContainer to="/login">
-                                <Nav.Link>
-                                    <FontAwesomeIcon className="mr-1" icon="sign-in-alt"/>
-                                    Login
+                                <Nav.Link className="login">
+                                    <FontAwesomeIcon className="loginIcon" icon="sign-in-alt"/>
+                                    <div className="loginText">{t('signIn')}</div>
                                 </Nav.Link>
                             </LinkContainer>
                         </>

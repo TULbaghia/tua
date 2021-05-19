@@ -1,3 +1,12 @@
 {
-    "Example Welcome Message": "Witaj"
+    "Example Welcome Message": "Witaj",
+    "animalHotel": "Hotel dla zwierząt",
+    "mainPage": "Strona główna",
+    "hotels": "Hotele",
+    "regulations": "Regulamin",
+    "signUp": "Zarejestruj się",
+    "signIn": "Zaloguj się",
+    "landingPageTitle": "Zarezerwuj już dziś!",
+    "landingPageLeft": "Komfortowy wypoczynek dla twojego zwierzaka",
+    "landingPageRight": "Masz hotel dla zwierząt? Dołącz do nas już dziś!"
 }

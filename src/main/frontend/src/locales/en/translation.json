@@ -1,3 +1,12 @@
 {
-    "Example Welcome Message": "Welcome"
+    "Example Welcome Message": "Welcome",
+    "animalHotel": "Animal Hotel",
+    "mainPage": "Main page",
+    "hotels": "Hotels",
+    "regulations": "Regulations",
+    "signUp":"Sign up",
+    "signIn": "Sign in",
+    "landingPageTitle": "Book today!",
+    "landingPageLeft": "Comfortable rest for your pet ",
+    "landingPageRight": "Do you have a pet hotel? Join us today!"
 }

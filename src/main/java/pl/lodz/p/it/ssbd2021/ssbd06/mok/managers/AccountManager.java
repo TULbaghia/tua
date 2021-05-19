@@ -311,6 +311,7 @@ public class AccountManager {
         if(!resetCode.getCodeType().equals(CodeType.PASSWORD_RESET)) {
             throw CodeException.codeInvalid();
         }
+        if(resetCode.isUsed()) throw CodeException.codeUsed();
         Date expirationTime = new Date(resetCode.getCreationDate().getTime() + (RESET_EXPIRATION_MINUTES * 60000L));
         Date localTime = Timestamp.valueOf(LocalDateTime.now());
         if(localTime.after(expirationTime)) {

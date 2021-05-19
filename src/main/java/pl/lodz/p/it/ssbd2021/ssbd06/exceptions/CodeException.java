@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 public class CodeException extends AppBaseException {
     private static final String CODE_EXPIRED = "exception.code.code_expired";
     private static final String CODE_INVALID = "exception.code.code_invalid";
+    private static final String CODE_USED = "exception.code.code_used";
 
     public CodeException(String message, Throwable cause) {
         super(message, cause);
@@ -26,5 +27,13 @@ public class CodeException extends AppBaseException {
      */
     public static CodeException codeInvalid() {
         return new CodeException(CODE_INVALID);
+    }
+
+    /**
+     * Tworzy wyjątek reprezentujący użyty kod.
+     * @return wyjątek CodeException
+     */
+    public static CodeException codeUsed() {
+        return new CodeException(CODE_USED);
     }
 }

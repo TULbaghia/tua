@@ -12,5 +12,15 @@
     "logging": "Logging",
     "passwordResetting": "Password Resetting",
     "passwordResettingForm": "Password resetting form",
-    "send": "Send"
+    "send": "Send",
+    "emailAddress": "E-mail address",
+    "registering": "Join us",
+    "repeatPassword": "Repeat password",
+    "name": "First name",
+    "surname": "Surname",
+    "phoneNumber": "Contact number",
+    "obligatoryFields": "*Fields marked with an asterisk are mandatory",
+    "congratulations": "Congratulations!",
+    "accountConfirmedMsg": "Your account has been confirmed. You can sign in now.",
+    "chooseLang": "Choose language"
 }

@@ -13,7 +13,9 @@ import Home from "./components/Home";
 import BlogScreen from "./components/Blog";
 import PingPong from "./components/PingPong";
 import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
+import ConfirmedAccount from "./components/ConfirmedAccount";
 import PasswordReset from "./components/PasswordReset";
 
 library.add(fab, faSignInAlt, faUserPlus);
@@ -29,8 +31,10 @@ class App extends Component {
                             <Route exact path="/" component={Home}/>
                             <Route path="/blog" component={BlogScreen}/>
                             <Route exact path="/login" component={Login}/>
+                            <Route path="/signUp" component={SignUp}/>
                             <Route path="/pong" component={PingPong}/>
                             <Route path="/login/password-reset" component={PasswordReset}/>
+                            <Route path="/confirmedAccount" component={ConfirmedAccount} />
                         </Switch>
                         <Footer />
                     </div>

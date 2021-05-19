@@ -12,5 +12,15 @@
     "logging": "Logowanie",
     "passwordResetting": "Resetowanie hasła",
     "passwordResettingForm": "Formularz resetowania hasła",
-    "send": "Wyślij"
+    "send": "Wyślij",
+    "emailAddress": "Adres e-mail",
+    "registering": "Dołącz do nas",
+    "repeatPassword": "Powtórz hasło",
+    "name": "Imię",
+    "surname": "Nazwisko",
+    "phoneNumber": "Numer kontaktowy",
+    "obligatoryFields": "*Pola oznaczone gwiazdką są obowiązkowe",
+    "congratulations": "Gratulacje!",
+    "accountConfirmedMsg": "Twoje konto zostało aktywowane. Możesz się teraz zalogować.",
+    "chooseLang": "Wybierz język"
 }

@@ -5,7 +5,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.JWTConfig;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -20,7 +20,7 @@ import java.util.Date;
 @RequestScoped
 public class JWTGenerator {
     @Inject
-    private JWTConfig config;
+    private Config jwtConfig;
 
     private static String SECRET_KEY;
     private static long JWT_EXPIRE_TIMEOUT;
@@ -28,9 +28,9 @@ public class JWTGenerator {
 
     @PostConstruct
     private void init() {
-        SECRET_KEY = config.getJWTSecretKey();
-        JWT_EXPIRE_TIMEOUT = config.getJWTExpireTimeout();
-        JWT_ISS = config.getJWTIss();
+        SECRET_KEY = jwtConfig.getJwtSecretKey();
+        JWT_EXPIRE_TIMEOUT = jwtConfig.getJwtExpireTimeout();
+        JWT_ISS = jwtConfig.getJwtIss();
     }
 
     public String generateJWTString(CredentialValidationResult result) {

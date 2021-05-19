@@ -76,7 +76,6 @@
   margin: 0px 6px;
 }
 
-
 .loginText{
   font-family: Roboto;
   font-style: normal;
@@ -88,4 +87,46 @@
   order: 1;
   flex-grow: 0;
   margin: 0px 6px;
+}
+
+/**** ADMIN ****/
+/*.color-nav {*/
+/*  background-color: #EF5DA8;*/
+/*}*/
+
+/**** MANAGER ****/
+/*.color-nav {*/
+/*  background-color: #F178B6;*/
+/*}*/
+
+/**** USER ****/
+/*.color-nav {*/
+/*  background-color: #EFADCE;*/
+/*}*/
+
+.dropButton {
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
+  color: black;
+}
+
+.dropButton:hover {
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
+  color: black;
+}
+
+.show > .dropButton:focus {
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
+  color: black;
+}
+
+.nav .open > item, .nav .open > item:focus, .nav .open > item:hover {
+  background: #EBE5FC;
+  color: #5227CC;
+}
+.nav > li > item:focus, .nav > li > item:hover {
+  background: white;
+  color: black;
 }

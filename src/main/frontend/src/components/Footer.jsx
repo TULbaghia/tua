@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 
+// // *** LANDING PAGE ***
 const style = {
     backgroundColor: "#7749F8",
     textAlign: "center",
@@ -8,6 +9,36 @@ const style = {
     height: "40px",
     width: "100%"
 };
+
+// // *** ADMIN ***
+// const style = {
+//     backgroundColor: "#EF5DA8",
+//     textAlign: "center",
+//     position: "fixed",
+//     bottom: "0",
+//     height: "40px",
+//     width: "100%"
+// };
+
+// *** MANAGER ***
+// const style = {
+//     backgroundColor: "#F178B6",
+//     textAlign: "center",
+//     position: "fixed",
+//     bottom: "0",
+//     height: "40px",
+//     width: "100%"
+// };
+
+// // *** USER ***
+// const style = {
+//     backgroundColor: "#EFADCE",
+//     textAlign: "center",
+//     position: "fixed",
+//     bottom: "0",
+//     height: "40px",
+//     width: "100%"
+// };
 
 const phantom = {
     display: 'block',

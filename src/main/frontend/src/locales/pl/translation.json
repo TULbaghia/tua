@@ -1,5 +1,5 @@
 {
-    "Example Welcome Message": "Witaj",
+    "welcome": "Witaj",
     "animalHotel": "Hotel dla zwierząt",
     "mainPage": "Strona główna",
     "hotels": "Hotele",
@@ -8,5 +8,18 @@
     "signIn": "Zaloguj się",
     "landingPageTitle": "Zarezerwuj już dziś!",
     "landingPageLeft": "Komfortowy wypoczynek dla twojego zwierzaka",
-    "landingPageRight": "Masz hotel dla zwierząt? Dołącz do nas już dziś!"
+    "landingPageRight": "Masz hotel dla zwierząt? Dołącz do nas już dziś!",
+    "adminDashboard": "Widok admina",
+    "managerDashboard": "Widok managera",
+    "userDashboard": "Widok użytkownika",
+    "accountList": "Lista kont",
+    "cityList": "Zarządzaj miastami",
+    "myAccount": "Moje konto",
+    "changePassword": "Zmień hasło",
+    "signOut": "Wyloguj",
+    "myHotel": "Mój hotel",
+    "activeReservations": "Lista aktywnych rezerwacji",
+    "archiveReservations": "Lista archiwalnych rezerwacji",
+    "reservation": "Rezerwacja",
+    "cities": "Miasta"
 }

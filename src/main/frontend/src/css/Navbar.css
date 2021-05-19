@@ -89,3 +89,7 @@
   flex-grow: 0;
   margin: 0px 6px;
 }
+
+.main-navbar{
+  width: 100%;
+}

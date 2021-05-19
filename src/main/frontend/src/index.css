@@ -3,6 +3,7 @@ body {
   padding: 0;
   color: white;
   background-image: url("./images/background.jpg");
+  min-height: 100vh;
   background-size: cover;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

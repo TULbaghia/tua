@@ -14,6 +14,7 @@ import BlogScreen from "./components/Blog";
 import PingPong from "./components/PingPong";
 import Login from "./components/Login";
 import Footer from "./components/Footer";
+import UserInfo from './components/UserInfo';
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -22,13 +23,14 @@ class App extends Component {
         return (
             <div className="App">
                 <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
-                    <div>
+                    <div className="wrapper">
                         <NavigationBar />
                         <Switch>
                             <Route exact path="/" component={Home}/>
                             <Route path="/blog" component={BlogScreen}/>
                             <Route path="/login" component={Login}/>
                             <Route path="/pong" component={PingPong}/>
+                            <Route path="/home" component={UserInfo}/>
                         </Switch>
                         <Footer />
                     </div>

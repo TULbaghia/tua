@@ -1,10 +1,9 @@
 import React, {Component} from "react";
+import "../css/Footer.css"
 
 const style = {
     backgroundColor: "#7749F8",
     textAlign: "center",
-    position: "fixed",
-    bottom: "0",
     height: "40px",
     width: "100%"
 };
@@ -18,7 +17,7 @@ const phantom = {
 
 function Footer() {
     return (
-        <div>
+        <div className="main-footer">
             <div style={phantom} />
             <div style={style}>
                 <h4>SSBD 2021 - grupa 6</h4>

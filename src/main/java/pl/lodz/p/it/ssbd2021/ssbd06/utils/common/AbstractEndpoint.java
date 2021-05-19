@@ -13,6 +13,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import java.security.Principal;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 /**
  * Klasa abstrakcyjna służąca do sprawdzania integralności wersji, dostarcza metody wykonywane przed rozpoczęciem
@@ -55,8 +56,8 @@ public abstract class AbstractEndpoint {
     public void afterBegin() {
         transactionId =
                 Long.toString(System.currentTimeMillis()) + ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
-        log.info("Transaction with ID:" + transactionId + " started in " + this.getClass().getName() + ", account: " +
-                getLogin());
+        log.log(Level.INFO, "Transaction with ID:{0} started in {1}, account: {2}",
+                new Object[]{transactionId, this.getClass().getName(), getLogin()});
     }
 
     /**
@@ -67,9 +68,8 @@ public abstract class AbstractEndpoint {
     @AfterCompletion
     public void afterCompletion(boolean committed) {
         lastTransactionRollback = !committed;
-        log.info("Transaction with ID:" + transactionId + " ended in " + this.getClass().getName() + ", result: " +
-                getResult() + ", account: " +
-                getLogin());
+        log.log(Level.INFO, "Transaction with ID:{0} ended in {1}, result: {2}, account: {3}",
+                new Object[]{transactionId, this.getClass().getName(), getResult(), getLogin()});
     }
 
     protected String getLogin() {
@@ -77,7 +77,7 @@ public abstract class AbstractEndpoint {
         if (principal != null) {
             return principal.getName();
         }
-        return "guest";
+        return "Guest";
     }
 
     private String getResult() {

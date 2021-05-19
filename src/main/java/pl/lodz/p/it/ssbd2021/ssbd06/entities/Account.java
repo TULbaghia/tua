@@ -8,10 +8,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
@@ -172,7 +170,6 @@ public class Account extends AbstractEntity implements Serializable {
     public Long getId() {
         return id;
     }
-
 
     @XmlTransient
     public Set<Booking> getBookingList() {

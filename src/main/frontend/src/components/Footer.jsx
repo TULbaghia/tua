@@ -48,10 +48,10 @@ function Footer(props) {
     return (
             <div className="footer">
                 {token !== null && token !== '' ? (
-                    null
-                ) : <div style={{marginLeft: "10rem", width: "10%"}}>
-                    <AccessLevelSwitcher t={t}/>
-                </div>
+                    <div style={{marginLeft: "10rem", width: "10%"}}>
+                        <AccessLevelSwitcher t={t}/>
+                    </div>
+                ) : null
                 }
             </div>
     );

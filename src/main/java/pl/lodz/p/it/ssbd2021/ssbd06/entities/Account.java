@@ -36,6 +36,8 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.EMAIL_CONSTRAINT;
         @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
         @NamedQuery(name = "Account.findById", query = "SELECT a FROM Account a WHERE a.id = :id"),
         @NamedQuery(name = "Account.findByLogin", query = "SELECT a FROM Account a WHERE a.login = :login"),
+        @NamedQuery(name = "Account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email"),
+        @NamedQuery(name = "Account.findByNewEmail", query = "SELECT a FROM Account a WHERE a.newEmail = :newEmail"),
         @NamedQuery(name = "Account.findByEnabled", query = "SELECT a FROM Account a WHERE a.enabled = :enabled"),
         @NamedQuery(name = "Account.findByConfirmed", query = "SELECT a FROM Account a WHERE a.confirmed = :confirmed"),
         @NamedQuery(name = "Account.findByContactNumber",

@@ -50,6 +50,15 @@ public class AccountException extends AppBaseException {
     }
 
     /**
+     * Wyjątek reprezentuje błąd podczas zakładania konta związany z zajętym adresem email.
+     *
+     * @return wyjątek AccountException
+     */
+    public static AccountException emailExists() {
+        return new AccountException(ACCOUNT_EMAIL_EXISTS);
+    }
+
+    /**
      *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że konto użytkownika zostało wcześniej już aktywowane.
      * @return wyjątek AccountException
      */

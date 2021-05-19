@@ -4,9 +4,15 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.EmailException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -15,7 +21,10 @@ import java.util.Properties;
 /**
  * Klasa oferująca funkcjonalność wysyłania wiadomości email, w reakcji na zdarzenia zachodzące w aplikacji.
  */
-@ApplicationScoped
+@Stateless
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Interceptors({LoggingInterceptor.class})
+@PermitAll
 public class EmailSender {
 
     @Inject

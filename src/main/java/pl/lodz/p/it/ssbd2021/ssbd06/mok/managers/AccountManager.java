@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.ClientData;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
@@ -139,6 +140,12 @@ public class AccountManager {
         if (account.isConfirmed()) {
             throw AccountException.alreadyActivated();
         }
+
+        ClientData clientData = new ClientData();
+        clientData.setAccount(account);
+        clientData.setCreatedBy(account);
+        account.getRoleList().add(clientData);
+
         account.setConfirmed(true);
         pendingCode.setUsed(true);
         pendingCodeFacade.edit(pendingCode);

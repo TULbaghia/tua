@@ -3,21 +3,22 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.*;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import java.util.Calendar;
 import java.util.List;
 
 @Startup
 @Singleton
+@Interceptors({LoggingInterceptor.class})
 public class ScheduledTasksManager {
 
     @Inject
@@ -43,19 +44,16 @@ public class ScheduledTasksManager {
     private void deleteUnverifiedAccounts(Timer time) throws AppBaseException {
         Calendar calendar1 = Calendar.getInstance();
         calendar1.add(Calendar.HOUR, -24);
-        long expirationDate = calendar1.getTimeInMillis();
-        List<Account> unverifiedAccountListAfter24H = accountFacade.findUnverifiedBefore(expirationDate);
+        List<Account> unverifiedAccountListAfter24H = accountFacade.findUnverifiedBefore(calendar1.getTime());
         for(Account account: unverifiedAccountListAfter24H){
             accountFacade.remove(account);
         }
         Calendar calendar2 = Calendar.getInstance();
         calendar2.add(Calendar.HOUR, -12);
-        long expirationDateToRepeatEmail = calendar2.getTimeInMillis();
-        List<Account> unverifiedAccountListAfter12H = accountFacade.findUnverifiedBefore(expirationDateToRepeatEmail);
+        List<Account> unverifiedAccountListAfter12H = accountFacade.findUnverifiedBefore(calendar2.getTime());
         for(Account account: unverifiedAccountListAfter12H){
             sendRepeatedEmailNotification(account);
         }
-
     }
 
     /**
@@ -79,8 +77,7 @@ public class ScheduledTasksManager {
     private void sendRepeatedEmailChange(Timer time) throws AppBaseException {
         Calendar calendarRemoveCode = Calendar.getInstance();
         calendarRemoveCode.add(Calendar.HOUR, -2);
-        long expirationDate = calendarRemoveCode.getTimeInMillis();
-        List<Account> accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, expirationDate);
+        List<Account> accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, calendarRemoveCode.getTime());
         for (Account account : accountsUnusedCodes) {
             PendingCode pc = pendingCodeFacade.findUnusedCodeByAccount(account, CodeType.EMAIL_CHANGE);
             pendingCodeFacade.remove(pc);
@@ -88,8 +85,7 @@ public class ScheduledTasksManager {
 
         Calendar calendarRepeat = Calendar.getInstance();
         calendarRepeat.add(Calendar.HOUR, -1);
-        expirationDate = calendarRepeat.getTimeInMillis();
-        accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, expirationDate);
+        accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, calendarRepeat.getTime());
         for (Account account : accountsUnusedCodes) {
             PendingCode pc = pendingCodeFacade.findUnusedCodeByAccount(account, CodeType.EMAIL_CHANGE);
             emailSender.sendEmailChange(account, pc.getCode());

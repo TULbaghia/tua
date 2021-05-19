@@ -22,5 +22,12 @@
     "obligatoryFields": "*Fields marked with an asterisk are mandatory",
     "congratulations": "Congratulations!",
     "accountConfirmedMsg": "Your account has been confirmed. You can sign in now.",
-    "chooseLang": "Choose language"
+    "chooseLang": "Choose language",
+    "pl": "Polish",
+    "en": "English",
+    "roleChange": "role change",
+    "admin": "Administrator",
+    "manager": "Manager",
+    "user": "User",
+    "roleChoice": "ROLE CHOICE"
 }

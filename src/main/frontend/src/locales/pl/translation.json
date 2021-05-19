@@ -22,5 +22,12 @@
     "obligatoryFields": "*Pola oznaczone gwiazdką są obowiązkowe",
     "congratulations": "Gratulacje!",
     "accountConfirmedMsg": "Twoje konto zostało aktywowane. Możesz się teraz zalogować.",
-    "chooseLang": "Wybierz język"
+    "chooseLang": "Wybierz język",
+    "pl": "Polski",
+    "en": "Angielski",
+    "roleChange": "zmiana roli",
+    "admin": "Administrator",
+    "manager": "Manager",
+    "user": "Użytkownik",
+    "roleChoice": "WYBÓR ROLI"
 }

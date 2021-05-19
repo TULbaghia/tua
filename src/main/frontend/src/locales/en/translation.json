@@ -4,6 +4,13 @@
     "mainPage": "Main page",
     "hotels": "Hotels",
     "regulations": "Regulations",
-    "signUp":"Sign up",
-    "signIn": "Sign in"
+    "signUp": "Sign up",
+    "signIn": "Sign in",
+    "login": "Login",
+    "password": "Password",
+    "passwordReset": "Reset password",
+    "logging": "Logging",
+    "passwordResetting": "Password Resetting",
+    "passwordResettingForm": "Password resetting form",
+    "send": "Send"
 }

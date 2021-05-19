@@ -1,5 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 
+/**
+ * Reprezentuje błąd pojawiający się podczas zarządzania rolami w aplikacji
+ */
 public class RoleException extends AppBaseException {
 
     private static final String ALREADY_REVOKED = "exception.role_exception.already_revoked";

@@ -1,13 +1,16 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 
+/**
+ * Reprezentuje błąd pojawiający się podczas wysyłania wiadomości email
+ */
 public class EmailException extends AppBaseException {
     private static final String EMAIL_NOT_SENT = "exception.email_exception.email_not_sent";
 
-    public EmailException(String message, Throwable cause) {
+    private EmailException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EmailException(String message) {
+    private EmailException(String message) {
         super(message);
     }
 

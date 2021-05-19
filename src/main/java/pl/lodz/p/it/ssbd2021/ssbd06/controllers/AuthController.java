@@ -19,7 +19,7 @@ import java.time.Instant;
 import java.util.Date;
 
 @Path("/auth")
-public class AuthController {
+public class AuthController extends AbstractController {
 
     @Inject
     private AuthEndpointLocal authEndpoint;
@@ -43,15 +43,15 @@ public class AuthController {
     @Produces({MediaType.TEXT_PLAIN})
     public Response login(@NotNull @Valid LoginDataDto loginDataDto) throws AppBaseException {
         try {
-            String token = authEndpoint.login(loginDataDto.getLogin(), loginDataDto.getPassword());
-            accountEndpoint.updateValidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(), Date.from(Instant.now()));
+            String token = repeat(()->authEndpoint.login(loginDataDto.getLogin(), loginDataDto.getPassword()), authEndpoint) ;
+            repeat(() -> accountEndpoint.updateValidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(), Date.from(Instant.now())), accountEndpoint);
             return Response.accepted()
                     .type("application/json")
                     .entity(token)
                     .build();
         } catch (AuthValidationException e) {
             try {
-                accountEndpoint.updateInvalidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(), Date.from(Instant.now()));
+                repeat(()->accountEndpoint.updateInvalidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(), Date.from(Instant.now())), accountEndpoint);
             } catch (NotFoundException ignored) { }
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }

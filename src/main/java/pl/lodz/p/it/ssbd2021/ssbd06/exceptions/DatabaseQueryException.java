@@ -1,14 +1,17 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 
+/**
+ * Reprezentuje błąd pojawiający się podczas wykonywania operacji na bazie danych
+ */
 public class DatabaseQueryException extends AppBaseException {
 
     private static final String DATABASE_QUERY = "exception.database_query_exception.database_query_exception";
 
-    public DatabaseQueryException(String message, Throwable cause) {
+    private DatabaseQueryException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public DatabaseQueryException(String message) {
+    private DatabaseQueryException(String message) {
         super(message);
     }
 

@@ -1,61 +1,56 @@
 import React, {Component} from "react";
+import {Dropdown, DropdownButton} from "react-bootstrap";
+import {withNamespaces} from "react-i18next";
+import userIcon from "../assets/userRole.svg"
+import {useLocale} from "./LoginContext";
+import "../css/Footer.css"
+import DropdownMenu from "react-bootstrap/DropdownMenu";
+import DropdownToggle from "react-bootstrap/DropdownToggle";
 
-// // *** LANDING PAGE ***
-const style = {
-    backgroundColor: "#7749F8",
-    textAlign: "center",
-    position: "fixed",
-    bottom: "0",
-    height: "40px",
-    width: "100%"
-};
+class AccessLevelSwitcher extends React.Component{
 
-// // *** ADMIN ***
-// const style = {
-//     backgroundColor: "#EF5DA8",
-//     textAlign: "center",
-//     position: "fixed",
-//     bottom: "0",
-//     height: "40px",
-//     width: "100%"
-// };
+    constructor(props) {
+        super(props);
+        this.t = props.t
+    }
 
-// *** MANAGER ***
-// const style = {
-//     backgroundColor: "#F178B6",
-//     textAlign: "center",
-//     position: "fixed",
-//     bottom: "0",
-//     height: "40px",
-//     width: "100%"
-// };
+    state = {
+        levels: ['admin', 'manager', 'user'],
+        chosen: 0
+    }
 
-// // *** USER ***
-// const style = {
-//     backgroundColor: "#EFADCE",
-//     textAlign: "center",
-//     position: "fixed",
-//     bottom: "0",
-//     height: "40px",
-//     width: "100%"
-// };
-
-const phantom = {
-    display: 'block',
-    padding: '20px',
-    height: '40px',
-    width: '100%',
-};
-
-function Footer() {
-    return (
-        <div>
-            <div style={phantom} />
-            <div style={style}>
-                <h4>SSBD 2021 - grupa 6</h4>
+    render() {
+        return(
+            <div style={{display: "flex"}}>
+                <img src={userIcon} style={{marginRight: "1rem"}}/>
+                <Dropdown>
+                    <DropdownToggle id="dropdown-basic" key='up' drop='up' className="roleMenu">
+                        {this.t('roleChange')}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <Dropdown.Item onClick={()=>alert('Wybrałeś ' + this.state.levels[0])}>{this.t(this.state.levels[0])}</Dropdown.Item>
+                        <Dropdown.Item className="item">{this.t(this.state.levels[1])}</Dropdown.Item>
+                        <Dropdown.Item className="item">{this.t(this.state.levels[2])}</Dropdown.Item>
+                    </DropdownMenu>
+                </Dropdown>
             </div>
+        )
+    }
+}
+
+function Footer(props) {
+    const {t,i18n} = props
+    const {token, setToken} = useLocale();
+    return (
+        <div className="footer">
+            {token !== null && token !== '' ? (
+                <div style={{marginLeft: "10rem", width: "10%"}}>
+                    <AccessLevelSwitcher t={t}/>
+                </div>
+            ) : null
+            }
         </div>
     );
 }
 
-export default Footer;
+export default withNamespaces()(Footer);

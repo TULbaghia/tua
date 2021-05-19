@@ -90,9 +90,9 @@
 }
 
 /**** ADMIN ****/
-/*.color-nav {*/
-/*  background-color: #EF5DA8;*/
-/*}*/
+.color-nav {
+  background-color: #EF5DA8;
+}
 
 /**** MANAGER ****/
 /*.color-nav {*/
@@ -129,4 +129,9 @@
 .nav > li > item:focus, .nav > li > item:hover {
   background: white;
   color: black;
+}
+
+.nav .open > item, .nav .open > item:focus, .nav .open > item:hover {
+  background: #EBE5FC;
+  color: #5227CC;
 }

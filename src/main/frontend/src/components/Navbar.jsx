@@ -8,8 +8,51 @@ import { withNamespaces } from 'react-i18next';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import "../css/Navbar.css";
+import DropdownToggle from "react-bootstrap/DropdownToggle";
 
 library.add(faUser);
+
+class LanguageSwitcher extends React.Component{
+
+    constructor(props) {
+        super(props);
+        this.t = props.t
+    }
+
+    state = {
+        langs: ['pl', 'en'],
+        chosen: 0
+    }
+
+    handleClickPl = () => {
+        this.setState({
+            chosen: 0
+        });
+    }
+
+    handleClickEn = () => {
+        this.setState({
+            chosen: 1
+        })
+    }
+
+    render() {
+        return(
+            <>
+                <p style={{fontSize: 20, color: "black", marginRight: "10px"}}>{this.state.langs[this.state.chosen]}</p>
+                <Dropdown>
+                    <DropdownToggle id="dropdown-basic" className="dropButton" variant="Info">
+                    </DropdownToggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={this.handleClickPl}>{this.t(this.state.langs[0])}</Dropdown.Item>
+                        <Dropdown.Item onClick={this.handleClickEn}>{this.t(this.state.langs[1])}</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </>
+        )
+    }
+}
 
 function NavigationBar(props) {
     const {t,i18n} = props
@@ -53,6 +96,7 @@ function NavigationBar(props) {
                     </LinkContainer>
                 </Nav>
                 <Nav className="navbar-right">
+                    <LanguageSwitcher t={t}/>
                     {token!==null && token !== '' ? (
                         <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                     ) : (
@@ -102,6 +146,7 @@ function NavigationBar(props) {
     //                 </LinkContainer>
     //             </Nav>
     //             <Nav className="navbar-right">
+    //                 <LanguageSwitcher t={t}/>
     //                 <Dropdown alignRight={true}>
     //                     <Dropdown.Toggle id="dropdown-basic" className="dropButton" variant="Info">
     //                         <FontAwesomeIcon icon="user"/>
@@ -165,6 +210,7 @@ function NavigationBar(props) {
     //                 </LinkContainer>
     //             </Nav>
     //             <Nav className="navbar-right">
+    //                 <LanguageSwitcher t={t}/>
     //                 <Dropdown alignRight={true}>
     //                     <Dropdown.Toggle id="dropdown-basic" className="dropButton" variant="Info">
     //                         <FontAwesomeIcon icon="user"/>
@@ -225,6 +271,7 @@ function NavigationBar(props) {
     //                 </LinkContainer>
     //             </Nav>
     //             <Nav className="navbar-right">
+    //                 <LanguageSwitcher t={t}/>
     //                 <Dropdown alignRight={true}>
     //                     <Dropdown.Toggle id="dropdown-basic" className="dropButton" variant="Info">
     //                         <FontAwesomeIcon icon="user"/>

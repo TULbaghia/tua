@@ -1,11 +1,10 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 import org.mapstruct.factory.Mappers;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRoleMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RolesDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
@@ -31,20 +30,22 @@ public class RoleEndpoint extends AbstractEndpoint implements RoleEndpointLocal 
     @Override
     @RolesAllowed("addAccessLevel")
     public void grantAccessLevel(String login, AccessLevel accessLevel) throws AppBaseException {
-        if (!verifyIntegrity(mapToRolesDto(accountManager.getAccountByLogin(login)))) {
+        Account editAccount = accountManager.getAccountByLogin(login);
+        RolesDto rolesIntegrity = mapToRolesDto(editAccount);
+        if (!verifyIntegrity(rolesIntegrity)) {
             throw AppOptimisticLockException.optimisticLockException();
         }
-
         roleManager.grantAccessLevel(login, accessLevel);
     }
 
     @Override
     @RolesAllowed("deleteAccessLevel")
     public void revokeAccessLevel(String login, AccessLevel accessLevel) throws AppBaseException {
-        if (!verifyIntegrity(mapToRolesDto(accountManager.getAccountByLogin(login)))) {
+        Account editAccount = accountManager.getAccountByLogin(login);
+        RolesDto rolesIntegrity = mapToRolesDto(editAccount);
+        if (!verifyIntegrity(rolesIntegrity)) {
             throw AppOptimisticLockException.optimisticLockException();
         }
-
         roleManager.revokeAccessLevel(login, accessLevel);
     }
 

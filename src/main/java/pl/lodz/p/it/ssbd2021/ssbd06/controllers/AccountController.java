@@ -3,17 +3,11 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountPersonalDetailsDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordChangeOtherDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.PasswordResetDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RegisterAccountDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RolesDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.RoleEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.SignatureValidatorFilterBinding;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 
 import javax.inject.Inject;
@@ -96,7 +90,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
     @PUT
-    @SignatureValidatorFilterBinding
+    @EtagValidatorFilterBinding
     @Path("/edit")
     @Consumes(MediaType.APPLICATION_JSON)
     public void editOwnAccountDetails(@NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto)
@@ -112,10 +106,10 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
     @PUT
-    @SignatureValidatorFilterBinding
+    @EtagValidatorFilterBinding
     @Path("/edit/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void editOtherAccountDetails(@NotNull @PathParam("login") String login,
+    public void editOtherAccountDetails(@NotNull @Login @PathParam("login") String login,
                                         @NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto)
             throws AppBaseException {
         accountEndpoint.editOtherAccountDetails(login, accountPersonalDetailsDto);
@@ -164,7 +158,8 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PATCH
-    @Path("/{login}/grant/{accessLevel}")
+    @EtagValidatorFilterBinding
+    @Path("/user/{login}/grant/{accessLevel}")
     public void grantAccessLevel(@NotNull @Login @PathParam("login") String login,
                                  @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
         roleEndpoint.grantAccessLevel(login, accessLevel);
@@ -178,7 +173,8 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PATCH
-    @Path("/{login}/revoke/{accessLevel}")
+    @EtagValidatorFilterBinding
+    @Path("/user/{login}/revoke/{accessLevel}")
     public void revokeAccessLevel(@NotNull @Login @PathParam("login") String login,
                                   @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
         roleEndpoint.revokeAccessLevel(login, accessLevel);
@@ -204,7 +200,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @GET
-    @Path("/{login}")
+    @Path("/user/{login}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response showAccount(@PathParam("login") String login) throws AppBaseException {
         AccountDto accountDto = accountEndpoint.getAccount(login);
@@ -221,7 +217,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @GET
-    @Path("/self")
+    @Path("/user")
     @Produces(MediaType.APPLICATION_JSON)
     public Response showAccountInformation() throws AppBaseException {
         AccountDto accountDto = accountEndpoint.getOwnAccountInfo();
@@ -238,8 +234,8 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PUT
-    @SignatureValidatorFilterBinding
-    @Path("/{login}/password")
+    @EtagValidatorFilterBinding
+    @Path("/self/{login}/password")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changePassword(@NotNull @Valid PasswordChangeDto passwordChangeDto) throws AppBaseException {
         accountEndpoint.changePassword(passwordChangeDto);
@@ -252,7 +248,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @POST
-    @Path("/reset/{code}")
+    @Path("/user/reset/{code}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void resetPassword(@NotNull @Valid PasswordResetDto passwordResetDto) throws AppBaseException {
         accountEndpoint.resetPassword(passwordResetDto);
@@ -265,7 +261,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PUT
-    @Path("/{login}/reset")
+    @Path("/user/{login}/reset")
     public void sendResetPassword(@NotNull @PathParam("login") @Valid String login) throws AppBaseException {
         accountEndpoint.sendResetPassword(login);
     }
@@ -277,7 +273,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PUT
-    @Path("/{login}/resetagain")
+    @Path("/user/{login}/resetagain")
     public void sendResetPasswordAgain(@NotNull @PathParam("login") @Valid String login) throws AppBaseException {
         accountEndpoint.sendResetPasswordAgain(login);
     }
@@ -289,9 +285,50 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PUT
-    @Path("/other/{login}/password")
+    @Path("/user/{login}/password")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changeOtherPassword(@NotNull @Valid PasswordChangeOtherDto passwordChangeOtherDto) throws AppBaseException {
         accountEndpoint.changeOtherPassword(passwordChangeOtherDto);
+    }
+
+    /**
+     * Zmienia adres email wskazanego konta użytkownika.
+     *
+     * @param emailDto obiekt zawierający zmodyfikowany adres email oraz aktualny login użytkownika.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @PUT
+    @EtagValidatorFilterBinding
+    @Path("/self/edit/email")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void editOwnAccountEmail(@NotNull @Valid EmailDto emailDto) throws AppBaseException {
+        accountEndpoint.editOwnAccountEmail(emailDto);
+    }
+
+    /**
+     * Zmienia adres email wskazanego konta użytkownika.
+     *
+     * @param emailDto obiekt zawierający zmodyfikowany adres email oraz aktualny login użytkownika.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @PUT
+    @EtagValidatorFilterBinding
+    @Path("/user/edit/email/{login}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void editOtherAccountEmail(@NotNull @Login @PathParam("login") String login,
+                                      @NotNull @Valid EmailDto emailDto) throws AppBaseException {
+        accountEndpoint.editOtherAccountEmail(emailDto, login);
+    }
+
+    /**
+     * Przy użyciu podanego kodu aktywującego kończy procedurę zmiany adresu email przypisanego do konta.
+     *
+     * @param code żeton zmiany adresu email przypisanego do konta.
+     * @throws AppBaseException proces zmiany adresu email przypisanego do konta zakończył się niepowodzeniem.
+     */
+    @POST
+    @Path("/user/confirm/email/{code}")
+    public void confirmEmail(@PathParam("code") String code) throws AppBaseException {
+        accountEndpoint.confirmEmail(code);
     }
 }

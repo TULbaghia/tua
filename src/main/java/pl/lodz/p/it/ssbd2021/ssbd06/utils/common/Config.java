@@ -41,11 +41,6 @@ public class Config implements Serializable {
     private static final String MAIL_PORT = "mail.port";
     private static final String MAIL_PASSWORD = "mail.password";
 
-//    public String getConfigProperty(String param) {
-//        String property = String.format(MAIL_CONFIG_PROPERTY_SCHEME, param);
-//        return PropertyReader.getBundleProperty(MAIL_CONFIG_BUNDLE_NAME, property);
-//    }
-
     private String get(String key) {
         return properties.getProperty(key);
     }
@@ -121,11 +116,12 @@ public class Config implements Serializable {
 
     @AllArgsConstructor
     public enum MailType {
-        GRANT_ACCESS("grant_access"), DENY_ACCESS("deny_access"),
+        GRANT_ACCESS("access_grant"), DENY_ACCESS("access_deny"),
         LOCK_ACCOUNT("lock"), UNLOCK_ACCOUNT("unlock"),
         RESET_PASSWORD("password_reset"),
         DELETE_UNCONFIRMED("delete"),
-        ACTIVATE_ACCOUNT("activate");
+        ACTIVATE_ACCOUNT("activate"),
+        CHANGE_EMAIL("email_change");
 
         @Getter
         private final String value;

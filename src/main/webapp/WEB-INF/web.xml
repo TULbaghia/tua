@@ -80,6 +80,12 @@
     <security-role>
         <role-name>logoutUser</role-name>
     </security-role>
+    <security-role>
+        <role-name>editOwnAccountEmail</role-name>
+    </security-role>
+    <security-role>
+        <role-name>editOtherAccountEmail</role-name>
+    </security-role>
 
     <security-role>
         <role-name>addHotel</role-name>

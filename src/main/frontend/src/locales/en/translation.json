@@ -5,5 +5,13 @@
     "hotels": "Hotels",
     "regulations": "Regulations",
     "signUp":"Sign up",
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "chooseLang": "Language",
+    "pl": "Polish",
+    "en": "English",
+    "roleChange": "role change",
+    "admin": "Administrator",
+    "manager": "Manager",
+    "user": "User",
+    "roleChoice": "ROLE CHOICE"
 }

@@ -32,7 +32,7 @@ public class LoggingInterceptor {
                 sessionContext.getCallerPrincipal() != null ? sessionContext.getCallerPrincipal().getName() : "Guest";
 
         StringBuilder params = new StringBuilder();
-        if (invocationContext.getParameters() != null) {
+        if (invocationContext.getParameters() != null && invocationContext.getParameters().length > 0) {
             for (Object o : invocationContext.getParameters()) {
                 params.append(o.getClass().getSimpleName()).append(", ");
             }

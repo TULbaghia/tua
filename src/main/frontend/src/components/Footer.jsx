@@ -7,10 +7,6 @@ import "../css/Footer.css"
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 
-const style = {
-
-};
-
 class AccessLevelSwitcher extends React.Component{
 
     constructor(props) {
@@ -43,17 +39,17 @@ class AccessLevelSwitcher extends React.Component{
 }
 
 function Footer(props) {
-    const  {t,i18n} = props
+    const {t,i18n} = props
     const {token, setToken} = useLocale();
     return (
-            <div className="footer">
-                {token !== null && token !== '' ? (
-                    <div style={{marginLeft: "10rem", width: "10%"}}>
-                        <AccessLevelSwitcher t={t}/>
-                    </div>
-                ) : null
-                }
-            </div>
+        <div className="footer">
+            {token !== null && token !== '' ? (
+                <div style={{marginLeft: "10rem", width: "10%"}}>
+                    <AccessLevelSwitcher t={t}/>
+                </div>
+            ) : null
+            }
+        </div>
     );
 }
 

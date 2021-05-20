@@ -5,8 +5,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useHistory} from "react-router-dom";
 import {useLocale} from "./LoginContext";
 import { withNamespaces } from 'react-i18next';
-import "../css/Navbar.css"
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import "../css/Navbar.css";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
+
+library.add(faUser);
 
 class LanguageSwitcher extends React.Component{
 
@@ -51,7 +55,7 @@ class LanguageSwitcher extends React.Component{
 }
 
 function NavigationBar(props) {
-    const  {t,i18n} = props
+    const {t,i18n} = props
     const history = useHistory();
     const {token, setToken} = useLocale();
 
@@ -71,20 +75,23 @@ function NavigationBar(props) {
             .catch(err => console.log(err))
     }
 
+    // *** LANDING PAGE ***
     const {isAuthenticated} = props;
     return (
         <Navbar bg="light" expand="lg">
-            <Navbar.Brand>{t('animalHotel')}</Navbar.Brand>
+            <Navbar.Brand>
+                <div className="name">{t('animalHotel')}</div>
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                     <LinkContainer to="/">
                         <Nav.Link>{t('mainPage')}</Nav.Link>
                     </LinkContainer>
-                    <LinkContainer to="/hotele">
+                    <LinkContainer to="/hotels">
                         <Nav.Link>{t('hotels')}</Nav.Link>
                     </LinkContainer>
-                    <LinkContainer to="/regulamin">
+                    <LinkContainer to="/regulations">
                         <Nav.Link>{t('regulations')}</Nav.Link>
                     </LinkContainer>
                 </Nav>
@@ -113,6 +120,192 @@ function NavigationBar(props) {
             </Navbar.Collapse>
         </Navbar>
     );
+
+
+    // // *** ADMIN ***
+    // const {isAuthenticated} = props;
+    // return (
+    //     <Navbar  expand="lg" className="color-nav">
+    //         <Navbar.Brand>
+    //             <div className="name">{t('animalHotel')}</div>
+    //         </Navbar.Brand>
+    //         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+    //         <Navbar.Collapse id="basic-navbar-nav">
+    //             <Nav className="mr-auto">
+    //                 <LinkContainer to="/">
+    //                     <Nav.Link>{t('mainPage')}</Nav.Link>
+    //                 </LinkContainer>
+    //                 <LinkContainer to="/hotels">
+    //                     <Nav.Link>{t('hotels')}</Nav.Link>
+    //                 </LinkContainer>
+    //                 <LinkContainer to="/accounts">
+    //                     <Nav.Link>{t('accountList')}</Nav.Link>
+    //                 </LinkContainer>
+    //                 <LinkContainer to="/cities">
+    //                     <Nav.Link>{t('cityList')}</Nav.Link>
+    //                 </LinkContainer>
+    //             </Nav>
+    //             <Nav className="navbar-right">
+    //                 <LanguageSwitcher t={t}/>
+    //                 <Dropdown alignRight={true}>
+    //                     <Dropdown.Toggle id="dropdown-basic" className="dropButton" variant="Info">
+    //                         <FontAwesomeIcon icon="user"/>
+    //                         {' '}username{' '}
+    //                     </Dropdown.Toggle>
+    //
+    //                     <Dropdown.Menu>
+    //                         <li>
+    //                             <a href="#/action-1" className="item">
+    //                                 <LinkContainer to="/myAccount">
+    //                                     <Nav.Link>{t('myAccount')}</Nav.Link>
+    //                                 </LinkContainer>
+    //                             </a>
+    //                         </li>
+    //                         <li>
+    //                             <a href="#/action-2" className="item">
+    //                                 <LinkContainer to="/changePassword">
+    //                                     <Nav.Link>{t('changePassword')}</Nav.Link>
+    //                                 </LinkContainer>
+    //                             </a>
+    //                         </li>
+    //                         <li>
+    //                             <a href="#/action-3" className="item">
+    //                                 <LinkContainer to="/">
+    //                                     <Nav.Link>{t('signOut')}</Nav.Link>
+    //                                 </LinkContainer>
+    //                             </a>
+    //                         </li>
+    //                     </Dropdown.Menu>
+    //                 </Dropdown>
+    //             </Nav>
+    //         </Navbar.Collapse>
+    //     </Navbar>
+    // );
+
+
+    // // *** MANAGER ***
+    // const {isAuthenticated} = props;
+    // return (
+    //     <Navbar  expand="lg" className="color-nav">
+    //         <Navbar.Brand>
+    //             <div className="name">{t('animalHotel')}</div>
+    //         </Navbar.Brand>
+    //         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+    //         <Navbar.Collapse id="basic-navbar-nav">
+    //             <Nav className="mr-auto">
+    //                 <LinkContainer to="/">
+    //                     <Nav.Link>{t('mainPage')}</Nav.Link>
+    //                 </LinkContainer>
+    //                 <LinkContainer to="/hotels">
+    //                     <Nav.Link>{t('hotels')}</Nav.Link>
+    //                 </LinkContainer>
+    //                 <LinkContainer to="/myHotel">
+    //                     <Nav.Link>{t('myHotel')}</Nav.Link>
+    //                 </LinkContainer>
+    //                 <LinkContainer to="/activeReservations">
+    //                     <Nav.Link>{t('activeReservations')}</Nav.Link>
+    //                 </LinkContainer>
+    //                 <LinkContainer to="/archiveReservations">
+    //                     <Nav.Link>{t('archiveReservations')}</Nav.Link>
+    //                 </LinkContainer>
+    //             </Nav>
+    //             <Nav className="navbar-right">
+    //                 <LanguageSwitcher t={t}/>
+    //                 <Dropdown alignRight={true}>
+    //                     <Dropdown.Toggle id="dropdown-basic" className="dropButton" variant="Info">
+    //                         <FontAwesomeIcon icon="user"/>
+    //                         {' '}username{' '}
+    //                     </Dropdown.Toggle>
+    //
+    //                     <Dropdown.Menu>
+    //                         <li>
+    //                             <a href="#/action-1" className="item">
+    //                                 <LinkContainer to="/myAccount">
+    //                                     <Nav.Link>{t('myAccount')}</Nav.Link>
+    //                                 </LinkContainer>
+    //                             </a>
+    //                         </li>
+    //                         <li>
+    //                             <a href="#/action-2" className="item">
+    //                                 <LinkContainer to="/changePassword">
+    //                                     <Nav.Link>{t('changePassword')}</Nav.Link>
+    //                                 </LinkContainer>
+    //                             </a>
+    //                         </li>
+    //                         <li>
+    //                             <a href="#/action-3" className="item">
+    //                                 <LinkContainer to="/">
+    //                                     <Nav.Link>{t('signOut')}</Nav.Link>
+    //                                 </LinkContainer>
+    //                             </a>
+    //                         </li>
+    //                     </Dropdown.Menu>
+    //                 </Dropdown>
+    //             </Nav>
+    //         </Navbar.Collapse>
+    //     </Navbar>
+    // );
+
+
+    // *** USER ***
+    // const {isAuthenticated} = props;
+    // return (
+    //     <Navbar  expand="lg" className="color-nav">
+    //         <Navbar.Brand>
+    //             <div className="name">{t('animalHotel')}</div>
+    //         </Navbar.Brand>
+    //         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+    //         <Navbar.Collapse id="basic-navbar-nav">
+    //             <Nav className="mr-auto">
+    //                 <LinkContainer to="/">
+    //                     <Nav.Link>{t('mainPage')}</Nav.Link>
+    //                 </LinkContainer>
+    //                 <LinkContainer to="/hotels">
+    //                     <Nav.Link>{t('hotels')}</Nav.Link>
+    //                 </LinkContainer>
+    //                 <LinkContainer to="/cities">
+    //                     <Nav.Link>{t('cities')}</Nav.Link>
+    //                 </LinkContainer>
+    //                 <LinkContainer to="/reservation">
+    //                     <Nav.Link>{t('reservation')}</Nav.Link>
+    //                 </LinkContainer>
+    //             </Nav>
+    //             <Nav className="navbar-right">
+    //                 <LanguageSwitcher t={t}/>
+    //                 <Dropdown alignRight={true}>
+    //                     <Dropdown.Toggle id="dropdown-basic" className="dropButton" variant="Info">
+    //                         <FontAwesomeIcon icon="user"/>
+    //                         {' '}username{' '}
+    //                     </Dropdown.Toggle>
+    //
+    //                     <Dropdown.Menu>
+    //                         <li>
+    //                             <a href="#/action-1" className="item">
+    //                                 <LinkContainer to="/myAccount">
+    //                                     <Nav.Link>{t('myAccount')}</Nav.Link>
+    //                                 </LinkContainer>
+    //                             </a>
+    //                         </li>
+    //                         <li>
+    //                             <a href="#/action-2" className="item">
+    //                                 <LinkContainer to="/changePassword">
+    //                                     <Nav.Link>{t('changePassword')}</Nav.Link>
+    //                                 </LinkContainer>
+    //                             </a>
+    //                         </li>
+    //                         <li>
+    //                             <a href="#/action-3" className="item">
+    //                                 <LinkContainer to="/">
+    //                                     <Nav.Link>{t('signOut')}</Nav.Link>
+    //                                 </LinkContainer>
+    //                             </a>
+    //                         </li>
+    //                     </Dropdown.Menu>
+    //                 </Dropdown>
+    //             </Nav>
+    //         </Navbar.Collapse>
+    //     </Navbar>
+    // );
 }
 
 export default withNamespaces()(NavigationBar);

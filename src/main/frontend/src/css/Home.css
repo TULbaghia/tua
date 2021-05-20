@@ -1,0 +1,136 @@
+.dog {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  height: unset;
+  aspectRatio: 1;
+}
+
+.title {
+  position: absolute;
+  top: 200px;
+  left: 100px;
+  font-family: Gabriela;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 72px;
+  line-height: 92px;
+  display: flex;
+  align-items: center;
+  color: #FFFFFF;
+}
+
+.logo {
+  position: absolute;
+  left: 720px;
+  top: 160px;
+  height: 120px;
+  weight: 120px;
+}
+
+.photo {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  height: unset;
+  aspectRatio: 1;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.column {
+  position: static;
+  width: 100%;
+  left: 0;
+  aspectRatio: 1;
+}
+
+.cat {
+  position: absolute;
+  align-items: center;
+  top: 150px;
+  left: 10%;
+  height: 62%;
+  width: 82%;
+  margin: 5%;
+}
+
+.textLeft {
+  position: absolute;
+  top: 5%;
+  left: 10%;
+  right: 10%;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 44px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  color: #152536;
+  margin: 5%;
+}
+
+.columnLeft {
+  background-color: white;
+  position: absolute;
+  height: 100%;
+  top: 61%;
+  width: 55%;
+  aspectRatio: 1;
+}
+
+.hand {
+  position: absolute;
+  align-items: center;
+  top: 150px;
+  right: 7%;
+  height: 62%;
+  width: 80%;
+  margin: 5%;
+}
+
+.textRight {
+  position: absolute;
+  top: 5%;
+  left: 3%;
+  right: 10%;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 44px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  color: #152536;
+  margin: 5%;
+}
+
+.columnRight{
+  background-color: white;
+  position: absolute;
+  height: 100%;
+  right: 0;
+  top: 61%;
+  width: 55%;
+  aspectRatio: 1;
+}
+
+.back {
+  font-style: normal;
+  font-weight: 500;
+  color: #7749F8;
+}
+
+.greeting {
+  position: absolute;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 82px;
+  color: white;
+  left: 10%;
+  right: 10%;
+  top: 30%;
+}

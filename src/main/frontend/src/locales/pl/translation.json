@@ -1,5 +1,6 @@
 {
-    "Example Welcome Message": "Witaj",
+    "welcome": "Witaj",
+    "animalHotel": "Hotel dla zwierząt",
     "mainPage": "Strona główna",
     "cryingCat": "Kot płaczący",
     "staringCat": "Kot patrzący",
@@ -7,7 +8,6 @@
     "pageNotFound": "NIE ZNALEZIONO STRONY",
     "forbidden": "BRAK UPRAWNIEŃ",
     "internal": "WEWNĘTRZNY BŁĄD SERWERA",
-    "animalHotel": "Hotel dla zwierząt",
     "hotels": "Hotele",
     "regulations": "Regulamin",
     "signUp": "Zarejestruj się",
@@ -35,5 +35,21 @@
     "admin": "Administrator",
     "manager": "Manager",
     "user": "Użytkownik",
-    "roleChoice": "WYBÓR ROLI"
+    "roleChoice": "WYBÓR ROLI",
+    "landingPageTitle": "Zarezerwuj już dziś!",
+    "landingPageLeft": "Komfortowy wypoczynek dla twojego zwierzaka",
+    "landingPageRight": "Masz hotel dla zwierząt? Dołącz do nas już dziś!",
+    "adminDashboard": "Widok admina",
+    "managerDashboard": "Widok managera",
+    "userDashboard": "Widok użytkownika",
+    "accountList": "Lista kont",
+    "cityList": "Zarządzaj miastami",
+    "myAccount": "Moje konto",
+    "changePassword": "Zmień hasło",
+    "signOut": "Wyloguj",
+    "myHotel": "Mój hotel",
+    "activeReservations": "Lista aktywnych rezerwacji",
+    "archiveReservations": "Lista archiwalnych rezerwacji",
+    "reservation": "Rezerwacja",
+    "cities": "Miasta"
 }

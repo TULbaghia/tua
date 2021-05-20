@@ -7,6 +7,9 @@
     flex-direction: row;
     align-items: center;
     padding: 10px 4px;
+    position: absolute;
+    right: 170px;
+    top: 10px;
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
@@ -26,6 +29,9 @@
     flex-direction: row;
     align-items: center;
     padding: 10px 4px;
+    position: absolute;
+    right: 30px;
+    top: 10px;
     background: #7749F8;
     border: 1px solid #7749F8;
     box-sizing: border-box;
@@ -75,31 +81,56 @@
 
 
 .loginText{
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 14px;
-    color: #FFFFFF;
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    margin: 0px 6px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 14px;
+  color: #FFFFFF;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 6px;
 }
 
+/**** ADMIN ****/
+.color-nav {
+  background-color: #EF5DA8;
+}
+
+/**** MANAGER ****/
+/*.color-nav {*/
+/*  background-color: #F178B6;*/
+/*}*/
+
+/**** USER ****/
+/*.color-nav {*/
+/*  background-color: #EFADCE;*/
+/*}*/
+
 .dropButton {
-    background-color: rgba(0, 0, 0, 0);
-    border: 1px solid rgba(0, 0, 0, 0);
-    color: black;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
+  color: black;
+}
+
+.dropButton:hover {
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
+  color: black;
 }
 
 .show > .dropButton:focus {
-    background-color: rgba(0, 0, 0, 0);
-    border: 1px solid rgba(0, 0, 0, 0);
-    color: black;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
+  color: black;
 }
 
 .nav .open > item, .nav .open > item:focus, .nav .open > item:hover {
-    background: #EBE5FC;
-    color: #5227CC;
+  background: #EBE5FC;
+  color: #5227CC;
+}
+.nav > li > item:focus, .nav > li > item:hover {
+  background: white;
+  color: black;
 }

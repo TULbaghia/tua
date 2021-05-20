@@ -29,5 +29,11 @@
     "admin": "Administrator",
     "manager": "Manager",
     "user": "User",
-    "roleChoice": "ROLE CHOICE"
+    "roleChoice": "ROLE CHOICE",
+    "cryingCat": "Crying cat",
+    "staringCat": "Staring cat",
+    "hamster": "Hamster",
+    "pageNotFound": "PAGE NOT FOUND",
+    "forbidden": "FORBIDDEN",
+    "internal": "INTERNAL SERVER ERROR"
 }

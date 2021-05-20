@@ -17,6 +17,9 @@ import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
 import ConfirmedAccount from "./components/ConfirmedAccount";
 import PasswordReset from "./components/PasswordReset";
+import NotFound from "./components/errorPages/NotFound";
+import Forbidden from "./components/errorPages/Forbidden";
+import InternalError from "./components/errorPages/InternalError";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -33,8 +36,11 @@ class App extends Component {
                             <Route exact path="/login" component={Login}/>
                             <Route path="/signUp" component={SignUp}/>
                             <Route path="/pong" component={PingPong}/>
+                            <Route path="/errors/forbidden" component={Forbidden}/>
+                            <Route path="/errors/internal" component={InternalError}/>
                             <Route path="/login/password-reset" component={PasswordReset}/>
                             <Route path="/confirmedAccount" component={ConfirmedAccount} />
+                            <Route component={NotFound}/>
                         </Switch>
                         <Footer />
                     </div>

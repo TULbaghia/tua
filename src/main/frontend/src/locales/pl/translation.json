@@ -8,5 +8,14 @@
     "signIn": "Zaloguj się",
     "landingPageTitle": "Zarezerwuj już dziś!",
     "landingPageLeft": "Komfortowy wypoczynek dla twojego zwierzaka",
-    "landingPageRight": "Masz hotel dla zwierząt? Dołącz do nas już dziś!"
+    "landingPageRight": "Masz hotel dla zwierząt? Dołącz do nas już dziś!",
+    "userDetailsTitle": "Moje konto",
+    "userDetailsFirstname": "Imie",
+    "userDetailsLastname": "Nazwisko",
+    "userDetailsEmail": "Adres email",
+    "userDetailsLogin": "Login",
+    "userDetailsContactNumber": "Numer telefonu",
+    "userDetailsRoles": "Role",
+    "userDetailsEditBtn": "Edytuj Dane",
+    "userDetailsPasswordChangeBtn": "Zmień hasło"
 }

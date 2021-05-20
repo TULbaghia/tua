@@ -8,5 +8,14 @@
     "signIn": "Sign in",
     "landingPageTitle": "Book today!",
     "landingPageLeft": "Comfortable rest for your pet ",
-    "landingPageRight": "Do you have a pet hotel? Join us today!"
+    "landingPageRight": "Do you have a pet hotel? Join us today!",
+    "userDetailsTitle": "My Account",
+    "userDetailsFirstname": "Firstname",
+    "userDetailsLastname": "Lastname",
+    "userDetailsEmail": "Email",
+    "userDetailsLogin": "Login",
+    "userDetailsContactNumber": "Phone number",
+    "userDetailsRoles": "Roles",
+    "userDetailsEditBtn": "Edit",
+    "userDetailsPasswordChangeBtn": "Change password"
 }

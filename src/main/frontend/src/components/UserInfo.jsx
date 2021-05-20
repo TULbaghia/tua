@@ -26,36 +26,36 @@ function UserInfo(props) {
 
   return (
     <Container className="main-wrapper">
-      <h1>Moje konto</h1>
+      <h1>{t("userDetailsTitle")}</h1>
       <table>
         <tr>
-          <td>Imie</td>
+          <td>{t("userDetailsFirstname")}</td>
           <td>{userInfo.firstname}</td>
         </tr>
         <tr>
-          <td>Nazwisko</td>
+          <td>{t("userDetailsLastname")}</td>
           <td>{userInfo.lastname}</td>
         </tr>
         <tr>
-          <td>Adres email</td>
+          <td>{t("userDetailsEmail")}</td>
           <td>{userInfo.email}</td>
         </tr>
         <tr>
-          <td>Login</td>
+          <td>{t("userDetailsLogin")}</td>
           <td>{userInfo.login}</td>
         </tr>
         <tr>
-          <td>Numer telefonu</td>
+          <td>{t("userDetailsContactNumber")}</td>
           <td>{userInfo.contactNumber}</td>
         </tr>
         <tr>
-          <td>Role</td>
+          <td>{t("userDetailsRoles")}</td>
           <td>{userRoles.join(',')}</td>
         </tr>
       </table>
       <div class="main-wrapper-actions-container">
-        <Button className="btn-primary">Edytuj dane</Button>
-        <Button className="btn-primary">Zmień hasło</Button>
+        <Button className="btn-primary">{t("userDetailsEditBtn")}</Button>
+        <Button className="btn-primary">{t("userDetailsPasswordChangeBtn")}</Button>
       </div>
     </Container>
   );

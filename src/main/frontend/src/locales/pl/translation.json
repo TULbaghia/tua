@@ -1,3 +1,16 @@
 {
-    "Example Welcome Message": "Witaj"
+    "Example Welcome Message": "Witaj",
+    "animalHotel": "Hotel dla zwierząt",
+    "mainPage": "Strona główna",
+    "hotels": "Hotele",
+    "regulations": "Regulamin",
+    "signUp": "Zarejestruj się",
+    "signIn": "Zaloguj się",
+    "login": "Login",
+    "password": "Hasło",
+    "passwordReset": "Resetuj hasło",
+    "logging": "Logowanie",
+    "passwordResetting": "Resetowanie hasła",
+    "passwordResettingForm": "Formularz resetowania hasła",
+    "send": "Wyślij"
 }

@@ -13,6 +13,8 @@ import Home from "./components/Home";
 import BlogScreen from "./components/Blog";
 import PingPong from "./components/PingPong";
 import Login from "./components/Login";
+import Footer from "./components/Footer";
+import PasswordReset from "./components/PasswordReset";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -26,9 +28,11 @@ class App extends Component {
                         <Switch>
                             <Route exact path="/" component={Home}/>
                             <Route path="/blog" component={BlogScreen}/>
-                            <Route path="/login" component={Login}/>
+                            <Route exact path="/login" component={Login}/>
                             <Route path="/pong" component={PingPong}/>
+                            <Route path="/login/password-reset" component={PasswordReset}/>
                         </Switch>
+                        <Footer />
                     </div>
                 </Router>
             </div>

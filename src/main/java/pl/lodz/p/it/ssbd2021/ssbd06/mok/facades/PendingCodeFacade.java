@@ -17,6 +17,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -95,7 +96,7 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
      * @param expirationDate parametr precyzujący czas ponownego przesłania wiadomości ze zmianą adresu email.
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
      */
-    public List<Account> findAllAccountsWithUnusedCodes(CodeType codeType, long expirationDate) throws AppBaseException {
+    public List<Account> findAllAccountsWithUnusedCodes(CodeType codeType, Date expirationDate) throws AppBaseException {
         try {
             TypedQuery<Account> query = em.createNamedQuery("PendingCode.findAllAccountsWithUnusedCodes", Account.class);
             query.setParameter("codeType", codeType);

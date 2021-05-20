@@ -42,14 +42,14 @@ function Footer(props) {
     const {t,i18n} = props
     const {token, setToken} = useLocale();
     return (
-        <div className="footer">
-            {token !== null && token !== '' ? (
-                <div style={{marginLeft: "10rem", width: "10%"}}>
-                    <AccessLevelSwitcher t={t}/>
-                </div>
-            ) : null
-            }
-        </div>
+            <div className="footer">
+                {token !== null && token !== '' ? (
+                    <div style={{marginLeft: "10rem", width: "10%"}}>
+                        <AccessLevelSwitcher t={t}/>
+                    </div>
+                ) : null
+                }
+            </div>
     );
 }
 

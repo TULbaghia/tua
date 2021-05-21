@@ -60,5 +60,10 @@
     "userDetailsContactNumber": "Numer telefonu",
     "userDetailsRoles": "Role",
     "userDetailsEditBtn": "Edytuj Dane",
-    "userDetailsPasswordChangeBtn": "Zmień hasło"
+    "userDetailsPasswordChangeBtn": "Zmień hasło",
+    "passwordResetFormTitle": "Zresetuj hasło",
+    "passwordLengthError": "Hasło powinno zawierać od 8 do 64 znaków",
+    "passwordsDontMatch": "Hasła nie są identyczne",
+    "passwordRequired": "Nowe hasło jest wymagane",
+    "repeatedPasswordRequired": "Powtórzone nowe hasło jest wymagane"
 }

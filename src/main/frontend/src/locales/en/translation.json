@@ -60,5 +60,10 @@
     "userDetailsContactNumber": "Phone number",
     "userDetailsRoles": "Roles",
     "userDetailsEditBtn": "Edit",
-    "userDetailsPasswordChangeBtn": "Change password"
+    "userDetailsPasswordChangeBtn": "Change password",
+    "passwordResetFormTitle": "Reset password",
+    "passwordLengthError": "Password should contains 8 to 64 digits",
+    "passwordsDontMatch": "Passwords do not match",
+    "passwordRequired": "New password is required",
+    "repeatedPasswordRequired": "Repeated new password is required"
 }

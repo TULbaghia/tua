@@ -3,37 +3,37 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.RoleFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.*;
 import javax.inject.Inject;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Startup
 @Singleton
 public class ScheduledTasksManager {
 
-    @Inject
-    private AccountFacade accountFacade;
-
-    @Inject
-    private PendingCodeFacade pendingCodeFacade;
-
-    @Inject
-    private EmailSender emailSender;
-
     @Resource
     TimerService timerService;
+    @Inject
+    private AccountFacade accountFacade;
+    @Inject
+    private PendingCodeFacade pendingCodeFacade;
+    @Inject
+    private EmailSender emailSender;
+    @Inject
+    private RoleFacade roleFacade;
 
     /**
-     *  Usuwa konta użytkowników nie potwierdzonych
+     * Usuwa konta użytkowników nie potwierdzonych
      *
      * @param time
      * @throws AppBaseException
@@ -41,21 +41,31 @@ public class ScheduledTasksManager {
     @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private void deleteUnverifiedAccounts(Timer time) throws AppBaseException {
+
+        // usuwanie wszystkich niepotwierdzonych kont, które wygasły
         Calendar calendar1 = Calendar.getInstance();
         calendar1.add(Calendar.HOUR, -24);
-        long expirationDate = calendar1.getTimeInMillis();
-        List<Account> unverifiedAccountListAfter24H = accountFacade.findUnverifiedBefore(expirationDate);
-        for(Account account: unverifiedAccountListAfter24H){
+        Date expirationDateToRepeatEmail = calendar1.getTime();
+        List<Account> unverifiedAccountsToRemove = accountFacade.findUnverifiedBefore(expirationDateToRepeatEmail);
+        for (Account account : unverifiedAccountsToRemove) {
             accountFacade.remove(account);
         }
+
+        // oznaczenie wygasłych kodów aktywacyjnych
         Calendar calendar2 = Calendar.getInstance();
         calendar2.add(Calendar.HOUR, -12);
-        long expirationDateToRepeatEmail = calendar2.getTimeInMillis();
-        List<Account> unverifiedAccountListAfter12H = accountFacade.findUnverifiedBefore(expirationDateToRepeatEmail);
-        for(Account account: unverifiedAccountListAfter12H){
-            sendRepeatedEmailNotification(account);
+        Date codeExpirationDate = calendar2.getTime();
+        List<PendingCode> unusedCodes = pendingCodeFacade.findAllUnusedByCodeTypeAndBefore(CodeType.ACCOUNT_ACTIVATION, codeExpirationDate);
+        for (PendingCode code : unusedCodes) {
+            pendingCodeFacade.remove(code);
         }
 
+        // ponowne wysłanie maili na konta niepotwierdzonych użytkowników
+        List<Account> accountList = accountFacade.findUnverifiedBetweenDate(expirationDateToRepeatEmail, codeExpirationDate);
+        for (Account account : accountList) {
+            account.getPendingCodeList().add(new PendingCode(UUID.randomUUID().toString(), false, CodeType.ACCOUNT_ACTIVATION, account, account));
+//            sendRepeatedEmailNotification(account);
+        }
     }
 
     /**
@@ -69,7 +79,7 @@ public class ScheduledTasksManager {
     }
 
     /**
-     *  Ponownie wysyła email z informacją o rozpoczęciu procesu zmiany adresu email dla konta użytkownka.
+     * Ponownie wysyła email z informacją o rozpoczęciu procesu zmiany adresu email dla konta użytkownka.
      *
      * @param time
      * @throws AppBaseException

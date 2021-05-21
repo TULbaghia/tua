@@ -47,7 +47,10 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.EMAIL_CONSTRAINT;
         @NamedQuery(name = "Account.findByLastFailedLoginIpAddress",
                 query = "SELECT a FROM Account a WHERE a.lastFailedLoginIpAddress = :lastFailedLoginIpAddress"),
         @NamedQuery(name = "Account.findUnverified",
-                query = "SELECT a FROM Account a WHERE a.confirmed = false AND a.creationDate < :date")
+                query = "SELECT a FROM Account a WHERE a.confirmed = false AND a.creationDate < :date"),
+        @NamedQuery(name = "Account.findUnverifiedBetweenDate",
+                query = "SELECT a FROM Account a WHERE a.confirmed = false AND a.creationDate BETWEEN :dateBefore AND :dateAfter " +
+                        "AND a NOT IN (SELECT p.account FROM PendingCode p WHERE used = false AND codeType = 0)")
 })
 @NoArgsConstructor
 @ToString(callSuper = true)
@@ -147,11 +150,11 @@ public class Account extends AbstractEntity implements Serializable {
     private Integer failedLoginAttemptsCounter = 0;
 
     @Setter
-    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "account")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account", fetch = FetchType.LAZY)
     private Set<Booking> bookingList = new HashSet<>();
 
     @Setter
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "account")
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "account")
     private Set<Role> roleList = new HashSet<>();
 
     @Setter

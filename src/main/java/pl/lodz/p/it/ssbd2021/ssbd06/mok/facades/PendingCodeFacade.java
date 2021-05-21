@@ -17,6 +17,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -119,6 +120,19 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
             query.setParameter("account", account);
             query.setParameter("codeType", codeType);
             return query.getSingleResult();
+        } catch (NoResultException e) {
+            throw NotFoundException.pendingCodeNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
+    }
+
+    public List<PendingCode> findAllUnusedByCodeTypeAndBefore(CodeType codeType, Date dateBefore) throws AppBaseException {
+        try {
+            TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findAllUnusedByCodeTypeAndBefore", PendingCode.class);
+            query.setParameter("type", codeType);
+            query.setParameter("date", dateBefore);
+            return query.getResultList();
         } catch (NoResultException e) {
             throw NotFoundException.pendingCodeNotFound(e);
         } catch (PersistenceException e) {

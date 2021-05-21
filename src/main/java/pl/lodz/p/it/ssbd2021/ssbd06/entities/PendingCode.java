@@ -32,7 +32,9 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode.PENDING_CODE_CON
         @NamedQuery(name = "PendingCode.findNotUsedByAccount", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.used = false AND p.codeType = 0"),
         @NamedQuery(name = "PendingCode.findAllByCodeType", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.codeType = :codeType AND p.used = :isUsed"),
         @NamedQuery(name = "PendingCode.findAllAccountsWithUnusedCodes", query = "SELECT p.account FROM PendingCode p WHERE p.codeType = :codeType AND p.creationDate < :date AND p.used = false"),
-        @NamedQuery(name = "PendingCode.findUnusedCodeByAccount", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.used = false AND p.codeType = :codeType")}
+        @NamedQuery(name = "PendingCode.findUnusedCodeByAccount", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.used = false AND p.codeType = :codeType"),
+        @NamedQuery(name = "PendingCode.findAllUnusedByCodeTypeAndBefore", query = "SELECT p FROM PendingCode p WHERE p.used = false AND p.codeType = :type AND p.creationDate < :date")
+}
 )
 @NoArgsConstructor
 public class PendingCode extends AbstractEntity implements Serializable {
@@ -74,9 +76,12 @@ public class PendingCode extends AbstractEntity implements Serializable {
     @Column(name = "code_type", nullable = false)
     private CodeType codeType;
 
-    public PendingCode(String code, boolean used) {
+    public PendingCode(String code, boolean used, CodeType codeType, Account createdBy, Account account) {
         this.code = code;
         this.used = used;
+        this.codeType = codeType;
+        this.setCreatedBy(createdBy);
+        this.account = account;
     }
 
     @Override

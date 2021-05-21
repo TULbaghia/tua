@@ -15,6 +15,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -113,10 +114,23 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     @PermitAll
-    public List<Account> findUnverifiedBefore(long expirationDate) throws AppBaseException {
+    public List<Account> findUnverifiedBefore(Date expirationDate) throws AppBaseException {
         try {
             TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findUnverified", Account.class);
             accountTypedQuery.setParameter("date", expirationDate);
+            return accountTypedQuery.getResultList();
+        } catch (NoResultException e) {
+            throw NotFoundException.accountNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
+    }
+
+    public List<Account> findUnverifiedBetweenDate(Date dateBefore, Date dateAfter) throws AppBaseException {
+        try {
+            TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findUnverifiedBetweenDate", Account.class);
+            accountTypedQuery.setParameter("dateBefore", dateBefore);
+            accountTypedQuery.setParameter("dateAfter", dateAfter);
             return accountTypedQuery.getResultList();
         } catch (NoResultException e) {
             throw NotFoundException.accountNotFound(e);

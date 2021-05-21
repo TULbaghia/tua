@@ -2,18 +2,17 @@ package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.Setter;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "booking_line", indexes = {
@@ -73,9 +72,6 @@ public class BookingLine extends AbstractEntity implements Serializable {
         return new ToStringBuilder(this)
                 .append(super.toString())
                 .append("id", id)
-                .append("pricePerDay", pricePerDay)
-                .append("booking", booking.getId())
-                .append("box", box.getId())
                 .toString();
     }
 }

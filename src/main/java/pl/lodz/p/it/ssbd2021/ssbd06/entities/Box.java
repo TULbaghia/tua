@@ -4,19 +4,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "box", indexes = {
@@ -79,10 +79,6 @@ public class Box extends AbstractEntity implements Serializable {
         return new ToStringBuilder(this)
                 .append(super.toString())
                 .append("id", id)
-                .append("pricePerDay", pricePerDay)
-                .append("bookingLineList", bookingLineList)
-                .append("animalType", animalType)
-                .append("hotel", hotel.getName())
                 .toString();
     }
 

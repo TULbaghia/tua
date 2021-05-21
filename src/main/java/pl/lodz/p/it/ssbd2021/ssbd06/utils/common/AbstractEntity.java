@@ -71,9 +71,9 @@ public abstract class AbstractEntity {
                 .append("creationDate", creationDate)
                 .append("modificationDate", modificationDate)
                 .append("version", version)
-                .append("createdBy", createdBy == null ? "" : createdBy.getLogin());
+                .append("createdBy", createdBy == null ? "" : createdBy.getId());
         if (modifiedBy != null) {
-            toStringBuilder.append("modifiedBy", modifiedBy.getLogin());
+            toStringBuilder.append("modifiedBy", modifiedBy.getId());
         }
         return toStringBuilder.toString();
     }

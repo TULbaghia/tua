@@ -58,6 +58,13 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Wyszukuje konto na podstawie loginu
+     *
+     * @param login login użytkownika
+     * @return obiekt encji konta o podanym loginie
+     * @throws AppBaseException gdy konto nie zostało znalezione, lub wystąpił problem z bazą danych.
+     */
     @PermitAll
     public Account findByLogin(String login) throws AppBaseException {
         try {
@@ -73,6 +80,7 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     /**
      * Zwraca konto o podanym adresie email.
+     *
      * @return obiekt Account.
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
      */
@@ -91,13 +99,14 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     /**
      * Zwraca listę wszystkich kont w systemie.
+     *
      * @return lista kont
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @Override
     @PermitAll
-    public List<Account> findAll() throws AppBaseException{
-            return super.findAll();
+    public List<Account> findAll() throws AppBaseException {
+        return super.findAll();
     }
 
     @Override

@@ -45,12 +45,15 @@ public class PendingCodeManager {
     @PermitAll
     public void sendResetPassword(String login) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
-        if(!account.isEnabled()) throw AccountException.notEnabled();
-        if(!account.isConfirmed()) throw AccountException.notConfirmed();
-
+        if (!account.isEnabled()) {
+            throw AccountException.notEnabled();
+        }
+        if (!account.isConfirmed()) {
+            throw AccountException.notConfirmed();
+        }
         List<PendingCode> previousResetCodes = pendingCodeFacade.findResetCodesByAccount(account);
-        if(previousResetCodes.size() > 0) {
-            for(int i = 0; i <= previousResetCodes.size() - 1; i++) {
+        if (previousResetCodes.size() > 0) {
+            for (int i = 0; i <= previousResetCodes.size() - 1; i++) {
                 PendingCode previousResetCode = previousResetCodes.get(i);
                 previousResetCode.setUsed(true);
                 pendingCodeFacade.edit(previousResetCode);
@@ -70,8 +73,8 @@ public class PendingCodeManager {
     @PermitAll
     public void sendResetPasswordAgain(String login) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
-        if(!account.isEnabled()) throw AccountException.notEnabled();
-        if(!account.isConfirmed()) throw AccountException.notConfirmed();
+        if (!account.isEnabled()) throw AccountException.notEnabled();
+        if (!account.isConfirmed()) throw AccountException.notConfirmed();
 
         PendingCode previousResetCode = pendingCodeFacade.findResetCodesByAccount(account).get(0);
         previousResetCode.setUsed(true);

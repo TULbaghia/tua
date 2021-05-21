@@ -42,14 +42,16 @@ public class AuthController extends AbstractController {
     @Produces({MediaType.TEXT_PLAIN})
     public Response login(@NotNull @Valid LoginDataDto loginDataDto) throws AppBaseException {
         try {
-            String token = repeat(() -> authEndpoint.login(loginDataDto.getLogin(), loginDataDto.getPassword()), authEndpoint);
-            repeat(() -> accountEndpoint.updateValidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(), Date.from(Instant.now())), accountEndpoint);
+            String token = authEndpoint.login(loginDataDto.getLogin(), loginDataDto.getPassword());
+            repeat(() -> accountEndpoint.updateValidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(),
+                    Date.from(Instant.now())), accountEndpoint);
             return Response.accepted()
                     .type("application/json")
                     .entity(token)
                     .build();
         } catch (AuthValidationException e) {
-            repeat(() -> accountEndpoint.updateInvalidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(), Date.from(Instant.now())), accountEndpoint);
+            repeat(() -> accountEndpoint.updateInvalidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(),
+                    Date.from(Instant.now())), accountEndpoint);
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }

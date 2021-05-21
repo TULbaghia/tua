@@ -18,6 +18,7 @@ import { Configuration } from '../configuration';
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 import { AccountDto } from '../models';
 import { AccountPersonalDetailsDto } from '../models';
+import { EmailDto } from '../models';
 import { LoginDataDto } from '../models';
 import { PasswordChangeDto } from '../models';
 import { PasswordChangeOtherDto } from '../models';
@@ -35,10 +36,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        changeAccountActiveStatus: async (login: string, options: any = {}): Promise<RequestArgs> => {
+        blockAccount: async (login: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'login' is not null or undefined
             if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling changeAccountActiveStatus.');
+                throw new RequiredError('login','Required parameter login was null or undefined when calling blockAccount.');
             }
             const localVarPath = `/resources/accounts/{login}/block`
                 .replace(`{${"login"}}`, encodeURIComponent(String(login)));
@@ -75,7 +76,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         changeOtherPassword: async (body?: PasswordChangeOtherDto, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts/other/{login}/password`;
+            const localVarPath = `/resources/accounts/user/password`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -113,7 +114,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         changePassword: async (body?: PasswordChangeDto, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts/{login}/password`;
+            const localVarPath = `/resources/accounts/self/password`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -156,6 +157,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 throw new RequiredError('code','Required parameter code was null or undefined when calling confirm.');
             }
             const localVarPath = `/resources/accounts/confirm/{code}`
+                .replace(`{${"code"}}`, encodeURIComponent(String(code)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} code 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        confirmEmail: async (code: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'code' is not null or undefined
+            if (code === null || code === undefined) {
+                throw new RequiredError('code','Required parameter code was null or undefined when calling confirmEmail.');
+            }
+            const localVarPath = `/resources/accounts/user/confirm/email/{code}`
                 .replace(`{${"code"}}`, encodeURIComponent(String(code)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -229,12 +269,94 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {string} login 
+         * @param {EmailDto} [body] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        editOtherAccountEmail: async (login: string, body?: EmailDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'login' is not null or undefined
+            if (login === null || login === undefined) {
+                throw new RequiredError('login','Required parameter login was null or undefined when calling editOtherAccountEmail.');
+            }
+            const localVarPath = `/resources/accounts/user/edit/email/{login}`
+                .replace(`{${"login"}}`, encodeURIComponent(String(login)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {AccountPersonalDetailsDto} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         editOwnAccountDetails: async (body?: AccountPersonalDetailsDto, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/resources/accounts/edit`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {EmailDto} [body] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        editOwnAccountEmail: async (body?: EmailDto, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/resources/accounts/self/edit/email`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -303,7 +425,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserRole: async (options: any = {}): Promise<RequestArgs> => {
+        getSelfRole: async (options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/resources/accounts/self/role`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -337,10 +459,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserRole_1: async (login: string, options: any = {}): Promise<RequestArgs> => {
+        getUserRole: async (login: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'login' is not null or undefined
             if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling getUserRole_1.');
+                throw new RequiredError('login','Required parameter login was null or undefined when calling getUserRole.');
             }
             const localVarPath = `/resources/accounts/{login}/role`
                 .replace(`{${"login"}}`, encodeURIComponent(String(login)));
@@ -386,7 +508,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             if (accessLevel === null || accessLevel === undefined) {
                 throw new RequiredError('accessLevel','Required parameter accessLevel was null or undefined when calling grantAccessLevel.');
             }
-            const localVarPath = `/resources/accounts/{login}/grant/{accessLevel}`
+            const localVarPath = `/resources/accounts/user/{login}/grant/{accessLevel}`
                 .replace(`{${"login"}}`, encodeURIComponent(String(login)))
                 .replace(`{${"accessLevel"}}`, encodeURIComponent(String(accessLevel)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -488,39 +610,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        ping: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/javaee8`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {RegisterAccountDto} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -564,7 +653,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         resetPassword: async (body?: PasswordResetDto, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts/reset/{code}`;
+            const localVarPath = `/resources/accounts/user/reset`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -611,7 +700,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             if (accessLevel === null || accessLevel === undefined) {
                 throw new RequiredError('accessLevel','Required parameter accessLevel was null or undefined when calling revokeAccessLevel.');
             }
-            const localVarPath = `/resources/accounts/{login}/revoke/{accessLevel}`
+            const localVarPath = `/resources/accounts/user/{login}/revoke/{accessLevel}`
                 .replace(`{${"login"}}`, encodeURIComponent(String(login)))
                 .replace(`{${"accessLevel"}}`, encodeURIComponent(String(accessLevel)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -651,7 +740,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             if (login === null || login === undefined) {
                 throw new RequiredError('login','Required parameter login was null or undefined when calling sendResetPassword.');
             }
-            const localVarPath = `/resources/accounts/{login}/reset`
+            const localVarPath = `/resources/accounts/user/{login}/reset`
                 .replace(`{${"login"}}`, encodeURIComponent(String(login)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -690,7 +779,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             if (login === null || login === undefined) {
                 throw new RequiredError('login','Required parameter login was null or undefined when calling sendResetPasswordAgain.');
             }
-            const localVarPath = `/resources/accounts/{login}/resetagain`
+            const localVarPath = `/resources/accounts/user/{login}/resetagain`
                 .replace(`{${"login"}}`, encodeURIComponent(String(login)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -729,7 +818,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             if (login === null || login === undefined) {
                 throw new RequiredError('login','Required parameter login was null or undefined when calling showAccount.');
             }
-            const localVarPath = `/resources/accounts/{login}`
+            const localVarPath = `/resources/accounts/user/{login}`
                 .replace(`{${"login"}}`, encodeURIComponent(String(login)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -763,7 +852,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         showAccountInformation: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts/self`;
+            const localVarPath = `/resources/accounts/user`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -844,8 +933,8 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async changeAccountActiveStatus(login: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).changeAccountActiveStatus(login, options);
+        async blockAccount(login: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).blockAccount(login, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -892,6 +981,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} code 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async confirmEmail(code: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).confirmEmail(code, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @param {string} login 
          * @param {AccountPersonalDetailsDto} [body] 
          * @param {*} [options] Override http request option.
@@ -906,12 +1008,39 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} login 
+         * @param {EmailDto} [body] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async editOtherAccountEmail(login: string, body?: EmailDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).editOtherAccountEmail(login, body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @param {AccountPersonalDetailsDto} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         async editOwnAccountDetails(body?: AccountPersonalDetailsDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
             const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).editOwnAccountDetails(body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {EmailDto} [body] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async editOwnAccountEmail(body?: EmailDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).editOwnAccountEmail(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -934,8 +1063,8 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUserRole(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getUserRole(options);
+        async getSelfRole(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getSelfRole(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -947,8 +1076,8 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUserRole_1(login: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getUserRole_1(login, options);
+        async getUserRole(login: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getUserRole(login, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -988,18 +1117,6 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          */
         async logout(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
             const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).logout(options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async ping(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).ping(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1124,8 +1241,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        changeAccountActiveStatus(login: string, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).changeAccountActiveStatus(login, options).then((request) => request(axios, basePath));
+        blockAccount(login: string, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).blockAccount(login, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1156,6 +1273,15 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @param {string} code 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        confirmEmail(code: string, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).confirmEmail(code, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} login 
          * @param {AccountPersonalDetailsDto} [body] 
          * @param {*} [options] Override http request option.
@@ -1166,12 +1292,31 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @param {string} login 
+         * @param {EmailDto} [body] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        editOtherAccountEmail(login: string, body?: EmailDto, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).editOtherAccountEmail(login, body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {AccountPersonalDetailsDto} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         editOwnAccountDetails(body?: AccountPersonalDetailsDto, options?: any): AxiosPromise<any> {
             return DefaultApiFp(configuration).editOwnAccountDetails(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {EmailDto} [body] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        editOwnAccountEmail(body?: EmailDto, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).editOwnAccountEmail(body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1186,8 +1331,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserRole(options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).getUserRole(options).then((request) => request(axios, basePath));
+        getSelfRole(options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).getSelfRole(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1195,8 +1340,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserRole_1(login: string, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).getUserRole_1(login, options).then((request) => request(axios, basePath));
+        getUserRole(login: string, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).getUserRole(login, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1224,14 +1369,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         logout(options?: any): AxiosPromise<any> {
             return DefaultApiFp(configuration).logout(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        ping(options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).ping(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1322,8 +1459,8 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public changeAccountActiveStatus(login: string, options?: any) {
-        return DefaultApiFp(this.configuration).changeAccountActiveStatus(login, options).then((request) => request(this.axios, this.basePath));
+    public blockAccount(login: string, options?: any) {
+        return DefaultApiFp(this.configuration).blockAccount(login, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1357,6 +1494,16 @@ export class DefaultApi extends BaseAPI {
     }
     /**
      * 
+     * @param {string} code 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public confirmEmail(code: string, options?: any) {
+        return DefaultApiFp(this.configuration).confirmEmail(code, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
      * @param {string} login 
      * @param {AccountPersonalDetailsDto} [body] 
      * @param {*} [options] Override http request option.
@@ -1368,6 +1515,17 @@ export class DefaultApi extends BaseAPI {
     }
     /**
      * 
+     * @param {string} login 
+     * @param {EmailDto} [body] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public editOtherAccountEmail(login: string, body?: EmailDto, options?: any) {
+        return DefaultApiFp(this.configuration).editOtherAccountEmail(login, body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
      * @param {AccountPersonalDetailsDto} [body] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1375,6 +1533,16 @@ export class DefaultApi extends BaseAPI {
      */
     public editOwnAccountDetails(body?: AccountPersonalDetailsDto, options?: any) {
         return DefaultApiFp(this.configuration).editOwnAccountDetails(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @param {EmailDto} [body] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public editOwnAccountEmail(body?: EmailDto, options?: any) {
+        return DefaultApiFp(this.configuration).editOwnAccountEmail(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1391,8 +1559,8 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getUserRole(options?: any) {
-        return DefaultApiFp(this.configuration).getUserRole(options).then((request) => request(this.axios, this.basePath));
+    public getSelfRole(options?: any) {
+        return DefaultApiFp(this.configuration).getSelfRole(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1401,8 +1569,8 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getUserRole_1(login: string, options?: any) {
-        return DefaultApiFp(this.configuration).getUserRole_1(login, options).then((request) => request(this.axios, this.basePath));
+    public getUserRole(login: string, options?: any) {
+        return DefaultApiFp(this.configuration).getUserRole(login, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1433,15 +1601,6 @@ export class DefaultApi extends BaseAPI {
      */
     public logout(options?: any) {
         return DefaultApiFp(this.configuration).logout(options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public ping(options?: any) {
-        return DefaultApiFp(this.configuration).ping(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

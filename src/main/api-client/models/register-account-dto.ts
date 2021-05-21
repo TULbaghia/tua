@@ -28,6 +28,12 @@ export interface RegisterAccountDto {
      * @type {string}
      * @memberof RegisterAccountDto
      */
+    email?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAccountDto
+     */
     password?: any;
     /**
      * 

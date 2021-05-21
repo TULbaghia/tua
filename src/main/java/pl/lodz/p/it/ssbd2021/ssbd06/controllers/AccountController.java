@@ -143,7 +143,7 @@ public class AccountController extends AbstractController {
     @GET
     @Path("/self/role")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserRole() throws AppBaseException {
+    public Response getSelfRole() throws AppBaseException {
         RolesDto rolesDto = repeat(() -> roleEndpoint.getUserRole(), roleEndpoint);
         return Response.ok()
                 .entity(rolesDto)

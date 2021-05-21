@@ -28,6 +28,12 @@ export interface AccountDto {
      * @type {string}
      * @memberof AccountDto
      */
+    email?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountDto
+     */
     firstname?: any;
     /**
      * 

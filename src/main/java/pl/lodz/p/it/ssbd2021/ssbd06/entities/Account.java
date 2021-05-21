@@ -10,7 +10,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.validation.*;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
@@ -21,11 +20,13 @@ import java.util.Set;
 
 import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.CONTACT_NUMBER_CONSTRAINT;
 import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.LOGIN_CONSTRAINT;
+import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.EMAIL_CONSTRAINT;
 
 @Entity
 @Table(name = "account", uniqueConstraints = {
         @UniqueConstraint(name = LOGIN_CONSTRAINT, columnNames = {"login"}),
-        @UniqueConstraint(name = CONTACT_NUMBER_CONSTRAINT, columnNames = {"contact_number"})
+        @UniqueConstraint(name = CONTACT_NUMBER_CONSTRAINT, columnNames = {"contact_number"}),
+        @UniqueConstraint(name = EMAIL_CONSTRAINT, columnNames = {"email"})
 }, indexes = {
         @Index(name = "ix_account_created_by", columnList = "created_by"),
         @Index(name = "ix_account_modified_by", columnList = "modified_by")
@@ -35,6 +36,8 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.LOGIN_CONSTRAINT;
         @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
         @NamedQuery(name = "Account.findById", query = "SELECT a FROM Account a WHERE a.id = :id"),
         @NamedQuery(name = "Account.findByLogin", query = "SELECT a FROM Account a WHERE a.login = :login"),
+        @NamedQuery(name = "Account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email"),
+        @NamedQuery(name = "Account.findByNewEmail", query = "SELECT a FROM Account a WHERE a.newEmail = :newEmail"),
         @NamedQuery(name = "Account.findByEnabled", query = "SELECT a FROM Account a WHERE a.enabled = :enabled"),
         @NamedQuery(name = "Account.findByConfirmed", query = "SELECT a FROM Account a WHERE a.confirmed = :confirmed"),
         @NamedQuery(name = "Account.findByContactNumber",
@@ -43,6 +46,8 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.LOGIN_CONSTRAINT;
                 query = "SELECT a FROM Account a WHERE a.lastSuccessfulLoginIpAddress = :lastSuccessfulLoginIpAddress"),
         @NamedQuery(name = "Account.findByLastFailedLoginIpAddress",
                 query = "SELECT a FROM Account a WHERE a.lastFailedLoginIpAddress = :lastFailedLoginIpAddress"),
+        @NamedQuery(name = "Account.findUnverified",
+                query = "SELECT a FROM Account a WHERE a.confirmed = false AND a.creationDate < :date")
 })
 @NoArgsConstructor
 @ToString(callSuper = true)
@@ -52,6 +57,8 @@ public class Account extends AbstractEntity implements Serializable {
     public static final String LOGIN_CONSTRAINT = "uk_account_login";
 
     public static final String CONTACT_NUMBER_CONSTRAINT = "uk_account_contact_number";
+
+    public static final String EMAIL_CONSTRAINT = "uk_account_email";
 
     private static final long serialVersionUID = 1L;
 
@@ -69,8 +76,20 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Setter
     @NotNull
+    @UserEmail
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Setter
+    @UserEmail
+    @Column(name = "new_email")
+    private String newEmail = null;
+
+    @Setter
+    @NotNull
     @Password
     @Column(name = "password", nullable = false, length = 64)
+    @ToString.Exclude
     private String password;
 
     @Setter
@@ -154,7 +173,6 @@ public class Account extends AbstractEntity implements Serializable {
     public Long getId() {
         return id;
     }
-
 
     @XmlTransient
     public Set<Booking> getBookingList() {

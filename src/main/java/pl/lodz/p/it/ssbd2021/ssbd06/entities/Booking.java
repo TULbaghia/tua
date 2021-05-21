@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Check;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
@@ -32,7 +32,6 @@ import java.util.Set;
         @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
         @NamedQuery(name = "Booking.findById", query = "SELECT b FROM Booking b WHERE b.id = :id")})
 @NoArgsConstructor
-@ToString(callSuper = true)
 public class Booking extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -98,6 +97,21 @@ public class Booking extends AbstractEntity implements Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append(super.toString())
+                .append("id", id)
+                .append("dateFrom", dateFrom)
+                .append("dateTo", dateTo)
+                .append("price", price)
+                .append("bookingLineList", bookingLineList)
+                .append("rating", rating)
+                .append("account", account.getLogin())
+                .append("status", status)
+                .toString();
     }
 
     @XmlTransient

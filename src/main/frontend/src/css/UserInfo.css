@@ -1,0 +1,44 @@
+.main-wrapper {
+  background: white;
+  padding: 20px;
+  flex: 1;
+  margin: 40px 0 80px 0;
+  background: #ffffff;
+  box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 13px;
+  color: black;
+  width: fit-content;
+  min-width: 600px;
+}
+
+.main-wrapper > h1{
+    margin: 30px 0;
+}
+
+.main-wrapper > table,th,td{
+    border: 1px solid #DEE2E6;
+    padding: 10px;
+}
+
+.main-wrapper > table{
+    width: 100%;
+    border-collapse: collapse
+}
+
+.main-wrapper > table > tr > td:first-child{
+    font-weight: bold;
+}
+
+.main-wrapper-actions-container{
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.main-wrapper-actions-container > button{
+    color: #fff;
+    background-color: #7749F8;
+    background-color: cutom-color;
+    border-color: #7749F8;
+    border-color: cutom-cor;
+}

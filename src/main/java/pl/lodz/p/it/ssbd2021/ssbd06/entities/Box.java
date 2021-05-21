@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 
@@ -30,7 +30,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Box.findById", query = "SELECT b FROM Box b WHERE b.id = :id"),
     @NamedQuery(name = "Box.findByPricePerDay", query = "SELECT b FROM Box b WHERE b.pricePerDay = :pricePerDay")})
 @NoArgsConstructor
-@ToString(callSuper = true)
 public class Box extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -74,6 +73,17 @@ public class Box extends AbstractEntity implements Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    @Override public String toString() {
+        return new ToStringBuilder(this)
+                .append(super.toString())
+                .append("id", id)
+                .append("pricePerDay", pricePerDay)
+                .append("bookingLineList", bookingLineList)
+                .append("animalType", animalType)
+                .append("hotel", hotel.getName())
+                .toString();
     }
 
     @XmlTransient

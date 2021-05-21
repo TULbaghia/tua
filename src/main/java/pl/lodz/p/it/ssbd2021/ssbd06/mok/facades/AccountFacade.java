@@ -15,6 +15,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -41,6 +42,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @throws AppBaseException podczas wystąpienia błędu utrwalania w bazie danych
      */
     @Override
+    @PermitAll
     public void create(Account entity) throws AppBaseException {
         try {
             super.create(entity);
@@ -49,11 +51,21 @@ public class AccountFacade extends AbstractFacade<Account> {
                 throw AccountException.loginExists(e.getCause());
             } else if (e.getCause().getMessage().contains(Account.CONTACT_NUMBER_CONSTRAINT)) {
                 throw AccountException.contactNumberException(e.getCause());
+            } else if (e.getCause().getMessage().contains(Account.EMAIL_CONSTRAINT)) {
+                throw AccountException.emailExists(e.getCause());
             }
             throw DatabaseQueryException.databaseQueryException(e.getCause());
         }
     }
 
+    /**
+     * Wyszukuje konto na podstawie loginu
+     *
+     * @param login login użytkownika
+     * @return obiekt encji konta o podanym loginie
+     * @throws AppBaseException gdy konto nie zostało znalezione, lub wystąpił problem z bazą danych.
+     */
+    @PermitAll
     public Account findByLogin(String login) throws AppBaseException {
         try {
             TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findByLogin", Account.class);
@@ -67,13 +79,34 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     /**
+     * Zwraca konto o podanym adresie email.
+     *
+     * @return obiekt Account.
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
+     */
+    @PermitAll
+    public Account findByEmail(String email) throws AppBaseException {
+        try {
+            TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findByEmail", Account.class);
+            accountTypedQuery.setParameter("email", email);
+            return accountTypedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw NotFoundException.accountNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
+    }
+
+    /**
      * Zwraca listę wszystkich kont w systemie.
+     *
      * @return lista kont
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @Override
-    public List<Account> findAll() throws AppBaseException{
-            return super.findAll();
+    @PermitAll
+    public List<Account> findAll() throws AppBaseException {
+        return super.findAll();
     }
 
     @Override
@@ -86,8 +119,23 @@ public class AccountFacade extends AbstractFacade<Account> {
                 throw AccountException.loginExists(e.getCause());
             } else if (e.getCause().getMessage().contains(Account.CONTACT_NUMBER_CONSTRAINT)) {
                 throw AccountException.contactNumberException(e.getCause());
+            } else if (e.getCause().getMessage().contains(Account.EMAIL_CONSTRAINT)) {
+                throw AccountException.emailExists(e.getCause());
             }
             throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
+    }
+
+    @PermitAll
+    public List<Account> findUnverifiedBefore(Date expirationDate) throws AppBaseException {
+        try {
+            TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findUnverified", Account.class);
+            accountTypedQuery.setParameter("date", expirationDate);
+            return accountTypedQuery.getResultList();
+        } catch (NoResultException e) {
+            throw NotFoundException.accountNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
         }
     }
 }

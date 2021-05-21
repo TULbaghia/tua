@@ -38,17 +38,4 @@ public class AccountMapperTest {
         Assert.assertEquals(account.getLastFailedLoginDate(), accountDto.getLastFailedLoginDate());
         Assert.assertEquals(account.isConfirmed(), accountDto.isConfirmed());
     }
-
-    @Test
-    public void accountDtoToAccountTest() {
-        AccountDto accountDto = mapper.toAccountDto(account);
-        Account account2 = mapper.toAccount(accountDto);
-
-        Assert.assertEquals(account.getLogin(), account2.getLogin());
-        Assert.assertEquals(account.getFirstname(), account2.getFirstname());
-        Assert.assertEquals(account.getLastname(), account2.getLastname());
-        Assert.assertEquals(account.getContactNumber(), account2.getContactNumber());
-        Assert.assertEquals(account.getLastFailedLoginDate(), account2.getLastFailedLoginDate());
-        Assert.assertEquals(account.isConfirmed(), account2.isConfirmed());
-    }
 }

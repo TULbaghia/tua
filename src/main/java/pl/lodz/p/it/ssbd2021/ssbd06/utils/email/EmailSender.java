@@ -3,9 +3,16 @@ package pl.lodz.p.it.ssbd2021.ssbd06.utils.email;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.EmailException;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -14,11 +21,14 @@ import java.util.Properties;
 /**
  * Klasa oferująca funkcjonalność wysyłania wiadomości email, w reakcji na zdarzenia zachodzące w aplikacji.
  */
-@ApplicationScoped
+@Stateless
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Interceptors({LoggingInterceptor.class})
+@PermitAll
 public class EmailSender {
 
     @Inject
-    private EmailConfig emailConfig;
+    private Config emailConfig;
 
     /**
      * Wysyła link aktywacyjny po rejestracji konta użytkownika na podany email.
@@ -29,9 +39,9 @@ public class EmailSender {
      */
     public void sendActivationEmail(Account account, String activationLink) throws AppBaseException {
         String lang = account.getLanguage();
-        String activationContent = emailConfig.getContentForType(lang, EmailConfig.MailType.ACTIVATE_ACCOUNT, account.getFirstname(), activationLink);
-        String activationSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.ACTIVATE_ACCOUNT);
-        sendEmail(account.getLogin(), activationSubject, activationContent);
+        String activationContent = emailConfig.getContentForType(lang, Config.MailType.ACTIVATE_ACCOUNT, account.getLogin(), activationLink);
+        String activationSubject = emailConfig.getSubjectForType(lang, Config.MailType.ACTIVATE_ACCOUNT);
+        sendEmail(account.getEmail(), activationSubject, activationContent);
     }
 
     /**
@@ -42,9 +52,9 @@ public class EmailSender {
      */
     public void sendLockAccountEmail(Account account) throws AppBaseException {
         String lang = account.getLanguage();
-        String lockContent = emailConfig.getContentForType(lang, EmailConfig.MailType.LOCK_ACCOUNT, account.getFirstname());
-        String lockSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.LOCK_ACCOUNT);
-        sendEmail(account.getLogin(), lockSubject, lockContent);
+        String lockContent = emailConfig.getContentForType(lang, Config.MailType.LOCK_ACCOUNT, account.getLogin());
+        String lockSubject = emailConfig.getSubjectForType(lang, Config.MailType.LOCK_ACCOUNT);
+        sendEmail(account.getEmail(), lockSubject, lockContent);
     }
 
     /**
@@ -55,9 +65,9 @@ public class EmailSender {
      */
     public void sendUnlockAccountEmail(Account account) throws AppBaseException {
         String lang = account.getLanguage();
-        String lockContent = emailConfig.getContentForType(lang, EmailConfig.MailType.UNLOCK_ACCOUNT, account.getFirstname());
-        String lockSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.UNLOCK_ACCOUNT);
-        sendEmail(account.getLogin(), lockSubject, lockContent);
+        String lockContent = emailConfig.getContentForType(lang, Config.MailType.UNLOCK_ACCOUNT, account.getLogin());
+        String lockSubject = emailConfig.getSubjectForType(lang, Config.MailType.UNLOCK_ACCOUNT);
+        sendEmail(account.getEmail(), lockSubject, lockContent);
     }
 
     /**
@@ -69,9 +79,9 @@ public class EmailSender {
      */
     public void sendGrantAccessLevelEmail(Account account, String accessLevel) throws AppBaseException {
         String lang = account.getLanguage();
-        String grantAccessContent = emailConfig.getContentForType(lang, EmailConfig.MailType.GRANT_ACCESS, account.getFirstname(), accessLevel);
-        String grantAccessSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.GRANT_ACCESS);
-        sendEmail(account.getLogin(), grantAccessSubject, grantAccessContent);
+        String grantAccessContent = emailConfig.getContentForType(lang, Config.MailType.GRANT_ACCESS, account.getLogin(), accessLevel);
+        String grantAccessSubject = emailConfig.getSubjectForType(lang, Config.MailType.GRANT_ACCESS);
+        sendEmail(account.getEmail(), grantAccessSubject, grantAccessContent);
     }
 
     /**
@@ -83,9 +93,9 @@ public class EmailSender {
      */
     public void sendDenyAccessLevelEmail(Account account, String accessLevel) throws AppBaseException {
         String lang = account.getLanguage();
-        String denyAccessContent = emailConfig.getContentForType(lang, EmailConfig.MailType.DENY_ACCESS, account.getFirstname(), accessLevel);
-        String denyAccessSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.DENY_ACCESS);
-        sendEmail(account.getLogin(), denyAccessSubject, denyAccessContent);
+        String denyAccessContent = emailConfig.getContentForType(lang, Config.MailType.DENY_ACCESS, account.getLogin(), accessLevel);
+        String denyAccessSubject = emailConfig.getSubjectForType(lang, Config.MailType.DENY_ACCESS);
+        sendEmail(account.getEmail(), denyAccessSubject, denyAccessContent);
     }
 
     /**
@@ -97,9 +107,9 @@ public class EmailSender {
      */
     public void sendResetPasswordEmail(Account account, String resetPasswordLink) throws AppBaseException {
         String lang = account.getLanguage();
-        String resetContent = emailConfig.getContentForType(lang, EmailConfig.MailType.RESET_PASSWORD, account.getFirstname(), resetPasswordLink);
-        String resetSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.RESET_PASSWORD);
-        sendEmail(account.getLogin(), resetSubject, resetContent);
+        String resetContent = emailConfig.getContentForType(lang, Config.MailType.RESET_PASSWORD, account.getLogin(), resetPasswordLink);
+        String resetSubject = emailConfig.getSubjectForType(lang, Config.MailType.RESET_PASSWORD);
+        sendEmail(account.getEmail(), resetSubject, resetContent);
     }
 
     /**
@@ -110,9 +120,23 @@ public class EmailSender {
      */
     public void sendDeleteUnconfirmedAccountEmail(Account account) throws AppBaseException {
         String lang = account.getLanguage();
-        String deleteUnconfirmedContent = emailConfig.getContentForType(lang, EmailConfig.MailType.DELETE_UNCONFIRMED, account.getFirstname());
-        String deleteUnconfirmedSubject = emailConfig.getSubjectForType(lang, EmailConfig.MailType.DELETE_UNCONFIRMED);
-        sendEmail(account.getLogin(), deleteUnconfirmedSubject, deleteUnconfirmedContent);
+        String deleteUnconfirmedContent = emailConfig.getContentForType(lang, Config.MailType.DELETE_UNCONFIRMED, account.getLogin());
+        String deleteUnconfirmedSubject = emailConfig.getSubjectForType(lang, Config.MailType.DELETE_UNCONFIRMED);
+        sendEmail(account.getEmail(), deleteUnconfirmedSubject, deleteUnconfirmedContent);
+    }
+
+    /**
+     * Wysyła wiadomość z linkiem do zmiany adresu email konta użytkownika.
+     *
+     * @param account odbiorca wiadomości.
+     * @param emailChange link do zmiany adresu email konta użytkownika.
+     * @throws AppBaseException wysyłanie wiadomości email nie powiodło się.
+     */
+    public void sendEmailChange(Account account, String emailChange) throws AppBaseException {
+        String lang = account.getLanguage();
+        String changeContent = emailConfig.getContentForType(lang, Config.MailType.CHANGE_EMAIL, account.getLogin(), emailChange);
+        String changeSubject = emailConfig.getSubjectForType(lang, Config.MailType.CHANGE_EMAIL);
+        sendEmail(account.getEmail(), changeSubject, changeContent);
     }
 
     /**
@@ -127,7 +151,7 @@ public class EmailSender {
     private void sendEmail(String userEmail, String subject, String content) throws EmailException {
         try {
             MimeMessage message = new MimeMessage(prepareSession());
-            message.setFrom(new InternetAddress(emailConfig.getConfigProperty("host")));
+            message.setFrom(new InternetAddress(emailConfig.getMailHost()));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userEmail));
             message.setSubject(subject);
             message.setText(content, "UTF-8", "html");
@@ -143,8 +167,8 @@ public class EmailSender {
      */
     private Session prepareSession() {
         Properties sessionProperties = new Properties();
-        sessionProperties.put("mail.smtp.host", emailConfig.getConfigProperty("host"));
-        sessionProperties.put("mail.smtp.port", emailConfig.getConfigProperty("port"));
+        sessionProperties.put("mail.smtp.host", emailConfig.getMailHost());
+        sessionProperties.put("mail.smtp.port", emailConfig.getMailPort());
         sessionProperties.put("mail.smtp.auth", "true");
         sessionProperties.put("mail.smtp.starttls.enable", "true");
 
@@ -152,8 +176,8 @@ public class EmailSender {
                 new Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(emailConfig.getConfigProperty("sender"),
-                                emailConfig.getConfigProperty("password"));
+                        return new PasswordAuthentication(emailConfig.getMailSender(),
+                                emailConfig.getMailPassword());
                     }
                 });
     }

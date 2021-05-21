@@ -5,7 +5,8 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.JWTConfig;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppRuntimeException;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -20,7 +21,7 @@ import java.util.Date;
 @RequestScoped
 public class JWTGenerator {
     @Inject
-    private JWTConfig config;
+    private Config jwtConfig;
 
     private static String SECRET_KEY;
     private static long JWT_EXPIRE_TIMEOUT;
@@ -28,9 +29,9 @@ public class JWTGenerator {
 
     @PostConstruct
     private void init() {
-        SECRET_KEY = config.getJWTSecretKey();
-        JWT_EXPIRE_TIMEOUT = config.getJWTExpireTimeout();
-        JWT_ISS = config.getJWTIss();
+        SECRET_KEY = jwtConfig.getJwtSecretKey();
+        JWT_EXPIRE_TIMEOUT = jwtConfig.getJwtExpireTimeout();
+        JWT_ISS = jwtConfig.getJwtIss();
     }
 
     public String generateJWTString(CredentialValidationResult result) {
@@ -43,12 +44,13 @@ public class JWTGenerator {
                     .issuer(JWT_ISS)
                     .build();
 
-            final SignedJWT signedJWT = new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.HS256).type(JOSEObjectType.JWT).build(), claimsSet);
+            final SignedJWT signedJWT =
+                    new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.HS256).type(JOSEObjectType.JWT).build(),
+                            claimsSet);
             signedJWT.sign(signer);
             return signedJWT.serialize();
         } catch (JOSEException e) {
-            e.printStackTrace();
-            return "JWT error";
+            throw AppRuntimeException.jwtException(e);
         }
     }
 
@@ -66,12 +68,12 @@ public class JWTGenerator {
                     .build();
 
             final SignedJWT newSignedJWT =
-                    new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.HS256).type(JOSEObjectType.JWT).build(), newClaimsSet);
+                    new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.HS256).type(JOSEObjectType.JWT).build(),
+                            newClaimsSet);
             newSignedJWT.sign(signer);
             return newSignedJWT.serialize();
         } catch (ParseException | JOSEException e) {
-            e.printStackTrace();
-            return "JWT error";
+            throw AppRuntimeException.jwtException(e);
         }
     }
 
@@ -81,8 +83,7 @@ public class JWTGenerator {
             JWSVerifier jwsVerifier = new MACVerifier(SECRET_KEY);
             return jwsObject.verify(jwsVerifier);
         } catch (ParseException | JOSEException e) {
-            e.printStackTrace();
-            return false;
+            throw AppRuntimeException.jwtException(e);
         }
     }
 }

@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
@@ -9,10 +10,12 @@ import javax.ejb.AfterBegin;
 import javax.ejb.AfterCompletion;
 import javax.inject.Inject;
 import javax.security.enterprise.SecurityContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import java.security.Principal;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 /**
  * Klasa abstrakcyjna służąca do sprawdzania integralności wersji, dostarcza metody wykonywane przed rozpoczęciem
@@ -29,6 +32,10 @@ public abstract class AbstractEndpoint {
 
     @Inject
     private SecurityContext securityContext;
+
+    @Getter(AccessLevel.PROTECTED)
+    @Inject
+    private HttpServletRequest httpServletRequest;
 
     @Getter
     private String transactionId;
@@ -55,8 +62,8 @@ public abstract class AbstractEndpoint {
     public void afterBegin() {
         transactionId =
                 Long.toString(System.currentTimeMillis()) + ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
-        log.info("Transaction with ID:" + transactionId + " started in " + this.getClass().getName() + ", account: " +
-                getLogin());
+        log.log(Level.INFO, "Transaction with ID:{0} started in {1}, account: {2}",
+                new Object[]{transactionId, this.getClass().getName(), getLogin()});
     }
 
     /**
@@ -67,24 +74,32 @@ public abstract class AbstractEndpoint {
     @AfterCompletion
     public void afterCompletion(boolean committed) {
         lastTransactionRollback = !committed;
-        log.info("Transaction with ID:" + transactionId + " ended in " + this.getClass().getName() + ", result: " +
-                getResult() + ", account: " +
-                getLogin());
+        log.log(Level.INFO, "Transaction with ID:{0} ended in {1}, result: {2}, account: {3}",
+                new Object[]{transactionId, this.getClass().getName(), getResult(), getLogin()});
     }
 
+    /**
+     * Zwraca login użytkownika
+     *
+     * @return login użytkownika lub 'guest' dla gościa
+     */
     protected String getLogin() {
         Principal principal = securityContext.getCallerPrincipal();
         if (principal != null) {
             return principal.getName();
         }
-        return "guest";
+        return "Guest";
     }
 
+    /**
+     * Informuje czy ostatnia trasakcja została zatwierdzona
+     *
+     * @return status zatwierdzenia ostatniej transakcji
+     */
     private String getResult() {
         if (lastTransactionRollback) {
             return "rollback";
         }
         return "commit";
     }
-
 }

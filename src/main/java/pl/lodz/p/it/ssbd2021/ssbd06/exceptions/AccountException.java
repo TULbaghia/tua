@@ -1,5 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 
+/**
+ * Reprezentuje błąd dotyczący encji Account
+ */
 public class AccountException extends AppBaseException {
     private static final String ACCOUNT_LOGIN_EXISTS = "exception.account.login_exists";
     private static final String ACCOUNT_CONTACT_NUMBER = "exception.account.contact_number";
@@ -8,12 +11,14 @@ public class AccountException extends AppBaseException {
     private static final String ACCOUNT_PASSWORDS_DONT_MATCH = "exception.passwords_dont_match.passwords_dont_match";
     private static final String ACCOUNT_NOT_ENABLED = "exception.account_not_enabled.account_not_enabled";
     private static final String ACCOUNT_NOT_CONFIRMED = "exception.account_not_confirmed.account_not_confirmed";
+    private static final String ACCOUNT_EMAIL_EXISTS = "exception.account.email_exists";
+    private static final String ACCOUNT_IS_CONFIRMED = "exception.account.account_confirmed";
 
-    public AccountException(String message, Throwable cause) {
+    private AccountException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public AccountException(String message) {
+    private AccountException(String message) {
         super(message);
     }
 
@@ -35,6 +40,25 @@ public class AccountException extends AppBaseException {
      */
     public static AccountException contactNumberException(Throwable cause) {
         return new AccountException(ACCOUNT_CONTACT_NUMBER, cause);
+    }
+
+    /**
+     * Wyjątek reprezentuje błąd podczas zakładania konta związany z zajętym adresem email.
+     *
+     * @param cause wyjątek, który zostanie opakowany
+     * @return wyjątek AccountException
+     */
+    public static AccountException emailExists(Throwable cause) {
+        return new AccountException(ACCOUNT_EMAIL_EXISTS, cause);
+    }
+
+    /**
+     * Wyjątek reprezentuje błąd podczas zakładania konta związany z zajętym adresem email.
+     *
+     * @return wyjątek AccountException
+     */
+    public static AccountException emailExists() {
+        return new AccountException(ACCOUNT_EMAIL_EXISTS);
     }
 
     /**
@@ -75,5 +99,13 @@ public class AccountException extends AppBaseException {
      */
     public static AccountException notConfirmed() {
         return new AccountException(ACCOUNT_NOT_CONFIRMED);
+    }
+
+    /**
+     *  Tworzy wyjątek reprezentujący niepowodzenie usunięcia konta ze względu na to, że konto zostało zweryfikowane
+     * @return
+     */
+    public static AccountException confirmed(){
+        return new AccountException(ACCOUNT_IS_CONFIRMED);
     }
 }

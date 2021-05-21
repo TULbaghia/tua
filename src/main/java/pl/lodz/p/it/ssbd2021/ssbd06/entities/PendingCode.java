@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.PenCode;
@@ -25,10 +26,15 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode.PENDING_CODE_CON
 })
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PendingCode.findAll", query = "SELECT p FROM PendingCode p"),
-    @NamedQuery(name = "PendingCode.findById", query = "SELECT p FROM PendingCode p WHERE p.id = :id"),
-    @NamedQuery(name = "PendingCode.findByCode", query = "SELECT p FROM PendingCode p WHERE p.code = :code"),
-    @NamedQuery(name = "PendingCode.findResetCodesByAccount", query = "SELECT p FROM PendingCode p WHERE (p.account = :account AND p.codeType = 2 AND p.used = false) ORDER BY p.creationDate ASC")})
+        @NamedQuery(name = "PendingCode.findAll", query = "SELECT p FROM PendingCode p"),
+        @NamedQuery(name = "PendingCode.findById", query = "SELECT p FROM PendingCode p WHERE p.id = :id"),
+        @NamedQuery(name = "PendingCode.findResetCodesByAccount", query = "SELECT p FROM PendingCode p WHERE (p.account = :account AND p.codeType = 2 AND p.used = false) ORDER BY p.creationDate ASC"),
+        @NamedQuery(name = "PendingCode.findByCode", query = "SELECT p FROM PendingCode p WHERE p.code = :code"),
+        @NamedQuery(name = "PendingCode.findNotUsedByAccount", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.used = false AND p.codeType = 0"),
+        @NamedQuery(name = "PendingCode.findAllByCodeType", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.codeType = :codeType AND p.used = :isUsed"),
+        @NamedQuery(name = "PendingCode.findAllAccountsWithUnusedCodes", query = "SELECT p.account FROM PendingCode p WHERE p.codeType = :codeType AND p.creationDate < :date AND p.used = false"),
+        @NamedQuery(name = "PendingCode.findUnusedCodeByAccount", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.used = false AND p.codeType = :codeType")}
+)
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class PendingCode extends AbstractEntity implements Serializable {
@@ -78,5 +84,16 @@ public class PendingCode extends AbstractEntity implements Serializable {
     @Override
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append(super.toString())
+                .append("id", id)
+                .append("used", used)
+                .append("account", account.getLogin())
+                .append("codeType", codeType)
+                .toString();
     }
 }

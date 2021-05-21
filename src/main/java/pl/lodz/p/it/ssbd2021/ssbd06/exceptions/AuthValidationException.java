@@ -1,13 +1,16 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 
+/**
+ * Reprezentuje błąd pojawiający się podczas uwierzytelniania
+ */
 public class AuthValidationException extends AppBaseException {
     private static final String INVALID_CREDENTIALS = "exception.auth_validation.invalid_credentials";
 
-    public AuthValidationException(String message, Throwable cause) {
+    private AuthValidationException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public AuthValidationException(String message) {
+    private AuthValidationException(String message) {
         super(message);
     }
 

@@ -3,15 +3,13 @@ package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Role.ROLE_ACCESS_LEVEL_ACCOUNT_ID_CONSTRAINT;
 
@@ -31,7 +29,6 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Role.ROLE_ACCESS_LEVEL_ACCOU
         @NamedQuery(name = "Role.findById", query = "SELECT r FROM Role r WHERE r.id = :id"),
         @NamedQuery(name = "Role.findByEnabled", query = "SELECT r FROM Role r WHERE r.enabled = :enabled")})
 @NoArgsConstructor
-@ToString(callSuper = true)
 public abstract class Role extends AbstractEntity implements Serializable {
 
     public static final String ROLE_ACCESS_LEVEL_ACCOUNT_ID_CONSTRAINT = "uk_role_access_level_account_id";
@@ -59,11 +56,22 @@ public abstract class Role extends AbstractEntity implements Serializable {
     @Getter
     @Setter
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "account_id", referencedColumnName = "id", updatable= false)
+    @JoinColumn(name = "account_id", referencedColumnName = "id", updatable = false)
     private Account account;
 
     @Override
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append(super.toString())
+                .append("id", id)
+                .append("accessLevel", accessLevel)
+                .append("enabled", enabled)
+                .append("account", account.getLogin())
+                .toString();
     }
 }

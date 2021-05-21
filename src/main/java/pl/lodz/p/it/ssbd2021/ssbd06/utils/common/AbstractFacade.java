@@ -61,8 +61,22 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
         }
     }
 
-    public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
+    /**
+     * Usuwa encję z bazy danych.
+     *
+     * @param entity obiekt encji.
+     * @throws AppBaseException podczas wystąpienia błędu usuwania encji z bazy danych.
+     */
+    public void remove(T entity) throws AppBaseException {
+        try {
+            getEntityManager().remove(getEntityManager().merge(entity));
+            getEntityManager().flush();
+        } catch (PersistenceException e) {
+            if (e.getCause() instanceof ConstraintViolationException) {
+                throw (ConstraintViolationException) e.getCause();
+            }
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
     public T find(Object id) {
@@ -76,9 +90,13 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     public List<T> findAll() throws AppBaseException {
-        CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
-        cq.select(cq.from(entityClass));
-        return getEntityManager().createQuery(cq).getResultList();
+        try {
+            CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
+            cq.select(cq.from(entityClass));
+            return getEntityManager().createQuery(cq).getResultList();
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
     public List<T> findRange(int[] range) {

@@ -2,14 +2,13 @@ package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @MappedSuperclass
-@ToString(callSuper = true)
 public abstract class AbstractEntity {
 
     @Getter
@@ -63,6 +62,19 @@ public abstract class AbstractEntity {
             return false;
         }
         AbstractEntity other = (AbstractEntity) object;
-        return (this.getId() != null || other.getId() == null) && (this.getId() == null || this.getId().equals(other.getId()));
+        return (this.getId() != null || other.getId() == null) &&
+                (this.getId() == null || this.getId().equals(other.getId()));
+    }
+
+    @Override public String toString() {
+        ToStringBuilder toStringBuilder = new ToStringBuilder(this)
+                .append("creationDate", creationDate)
+                .append("modificationDate", modificationDate)
+                .append("version", version)
+                .append("createdBy", createdBy == null ? "" : createdBy.getLogin());
+        if (modifiedBy != null) {
+            toStringBuilder.append("modifiedBy", modifiedBy.getLogin());
+        }
+        return toStringBuilder.toString();
     }
 }

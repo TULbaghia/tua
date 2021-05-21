@@ -39,6 +39,18 @@
     </security-role-mapping>
 
     <security-role-mapping>
+        <role-name>editOwnAccountEmail</role-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
+        <group-name>ADMIN</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>editOtherAccountEmail</role-name>
+        <group-name>ADMIN</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
         <role-name>blockAccount</role-name>
         <group-name>ADMIN</group-name>
     </security-role-mapping>
@@ -61,13 +73,6 @@
     </security-role-mapping>
 
     <security-role-mapping>
-        <role-name>getAccountAuthInfo</role-name>
-        <group-name>CLIENT</group-name>
-        <group-name>MANAGER</group-name>
-        <group-name>ADMIN</group-name>
-    </security-role-mapping>
-
-    <security-role-mapping>
         <role-name>getAllAccounts</role-name>
         <group-name>ADMIN</group-name>
     </security-role-mapping>
@@ -86,13 +91,6 @@
 
     <security-role-mapping>
         <role-name>changeAccessLevel</role-name>
-        <group-name>ADMIN</group-name>
-    </security-role-mapping>
-
-    <security-role-mapping>
-        <role-name>refreshToken</role-name>
-        <group-name>CLIENT</group-name>
-        <group-name>MANAGER</group-name>
         <group-name>ADMIN</group-name>
     </security-role-mapping>
 
@@ -206,17 +204,17 @@
 
     <security-role-mapping>
         <role-name>addBox</role-name>
-        <group-name>ADMIN</group-name>
+        <group-name>MANAGER</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>deleteBox</role-name>
-        <group-name>ADMIN</group-name>
+        <group-name>MANAGER</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
         <role-name>updateBox</role-name>
-        <group-name>ADMIN</group-name>
+        <group-name>MANAGER</group-name>
     </security-role-mapping>
 
     <security-role-mapping>

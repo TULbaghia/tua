@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.security.PermitAll;
@@ -14,10 +15,12 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import java.util.List;
 import java.util.UUID;
 
 @Stateless
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class PendingCodeManager {
     @Inject
@@ -42,27 +45,22 @@ public class PendingCodeManager {
     @PermitAll
     public void sendResetPassword(String login) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
-        if(!account.isEnabled()) throw AccountException.notEnabled();
-        if(!account.isConfirmed()) throw AccountException.notConfirmed();
-
+        if (!account.isEnabled()) {
+            throw AccountException.notEnabled();
+        }
+        if (!account.isConfirmed()) {
+            throw AccountException.notConfirmed();
+        }
         List<PendingCode> previousResetCodes = pendingCodeFacade.findResetCodesByAccount(account);
-        if(previousResetCodes.size() > 0) {
-            for(int i = 0; i <= previousResetCodes.size() - 1; i++) {
+        if (previousResetCodes.size() > 0) {
+            for (int i = 0; i <= previousResetCodes.size() - 1; i++) {
                 PendingCode previousResetCode = previousResetCodes.get(i);
                 previousResetCode.setUsed(true);
                 pendingCodeFacade.edit(previousResetCode);
             }
         }
-        PendingCode pendingCode = new PendingCode();
-        pendingCode.setCode(UUID.randomUUID().toString());
-        pendingCode.setUsed(false);
-        pendingCode.setAccount(account);
-        pendingCode.setCodeType(CodeType.PASSWORD_RESET);
-        pendingCode.setCreatedBy(account);
-        account.getPendingCodeList().add(pendingCode);
 
-        pendingCodeFacade.create(pendingCode);
-        accountFacade.edit(account);
+        PendingCode pendingCode = preparePendingCode(account);
         emailSender.sendResetPasswordEmail(account, pendingCode.getCode());
     }
 
@@ -75,13 +73,25 @@ public class PendingCodeManager {
     @PermitAll
     public void sendResetPasswordAgain(String login) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
-        if(!account.isEnabled()) throw AccountException.notEnabled();
-        if(!account.isConfirmed()) throw AccountException.notConfirmed();
+        if (!account.isEnabled()) throw AccountException.notEnabled();
+        if (!account.isConfirmed()) throw AccountException.notConfirmed();
 
         PendingCode previousResetCode = pendingCodeFacade.findResetCodesByAccount(account).get(0);
         previousResetCode.setUsed(true);
         pendingCodeFacade.edit(previousResetCode);
 
+        PendingCode pendingCode = preparePendingCode(account);
+        emailSender.sendResetPasswordEmail(account, pendingCode.getCode());
+    }
+
+    /**
+     * Przygotowuje kod resetujący hasło dla podanego konta
+     *
+     * @param account konto użytkownika, którego dotyczy resetowanie hasła
+     * @return kod resetujący hasło
+     * @throws AppBaseException w sytuacji niepowodzenia utworzenia kodu resetującego hasło
+     */
+    private PendingCode preparePendingCode(Account account) throws AppBaseException {
         PendingCode pendingCode = new PendingCode();
         pendingCode.setCode(UUID.randomUUID().toString());
         pendingCode.setUsed(false);
@@ -92,7 +102,7 @@ public class PendingCodeManager {
         account.getPendingCodeList().add(pendingCode);
 
         pendingCodeFacade.create(pendingCode);
-        accountFacade.edit(account);
-        emailSender.sendResetPasswordEmail(account, pendingCode.getCode());
+
+        return pendingCode;
     }
 }

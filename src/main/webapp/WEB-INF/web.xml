@@ -60,9 +60,6 @@
         <role-name>editOtherPassword</role-name>
     </security-role>
     <security-role>
-        <role-name>getAccountAuthInfo</role-name>
-    </security-role>
-    <security-role>
         <role-name>getAllAccounts</role-name>
     </security-role>
     <security-role>
@@ -75,10 +72,13 @@
         <role-name>changeAccessLevel</role-name>
     </security-role>
     <security-role>
-        <role-name>refreshToken</role-name>
+        <role-name>logoutUser</role-name>
     </security-role>
     <security-role>
-        <role-name>logoutUser</role-name>
+        <role-name>editOwnAccountEmail</role-name>
+    </security-role>
+    <security-role>
+        <role-name>editOtherAccountEmail</role-name>
     </security-role>
 
     <security-role>

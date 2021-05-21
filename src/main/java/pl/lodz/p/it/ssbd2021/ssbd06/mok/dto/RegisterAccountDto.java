@@ -12,7 +12,10 @@ import pl.lodz.p.it.ssbd2021.ssbd06.validation.*;
 public class RegisterAccountDto {
     @Login
     private String login;
+    @UserEmail
+    private String email;
     @Password
+    @ToString.Exclude
     private String password;
     @Firstname
     private String firstname;

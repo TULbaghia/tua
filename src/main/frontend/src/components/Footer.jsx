@@ -12,32 +12,36 @@ function AccessLevelSwitcher(props) {
 
     const {t, i18n} = props;
 
-    const [levels, setLevels] = useState(['admin', 'manager', 'user']);
+    // const [levels, setLevels] = useState(['admin', 'manager', 'user']);
+    const [levels, setLevels] = useState([]);
     const [chosen, setChosen] = useState(0);
 
 
     useEffect(() => {
-        if(props.levels) {
+        if (props.levels) {
             setLevels(props.levels)
         }
     }, [props.levels])
 
-        return (
-            <div style={{display: "flex"}}>
-                <img src={userIcon} style={{marginRight: "1rem"}}/>
-                <Dropdown>
-                    <DropdownToggle id="dropdown-basic" key='up' drop='up' className="roleMenu">
-                        {t('roleChange')}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <Dropdown.Item
-                            onClick={() => alert('Wybrałeś ' + levels[0])}>{t(levels[0])}</Dropdown.Item>
-                        <Dropdown.Item className="item">{t(levels[1])}</Dropdown.Item>
-                        <Dropdown.Item className="item">{t(levels[2])}</Dropdown.Item>
-                    </DropdownMenu>
-                </Dropdown>
-            </div>
-        )
+    return (
+        <div style={{display: "flex"}}>
+            <img src={userIcon} style={{marginRight: "1rem"}}/>
+            <Dropdown>
+                <DropdownToggle id="dropdown-basic" key='up' drop='up' className="roleMenu">
+                    {t('roleChange')}
+                </DropdownToggle>
+                <DropdownMenu>
+                    {levels.map((level) => (
+                        <Dropdown.Item className="item">{t(level)}</Dropdown.Item>
+                    ))}
+                    {/*<Dropdown.Item*/}
+                    {/*    onClick={() => alert('Wybrałeś ' + levels[0])}>{t(levels[0])}</Dropdown.Item>*/}
+                    {/*<Dropdown.Item className="item">{t(levels[1])}</Dropdown.Item>*/}
+                    {/*<Dropdown.Item className="item">{t(levels[2])}</Dropdown.Item>*/}
+                </DropdownMenu>
+            </Dropdown>
+        </div>
+    )
 }
 
 function Footer(props) {
@@ -61,8 +65,8 @@ function Footer(props) {
     // }
 
     useEffect(() => {
-        if(token) {
-        // if(token !== null && token !== '') {
+        if (token) {
+            // if(token !== null && token !== '') {
             const roles = jwt_decode(token)['roles'].split(',')
             setRoles(roles)
         }

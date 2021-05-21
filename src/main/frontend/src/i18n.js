@@ -15,11 +15,12 @@ const resources = {
 };
 
 i18n
-  .use(detector)
-  .use(reactI18nextModule)
+.use(reactI18nextModule)
+.use(detector)
   .init({
     resources,
-    lng: "pl",
+    fallbackLng: 'en',
+    // lng: "pl",
 
     // keySeparator: false,
     interpolation: {

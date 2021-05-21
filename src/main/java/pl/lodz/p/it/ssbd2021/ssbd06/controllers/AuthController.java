@@ -5,7 +5,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.auth.endpoints.AuthEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AuthValidationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -43,16 +42,16 @@ public class AuthController extends AbstractController {
     @Produces({MediaType.TEXT_PLAIN})
     public Response login(@NotNull @Valid LoginDataDto loginDataDto) throws AppBaseException {
         try {
-            String token = repeat(()->authEndpoint.login(loginDataDto.getLogin(), loginDataDto.getPassword()), authEndpoint) ;
-            repeat(() -> accountEndpoint.updateValidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(), Date.from(Instant.now())), accountEndpoint);
+            String token = authEndpoint.login(loginDataDto.getLogin(), loginDataDto.getPassword());
+            repeat(() -> accountEndpoint.updateValidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(),
+                    Date.from(Instant.now())), accountEndpoint);
             return Response.accepted()
                     .type("application/json")
                     .entity(token)
                     .build();
         } catch (AuthValidationException e) {
-            try {
-                repeat(()->accountEndpoint.updateInvalidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(), Date.from(Instant.now())), accountEndpoint);
-            } catch (NotFoundException ignored) { }
+            repeat(() -> accountEndpoint.updateInvalidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(),
+                    Date.from(Instant.now())), accountEndpoint);
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }

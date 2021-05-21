@@ -8,8 +8,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 

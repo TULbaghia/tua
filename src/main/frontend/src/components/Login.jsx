@@ -1,13 +1,16 @@
 import React, {useState} from "react";
-import logo from "../logo.svg";
 import {useHistory} from "react-router";
 import {useLocale} from "./LoginContext";
+import styles from '../css/floatingbox.css';
+import { withNamespaces } from 'react-i18next';
+import BreadCrumb from "./BreadCrumb";
+import {Link} from "react-router-dom";
 
-const Login = () => {
-
+function Login(props) {
+    const {t,i18n} = props
     const history = useHistory();
     const { token, setToken } = useLocale();
-    const [email, setEmail] = useState('');
+    const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = e => {
@@ -19,7 +22,7 @@ const Login = () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ login: email, password: password }),
+            body: JSON.stringify({ login: login, password: password }),
         };
 
         fetch('/resources/auth/auth', requestOptions)
@@ -40,34 +43,46 @@ const Login = () => {
     }
 
     return (
-        <div className="text-center">
-            <form className="form-signin" onSubmit={handleLogin}>
-                <img className="mb-4" src={logo} alt="" width="72" height="72"/>
-                <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
-                <input
-                    type="email"
-                    id="inputEmail"
-                    className="form-control"
-                    placeholder="Email address"
-                    required
-                    autoFocus={true}
-                    onChange={event => setEmail(event.target.value)}
-                />
-                <input
-                    type="password"
-                    id="inputPassword"
-                    className="form-control"
-                    placeholder="Password"
-                    required
-                    onChange={event => setPassword(event.target.value)}
-                />
-                <button className="btn btn-lg btn-primary btn-block" type="submit">
-                    Sign in
-                </button>
-            </form>
+        <div className="container">
+            <BreadCrumb>
+                <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
+                <li className="breadcrumb-item active" aria-current="page">{t('logging')}</li>
+            </BreadCrumb>
+            <div className="floating-box">
+                <form className="form-signin" onSubmit={handleLogin}>
+                    <h1 className="h3">{t('logging')}</h1>
+                    <input
+                        id="inputLogin"
+                        className="form-control"
+                        placeholder={t('login')}
+                        required
+                        autoFocus={true}
+                        onChange={event => setLogin(event.target.value)}
+                        style={{marginTop: "3rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
+                    />
+                    <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
+                    <input
+                        type="password"
+                        id="inputPassword"
+                        className="form-control"
+                        placeholder={t('password')}
+                        required
+                        onChange={event => setPassword(event.target.value)}
+                        style={{marginTop: "1rem", marginBottom: "3rem", width: "90%", display: "inline-block"}}
+                    />
+                    <span style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</span>
+                    <button className="btn btn-lg btn-primary btn-block" type="submit" style={{backgroundColor: "#7749F8"}}>
+                        {t('signIn')}
+                    </button>
+                    <button className="btn btn-lg btn-primary btn-block" type="button" onClick={() => history.push("/login/password-reset")} style={{backgroundColor: "#7749F8"}}>
+                        {t('passwordReset')}
+                    </button>
+                </form>
+            </div>
         </div>
+
     );
 
 }
 
-export default Login;
+export default withNamespaces()(Login);

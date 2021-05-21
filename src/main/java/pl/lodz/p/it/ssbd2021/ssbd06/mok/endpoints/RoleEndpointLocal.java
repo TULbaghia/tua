@@ -3,12 +3,13 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RolesDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 
 @Local
-public interface RoleEndpointLocal {
+public interface RoleEndpointLocal extends CallingClass {
 
     /**
      * Odbiera uprawnienia użytkownikowi.

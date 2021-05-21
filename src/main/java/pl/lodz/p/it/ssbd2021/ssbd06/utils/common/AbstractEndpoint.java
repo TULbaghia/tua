@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
@@ -9,6 +10,7 @@ import javax.ejb.AfterBegin;
 import javax.ejb.AfterCompletion;
 import javax.inject.Inject;
 import javax.security.enterprise.SecurityContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import java.security.Principal;
@@ -30,6 +32,10 @@ public abstract class AbstractEndpoint {
 
     @Inject
     private SecurityContext securityContext;
+
+    @Getter(AccessLevel.PROTECTED)
+    @Inject
+    private HttpServletRequest httpServletRequest;
 
     @Getter
     private String transactionId;
@@ -72,6 +78,11 @@ public abstract class AbstractEndpoint {
                 new Object[]{transactionId, this.getClass().getName(), getResult(), getLogin()});
     }
 
+    /**
+     * Zwraca login użytkownika
+     *
+     * @return login użytkownika lub 'guest' dla gościa
+     */
     protected String getLogin() {
         Principal principal = securityContext.getCallerPrincipal();
         if (principal != null) {
@@ -80,11 +91,15 @@ public abstract class AbstractEndpoint {
         return "Guest";
     }
 
+    /**
+     * Informuje czy ostatnia trasakcja została zatwierdzona
+     *
+     * @return status zatwierdzenia ostatniej transakcji
+     */
     private String getResult() {
         if (lastTransactionRollback) {
             return "rollback";
         }
         return "commit";
     }
-
 }

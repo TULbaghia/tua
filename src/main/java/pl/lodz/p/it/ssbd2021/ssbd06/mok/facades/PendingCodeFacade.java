@@ -64,6 +64,7 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
     }
 
     @Override
+    @PermitAll
     public void create(PendingCode entity) throws AppBaseException {
         try {
             super.create(entity);
@@ -75,9 +76,14 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
     @Override
     @PermitAll
     public void edit(PendingCode entity) throws AppBaseException {
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (ConstraintViolationException e) {
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
+    @PermitAll
     public PendingCode findNotUsedByAccount(Account account) throws AppBaseException {
         try {
             TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findNotUsedByAccount", PendingCode.class);
@@ -96,7 +102,8 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
      * @param expirationDate parametr precyzujący czas ponownego przesłania wiadomości ze zmianą adresu email.
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
      */
-    public List<Account> findAllAccountsWithUnusedCodes(CodeType codeType, long expirationDate) throws AppBaseException {
+    @PermitAll
+    public List<Account> findAllAccountsWithUnusedCodes(CodeType codeType, Date expirationDate) throws AppBaseException {
         try {
             TypedQuery<Account> query = em.createNamedQuery("PendingCode.findAllAccountsWithUnusedCodes", Account.class);
             query.setParameter("codeType", codeType);
@@ -114,6 +121,7 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
      * @param account konto użytkownika, dla którego wyszukiwany jest kod.
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
      */
+    @PermitAll
     public PendingCode findUnusedCodeByAccount(Account account, CodeType codeType) throws AppBaseException {
         try {
             TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findUnusedCodeByAccount", PendingCode.class);

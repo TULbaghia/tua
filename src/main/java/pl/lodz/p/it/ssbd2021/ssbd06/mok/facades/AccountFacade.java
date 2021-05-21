@@ -42,6 +42,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @throws AppBaseException podczas wystąpienia błędu utrwalania w bazie danych
      */
     @Override
+    @PermitAll
     public void create(Account entity) throws AppBaseException {
         try {
             super.create(entity);
@@ -57,6 +58,14 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Wyszukuje konto na podstawie loginu
+     *
+     * @param login login użytkownika
+     * @return obiekt encji konta o podanym loginie
+     * @throws AppBaseException gdy konto nie zostało znalezione, lub wystąpił problem z bazą danych.
+     */
+    @PermitAll
     public Account findByLogin(String login) throws AppBaseException {
         try {
             TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findByLogin", Account.class);
@@ -71,9 +80,11 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     /**
      * Zwraca konto o podanym adresie email.
+     *
      * @return obiekt Account.
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
      */
+    @PermitAll
     public Account findByEmail(String email) throws AppBaseException {
         try {
             TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findByEmail", Account.class);
@@ -88,12 +99,14 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     /**
      * Zwraca listę wszystkich kont w systemie.
+     *
      * @return lista kont
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @Override
-    public List<Account> findAll() throws AppBaseException{
-            return super.findAll();
+    @PermitAll
+    public List<Account> findAll() throws AppBaseException {
+        return super.findAll();
     }
 
     @Override

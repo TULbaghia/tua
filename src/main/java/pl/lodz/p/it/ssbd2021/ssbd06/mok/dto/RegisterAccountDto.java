@@ -15,6 +15,7 @@ public class RegisterAccountDto {
     @UserEmail
     private String email;
     @Password
+    @ToString.Exclude
     private String password;
     @Firstname
     private String firstname;

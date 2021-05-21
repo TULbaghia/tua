@@ -92,6 +92,7 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     @Password
     @Column(name = "password", nullable = false, length = 64)
+    @ToString.Exclude
     private String password;
 
     @Setter

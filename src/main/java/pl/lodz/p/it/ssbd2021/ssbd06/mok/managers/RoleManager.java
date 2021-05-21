@@ -5,7 +5,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.RoleException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.*;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.security.RolesAllowed;
@@ -13,9 +14,13 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Stateless
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class RoleManager {
 
@@ -72,6 +77,22 @@ public class RoleManager {
         if (account == null) {
             throw NotFoundException.accountNotFound();
         }
+
+        Set<AccessLevel> grantedRoles = account.getRoleList()
+                .stream()
+                .filter(Role::isEnabled)
+                .map(Role::getAccessLevel)
+                .collect(Collectors.toSet());
+
+        if (accessLevel.equals(AccessLevel.CLIENT)
+                && (grantedRoles.contains(AccessLevel.MANAGER) || grantedRoles.contains(AccessLevel.ADMIN))) {
+            throw RoleException.unsupportedRoleCombination();
+        }
+        if ((accessLevel.equals(AccessLevel.MANAGER) || accessLevel.equals(AccessLevel.ADMIN))
+                && grantedRoles.contains(AccessLevel.CLIENT)) {
+            throw RoleException.unsupportedRoleCombination();
+        }
+
 
         Role role = account.getRoleList().stream()
                 .filter(x -> accessLevel.equals(x.getAccessLevel()))

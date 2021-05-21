@@ -101,6 +101,12 @@ public abstract class AbstractController {
         T run() throws AppBaseException;
     }
 
+    /**
+     * Pozwala odczytać parametr uruchomieniowy z desktryptora wdrożenia
+     *
+     * @param paramName nazwa parametru, który chcemy wczytać
+     * @return wartość wczytanego parametru
+     */
     private String getInitialParameter(String paramName) {
         return servletContext.getInitParameter(paramName);
     }

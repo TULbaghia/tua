@@ -13,6 +13,14 @@ import Home from "./components/Home";
 import BlogScreen from "./components/Blog";
 import PingPong from "./components/PingPong";
 import Login from "./components/Login";
+import SignUp from "./components/SignUp";
+import Footer from "./components/Footer";
+import ConfirmedAccount from "./components/ConfirmedAccount";
+import PasswordReset from "./components/PasswordReset";
+import NotFound from "./components/errorPages/NotFound";
+import Forbidden from "./components/errorPages/Forbidden";
+import InternalError from "./components/errorPages/InternalError";
+import UserInfo from './components/UserInfo';
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -26,9 +34,17 @@ class App extends Component {
                         <Switch>
                             <Route exact path="/" component={Home}/>
                             <Route path="/blog" component={BlogScreen}/>
-                            <Route path="/login" component={Login}/>
+                            <Route exact path="/login" component={Login}/>
+                            <Route path="/signUp" component={SignUp}/>
                             <Route path="/pong" component={PingPong}/>
+                            <Route path="/errors/forbidden" component={Forbidden}/>
+                            <Route path="/errors/internal" component={InternalError}/>
+                            <Route path="/login/password-reset" component={PasswordReset}/>
+                            <Route path="/confirmedAccount" component={ConfirmedAccount} />
+                            <Route path="/home" component={UserInfo}/>
+                            <Route component={NotFound}/>
                         </Switch>
+                        <Footer />
                     </div>
                 </Router>
             </div>

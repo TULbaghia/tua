@@ -2,7 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.security;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.SignatureException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppRuntimeException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 
 import javax.annotation.PostConstruct;
@@ -28,7 +28,7 @@ public class MessageSigner {
         try {
             signer = new MACSigner(eTagConfig.getEtagSecretKey());
         } catch (KeyLengthException e) {
-            throw SignatureException.signerException(e);
+            throw AppRuntimeException.signerException(e);
         }
     }
 
@@ -45,7 +45,7 @@ public class MessageSigner {
             jwsObject.sign(signer);
             return jwsObject.serialize();
         } catch (JOSEException e) {
-            throw SignatureException.signerException(e);
+            throw AppRuntimeException.signerException(e);
         }
     }
 }

@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
@@ -37,6 +38,7 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode.PENDING_CODE_CON
 }
 )
 @NoArgsConstructor
+@ToString(callSuper = true)
 public class PendingCode extends AbstractEntity implements Serializable {
 
     public static final String PENDING_CODE_CONSTRAINT = "uk_pending_code_code";
@@ -94,7 +96,6 @@ public class PendingCode extends AbstractEntity implements Serializable {
         return new ToStringBuilder(this)
                 .append(super.toString())
                 .append("id", id)
-                .append("code", code)
                 .append("used", used)
                 .append("account", account.getLogin())
                 .append("codeType", codeType)

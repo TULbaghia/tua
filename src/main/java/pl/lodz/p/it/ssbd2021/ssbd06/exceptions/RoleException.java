@@ -8,6 +8,7 @@ public class RoleException extends AppBaseException {
     private static final String ALREADY_REVOKED = "exception.role_exception.already_revoked";
     private static final String ALREADY_GRANTED = "exception.role_exception.already_granted";
     private static final String UNSUPPORTED_ACCESS_LEVEL = "exception.role_exception.unsupported_access_level";
+    private static final String UNSUPPORTED_ROLE_COMBINATION = "exception.role_exception.unsupported_role_combination";
 
     private RoleException(String message, Throwable cause) {
         super(message, cause);
@@ -42,5 +43,14 @@ public class RoleException extends AppBaseException {
      */
     public static RoleException unsupportedAccessLevel() {
         return new RoleException(UNSUPPORTED_ACCESS_LEVEL);
+    }
+
+    /**
+     * Tworzy wyjątek, gdy poziomy dostępu użytkownika wykluczają się.
+     *
+     * @return wyjątek RoleException
+     */
+    public static RoleException unsupportedRoleCombination() {
+        return new RoleException(UNSUPPORTED_ROLE_COMBINATION);
     }
 }

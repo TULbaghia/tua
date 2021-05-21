@@ -3,15 +3,18 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.RoleFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.*;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -19,18 +22,19 @@ import java.util.UUID;
 
 @Startup
 @Singleton
+@Interceptors({LoggingInterceptor.class})
 public class ScheduledTasksManager {
 
     @Resource
     TimerService timerService;
     @Inject
     private AccountFacade accountFacade;
+
     @Inject
     private PendingCodeFacade pendingCodeFacade;
+
     @Inject
     private EmailSender emailSender;
-    @Inject
-    private RoleFacade roleFacade;
 
     /**
      * Usuwa konta użytkowników nie potwierdzonych
@@ -79,7 +83,13 @@ public class ScheduledTasksManager {
     }
 
     /**
-     * Ponownie wysyła email z informacją o rozpoczęciu procesu zmiany adresu email dla konta użytkownka.
+     *  Ponownie wysyła email z informacją o rozpoczęciu procesu zmiany adresu email dla konta użytkownka.
+     *  W przypadku, gdy żeton zmiany email nie został użyty przez ponad godzinę od momentu utworzenia, jednak czas ten
+     *  nie przekroczył 2 godzin od momentu utworzenia, następuje ponowne wysłanie emaila z informacją o rozpoczęciu
+     *  procesu zmiany adresu email dla konta użytkownka.
+     *
+     *  W przypadku, gdy żeton zmiany email nie został użyty przez ponad 2 godziny od momentu utworzenia,
+     *  następuje usunięcie żetonu.
      *
      * @param time
      * @throws AppBaseException
@@ -89,8 +99,7 @@ public class ScheduledTasksManager {
     private void sendRepeatedEmailChange(Timer time) throws AppBaseException {
         Calendar calendarRemoveCode = Calendar.getInstance();
         calendarRemoveCode.add(Calendar.HOUR, -2);
-        long expirationDate = calendarRemoveCode.getTimeInMillis();
-        List<Account> accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, expirationDate);
+        List<Account> accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, calendarRemoveCode.getTime());
         for (Account account : accountsUnusedCodes) {
             PendingCode pc = pendingCodeFacade.findUnusedCodeByAccount(account, CodeType.EMAIL_CHANGE);
             pendingCodeFacade.remove(pc);
@@ -98,8 +107,7 @@ public class ScheduledTasksManager {
 
         Calendar calendarRepeat = Calendar.getInstance();
         calendarRepeat.add(Calendar.HOUR, -1);
-        expirationDate = calendarRepeat.getTimeInMillis();
-        accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, expirationDate);
+        accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, calendarRepeat.getTime());
         for (Account account : accountsUnusedCodes) {
             PendingCode pc = pendingCodeFacade.findUnusedCodeByAccount(account, CodeType.EMAIL_CHANGE);
             emailSender.sendEmailChange(account, pc.getCode());

@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.auth.endpoints;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 
@@ -16,6 +17,7 @@ public interface AuthEndpointLocal extends CallingClass {
      * @return token jwt
      * @throws AppBaseException gdy uwierzytelnianie się nie powiedzie
      */
+    @PermitAll
     String login(String login, String password) throws AppBaseException;
 
     /**

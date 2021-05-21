@@ -15,6 +15,9 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Properties;
 
+/**
+ * Klasa reprezentująca dane konfiguracyjne aplikacji
+ */
 @ApplicationScoped
 public class Config implements Serializable {
 

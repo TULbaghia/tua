@@ -56,16 +56,8 @@ public class PendingCodeManager {
                 pendingCodeFacade.edit(previousResetCode);
             }
         }
-        PendingCode pendingCode = new PendingCode();
-        pendingCode.setCode(UUID.randomUUID().toString());
-        pendingCode.setUsed(false);
-        pendingCode.setAccount(account);
-        pendingCode.setCodeType(CodeType.PASSWORD_RESET);
-        pendingCode.setCreatedBy(account);
-        account.getPendingCodeList().add(pendingCode);
 
-        pendingCodeFacade.create(pendingCode);
-        accountFacade.edit(account);
+        PendingCode pendingCode = preparePendingCode(account);
         emailSender.sendResetPasswordEmail(account, pendingCode.getCode());
     }
 
@@ -85,6 +77,18 @@ public class PendingCodeManager {
         previousResetCode.setUsed(true);
         pendingCodeFacade.edit(previousResetCode);
 
+        PendingCode pendingCode = preparePendingCode(account);
+        emailSender.sendResetPasswordEmail(account, pendingCode.getCode());
+    }
+
+    /**
+     * Przygotowuje kod resetujący hasło dla podanego konta
+     *
+     * @param account konto użytkownika, którego dotyczy resetowanie hasła
+     * @return kod resetujący hasło
+     * @throws AppBaseException w sytuacji niepowodzenia utworzenia kodu resetującego hasło
+     */
+    private PendingCode preparePendingCode(Account account) throws AppBaseException {
         PendingCode pendingCode = new PendingCode();
         pendingCode.setCode(UUID.randomUUID().toString());
         pendingCode.setUsed(false);
@@ -95,7 +99,7 @@ public class PendingCodeManager {
         account.getPendingCodeList().add(pendingCode);
 
         pendingCodeFacade.create(pendingCode);
-        accountFacade.edit(account);
-        emailSender.sendResetPasswordEmail(account, pendingCode.getCode());
+
+        return pendingCode;
     }
 }

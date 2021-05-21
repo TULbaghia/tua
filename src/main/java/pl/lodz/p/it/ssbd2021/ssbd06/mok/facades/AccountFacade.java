@@ -42,6 +42,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @throws AppBaseException podczas wystąpienia błędu utrwalania w bazie danych
      */
     @Override
+    @PermitAll
     public void create(Account entity) throws AppBaseException {
         try {
             super.create(entity);
@@ -57,6 +58,7 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    @PermitAll
     public Account findByLogin(String login) throws AppBaseException {
         try {
             TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findByLogin", Account.class);
@@ -74,6 +76,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @return obiekt Account.
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
      */
+    @PermitAll
     public Account findByEmail(String email) throws AppBaseException {
         try {
             TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findByEmail", Account.class);
@@ -92,6 +95,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @Override
+    @PermitAll
     public List<Account> findAll() throws AppBaseException{
             return super.findAll();
     }

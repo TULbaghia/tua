@@ -67,7 +67,12 @@ public class ScheduledTasksManager {
     }
 
     /**
-     *  Ponownie wysyła email z informacją o rozpoczęciu procesu zmiany adresu email dla konta użytkownka.
+     *  W przypadku, gdy żeton zmiany email nie został użyty przez ponad godzinę od momentu utworzenia, jednak czas ten
+     *  nie przekroczył 2 godzin od momentu utworzenia, następuje ponowne wysłanie emaila z informacją o rozpoczęciu
+     *  procesu zmiany adresu email dla konta użytkownka.
+     *
+     *  W przypadku, gdy żeton zmiany email nie został użyty przez ponad 2 godziny od momentu utworzenia,
+     *  następuje usunięcie żetonu.
      *
      * @param time
      * @throws AppBaseException

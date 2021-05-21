@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
@@ -35,6 +36,7 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode.PENDING_CODE_CON
         @NamedQuery(name = "PendingCode.findUnusedCodeByAccount", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.used = false AND p.codeType = :codeType")}
 )
 @NoArgsConstructor
+@ToString(callSuper = true)
 public class PendingCode extends AbstractEntity implements Serializable {
 
     public static final String PENDING_CODE_CONSTRAINT = "uk_pending_code_code";

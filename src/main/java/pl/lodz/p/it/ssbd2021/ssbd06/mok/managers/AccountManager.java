@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
@@ -23,16 +24,14 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.util.*;
 import javax.security.enterprise.SecurityContext;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class})
@@ -342,9 +341,15 @@ public class AccountManager {
             throw AccountException.emailExists();
         }
 
-        accountEmail.getPendingCodeList().stream()
+        Set<PendingCode> unusedCodes = accountEmail.getPendingCodeList().stream()
                 .filter(x -> x.getCodeType().equals(CodeType.EMAIL_CHANGE) && !x.isUsed())
-                .forEach(x -> x.setUsed(true));
+                .collect(Collectors.toSet());
+
+        if (!unusedCodes.isEmpty()) {
+            unusedCodes.stream()
+                    .filter(x -> x.getCodeType().equals(CodeType.EMAIL_CHANGE) && !x.isUsed())
+                    .forEach(x -> x.setUsed(true));
+        }
 
         PendingCode pendingCode = createPendingCode(accountEmail, CodeType.EMAIL_CHANGE);
         accountEmail.getPendingCodeList().add(pendingCode);

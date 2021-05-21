@@ -10,7 +10,6 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.mail.*;
@@ -39,7 +38,8 @@ public class EmailSender {
      */
     public void sendActivationEmail(Account account, String activationLink) throws AppBaseException {
         String lang = account.getLanguage();
-        String activationContent = emailConfig.getContentForType(lang, Config.MailType.ACTIVATE_ACCOUNT, account.getLogin(), activationLink);
+        String activationContent = emailConfig.getContentForType(lang, Config.MailType.ACTIVATE_ACCOUNT, account.getLogin(),
+                wrapCode(activationLink, emailConfig.getMailEndpointActivate()));
         String activationSubject = emailConfig.getSubjectForType(lang, Config.MailType.ACTIVATE_ACCOUNT);
         sendEmail(account.getEmail(), activationSubject, activationContent);
     }
@@ -107,7 +107,8 @@ public class EmailSender {
      */
     public void sendResetPasswordEmail(Account account, String resetPasswordLink) throws AppBaseException {
         String lang = account.getLanguage();
-        String resetContent = emailConfig.getContentForType(lang, Config.MailType.RESET_PASSWORD, account.getLogin(), resetPasswordLink);
+        String resetContent = emailConfig.getContentForType(lang, Config.MailType.RESET_PASSWORD, account.getLogin(),
+                wrapCode(resetPasswordLink, emailConfig.getMailEndpointPasswordReset()));
         String resetSubject = emailConfig.getSubjectForType(lang, Config.MailType.RESET_PASSWORD);
         sendEmail(account.getEmail(), resetSubject, resetContent);
     }
@@ -134,9 +135,21 @@ public class EmailSender {
      */
     public void sendEmailChange(Account account, String emailChange) throws AppBaseException {
         String lang = account.getLanguage();
-        String changeContent = emailConfig.getContentForType(lang, Config.MailType.CHANGE_EMAIL, account.getLogin(), emailChange);
+        String changeContent = emailConfig.getContentForType(lang, Config.MailType.CHANGE_EMAIL, account.getLogin(),
+                wrapCode(emailChange, emailConfig.getMailEndpointEmailChange()));
         String changeSubject = emailConfig.getSubjectForType(lang, Config.MailType.CHANGE_EMAIL);
         sendEmail(account.getEmail(), changeSubject, changeContent);
+    }
+
+    /**
+     * Tworzy link, który jest wysyłany do użytkownika.
+     * Link zawiera unikalny kod, który służy do potwierdzania procesów biznesowych.
+     *
+     * @param code unikalny kod operacji.
+     * @param endpoint adres endpointu odpowiedzialnego za przetwarzanie danej akcji.
+     */
+    public String wrapCode(String code, String endpoint) {
+        return String.join("/", emailConfig.getMailUriScheme(), endpoint, code);
     }
 
     /**

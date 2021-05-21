@@ -65,7 +65,7 @@ public class AccountController extends AbstractController {
      * @param code kod aktywacyjny konta
      * @throws AppBaseException gdy potwierdzenie konta się nie powiodło
      */
-    @POST
+    @GET
     @Path("/confirm/{code}")
     public void confirm(@NotNull @PenCode @PathParam("code") @Valid String code) throws AppBaseException {
         repeat(() -> accountEndpoint.confirmAccount(code), accountEndpoint);
@@ -327,7 +327,7 @@ public class AccountController extends AbstractController {
      * @param code żeton zmiany adresu email przypisanego do konta.
      * @throws AppBaseException proces zmiany adresu email przypisanego do konta zakończył się niepowodzeniem.
      */
-    @POST
+    @GET
     @Path("/user/confirm/email/{code}")
     public void confirmEmail(@NotNull @PenCode @PathParam("code") @Valid String code) throws AppBaseException {
         repeat(() -> accountEndpoint.confirmEmail(code), accountEndpoint);

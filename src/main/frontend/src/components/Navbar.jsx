@@ -78,7 +78,7 @@ function NavigationBar(props) {
     // *** LANDING PAGE ***
     const {isAuthenticated} = props;
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="light" expand="lg" className="main-navbar">
             <Navbar.Brand>
                 <div className="name">{t('animalHotel')}</div>
             </Navbar.Brand>

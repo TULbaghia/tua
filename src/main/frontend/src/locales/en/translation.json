@@ -51,5 +51,14 @@
     "activeReservations": "Active reservations",
     "archiveReservations": "Archive reservations",
     "reservation": "Reservation",
-    "cities": "Cities"
+    "cities": "Cities",
+    "userDetailsTitle": "My Account",
+    "userDetailsFirstname": "Firstname",
+    "userDetailsLastname": "Lastname",
+    "userDetailsEmail": "Email",
+    "userDetailsLogin": "Login",
+    "userDetailsContactNumber": "Phone number",
+    "userDetailsRoles": "Roles",
+    "userDetailsEditBtn": "Edit",
+    "userDetailsPasswordChangeBtn": "Change password"
 }

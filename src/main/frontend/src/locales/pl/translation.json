@@ -60,5 +60,11 @@
     "userDetailsContactNumber": "Numer telefonu",
     "userDetailsRoles": "Role",
     "userDetailsEditBtn": "Edytuj Dane",
-    "userDetailsPasswordChangeBtn": "Zmień hasło"
+    "userDetailsPasswordChangeBtn": "Zmień hasło",
+    "userList": "Lista użytkowników",
+    "edit": "Edytuj",
+    "change": "Zmień",
+    "details": "Szczegóły",
+    "add": "Dodaj",
+    "refresh": "Odśwież"
 }

@@ -21,6 +21,7 @@ import NotFound from "./components/errorPages/NotFound";
 import Forbidden from "./components/errorPages/Forbidden";
 import InternalError from "./components/errorPages/InternalError";
 import UserInfo from './components/UserInfo';
+import UserList from "./components/UserList";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -42,6 +43,7 @@ class App extends Component {
                             <Route path="/login/password-reset" component={PasswordReset}/>
                             <Route path="/confirmedAccount" component={ConfirmedAccount} />
                             <Route path="/home" component={UserInfo}/>
+                            <Route path="/userList" component={UserList}/>
                             <Route component={NotFound}/>
                         </Switch>
                         <Footer />

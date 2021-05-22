@@ -66,5 +66,12 @@
     "change": "Zmień",
     "details": "Szczegóły",
     "add": "Dodaj",
-    "refresh": "Odśwież"
+    "refresh": "Odśwież",
+    "notification.title.danger": "Błąd",
+    "notification.title.warning": "Ostrzeżenie",
+    "notification.title.success": "Sukces",
+    "dialog.button.cancel": "Anuluj",
+    "dialog.button.save": "Zapisz zmiany",
+    "dialog.permanent_change.title": "Trwała zmiana danych",
+    "dialog.permanent_change.message": "Zmiana, którą próbujesz dokonać trwale modyfikuje dane. \n Czy jesteś tego pewny?"
 }

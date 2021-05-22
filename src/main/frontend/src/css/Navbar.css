@@ -93,21 +93,6 @@
     margin: 0px 6px;
 }
 
-/**** ADMIN ****/
-.color-nav {
-    background-color: #EF5DA8;
-}
-
-/**** MANAGER ****/
-/*.color-nav {*/
-/*  background-color: #F178B6;*/
-/*}*/
-
-/**** USER ****/
-/*.color-nav {*/
-/*  background-color: #EFADCE;*/
-/*}*/
-
 .dropButton {
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid rgba(0, 0, 0, 0);

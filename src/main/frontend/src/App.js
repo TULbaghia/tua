@@ -59,7 +59,7 @@ function App() {
                         <Route path="/login/password-reset" component={PasswordReset}/>
                         <Route path="/confirmedAccount" component={ConfirmedAccount}/>
                         <Route path="/myAccount" component={UserInfo}/>
-                        <Route path="/userpage" component={AppUsersPage}/>
+                        <Route path="/userPage" component={AppUsersPage}/>
                         <Route component={NotFound}/>
                     </Switch>
                     <Footer roles={roles} login={login} />

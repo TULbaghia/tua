@@ -16,7 +16,7 @@ function Login(props) {
 
     const handleLogin = e => {
         e.preventDefault()
-        history.push("/userpage")
+        history.push("/userPage")
 
         const requestOptions = {
             method: "POST",

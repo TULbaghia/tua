@@ -4,15 +4,15 @@ import {LinkContainer} from "react-router-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useHistory} from "react-router-dom";
 import {useLocale} from "./LoginContext";
-import { withNamespaces } from 'react-i18next';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import {withNamespaces} from 'react-i18next';
+import {library} from "@fortawesome/fontawesome-svg-core";
+import {faUser} from "@fortawesome/free-solid-svg-icons";
 import "../css/Navbar.css";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 
 library.add(faUser);
 
-class LanguageSwitcher extends React.Component{
+class LanguageSwitcher extends React.Component {
 
     constructor(props) {
         super(props);
@@ -37,7 +37,7 @@ class LanguageSwitcher extends React.Component{
     }
 
     render() {
-        return(
+        return (
             <>
                 <p style={{fontSize: 20, color: "black", marginRight: "10px"}}>{this.state.langs[this.state.chosen]}</p>
                 <Dropdown>
@@ -55,7 +55,7 @@ class LanguageSwitcher extends React.Component{
 }
 
 function NavigationBar(props) {
-    const {t,i18n} = props
+    const {t, i18n} = props
     const history = useHistory();
     const {token, setToken} = useLocale();
 
@@ -91,55 +91,188 @@ function NavigationBar(props) {
         }
     };
 
-    // *** LANDING PAGE ***
-    const {isAuthenticated} = props;
     return (
-        // <Navbar bg="light" expand="lg" className="main-navbar">
-        <Navbar expand="lg" className="main-navbar" style={ divStyle() }>
-            <Navbar.Brand>
-                <div className="name">{t('animalHotel')}</div>
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <LinkContainer to="/">
-                        <Nav.Link>{t('mainPage')}</Nav.Link>
-                    </LinkContainer>
-                    <LinkContainer to="/hotels">
-                        <Nav.Link>{t('hotels')}</Nav.Link>
-                    </LinkContainer>
-                    <LinkContainer to="/regulations">
-                        <Nav.Link>{t('regulations')}</Nav.Link>
-                    </LinkContainer>
-                </Nav>
-                <Nav className="navbar-right">
-                    <LanguageSwitcher t={t}/>
-                    {token!==null && token !== '' ? (
-                        <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-                    ) : (
-                        <>
-                            <LinkContainer to="/signUp">
-                                <Nav.Link className="signUp">
-                                    <FontAwesomeIcon className="signUpIcon" icon="user-plus"/>
-                                    <div className="signUpText">{t('signUp')}</div>
-                                </Nav.Link>
+        <>
+            {token !== null && token !== '' ? (
+                //------------------------LOGGED USER VIEW----------------------------
+                <Navbar expand="lg" className="color-nav" style={divStyle()}>
+                    <Navbar.Brand>
+                        <div className="name">{t('animalHotel')}</div>
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="mr-auto">
+                            <LinkContainer to="/">
+                                <Nav.Link>{t('mainPage')}</Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to="/login">
-                                <Nav.Link className="login">
-                                    <FontAwesomeIcon className="loginIcon" icon="sign-in-alt"/>
-                                    <div className="loginText">{t('signIn')}</div>
-                                </Nav.Link>
+                            <LinkContainer to="/hotels">
+                                <Nav.Link>{t('hotels')}</Nav.Link>
                             </LinkContainer>
-                        </>
-                    )}
+                            {currentRole === 'ADMIN' && (
+                                <>
+                                    <LinkContainer to="/accounts">
+                                        <Nav.Link>{t('accountList')}</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/cities">
+                                        <Nav.Link>{t('cityList')}</Nav.Link>
+                                    </LinkContainer>
+                                </>
+                            )}
+                            {currentRole === 'MANAGER' && (
+                                <>
+                                    <LinkContainer to="/myHotel">
+                                        <Nav.Link>{t('myHotel')}</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/activeReservations">
+                                        <Nav.Link>{t('activeReservations')}</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/archiveReservations">
+                                        <Nav.Link>{t('archiveReservations')}</Nav.Link>
+                                    </LinkContainer>
+                                </>
+                            )}
+                            {currentRole === 'CLIENT' && (
+                                <>
+                                    <LinkContainer to="/cities">
+                                        <Nav.Link>{t('cities')}</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/reservation">
+                                        <Nav.Link>{t('reservation')}</Nav.Link>
+                                    </LinkContainer>
+                                </>
+                            )}
+                        </Nav>
+                        <Nav className="navbar-right">
+                            <LanguageSwitcher t={t}/>
+                            <Dropdown alignRight={true}>
+                                <Dropdown.Toggle id="dropdown-basic" className="dropButton" variant="Info">
+                                    <FontAwesomeIcon icon="user"/>
+                                    {' '}username{' '}
+                                </Dropdown.Toggle>
 
-                </Nav>
-            </Navbar.Collapse>
-        </Navbar>
-    );
+                                <Dropdown.Menu>
+                                    <li>
+                                        <a href="#/action-1" className="item">
+                                            <LinkContainer to="/myAccount">
+                                                <Nav.Link>{t('myAccount')}</Nav.Link>
+                                            </LinkContainer>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#/action-2" className="item">
+                                            <LinkContainer to="/changePassword">
+                                                <Nav.Link>{t('changePassword')}</Nav.Link>
+                                            </LinkContainer>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#/action-3" className="item">
+                                            <LinkContainer to="/">
+                                                <Nav.Link onSelect={handleLogout}>{t('signOut')}</Nav.Link>
+                                            </LinkContainer>
+                                        </a>
+                                    </li>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
+            ) : (
+                //------------------------GUEST VIEW----------------------------
+                <Navbar expand="lg" className="main-navbar" style={divStyle()}>
+                    <Navbar.Brand>
+                        <div className="name">{t('animalHotel')}</div>
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="mr-auto">
+                            <LinkContainer to="/">
+                                <Nav.Link>{t('mainPage')}</Nav.Link>
+                            </LinkContainer>
+                            <LinkContainer to="/hotels">
+                                <Nav.Link>{t('hotels')}</Nav.Link>
+                            </LinkContainer>
+                            <LinkContainer to="/regulations">
+                                <Nav.Link>{t('regulations')}</Nav.Link>
+                            </LinkContainer>
+                        </Nav>
+                        <Nav className="navbar-right">
+                            <LanguageSwitcher t={t}/>
+                            {token !== null && token !== '' ? (
+                                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                            ) : (
+                                <>
+                                    <LinkContainer to="/signUp">
+                                        <Nav.Link className="signUp">
+                                            <FontAwesomeIcon className="signUpIcon" icon="user-plus"/>
+                                            <div className="signUpText">{t('signUp')}</div>
+                                        </Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/login">
+                                        <Nav.Link className="login">
+                                            <FontAwesomeIcon className="loginIcon" icon="sign-in-alt"/>
+                                            <div className="loginText">{t('signIn')}</div>
+                                        </Nav.Link>
+                                    </LinkContainer>
+                                </>
+                            )}
+
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
+            )}
+        </>
+    )
+
+    // *** LANDING PAGE ***
+    // const {isAuthenticated} = props;
+    // return (
+    //     // <Navbar bg="light" expand="lg" className="main-navbar">
+    //     <Navbar expand="lg" className="main-navbar" style={divStyle()}>
+    //         <Navbar.Brand>
+    //             <div className="name">{t('animalHotel')}</div>
+    //         </Navbar.Brand>
+    //         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+    //         <Navbar.Collapse id="basic-navbar-nav">
+    //             <Nav className="mr-auto">
+    //                 <LinkContainer to="/">
+    //                     <Nav.Link>{t('mainPage')}</Nav.Link>
+    //                 </LinkContainer>
+    //                 <LinkContainer to="/hotels">
+    //                     <Nav.Link>{t('hotels')}</Nav.Link>
+    //                 </LinkContainer>
+    //                 <LinkContainer to="/regulations">
+    //                     <Nav.Link>{t('regulations')}</Nav.Link>
+    //                 </LinkContainer>
+    //             </Nav>
+    //             <Nav className="navbar-right">
+    //                 <LanguageSwitcher t={t}/>
+    //                 {token !== null && token !== '' ? (
+    //                     <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+    //                 ) : (
+    //                     <>
+    //                         <LinkContainer to="/signUp">
+    //                             <Nav.Link className="signUp">
+    //                                 <FontAwesomeIcon className="signUpIcon" icon="user-plus"/>
+    //                                 <div className="signUpText">{t('signUp')}</div>
+    //                             </Nav.Link>
+    //                         </LinkContainer>
+    //                         <LinkContainer to="/login">
+    //                             <Nav.Link className="login">
+    //                                 <FontAwesomeIcon className="loginIcon" icon="sign-in-alt"/>
+    //                                 <div className="loginText">{t('signIn')}</div>
+    //                             </Nav.Link>
+    //                         </LinkContainer>
+    //                     </>
+    //                 )}
+    //
+    //             </Nav>
+    //         </Navbar.Collapse>
+    //     </Navbar>
+    // );
 
 
-    // // *** ADMIN ***
+    // *** ADMIN ***
     // const {isAuthenticated} = props;
     // return (
     //     <Navbar  expand="lg" className="color-nav">
@@ -198,8 +331,8 @@ function NavigationBar(props) {
     //         </Navbar.Collapse>
     //     </Navbar>
     // );
-
-
+    //
+    //
     // // *** MANAGER ***
     // const {isAuthenticated} = props;
     // return (
@@ -262,8 +395,8 @@ function NavigationBar(props) {
     //         </Navbar.Collapse>
     //     </Navbar>
     // );
-
-
+    //
+    //
     // *** USER ***
     // const {isAuthenticated} = props;
     // return (

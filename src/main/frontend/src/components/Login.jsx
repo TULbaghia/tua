@@ -5,6 +5,7 @@ import styles from '../css/floatingbox.css';
 import { withNamespaces } from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 function Login(props) {
     const {t,i18n} = props
@@ -15,7 +16,7 @@ function Login(props) {
 
     const handleLogin = e => {
         e.preventDefault()
-        history.push("/")
+        history.push("/userpage")
 
         const requestOptions = {
             method: "POST",
@@ -36,6 +37,8 @@ function Login(props) {
                 const tokenBearer = 'Bearer ' + token;
                 setToken(tokenBearer);
                 localStorage.setItem('token', tokenBearer)
+                // czy to mądre ? todo: xd
+                localStorage.setItem('username', jwt_decode(token)['sub'])
             })
             .catch(err => {
                 console.log(err.message)

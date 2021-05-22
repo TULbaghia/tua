@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {
     BrowserRouter as Router,
     Route,
@@ -21,35 +21,53 @@ import NotFound from "./components/errorPages/NotFound";
 import Forbidden from "./components/errorPages/Forbidden";
 import InternalError from "./components/errorPages/InternalError";
 import UserInfo from './components/UserInfo';
+import jwt_decode from "jwt-decode";
+import {useLocale} from "./components/LoginContext";
+import AppUsersPage from "./components/AppUsersPage";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
-class App extends Component {
-    render() {
-        return (
-            <div className="App">
-                <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
-                    <div>
-                        <NavigationBar />
-                        <Switch>
-                            <Route exact path="/" component={Home}/>
-                            <Route path="/blog" component={BlogScreen}/>
-                            <Route exact path="/login" component={Login}/>
-                            <Route path="/signUp" component={SignUp}/>
-                            <Route path="/pong" component={PingPong}/>
-                            <Route path="/errors/forbidden" component={Forbidden}/>
-                            <Route path="/errors/internal" component={InternalError}/>
-                            <Route path="/login/password-reset" component={PasswordReset}/>
-                            <Route path="/confirmedAccount" component={ConfirmedAccount} />
-                            <Route path="/home" component={UserInfo}/>
-                            <Route component={NotFound}/>
-                        </Switch>
-                        <Footer />
-                    </div>
-                </Router>
-            </div>
-        );
-    }
+function App() {
+
+    const {token, setToken} = useLocale();
+    const [roles, setRoles] = useState();
+    const [login, setLogin] = useState();
+
+    useEffect(() => {
+        if (token) {
+            const decodeJwt = jwt_decode(token);
+            const roles = decodeJwt['roles'].split(',');
+            const login = decodeJwt['sub'];
+            setRoles(roles);
+            setLogin(login);
+        }
+    }, [token])
+
+
+    return (
+        <div className="App">
+            <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
+                <div>
+                    <NavigationBar roles={roles} login={login} />
+                    <Switch>
+                        <Route exact path="/" component={Home}/>
+                        <Route path="/blog" component={BlogScreen}/>
+                        <Route exact path="/login" component={Login}/>
+                        <Route path="/signUp" component={SignUp}/>
+                        <Route path="/pong" component={PingPong}/>
+                        <Route path="/errors/forbidden" component={Forbidden}/>
+                        <Route path="/errors/internal" component={InternalError}/>
+                        <Route path="/login/password-reset" component={PasswordReset}/>
+                        <Route path="/confirmedAccount" component={ConfirmedAccount}/>
+                        <Route path="/home" component={UserInfo}/>
+                        <Route path="/userpage" component={AppUsersPage}/>
+                        <Route component={NotFound}/>
+                    </Switch>
+                    <Footer roles={roles} login={login} />
+                </div>
+            </Router>
+        </div>
+    );
 }
 
 

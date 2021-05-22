@@ -12,7 +12,6 @@ function AccessLevelSwitcher(props) {
 
     const {t, i18n} = props;
 
-    // const [levels, setLevels] = useState(['admin', 'manager', 'user']);
     const [levels, setLevels] = useState([]);
     const [chosen, setChosen] = useState(0);
 
@@ -34,10 +33,6 @@ function AccessLevelSwitcher(props) {
                     {levels.map((level) => (
                         <Dropdown.Item className="item">{t(level)}</Dropdown.Item>
                     ))}
-                    {/*<Dropdown.Item*/}
-                    {/*    onClick={() => alert('Wybrałeś ' + levels[0])}>{t(levels[0])}</Dropdown.Item>*/}
-                    {/*<Dropdown.Item className="item">{t(levels[1])}</Dropdown.Item>*/}
-                    {/*<Dropdown.Item className="item">{t(levels[2])}</Dropdown.Item>*/}
                 </DropdownMenu>
             </Dropdown>
         </div>
@@ -45,32 +40,9 @@ function AccessLevelSwitcher(props) {
 }
 
 function Footer(props) {
-    const {t, i18n} = props
+    const {t, i18n} = props;
     const {token, setToken} = useLocale();
-    const [roles, setRoles] = useState();
-
-    // const handleShowRoles = () => {
-    //     if(token !== null && token !== '') {
-    //         let jwt = jwt_decode(token)
-    //         let one = jwt['roles']
-    //         let two = one.split(",")
-    //         console.log(two.includes("MANAGER"))
-    //         console.log(two)
-    //         setRoles(jwt_decode(token)['roles'].split(','))
-    //     }
-    // }
-
-    // const handleShowRoles = () => {
-    //     setRoles(jwt_decode(token)['roles'].split(','));
-    // }
-
-    useEffect(() => {
-        if (token) {
-            // if(token !== null && token !== '') {
-            const roles = jwt_decode(token)['roles'].split(',')
-            setRoles(roles)
-        }
-    }, [token])
+    const {roles} = props;
 
     return (
         <div className="footer">

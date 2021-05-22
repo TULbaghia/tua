@@ -71,6 +71,8 @@ function NavigationBar(props) {
             .then((res) => {
                 setToken('');
                 localStorage.removeItem('token')
+                // czy to mądre ? todo: xd
+                localStorage.removeItem('username')
             })
             .catch(err => console.log(err))
     }

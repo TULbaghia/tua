@@ -7,31 +7,15 @@ import {withNamespaces} from "react-i18next";
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
 import "../css/Home.css"
-import {useNotification} from "./Notification/NotificationProvider";
-import {dialogType, dialogDuration} from "./Notification/Notification";
 // import {DefaultApi, Configuration} from "api-client"
-
-let i = 1;
 
 function Home(props) {
     const {t, i18n} = props
     const {isAuthenticated} = props;
 
-    // const dispatch = useNotification();
-    //
-    // const handleNewNotification = () => {
-    //     dispatch({
-    //         dialogType: dialogType.SUCCESS,
-    //         dialogDuration: dialogDuration.LONG,
-    //         message: "Operacja wykonana pomyslnie " + i++,
-    //         title: "Successful Request"
-    //     })
-    // }
-
     // *** LANDING PAGE ***
     return (
         <div className="Home">
-            {/*<button onClick={handleNewNotification}>Add Notification</button>*/}
             <div className="row">
                 <div className="column">
                     <div className="top">

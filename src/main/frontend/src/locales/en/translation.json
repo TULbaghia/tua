@@ -68,5 +68,15 @@
     "emailConfirm.title": "Email address verification",
     "emailConfirm.info": "Click the button below to verify your email address",
     "emailConfirm.action": "Verify email address",
-    "emailConfirm.success.info": "Email has been verified"
+    "emailConfirm.success.info": "Email has been verified",
+
+    "notification.title.danger": "Error",
+    "notification.title.warning": "Warning",
+    "notification.title.success": "Success",
+
+    "dialog.button.cancel": "Cancel",
+    "dialog.button.save": "Save changes",
+
+    "dialog.permanent_change.title": "Permanent data change",
+    "dialog.permanent_change.message": "The change you are trying to make permanently modifies the data. \n Are you sure about this?"
 }

@@ -36,6 +36,7 @@
     "MANAGER": "Manager",
     "CLIENT": "Użytkownik",
     "roleChoice": "WYBÓR ROLI",
+    "roleChanged": "Zmieniono rolę na: ",
     "landingPageTitle": "Zarezerwuj już dziś!",
     "landingPageLeft": "Komfortowy wypoczynek dla twojego zwierzaka",
     "landingPageRight": "Masz hotel dla zwierząt? Dołącz do nas już dziś!",

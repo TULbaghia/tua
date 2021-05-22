@@ -30,6 +30,7 @@
     "MANAGER": "Manager",
     "CLIENT": "User",
     "roleChoice": "ROLE CHOICE",
+    "roleChanged": "Role changed on: ",
     "cryingCat": "Crying cat",
     "staringCat": "Staring cat",
     "hamster": "Hamster",

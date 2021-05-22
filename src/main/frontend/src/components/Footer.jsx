@@ -6,10 +6,10 @@ import {useLocale} from "./LoginContext";
 import "../css/Footer.css"
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
+import {useNotificationSuccessAndShort} from "./Notification/NotificationProvider";
+import i18n from '../i18n';
 
 function AccessLevelSwitcher(props) {
-
-    const {t} = props;
 
     const {setCurrentRole} = useLocale();
     const [levels, setLevels] = useState([]);
@@ -23,19 +23,22 @@ function AccessLevelSwitcher(props) {
     const handleSelect=(e)=> {
         console.log(e);
         setCurrentRole(e);
-        localStorage.setItem('currentRole', e)
+        localStorage.setItem('currentRole', e);
+        dispatchNotificationSuccess({message: i18n.t('roleChanged') + i18n.t(e)});
     }
+
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
 
     return (
         <div style={{display: "flex"}}>
             <img alt="userIcon" src={userIcon} style={{marginRight: "1rem"}}/>
             <Dropdown onSelect={handleSelect}>
                 <DropdownToggle id="dropdown-basic" key='up' drop='up' className="roleMenu">
-                    {t('roleChange')}
+                    {i18n.t('roleChange')}
                 </DropdownToggle>
                 <DropdownMenu>
                     {levels.map((level) => (
-                        <Dropdown.Item eventKey={level} className="item">{t(level)}</Dropdown.Item>
+                        <Dropdown.Item eventKey={level} className="item">{i18n.t(level)}</Dropdown.Item>
                     ))}
                 </DropdownMenu>
             </Dropdown>
@@ -44,7 +47,6 @@ function AccessLevelSwitcher(props) {
 }
 
 function Footer(props) {
-    const {t} = props;
     const {token} = useLocale();
     const {roles, divStyle} = props;
 
@@ -52,7 +54,7 @@ function Footer(props) {
         <div className="footer" style={ divStyle() }>
             {token !== null && token !== '' ? (
                 <div style={{marginLeft: "10rem", width: "10%"}}>
-                    <AccessLevelSwitcher t={t} levels={roles}/>
+                    <AccessLevelSwitcher levels={roles}/>
                 </div>
             ) : null
             }

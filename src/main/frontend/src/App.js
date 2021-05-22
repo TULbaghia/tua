@@ -43,7 +43,6 @@ function App() {
         }
     }, [token])
 
-
     return (
         <div className="App">
             <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
@@ -59,7 +58,7 @@ function App() {
                         <Route path="/errors/internal" component={InternalError}/>
                         <Route path="/login/password-reset" component={PasswordReset}/>
                         <Route path="/confirmedAccount" component={ConfirmedAccount}/>
-                        <Route path="/home" component={UserInfo}/>
+                        <Route path="/myAccount" component={UserInfo}/>
                         <Route path="/userpage" component={AppUsersPage}/>
                         <Route component={NotFound}/>
                     </Switch>

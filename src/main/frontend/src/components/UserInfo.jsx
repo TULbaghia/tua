@@ -6,6 +6,9 @@ import cat from "../images/cat.png";
 import { withNamespaces } from "react-i18next";
 import { Container, Button } from "react-bootstrap";
 import "../css/UserInfo.css";
+import { getToken } from "../store/authentication";
+
+console.log(getToken())
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
 import { api } from "../Api";

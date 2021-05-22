@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {withNamespaces} from "react-i18next";
 import {Container, Button, Table} from "react-bootstrap";
 import "../css/UserInfo.css";
-import { getToken } from "../store/authentication";
+import {getToken} from "../store/authentication";
 
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
@@ -11,7 +11,6 @@ import {useHistory} from "react-router";
 
 function UserInfo(props) {
     const {t, i18n} = props;
-    const {isAuthenticated} = props;
     const history = useHistory();
     const [data, setData] = useState({
         login: "",
@@ -21,22 +20,18 @@ function UserInfo(props) {
         contactNumber: "",
     });
 
-    // api.showAccountInformation({headers: {Authorization: "Bearer " + getToken().data}}).then((res) => {
-    //     // userInfo.login = res.login;
-    //     userInfo.login = "asd";
-    // }).catch((err) => {
-    //     console.log(err.toString())
-    //     if(err.response.status === 403) {
-    //         history.push("/errors/forbidden")
-    //     }
-    // });
-
     React.useEffect(() => {
-        if(getToken()) {
+        if (getToken()) {
             getUser().then(res => {
-                let userInfo = data;
-                userInfo.login = "res.login";
-                setData(userInfo);
+                setData(res.data);
+            }).catch(err => {
+                if (err.response != null) {
+                    if (err.response.status === 403) {
+                        history.push("/errors/forbidden")
+                    } else if (err.response.status === 500) {
+                        history.push("/errors/internal")
+                    }
+                }
             });
         }
     }, []);
@@ -61,34 +56,34 @@ function UserInfo(props) {
                 <table>
                     <thead/>
                     <tbody>
-                        <tr>
-                            <td>{t("userDetailsFirstname")}</td>
-                            <td>{data.firstname}</td>
-                        </tr>
-                        <tr>
-                            <td>{t("userDetailsLastname")}</td>
-                            <td>{data.lastname}</td>
-                        </tr>
-                        <tr>
-                            <td>{t("userDetailsEmail")}</td>
-                            <td>{data.email}</td>
-                        </tr>
-                        <tr>
-                            <td>{t("userDetailsLogin")}</td>
-                            <td>{data.login}</td>
-                        </tr>
-                        <tr>
-                            <td>{t("userDetailsContactNumber")}</td>
-                            <td>{data.contactNumber}</td>
-                        </tr>
-                        <tr>
-                            <td>{t("userDetailsRoles")}</td>
-                            <td>{userRoles.join(',')}</td>
-                        </tr>
+                    <tr>
+                        <td>{t("userDetailsFirstname")}</td>
+                        <td>{data.firstname}</td>
+                    </tr>
+                    <tr>
+                        <td>{t("userDetailsLastname")}</td>
+                        <td>{data.lastname}</td>
+                    </tr>
+                    <tr>
+                        <td>{t("userDetailsEmail")}</td>
+                        <td>{data.email}</td>
+                    </tr>
+                    <tr>
+                        <td>{t("userDetailsLogin")}</td>
+                        <td>{data.login}</td>
+                    </tr>
+                    <tr>
+                        <td>{t("userDetailsContactNumber")}</td>
+                        <td>{data.contactNumber}</td>
+                    </tr>
+                    <tr>
+                        <td>{t("userDetailsRoles")}</td>
+                        <td>{userRoles.join(',')}</td>
+                    </tr>
                     </tbody>
                 </table>
                 <div className="main-wrapper-actions-container">
-                    <Button className="btn-primary">{t("userDetailsEditBtn")}</Button>
+                    <Button className="btn-primary" onClick={event => {history.push("/editOwnAccount")}}>{t("userDetailsEditBtn")}</Button>
                 </div>
             </Container>
         </div>

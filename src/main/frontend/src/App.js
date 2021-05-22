@@ -1,9 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {
-    BrowserRouter as Router,
-    Route,
-    Switch
-} from 'react-router-dom';
+import React, {Component} from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
 import NavigationBar from "./components/Navbar";
 import {library} from "@fortawesome/fontawesome-svg-core";
@@ -24,6 +20,8 @@ import UserInfo from './components/UserInfo';
 import jwt_decode from "jwt-decode";
 import {useLocale} from "./components/LoginContext";
 import AppUsersPage from "./components/AppUsersPage";
+import NotificationProvider from "./components/Notification/NotificationProvider";
+import CriticalOperationProvider from "./components/CriticalOperations/CriticalOperationProvider";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -45,38 +43,42 @@ function App() {
     }, [token])
 
     const divStyle = () => {
-            switch (currentRole) {
-                case 'ADMIN':
-                    return {backgroundColor: "#EF5DA8"};
-                case 'MANAGER':
-                    return {backgroundColor: "#F178B6"};
-                case 'CLIENT':
-                    return {backgroundColor: "#EFADCE"};
-            }
-        };
+        switch (currentRole) {
+            case 'ADMIN':
+                return {backgroundColor: "#EF5DA8"};
+            case 'MANAGER':
+                return {backgroundColor: "#F178B6"};
+            case 'CLIENT':
+                return {backgroundColor: "#EFADCE"};
+        }
+    };
 
     return (
         <div className="App">
-            <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
-                <div>
-                    <NavigationBar roles={roles} divStyle={divStyle}/>
-                    <Switch>
-                        <Route exact path="/" component={Home}/>
-                        <Route path="/blog" component={BlogScreen}/>
-                        <Route exact path="/login" component={Login}/>
-                        <Route path="/signUp" component={SignUp}/>
-                        <Route path="/pong" component={PingPong}/>
-                        <Route path="/errors/forbidden" component={Forbidden}/>
-                        <Route path="/errors/internal" component={InternalError}/>
-                        <Route path="/login/password-reset" component={PasswordReset}/>
-                        <Route path="/confirmedAccount" component={ConfirmedAccount}/>
-                        <Route path="/myAccount" component={UserInfo}/>
-                        <Route path="/userPage" component={AppUsersPage}/>
-                        <Route component={NotFound}/>
-                    </Switch>
-                    <Footer roles={roles} divStyle={divStyle}/>
-                </div>
-            </Router>
+            <NotificationProvider>
+                <CriticalOperationProvider>
+                    <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
+                        <div>
+                            <NavigationBar roles={roles} divStyle={divStyle}/>
+                            <Switch>
+                                <Route exact path="/" component={Home}/>
+                                <Route path="/blog" component={BlogScreen}/>
+                                <Route exact path="/login" component={Login}/>
+                                <Route path="/signUp" component={SignUp}/>
+                                <Route path="/pong" component={PingPong}/>
+                                <Route path="/errors/forbidden" component={Forbidden}/>
+                                <Route path="/errors/internal" component={InternalError}/>
+                                <Route path="/login/password-reset" component={PasswordReset}/>
+                                <Route path="/confirmedAccount" component={ConfirmedAccount}/>
+                                <Route path="/myAccount" component={UserInfo}/>
+                                <Route path="/userPage" component={AppUsersPage}/>
+                                <Route component={NotFound}/>
+                            </Switch>
+                            <Footer roles={roles} divStyle={divStyle}/>
+                        </div>
+                    </Router>
+                </CriticalOperationProvider>
+            </NotificationProvider>
         </div>
     );
 }

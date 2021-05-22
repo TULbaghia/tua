@@ -1,19 +1,31 @@
 import { withNamespaces } from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
 import {Button, Form, FormCheck} from "react-bootstrap";
+import {getToken} from "../store/authentication";
+import {api} from "../Api";
+import {useDialogPermanentChange} from "./CriticalOperations/CriticalOperationProvider";
+import {useNotificationDangerAndLong, useNotificationSuccessAndShort} from "./Notification/NotificationProvider";
 
 function UserList(props) {
     const {t,i18n} = props
+    const [data, setData] = useState([
+        {
+            login: "",
+            email: "",
+            name: "",
+            surname: "",
+            unlocked: false,
+            active: false,
+        }
+    ]);
+    const dispatchDialog = useDialogPermanentChange();
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
+    const dispatchNotificationDanger = useNotificationDangerAndLong();
 
     const columns = [
-        {
-            name: 'Id',
-            selector: 'id',
-            sortable: true,
-        },
         {
             name: 'Login',
             selector: 'login',
@@ -27,34 +39,40 @@ function UserList(props) {
         },
         {
             name: t('name'),
-            selector: 'name',
+            selector: 'firstname',
             sortable: true,
         },
         {
             name: t('surname'),
-            selector: 'surname',
+            selector: 'lastname',
             sortable: true,
         },
         {
-            name: "Odblokowane",
-            selector: 'unlocked',
+            name: t('unlocked'),
+            selector: 'enabled',
             cell: row => {
-                const checked = row.unlocked;
+                const checked = row.enabled;
                 return(
                     <>
                         <Form.Check defaultChecked={checked} onChange={event => {
                             let value = event.target.checked;
-                            // TODO
+                            dispatchDialog({
+                                callbackOnSave: () => {value ? unblockAccount(row.login) : blockAccount(row.login)},
+                                callbackOnCancel: () => {
+                                    console.log("Cancel")
+                                    event.target.checked = !value;
+                                },
+                            })
                         }}/>
                     </>
                 )
             },
         },
         {
-            name: "Aktywne",
-            selector: 'active',
+            name: t('active'),
+            selector: 'confirmed',
             cell: row => {
-                let color = row.active ? "green" : "grey";
+                let color = row.confirmed ? "green" : "grey";
                 return (
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill={color}
                          className="bi bi-check" viewBox="0 0 16 16">
@@ -65,7 +83,7 @@ function UserList(props) {
             },
         },
         {
-            name: "Edytuj",
+            name: t('edit'),
             selector: 'edit',
             cell: row => {
               return(
@@ -74,7 +92,7 @@ function UserList(props) {
             },
         },
         {
-            name: "Zmień hasło",
+            name: t('changePassword'),
             selector: 'changePassword',
             cell: row => {
                 return(
@@ -83,7 +101,7 @@ function UserList(props) {
             },
         },
         {
-            name: "Szczegóły",
+            name: t('details'),
             selector: 'details',
             cell: row => {
                 return(
@@ -93,17 +111,36 @@ function UserList(props) {
         },
     ];
 
-    let data = [
-        {
-            id: 1,
-            login: "logczak",
-            email: "logczak@email.com",
-            name: "Logan",
-            surname: "Nak",
-            unlocked: true,
-            active: true,
+    useEffect(() => {
+        if(getToken()) {
+            getAllAccounts().then(r => {
+                console.log(r);
+                setData(r.data);
+            }).catch(r => {
+                console.log(r)
+            });
         }
-    ];
+    }, []);
+
+    const getAllAccounts = async () => {
+        return await api.getAllAccountsList({headers: {Authorization: "Bearer " + getToken().data}})
+    }
+
+    const blockAccount = (login) => {
+        api.blockAccount(login, {headers: {Authorization: "Bearer " + getToken().data}}).then(res => {
+            dispatchNotificationSuccess({message: i18n.t('accountBlockSuccess')})
+        }).catch(err => {
+            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+        })
+    }
+
+    const unblockAccount = (login) => {
+        api.unblockAccount(login, {headers: {Authorization: "Bearer " + getToken().data}}).then(res => {
+            dispatchNotificationSuccess({message: i18n.t('accountUnblockSuccess')})
+        }).catch(err => {
+            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+        })
+    }
 
     return (
         <div className="container">

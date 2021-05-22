@@ -5,6 +5,9 @@ import styles from '../css/floatingbox.css';
 import { withNamespaces } from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
+import { api } from "../Api";
+import { getToken, signIn } from "../store/authentication";
+import store from "../store";
 
 function Login(props) {
     const {t,i18n} = props
@@ -13,33 +16,14 @@ function Login(props) {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = e => {
+    const handleLogin = async e => {
         e.preventDefault()
-        history.push("/")
+        await signIn(login, password)
 
-        const requestOptions = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ login: login, password: password }),
-        };
+        console.log(getToken())
 
-        fetch('/resources/auth/auth', requestOptions)
-            .then((res) => {
-                if(res.status !== 202) {
-                    throw Error('Invalid credentials')
-                }
-                return res.text()
-            })
-            .then((token) => {
-                const tokenBearer = 'Bearer ' + token;
-                setToken(tokenBearer);
-                localStorage.setItem('token', tokenBearer)
-            })
-            .catch(err => {
-                console.log(err.message)
-            })
+        history.push("/home")
+
     }
 
     return (

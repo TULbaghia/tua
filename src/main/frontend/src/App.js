@@ -43,7 +43,7 @@ class App extends Component {
                             <Route path="/login/password-reset" component={PasswordReset}/>
                             <Route path="/confirmedAccount" component={ConfirmedAccount} />
                             <Route path="/home" component={UserInfo}/>
-                            <Route path="/front/reset/password/:code" component={PasswordResetForm}/>
+                            <Route path="/reset/password/:code" component={PasswordResetForm}/>
                             <Route component={NotFound}/>
                         </Switch>
                         <Footer />

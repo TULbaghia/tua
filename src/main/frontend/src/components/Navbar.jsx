@@ -57,7 +57,7 @@ class LanguageSwitcher extends React.Component {
 function NavigationBar(props) {
     const {t, i18n} = props
     const history = useHistory();
-    const {token, setToken} = useLocale();
+    const {token, setToken, setCurrentRole, setUsername} = useLocale();
 
     const handleLogout = () => {
         history.push("/login")
@@ -70,6 +70,8 @@ function NavigationBar(props) {
         fetch('/resources/auth/logout', requestOptions)
             .then((res) => {
                 setToken('');
+                setCurrentRole('');
+                setUsername('');
                 localStorage.removeItem('token')
                 // czy to mądre ? todo: xd
                 localStorage.removeItem('currentRole')
@@ -95,7 +97,7 @@ function NavigationBar(props) {
         <>
             {token !== null && token !== '' ? (
                 //------------------------LOGGED USER VIEW----------------------------
-                <Navbar expand="lg" className="color-nav" style={divStyle()}>
+                <Navbar expand="lg" className="main-navbar" style={divStyle()}>
                     <Navbar.Brand>
                         <div className="name">{t('animalHotel')}</div>
                     </Navbar.Brand>

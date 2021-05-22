@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 
 const LoginContext = React.createContext('');
 
-export const LoginProvider = ({ children }) => {
+export const LoginProvider = ({children}) => {
     const [token, setToken] = useState('');
     const [currentRole, setCurrentRole] = useState('');
-    const [userName, setUserName] = useState('');
+    const [username, setUsername] = useState('');
 
     useEffect(() => {
         // getToken().then(res => setToken(res)).then(()=>{
@@ -13,8 +13,8 @@ export const LoginProvider = ({ children }) => {
         //     setToken(localStorage.getItem('username'));
         // })
         setToken(localStorage.getItem('token'));
-            setCurrentRole(localStorage.getItem('currentRole'));
-            setUserName(localStorage.getItem('username'));
+        setCurrentRole(localStorage.getItem('currentRole'));
+        setUsername(localStorage.getItem('username'));
     }, [])
 
     const getToken = async () => {
@@ -27,8 +27,8 @@ export const LoginProvider = ({ children }) => {
         setToken,
         currentRole,
         setCurrentRole,
-        userName,
-        setUserName
+        username,
+        setUsername
     }
     return <LoginContext.Provider value={values}>{children}</LoginContext.Provider>;
 };

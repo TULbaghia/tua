@@ -29,7 +29,7 @@ library.add(fab, faSignInAlt, faUserPlus);
 
 function App() {
 
-    const {token, setToken} = useLocale();
+    const {token, setCurrentRole, setUsername} = useLocale();
     const [roles, setRoles] = useState();
     const [login, setLogin] = useState();
 
@@ -40,6 +40,8 @@ function App() {
             const login = decodeJwt['sub'];
             setRoles(roles);
             setLogin(login);
+            setCurrentRole(roles[0])
+            setUsername(login)
         }
     }, [token])
 

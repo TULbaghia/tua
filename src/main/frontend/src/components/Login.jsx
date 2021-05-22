@@ -1,15 +1,15 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "./LoginContext";
-import styles from '../css/floatingbox.css';
-import { withNamespaces } from 'react-i18next';
+import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
+import {Configuration, DefaultApi} from "api-client";
 
 function Login(props) {
-    const {t,i18n} = props
+    const {t, i18n} = props
     const history = useHistory();
-    const { token, setToken } = useLocale();
+    const {token, setToken} = useLocale();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
 
@@ -22,12 +22,16 @@ function Login(props) {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ login: login, password: password }),
+            body: JSON.stringify({login: login, password: password}),
         };
+
+        const conf = new Configuration()
+        const api = new DefaultApi(conf)
+        api.changePassword()
 
         fetch('/resources/auth/auth', requestOptions)
             .then((res) => {
-                if(res.status !== 202) {
+                if (res.status !== 202) {
                     throw Error('Invalid credentials')
                 }
                 return res.text()
@@ -74,7 +78,8 @@ function Login(props) {
                     <button className="btn btn-lg btn-primary btn-block" type="submit" style={{backgroundColor: "#7749F8"}}>
                         {t('signIn')}
                     </button>
-                    <button className="btn btn-lg btn-primary btn-block" type="button" onClick={() => history.push("/login/password-reset")} style={{backgroundColor: "#7749F8"}}>
+                    <button className="btn btn-lg btn-primary btn-block" type="button"
+                            onClick={() => history.push("/login/password-reset")} style={{backgroundColor: "#7749F8"}}>
                         {t('passwordReset')}
                     </button>
                 </form>

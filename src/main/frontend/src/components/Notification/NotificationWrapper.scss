@@ -1,0 +1,32 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins/breakpoints";
+
+.notification-wrapper {
+  right: 1rem;
+  bottom: 0;
+  z-index: 1;
+  @include media-breakpoint-down(xs) {
+      left: 1rem;
+  }
+
+  .alert {
+    position: relative;
+
+    & > button {
+      font-size: 1.5rem;
+      padding: .2rem .5rem 1rem 1rem;
+    }
+  }
+
+  .alert-progress-bar {
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    right: -1px;
+    height: 3px;
+  }
+  .progress-bar {
+    width: 100%;
+  }
+}

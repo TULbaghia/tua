@@ -60,5 +60,10 @@
     "userDetailsContactNumber": "Phone number",
     "userDetailsRoles": "Roles",
     "userDetailsEditBtn": "Edit",
-    "userDetailsPasswordChangeBtn": "Change password"
+    "userDetailsPasswordChangeBtn": "Change password",
+
+    "form.validation.field.min_size": "Input size too small",
+    "form.validation.field.max_size": "Input size too big",
+    "form.validation.field.pattern": "Input does not match pattern",
+    "form.validation.field.not_allowed": "Input does not match allowed values"
 }

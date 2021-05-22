@@ -60,5 +60,10 @@
     "userDetailsContactNumber": "Numer telefonu",
     "userDetailsRoles": "Role",
     "userDetailsEditBtn": "Edytuj Dane",
-    "userDetailsPasswordChangeBtn": "Zmień hasło"
+    "userDetailsPasswordChangeBtn": "Zmień hasło",
+
+    "form.validation.field.min_size": "Zbyt krótkie dane",
+    "form.validation.field.max_size": "Zbyt długie dane",
+    "form.validation.field.pattern": "Dane wejściowe nie pasują do wzorca",
+    "form.validation.field.not_allowed": "Dane wejściowe nie odpowiadają dozwolonym wartościom"
 }

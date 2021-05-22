@@ -60,5 +60,6 @@
     "userDetailsContactNumber": "Phone number",
     "userDetailsRoles": "Roles",
     "userDetailsEditBtn": "Edit",
-    "userDetailsPasswordChangeBtn": "Change password"
+    "userDetailsPasswordChangeBtn": "Change password",
+    "accountInfo": "Account info"
 }

@@ -731,17 +731,17 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @param {string} login 
+         * @param {string} email 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sendResetPassword: async (login: string, options: any = {}): Promise<RequestArgs> => {
+        sendResetPassword: async (email: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'login' is not null or undefined
-            if (login === null || login === undefined) {
+            if (email === null || email === undefined) {
                 throw new RequiredError('login','Required parameter login was null or undefined when calling sendResetPassword.');
             }
             const localVarPath = `/resources/accounts/user/{login}/reset`
-                .replace(`{${"login"}}`, encodeURIComponent(String(login)));
+                .replace(`{${"login"}}`, encodeURIComponent(String(email)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -1164,12 +1164,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {string} login 
+         * @param {string} email 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sendResetPassword(login: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).sendResetPassword(login, options);
+        async sendResetPassword(email: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).sendResetPassword(email, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1400,12 +1400,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @param {string} login 
+         * @param {string} email 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sendResetPassword(login: string, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).sendResetPassword(login, options).then((request) => request(axios, basePath));
+        sendResetPassword(email: string, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).sendResetPassword(email, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1635,13 +1635,13 @@ export class DefaultApi extends BaseAPI {
     }
     /**
      * 
-     * @param {string} login 
+     * @param {string} email 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public sendResetPassword(login: string, options?: any) {
-        return DefaultApiFp(this.configuration).sendResetPassword(login, options).then((request) => request(this.axios, this.basePath));
+    public sendResetPassword(email: string, options?: any) {
+        return DefaultApiFp(this.configuration).sendResetPassword(email, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

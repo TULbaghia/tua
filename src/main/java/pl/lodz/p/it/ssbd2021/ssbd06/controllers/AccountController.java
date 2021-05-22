@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.PenCode;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.UserEmail;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -258,13 +259,13 @@ public class AccountController extends AbstractController {
     /**
      * Wysyła na istniejący w systemie email wiadomość o resetowaniu hasła.
      *
-     * @param login login konta, na którego email zostanie wysłana wiadomość dotycząca resetowania
+     * @param email email konta, na którego email zostanie wysłana wiadomość dotycząca resetowania
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PUT
-    @Path("/user/{login}/reset")
-    public void sendResetPassword(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {
-        repeat(() -> accountEndpoint.sendResetPassword(login), accountEndpoint);
+    @Path("/user/{email}/reset")
+    public void sendResetPassword(@NotNull @UserEmail @PathParam("email") @Valid String email) throws AppBaseException {
+        repeat(() -> accountEndpoint.sendResetPassword(email), accountEndpoint);
     }
 
     /**

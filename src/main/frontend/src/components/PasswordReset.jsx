@@ -1,14 +1,20 @@
 import {withNamespaces} from "react-i18next";
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
-import React from "react";
+import React, {useState} from "react";
+import { api } from "../Api";
 
 function PasswordReset(props) {
     const {t,i18n} = props
 
+    const [email, setEmail] = useState('');
+
+
     const handleSend = e => {
         e.preventDefault()
-        console.log("Sending email");
+        api.sendResetPassword(email)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
     }
 
     return(
@@ -28,7 +34,8 @@ function PasswordReset(props) {
                             <span className="input-group-text" id="basic-addon1">@</span>
                         </div>
                         <input type="text" className="form-control" placeholder="E-mail" aria-label="E-mail"
-                               aria-describedby="basic-addon1"/>
+                                                       onChange={event => setEmail(event.target.value)}
+                                                       aria-describedby="basic-addon1"/>
                         <span style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</span>
                     </div>
 

@@ -39,12 +39,12 @@ public class PendingCodeManager {
     /**
      * Tworzy nowy kod resetu hasła i wysyła wiadomość na e-mail odpowiadający kontu.
      *
-     * @param login login konta, którego resetowanie hasła dotyczy
+     * @param email email konta, którego resetowanie hasła dotyczy
      * @throws AppBaseException - jeżeli nie uda się wysłać maila
      */
     @PermitAll
-    public void sendResetPassword(String login) throws AppBaseException {
-        Account account = accountFacade.findByLogin(login);
+    public void sendResetPassword(String email) throws AppBaseException {
+        Account account = accountFacade.findByEmail(email);
         if (!account.isEnabled()) {
             throw AccountException.notEnabled();
         }

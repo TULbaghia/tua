@@ -6,8 +6,11 @@ import {Link, useParams} from "react-router-dom";
 import {Form, Formik} from 'formik';
 import FieldComponent from "./FieldComponent";
 import BreadCrumb from "../BreadCrumb";
+import {useNotification} from "../Notification/NotificationProvider";
+import {dialogDuration, dialogType} from "../Notification/Notification";
 
 function PasswordResetForm({t, i18n}) {
+    const dispatch = useNotification();
     const history = useHistory();
     let {code} = useParams();
     const conf = new Configuration()
@@ -15,9 +18,20 @@ function PasswordResetForm({t, i18n}) {
 
     const handleSubmit = (values, setSubmitting) => {
         api.resetPassword({password: values.newPassword, resetCode: code}).then((res) => {
+            dispatch({
+                dialogType: dialogType.SUCCESS,
+                dialogDuration: dialogDuration.SHORT,
+                message: t('passwordResetForm.success.info'),
+                title: t('operationSuccess')
+            })
             history.push("/login");
         }).catch(err => {
-            console.log("code: " + err.response.status + ", i18n key: " + err.response.data.message);
+            dispatch({
+                dialogType: dialogType.DANGER,
+                dialogDuration: dialogDuration.SHORT,
+                message: t(err.response.data.message),
+                title: t('operationError')
+            })
             setSubmitting(false);
         });
     }
@@ -26,30 +40,30 @@ function PasswordResetForm({t, i18n}) {
         <div className="container">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
-                <li className="breadcrumb-item active" aria-current="page">{t('passwordResetFormTitle')}</li>
+                <li className="breadcrumb-item active" aria-current="page">{t('passwordResetForm.error.title')}</li>
             </BreadCrumb>
 
             <div className="floating-box" style={{minWidth: "30rem"}}>
                 <div>
-                    <h1 className="h3 mb-4">{t('passwordResetFormTitle')}</h1>
+                    <h1 className="h3 mb-4">{t('passwordResetForm.error.title')}</h1>
                     <Formik
                         initialValues={{newPassword: '', repeatedNewPassword: ''}}
                         validate={values => {
                             const errors = {};
                             if (!values.newPassword) {
-                                errors.newPassword = t('passwordRequired');
+                                errors.newPassword = t('passwordResetForm.error.required');
                             } else if (values.newPassword.length > 64 || values.newPassword.length < 8) {
-                                errors.newPassword = t('passwordLengthError');
+                                errors.newPassword = t('passwordResetForm.error.length');
                             }
 
                             if (!values.repeatedNewPassword) {
-                                errors.repeatedNewPassword = t('repeatedPasswordRequired');
+                                errors.repeatedNewPassword = t('passwordResetForm.error.repeated.required');
                             } else if (values.repeatedNewPassword.length > 64 || values.repeatedNewPassword.length < 8) {
-                                errors.repeatedNewPassword = t('passwordLengthError');
+                                errors.repeatedNewPassword = t('passwordResetForm.error.length');
                             }
 
                             if (!(values.repeatedNewPassword === values.newPassword)) {
-                                errors.repeatedNewPassword = t('passwordsDontMatch');
+                                errors.repeatedNewPassword = t('passwordResetForm.error.match');
                             }
                             return errors;
                         }}

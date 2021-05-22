@@ -61,9 +61,20 @@
     "userDetailsRoles": "Role",
     "userDetailsEditBtn": "Edytuj Dane",
     "userDetailsPasswordChangeBtn": "Zmień hasło",
-    "passwordResetFormTitle": "Zresetuj hasło",
-    "passwordLengthError": "Hasło powinno zawierać od 8 do 64 znaków",
-    "passwordsDontMatch": "Hasła nie są identyczne",
-    "passwordRequired": "Nowe hasło jest wymagane",
-    "repeatedPasswordRequired": "Powtórzone nowe hasło jest wymagane"
+    "operationSuccess": "Operacja zakończona sukcesem",
+    "operationError": "Operacja zakończona niepowodzeniem",
+
+    "error.rest.validation": "Przesyłane dane są niepoprawne",
+    "exception.code.code_used": "Kod został wykorzystany",
+    "exception.code.code_invalid": "Kod jest niepoprawny",
+    "exception.code.code_expired": "Kod stracił ważność",
+    "exception.account_not_confirmed.account_not_confirmed" : "Konto nie zostało jeszcze potwierdzone",
+    "exception.account_not_enabled.account_not_enabled" : "Konto jest zablokowane",
+
+    "passwordResetForm.error.title": "Zresetuj hasło",
+    "passwordResetForm.error.length": "Hasło powinno zawierać od 8 do 64 znaków",
+    "passwordResetForm.error.match": "Hasła nie są identyczne",
+    "passwordResetForm.error.required": "Nowe hasło jest wymagane",
+    "passwordResetForm.error.repeated.required": "Powtórzone nowe hasło jest wymagane",
+    "passwordResetForm.success.info": "Hasło zostało zresetowane"
 }

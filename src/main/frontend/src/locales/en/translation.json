@@ -61,5 +61,12 @@
     "userDetailsRoles": "Roles",
     "userDetailsEditBtn": "Edit",
     "userDetailsPasswordChangeBtn": "Change password",
-    "accountInfo": "Account info"
+    "accountInfo": "Account info",
+    "notification.title.danger": "Error",
+    "notification.title.warning": "Warning",
+    "notification.title.success": "Success",
+    "dialog.button.cancel": "Cancel",
+    "dialog.button.save": "Save changes",
+    "dialog.permanent_change.title": "Permanent data change",
+    "dialog.permanent_change.message": "The change you are trying to make permanently modifies the data. \n Are you sure about this?"
 }

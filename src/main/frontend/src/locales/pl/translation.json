@@ -61,7 +61,12 @@
     "userDetailsRoles": "Role",
     "userDetailsEditBtn": "Edytuj Dane",
     "userDetailsPasswordChangeBtn": "Zmień hasło",
-    "emailVerification": "Weryfikacja adresu email",
-    "emailVerificationInfo": "Kliknij w przycisk znajdujący się poniżej w celu zweryfikowania adresu email",
-    "emailVerificationAction": "Weryfikuj adres email"
+    "operationSuccess": "Operacja zakończona sukcesem",
+    "operationError": "Operacja zakończona niepowodzeniem",
+    "error.rest.validation": "Przesyłane dane są niepoprawne",
+
+    "emailConfirm.title": "Weryfikacja adresu email",
+    "emailConfirm.info": "Kliknij w przycisk znajdujący się poniżej w celu zweryfikowania adresu email",
+    "emailConfirm.action": "Weryfikuj adres email",
+    "emailConfirm.success.info": "Adres email został pomyślnie zweryfikowany"
 }

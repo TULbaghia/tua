@@ -61,7 +61,12 @@
     "userDetailsRoles": "Roles",
     "userDetailsEditBtn": "Edit",
     "userDetailsPasswordChangeBtn": "Change password",
-    "emailVerification": "Email address verification",
-    "emailVerificationInfo": "Click the button below to verify your email address",
-    "emailVerificationAction": "Verify email address"
+    "operationSuccess": "Operation successful",
+    "operationError": "Operation error",
+    "error.rest.validation": "Provided data is incorrect",
+
+    "emailConfirm.title": "Email address verification",
+    "emailConfirm.info": "Click the button below to verify your email address",
+    "emailConfirm.action": "Verify email address",
+    "emailConfirm.success.info": "Email has been verified"
 }

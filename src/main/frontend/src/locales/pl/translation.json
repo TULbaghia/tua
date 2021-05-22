@@ -60,7 +60,6 @@
     "userDetailsContactNumber": "Numer telefonu",
     "userDetailsRoles": "Role",
     "userDetailsEditBtn": "Edytuj Dane",
-    "userDetailsPasswordChangeBtn": "Zmień hasło",
     "operationSuccess": "Operacja zakończona sukcesem",
     "operationError": "Operacja zakończona niepowodzeniem",
 
@@ -77,4 +76,15 @@
     "passwordResetForm.error.required": "Nowe hasło jest wymagane",
     "passwordResetForm.error.repeated.required": "Powtórzone nowe hasło jest wymagane",
     "passwordResetForm.success.info": "Hasło zostało zresetowane"
+    "userDetailsPasswordChangeBtn": "Zmień hasło",
+
+    "notification.title.danger": "Błąd",
+    "notification.title.warning": "Ostrzeżenie",
+    "notification.title.success": "Sukces",
+
+    "dialog.button.cancel": "Anuluj",
+    "dialog.button.save": "Zapisz zmiany",
+
+    "dialog.permanent_change.title": "Trwała zmiana danych",
+    "dialog.permanent_change.message": "Zmiana, którą próbujesz dokonać trwale modyfikuje dane. \n Czy jesteś tego pewny?"
 }

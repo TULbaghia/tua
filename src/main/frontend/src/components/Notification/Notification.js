@@ -19,7 +19,6 @@ export const dialogDuration = {
 }
 
 const Notification = (props) => {
-    const [showExit, setShowExit] = useState(false);
     const [width, setWidth] = useState(0);
     const [intervalId, setIntervalId] = useState(null);
     const [useEffectStart, setUseEffectStart] = useState(false);
@@ -27,7 +26,6 @@ const Notification = (props) => {
     const step = 1;
 
     const handleStartTimer = () => {
-        setShowExit(false);
         const id = setInterval(() => {
             setWidth(prev => {
                 if (prev < 100) {
@@ -42,7 +40,6 @@ const Notification = (props) => {
     };
 
     const handlePauseTimer = () => {
-        setShowExit(true);
         clearInterval(intervalId);
     };
 
@@ -72,8 +69,8 @@ const Notification = (props) => {
                onClose={handleCloseNotification}
                onMouseEnter={() => {if(useEffectStart) handlePauseTimer()}}
                onMouseLeave={() => {if(useEffectStart) handleStartTimer()}}>
-            {props.title ? <Alert.Heading className={"h6"}>{props.title}</Alert.Heading> : ""}
-            <div>{props.message}</div>
+            {props.title ? <Alert.Heading as={"h6"} className={"font-weight-bold"}>{props.title}</Alert.Heading> : ""}
+            <div style={{whiteSpace: "pre-line"}}>{props.message}</div>
             <ProgressBar now={width} className={"alert-progress-bar"}/>
         </Alert>
     );

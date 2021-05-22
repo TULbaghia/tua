@@ -76,5 +76,15 @@
     "passwordResetForm.error.match": "Passwords do not match",
     "passwordResetForm.error.required": "New password is required",
     "passwordResetForm.error.repeated.required": "Repeated new password is required",
-    "passwordResetForm.success.info": "Password has been reset"
+    "passwordResetForm.success.info": "Password has been reset",
+
+    "notification.title.danger": "Error",
+    "notification.title.warning": "Warning",
+    "notification.title.success": "Success",
+
+    "dialog.button.cancel": "Cancel",
+    "dialog.button.save": "Save changes",
+
+    "dialog.permanent_change.title": "Permanent data change",
+    "dialog.permanent_change.message": "The change you are trying to make permanently modifies the data. \n Are you sure about this?"
 }

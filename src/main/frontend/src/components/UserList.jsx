@@ -8,9 +8,11 @@ import {getToken} from "../store/authentication";
 import {api} from "../Api";
 import {useDialogPermanentChange} from "./CriticalOperations/CriticalOperationProvider";
 import {useNotificationDangerAndLong, useNotificationSuccessAndShort} from "./Notification/NotificationProvider";
+import {useHistory} from "react-router";
 
 function UserList(props) {
     const {t,i18n} = props
+    const history = useHistory()
     const [data, setData] = useState([
         {
             login: "",
@@ -117,6 +119,11 @@ function UserList(props) {
                 console.log(r);
                 setData(r.data);
             }).catch(r => {
+                if (r.response.status === 403) {
+                    history.push("/errors/forbidden")
+                } else if (r.response.status === 500) {
+                    history.push("/errors/internal")
+                }
                 console.log(r)
             });
         }
@@ -130,6 +137,11 @@ function UserList(props) {
         api.blockAccount(login, {headers: {Authorization: "Bearer " + getToken().data}}).then(res => {
             dispatchNotificationSuccess({message: i18n.t('accountBlockSuccess')})
         }).catch(err => {
+            if (err.response.status === 403) {
+                history.push("/errors/forbidden")
+            } else if (err.response.status === 500) {
+                history.push("/errors/internal")
+            }
             dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
         })
     }
@@ -138,6 +150,11 @@ function UserList(props) {
         api.unblockAccount(login, {headers: {Authorization: "Bearer " + getToken().data}}).then(res => {
             dispatchNotificationSuccess({message: i18n.t('accountUnblockSuccess')})
         }).catch(err => {
+            if (err.response.status === 403) {
+                history.push("/errors/forbidden")
+            } else if (err.response.status === 500) {
+                history.push("/errors/internal")
+            }
             dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
         })
     }

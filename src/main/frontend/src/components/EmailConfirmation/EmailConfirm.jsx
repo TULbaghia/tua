@@ -4,31 +4,41 @@ import {Link, useParams} from "react-router-dom";
 import { withNamespaces } from 'react-i18next';
 import BreadCrumb from "../BreadCrumb"
 import {Configuration, DefaultApi} from "api-client";
-import {useNotification} from "../Notification/NotificationProvider";
+import {useNotificationCustom} from "../Notification/NotificationProvider";
+import {useDialogPermanentChange} from "../CriticalOperations/CriticalOperationProvider";
 import {dialogDuration, dialogType} from "../Notification/Notification";
+import i18n from "../../i18n";
 
-function EmailConfirm({t,i18n}) {
-    const dispatch = useNotification();
+function EmailConfirm() {
+    const dispatchNotification = useNotificationCustom();
+    const dispatchCriticalDialog = useDialogPermanentChange();
     const history = useHistory();
     let {code} = useParams();
     const conf = new Configuration()
     const api = new DefaultApi(conf)
 
-    const handleConfirm = () => {
+    const handleConfirmation = () => (
+        dispatchCriticalDialog({
+            callbackOnSave: () => handleSubmit(),
+            callbackOnCancel: () => {}
+        })
+    )
+
+    const handleSubmit = () => {
         api.confirmEmail(code).then((res) => {
-            dispatch({
+            dispatchNotification({
                 dialogType: dialogType.SUCCESS,
                 dialogDuration: dialogDuration.SHORT,
-                message: t('emailConfirm.success.info'),
-                title: t('operationSuccess')
+                message: i18n.t('emailConfirm.success.info'),
+                title: i18n.t('operationSuccess')
             })
             history.push("/login");
         }).catch(err => {
-            dispatch({
+            dispatchNotification({
                 dialogType: dialogType.DANGER,
                 dialogDuration: dialogDuration.SHORT,
-                message: t(err.response.data.message),
-                title: t('operationError')
+                message: i18n.t(err.response.data.message),
+                title: i18n.t('operationError')
             })
         })
     }
@@ -36,18 +46,18 @@ function EmailConfirm({t,i18n}) {
     return (
         <div className="container">
             <BreadCrumb>
-                <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
-                <li className="breadcrumb-item active" aria-current="page">{t('emailConfirm.title')}</li>
+                <li className="breadcrumb-item"><Link to="/">{i18n.t('mainPage')}</Link></li>
+                <li className="breadcrumb-item active" aria-current="page">{i18n.t('emailConfirm.title')}</li>
             </BreadCrumb>
             <div className="floating-box">
                 <form className="form-signin p-0">
-                    <h3 className="mb-4">{t('emailConfirm.title')}</h3>
-                    <span>{t('emailConfirm.info')}</span>
+                    <h3 className="mb-4">{i18n.t('emailConfirm.title')}</h3>
+                    <span>{i18n.t('emailConfirm.info')}</span>
                     <button className="btn btn-lg btn-primary btn-block mt-5"
                             type="button"
-                            onClick={() => handleConfirm()}
+                            onClick={() => handleConfirmation()}
                             style={{backgroundColor: "#7749F8", whiteSpace: 'normal'}}>
-                        {t('emailConfirm.action')}
+                        {i18n.t('emailConfirm.action')}
                     </button>
                 </form>
             </div>

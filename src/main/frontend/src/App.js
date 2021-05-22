@@ -17,7 +17,7 @@ import NotFound from "./components/errorPages/NotFound";
 import Forbidden from "./components/errorPages/Forbidden";
 import InternalError from "./components/errorPages/InternalError";
 import UserInfo from './components/UserInfo';
-import EmailConfirm from "./components/emailConfirmation/EmailConfirm";
+import EmailConfirm from "./components/EmailConfirmation/EmailConfirm";
 import NotificationProvider from "./components/Notification/NotificationProvider";
 import CriticalOperationProvider from "./components/CriticalOperations/CriticalOperationProvider";
 

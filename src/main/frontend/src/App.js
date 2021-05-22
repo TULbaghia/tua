@@ -40,6 +40,7 @@ function App() {
             setRoles(roles);
             setCurrentRole(roles[0])
             setUsername(login)
+            localStorage.setItem('username', login)
         }
     }, [token])
 

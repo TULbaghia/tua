@@ -1,16 +1,14 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "./LoginContext";
-import styles from '../css/floatingbox.css';
 import { withNamespaces } from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
-import jwt_decode from "jwt-decode";
 
 function Login(props) {
-    const {t,i18n} = props
+    const {t} = props
     const history = useHistory();
-    const { token, setToken } = useLocale();
+    const { setToken } = useLocale();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
 
@@ -37,8 +35,6 @@ function Login(props) {
                 const tokenBearer = 'Bearer ' + token;
                 setToken(tokenBearer);
                 localStorage.setItem('token', tokenBearer)
-                // czy to mądre ? todo: xd
-                localStorage.setItem('username', jwt_decode(token)['sub'])
             })
             .catch(err => {
                 console.log(err.message)

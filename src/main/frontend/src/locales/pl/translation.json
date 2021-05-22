@@ -60,6 +60,7 @@
     "userDetailsContactNumber": "Numer telefonu",
     "userDetailsRoles": "Role",
     "userDetailsEditBtn": "Edytuj Dane",
+    "userDetailsPasswordChangeBtn": "Zmień hasło",
     "operationSuccess": "Operacja zakończona sukcesem",
     "operationError": "Operacja zakończona niepowodzeniem",
 
@@ -75,8 +76,8 @@
     "passwordResetForm.error.match": "Hasła nie są identyczne",
     "passwordResetForm.error.required": "Nowe hasło jest wymagane",
     "passwordResetForm.error.repeated.required": "Powtórzone nowe hasło jest wymagane",
-    "passwordResetForm.success.info": "Hasło zostało zresetowane"
-    "userDetailsPasswordChangeBtn": "Zmień hasło",
+    "passwordResetForm.success.info": "Hasło zostało zresetowane",
+    "exception.account_same_password.account_same_password": "Aktualne hasło oraz nowe hasło muszą się różnić",
 
     "notification.title.danger": "Błąd",
     "notification.title.warning": "Ostrzeżenie",

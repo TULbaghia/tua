@@ -6,19 +6,29 @@ import {Link, useParams} from "react-router-dom";
 import {Form, Formik} from 'formik';
 import FieldComponent from "./FieldComponent";
 import BreadCrumb from "../BreadCrumb";
-import {useNotification} from "../Notification/NotificationProvider";
+import {useNotificationCustom} from "../Notification/NotificationProvider";
+import {useDialogPermanentChange} from "../CriticalOperations/CriticalOperationProvider";
 import {dialogDuration, dialogType} from "../Notification/Notification";
 
 function PasswordResetForm({t, i18n}) {
-    const dispatch = useNotification();
+    const dispatchNotification = useNotificationCustom();
+    const dispatchCriticalDialog = useDialogPermanentChange();
     const history = useHistory();
     let {code} = useParams();
     const conf = new Configuration()
     const api = new DefaultApi(conf)
 
+
+    const handleConfirmation = (values, setSubmitting) => (
+        dispatchCriticalDialog({
+            callbackOnSave: () => handleSubmit(values, setSubmitting),
+            callbackOnCancel: () => setSubmitting(false)
+            })
+    )
+
     const handleSubmit = (values, setSubmitting) => {
         api.resetPassword({password: values.newPassword, resetCode: code}).then((res) => {
-            dispatch({
+            dispatchNotification({
                 dialogType: dialogType.SUCCESS,
                 dialogDuration: dialogDuration.SHORT,
                 message: t('passwordResetForm.success.info'),
@@ -26,7 +36,7 @@ function PasswordResetForm({t, i18n}) {
             })
             history.push("/login");
         }).catch(err => {
-            dispatch({
+            dispatchNotification({
                 dialogType: dialogType.DANGER,
                 dialogDuration: dialogDuration.SHORT,
                 message: t(err.response.data.message),
@@ -67,7 +77,7 @@ function PasswordResetForm({t, i18n}) {
                             }
                             return errors;
                         }}
-                        onSubmit={(values, {setSubmitting}) => handleSubmit(values, setSubmitting)}>
+                        onSubmit={(values, {setSubmitting}) => handleConfirmation(values, setSubmitting)}>
                         {({isSubmitting, handleChange}) => (
                             <Form className={{alignItems: "center"}}>
                                 <FieldComponent name="newPassword" placeholder={t('password')}

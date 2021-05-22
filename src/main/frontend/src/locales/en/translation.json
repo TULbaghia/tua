@@ -77,6 +77,7 @@
     "passwordResetForm.error.required": "New password is required",
     "passwordResetForm.error.repeated.required": "Repeated new password is required",
     "passwordResetForm.success.info": "Password has been reset",
+    "exception.account_same_password.account_same_password": "Current password and new password must different",
 
     "notification.title.danger": "Error",
     "notification.title.warning": "Warning",

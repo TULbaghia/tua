@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     BrowserRouter as Router,
     Route,
@@ -29,9 +29,8 @@ library.add(fab, faSignInAlt, faUserPlus);
 
 function App() {
 
-    const {token, setCurrentRole, setUsername} = useLocale();
+    const {token, currentRole, setCurrentRole, setUsername} = useLocale();
     const [roles, setRoles] = useState();
-    const [login, setLogin] = useState();
 
     useEffect(() => {
         if (token) {
@@ -39,17 +38,27 @@ function App() {
             const roles = decodeJwt['roles'].split(',');
             const login = decodeJwt['sub'];
             setRoles(roles);
-            setLogin(login);
             setCurrentRole(roles[0])
             setUsername(login)
         }
     }, [token])
 
+    const divStyle = () => {
+            switch (currentRole) {
+                case 'ADMIN':
+                    return {backgroundColor: "#EF5DA8"};
+                case 'MANAGER':
+                    return {backgroundColor: "#F178B6"};
+                case 'CLIENT':
+                    return {backgroundColor: "#EFADCE"};
+            }
+        };
+
     return (
         <div className="App">
             <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
                 <div>
-                    <NavigationBar roles={roles} login={login} />
+                    <NavigationBar roles={roles} divStyle={divStyle}/>
                     <Switch>
                         <Route exact path="/" component={Home}/>
                         <Route path="/blog" component={BlogScreen}/>
@@ -64,7 +73,7 @@ function App() {
                         <Route path="/userPage" component={AppUsersPage}/>
                         <Route component={NotFound}/>
                     </Switch>
-                    <Footer roles={roles} login={login} />
+                    <Footer roles={roles} divStyle={divStyle}/>
                 </div>
             </Router>
         </div>

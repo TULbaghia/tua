@@ -8,19 +8,10 @@ export const LoginProvider = ({children}) => {
     const [username, setUsername] = useState('');
 
     useEffect(() => {
-        // getToken().then(res => setToken(res)).then(()=>{
-        //     setToken(localStorage.getItem('currentRole'));
-        //     setToken(localStorage.getItem('username'));
-        // })
         setToken(localStorage.getItem('token'));
         setCurrentRole(localStorage.getItem('currentRole'));
         setUsername(localStorage.getItem('username'));
     }, [])
-
-    const getToken = async () => {
-        const res = await localStorage.getItem('token');
-        return res;
-    }
 
     const values = {
         token,

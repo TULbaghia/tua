@@ -60,5 +60,8 @@
     "userDetailsContactNumber": "Numer telefonu",
     "userDetailsRoles": "Role",
     "userDetailsEditBtn": "Edytuj Dane",
-    "userDetailsPasswordChangeBtn": "Zmień hasło"
+    "userDetailsPasswordChangeBtn": "Zmień hasło",
+    "emailVerification": "Weryfikacja adresu email",
+    "emailVerificationInfo": "Kliknij w przycisk znajdujący się poniżej w celu zweryfikowania adresu email",
+    "emailVerificationAction": "Weryfikuj adres email"
 }

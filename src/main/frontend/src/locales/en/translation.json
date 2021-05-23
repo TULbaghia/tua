@@ -60,7 +60,6 @@
     "userDetailsContactNumber": "Phone number",
     "userDetailsRoles": "Roles",
     "userDetailsEditBtn": "Edit",
-    "userDetailsPasswordChangeBtn": "Change password",
     "userList": "User list",
     "edit": "Edit",
     "change": "Change",
@@ -77,5 +76,7 @@
     "accountBlockSuccess": "User account successfully blocked",
     "accountUnblockSuccess": "Successfully unlocked user account",
     "unlocked": "Unlocked",
-    "active": "Active"
+    "active": "Active",
+    "userDetailsPasswordChangeBtn": "Change password",
+    "signInError": "Login error"
 }

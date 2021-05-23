@@ -71,14 +71,31 @@ function NavigationBar(props) {
             .then((res) => {
                 setToken('');
                 localStorage.removeItem('token')
+                // czy to mądre ? todo: xd
+                localStorage.removeItem('currentRole')
+                localStorage.removeItem('username')
             })
             .catch(err => console.log(err))
     }
 
+    const {currentRole} = useLocale();
+
+    const divStyle = () => {
+        switch (currentRole) {
+            case 'ADMIN':
+                return {backgroundColor: "#EF5DA8"};
+            case 'MANAGER':
+                return {backgroundColor: "#F178B6"};
+            case 'CLIENT':
+                return {backgroundColor: "#EFADCE"};
+        }
+    };
+
     // *** LANDING PAGE ***
     const {isAuthenticated} = props;
     return (
-        <Navbar bg="light" expand="lg" className="main-navbar">
+        // <Navbar bg="light" expand="lg" className="main-navbar">
+        <Navbar expand="lg" className="main-navbar" style={ divStyle() }>
             <Navbar.Brand>
                 <div className="name">{t('animalHotel')}</div>
             </Navbar.Brand>
@@ -171,7 +188,7 @@ function NavigationBar(props) {
     //                         <li>
     //                             <a href="#/action-3" className="item">
     //                                 <LinkContainer to="/">
-    //                                     <Nav.Link>{t('signOut')}</Nav.Link>
+    //                                     <Nav.Link onSelect={handleLogout}>{t('signOut')}</Nav.Link>
     //                                 </LinkContainer>
     //                             </a>
     //                         </li>

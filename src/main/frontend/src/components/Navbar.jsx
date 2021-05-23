@@ -57,7 +57,7 @@ class LanguageSwitcher extends Component {
 function NavigationBar(props) {
     const {t, divStyle} = props
     const history = useHistory();
-    const {token, username, setToken, setCurrentRole, setUsername} = useLocale();
+    const {token, username, setToken, currentRole, setCurrentRole, setUsername} = useLocale();
 
     const handleLogout = () => {
         history.push("/login")
@@ -73,14 +73,11 @@ function NavigationBar(props) {
                 setCurrentRole('');
                 setUsername('');
                 localStorage.removeItem('token')
-                // czy to mądre ? todo: xd
                 localStorage.removeItem('currentRole')
                 localStorage.removeItem('username')
             })
             .catch(err => console.log(err))
     }
-
-    const {currentRole} = useLocale();
 
     return (
         <>

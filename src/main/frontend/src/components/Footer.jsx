@@ -11,8 +11,9 @@ import i18n from '../i18n';
 
 function AccessLevelSwitcher(props) {
 
-    const {setCurrentRole} = useLocale();
+    const {setCurrentRole, token} = useLocale();
     const [levels, setLevels] = useState([]);
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
 
     useEffect(() => {
         if (props.levels) {
@@ -20,14 +21,27 @@ function AccessLevelSwitcher(props) {
         }
     }, [props.levels])
 
-    const handleSelect=(e)=> {
-        console.log(e);
-        setCurrentRole(e);
-        localStorage.setItem('currentRole', e);
-        dispatchNotificationSuccess({message: i18n.t('roleChanged') + i18n.t(e)});
+    const handleSelect=(level)=> {
+        setCurrentRole(level);
+        localStorage.setItem('currentRole', level);
+        dispatchNotificationSuccess({message: i18n.t('roleChanged') + i18n.t(level)});
+        if(level !== 'CLIENT') {
+            handleChangeLevel(level);
+        }
     }
 
-    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
+    const handleChangeLevel = (e) => {
+        const requestOptions = {
+            method: "GET",
+            headers: {
+                Authorization: token,
+            }
+        };
+        fetch('/resources/accounts/changeOwnAccessLevel/' + e, requestOptions)
+            .then((res) => {
+                console.log(e);
+            });
+    }
 
     return (
         <div style={{display: "flex"}}>

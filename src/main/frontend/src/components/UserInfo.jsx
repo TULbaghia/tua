@@ -24,6 +24,10 @@ function UserInfo(props) {
     const [roles, setRoles] = useState("");
 
     React.useEffect(() => {
+        handleDataFetch();
+    }, []);
+
+    const handleDataFetch = () => {
         if (token) {
             getUser().then(res => {
                 setData(res.data);
@@ -55,7 +59,7 @@ function UserInfo(props) {
                 }
             });
         }
-    }, []);
+    }
 
     const getUser = async () => {
         return await api.showAccountInformation({headers: {Authorization: "Bearer " + token}});
@@ -104,6 +108,7 @@ function UserInfo(props) {
                 </table>
                 <div className="main-wrapper-actions-container">
                     <Button className="btn-primary" onClick={event => {history.push("/editOwnAccount")}}>{t("userDetailsEditBtn")}</Button>
+                    <Button className="btn-primary" onClick={event => {handleDataFetch()}}>{t("refresh")}</Button>
                 </div>
             </Container>
         </div>

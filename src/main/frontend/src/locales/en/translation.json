@@ -69,5 +69,6 @@
     "dialog.permanent_change.title": "Permanent data change",
     "dialog.permanent_change.message": "The change you are trying to make permanently modifies the data. \n Are you sure about this?",
     "userDetailsPasswordChangeBtn": "Change password",
-    "signInError": "Login error"
+    "signInError": "Login error",
+    "refresh": "Refresh"
 }

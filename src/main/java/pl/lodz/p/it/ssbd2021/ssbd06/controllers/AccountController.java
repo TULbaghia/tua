@@ -130,7 +130,7 @@ public class AccountController extends AbstractController {
         RolesDto rolesDto = repeat(() -> roleEndpoint.getUserRole(login), roleEndpoint);
         return Response.ok()
                 .entity(rolesDto)
-                .tag(messageSigner.sign(rolesDto))
+                .header("ETag", messageSigner.sign(rolesDto))
                 .build();
     }
 
@@ -147,7 +147,7 @@ public class AccountController extends AbstractController {
         RolesDto rolesDto = repeat(() -> roleEndpoint.getUserRole(), roleEndpoint);
         return Response.ok()
                 .entity(rolesDto)
-                .tag(messageSigner.sign(rolesDto))
+                .header("ETag", messageSigner.sign(rolesDto))
                 .build();
     }
 
@@ -207,7 +207,7 @@ public class AccountController extends AbstractController {
         AccountDto accountDto = repeat(() -> accountEndpoint.getAccount(login), accountEndpoint);
         return Response.ok()
                 .entity(accountDto)
-                .tag(messageSigner.sign(accountDto))
+                .header("ETag", messageSigner.sign(accountDto))
                 .build();
     }
 
@@ -224,7 +224,7 @@ public class AccountController extends AbstractController {
         AccountDto accountDto = repeat(() -> accountEndpoint.getOwnAccountInfo(), accountEndpoint);
         return Response.ok()
                 .entity(accountDto)
-                .tag(messageSigner.sign(accountDto))
+                .header("ETag", messageSigner.sign(accountDto))
                 .build();
     }
 

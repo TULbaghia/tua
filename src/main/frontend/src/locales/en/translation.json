@@ -71,8 +71,14 @@
 
     "dialog.permanent_change.title": "Permanent data change",
     "dialog.permanent_change.message": "The change you are trying to make permanently modifies the data. \n Are you sure about this?",
+
     "userEdit": "Edit user",
-    "changeRoles": "Change roles",
+    "addRoleAdmin": "Add Admin role",
+    "addRoleManager": "Add Manager role",
+    "addRoleClient": "Add Client role",
+    "revokeRoleAdmin": "Revoke Admin role",
+    "revokeRoleManager": "Revoke Manager role",
+    "revokeRoleClient": "Revoke Client role",
     "client": "Client",
     "manager": "Manager",
     "admin": "Admin",
@@ -106,5 +112,6 @@
     "phoneSize": "Invalid contact phone length",
 
     "operationSuccess": "Operation successful",
-    "operationError": "Operation error"
+    "operationError": "Operation error",
+    "refresh": "Refresh"
 }

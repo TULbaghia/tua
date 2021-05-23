@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {useHistory} from "react-router";
+import {useHistory, useLocation} from "react-router";
 import {useLocale} from "./LoginContext";
 import { withNamespaces } from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
@@ -20,8 +20,8 @@ function EditOtherAccount(props) {
     const api = new DefaultApi(conf)
     const {token, setToken} = useLocale();
     const [etag, setETag] = useState();
+    const [etagRole, setETagRole] = useState();
     const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -29,22 +29,94 @@ function EditOtherAccount(props) {
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [contactNumber, setContactNumber] = useState('');
-    const [clientCheckbox, setClientCheckbox] = useState('');
-    const [managerCheckbox, setManagerCheckbox] = useState('');
-    const [adminCheckbox, setAdminCheckbox] = useState('');
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationWarning = useNotificationWarningAndLong();
     const dispatchNotificationDanger = useNotificationDangerAndLong();
     const dispatchDialog = useDialogPermanentChange();
+    const [roles, setRoles] = useState("");
+    const location = useLocation();
+
+    const getRoles = async () => {
+        return await api.getUserRole(location.login, {headers: {Authorization: "Bearer " + token}});
+    }
+
+    const isClient = () => {
+        return roles.includes("CLIENT");
+    }
+
+    const isManager = () => {
+        return roles.includes("MANAGER");
+    }
+
+    const isAdmin = () => {
+        return roles.includes("ADMIN");
+    }
 
     React.useEffect(() => {
+        handleDataFetch();
+    }, []);
+
+    const handleDataFetch = () => {
         if (token) {
             getEtag().then(r => setETag(r));
+            getEtagRole(location.login).then(r => setETagRole(r));
+            getRoles().then(res => {
+                console.log(res.data);
+                let data = "";
+                let i;
+                for(i = 0; i < res.data.rolesGranted.length; i++) {
+                    data += res.data.rolesGranted[i].roleName + ", ";
+                }
+                data = data.slice(0, data.length-2)
+                setRoles(data);
+            }).catch(err => {
+                if (err.response != null) {
+                    if (err.response.status === 403) {
+                        history.push("/errors/forbidden");
+                    } else if (err.response.status === 500) {
+                        history.push("/errors/internal");
+                    }
+                }
+            });
         }
-    }, [token]);
+    }
+
+    // React.useEffect(() => {
+    //     if (token) {
+    //         getEtag().then(r => setETag(r));
+    //         getRoles("admin1").then(res => {
+    //             console.log(res.data);
+    //             let data = "";
+    //             let i;
+    //             for(i = 0; i < res.data.rolesGranted.length; i++) {
+    //                 data += res.data.rolesGranted[i].roleName + ", ";
+    //             }
+    //             data = data.slice(0, data.length-2)
+    //             setRoles(data);
+    //         }).catch(err => {
+    //             if (err.response != null) {
+    //                 if (err.response.status === 403) {
+    //                     history.push("/errors/forbidden");
+    //                 } else if (err.response.status === 500) {
+    //                     history.push("/errors/internal");
+    //                 }
+    //             }
+    //         });
+    //     }
+    // }, [token]);
 
     const getEtag = async () => {
         const response = await fetch("/resources/accounts/user", {
+            method: "GET",
+            headers: {
+                Authorization: token,
+            },
+        });
+        return response.headers.get("ETag");
+    };
+
+    const getEtagRole = async (login) => {
+        const response = await fetch("/" + login + "/role", {
             method: "GET",
             headers: {
                 Authorization: token,
@@ -70,7 +142,7 @@ function EditOtherAccount(props) {
     }
 
     const editEmail = () => {
-        api.editOtherAccountEmail(login, {newEmail: email}, {
+        api.editOtherAccountEmail(location.login, {newEmail: email}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -103,7 +175,7 @@ function EditOtherAccount(props) {
     }
 
     const editPassword = () => {
-        api.changeOtherPassword({login: login, oldPassword: oldPassword, newPassword: newPassword}, {
+        api.changeOtherPassword({login: location.login, oldPassword: oldPassword, newPassword: newPassword}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -138,7 +210,7 @@ function EditOtherAccount(props) {
     }
 
     const editDetails = () => {
-        api.editOtherAccountDetails(login, {firstname: firstname, lastname: lastname, contactNumber: contactNumber}, {
+        api.editOtherAccountDetails(location.login, {firstname: firstname, lastname: lastname, contactNumber: contactNumber}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -152,121 +224,161 @@ function EditOtherAccount(props) {
         });
     };
 
-    const handleRolesSubmit = e => {
+    const handleAddRoleClient = e => {
         e.preventDefault()
         dispatchDialog({
             callbackOnSave: () => {
-                editRoles()
+                addRoleClient()
             },
             callbackOnCancel: () => {
                 console.log("Cancel")
             },
         })
-
     }
 
-    const editRoles = () => {
-        // if (document.getElementById('clientCheckbox').checked) {
-        //     if (clientCheckbox === "CLIENT") {
-        //         api.grantAccessLevel(login, "CLIENT"), {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 Authorization: token,
-        //                 "If-Match": etag
-        //             }
-        //         }.then((res) => {
-        //             dispatchNotificationSuccess({message: i18n.t('roleGrant.success')})
-        //         }).catch(err => {
-        //             dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-        //         });
-        //     } else if (document.getElementById('clientCheckbox').checked == false) {
-        //         if (clientCheckbox === "CLIENT") {
-        //             api.revokeAccessLevel(login, "CLIENT"), {
-        //                 headers: {
-        //                     "Content-Type": "application/json",
-        //                     Authorization: token,
-        //                     "If-Match": etag
-        //                 }
-        //             }.then((res) => {
-        //                 dispatchNotificationSuccess({message: i18n.t('roleRevoke.success')})
-        //             }).catch(err => {
-        //                 dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-        //             });
-        //         }
-        //     }
-        // }
-        // if (document.getElementById('managerCheckbox').checked) {
-        //     if (managerCheckbox === "MANAGER") {
-        //         api.grantAccessLevel(login, "MANAGER"), {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 Authorization: token,
-        //                 "If-Match": etag
-        //             }
-        //         }.then((res) => {
-        //             dispatchNotificationSuccess({message: i18n.t('roleGrant.success')})
-        //         }).catch(err => {
-        //             dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-        //         });
-        //     }
-        // } else if (document.getElementById('managerCheckbox').checked == false) {
-        //     if (managerCheckbox === "MANAGER") {
-        //         api.revokeAccessLevel(login, "MANAGER"), {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 Authorization: token,
-        //                 "If-Match": etag
-        //             }
-        //         }.then((res) => {
-        //             dispatchNotificationSuccess({message: i18n.t('roleRevoke.success')})
-        //         }).catch(err => {
-        //             dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-        //         });
-        //     }
-        // }
-        //
-        // if (document.getElementById('adminCheckbox').checked) {
-        //     if (adminCheckbox === "ADMIN") {
-        //         api.grantAccessLevel(login, "ADMIN"), {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 Authorization: token,
-        //                 "If-Match": etag
-        //             }
-        //         }.then((res) => {
-        //             dispatchNotificationSuccess({message: i18n.t('roleGrant.success')})
-        //         }).catch(err => {
-        //             dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-        //         });
-        //     }
-        // } else if (document.getElementById('adminCheckbox').checked == false) {
-        //     if (adminCheckbox === "ADMIN") {
-        //         api.revokeAccessLevel(login, "ADMIN"), {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 Authorization: token,
-        //                 "If-Match": etag
-        //             }
-        //         }.then((res) => {
-        //             dispatchNotificationSuccess({message: i18n.t('roleRevoke.success')})
-        //         }).catch(err => {
-        //             dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-        //         });
-        //     }
-        // }
+    const handleAddRoleManager = e => {
+        e.preventDefault()
+        dispatchDialog({
+            callbackOnSave: () => {
+                addRoleManager()
+            },
+            callbackOnCancel: () => {
+                console.log("Cancel")
+            },
+        })
     }
 
-    const onChangeClient = () => {
-        setClientCheckbox("CLIENT")
+    const handleAddRoleAdmin = e => {
+        e.preventDefault()
+        dispatchDialog({
+            callbackOnSave: () => {
+                addRoleAdmin()
+            },
+            callbackOnCancel: () => {
+                console.log("Cancel")
+            },
+        })
     }
 
-    const onChangeManager = () => {
-        setManagerCheckbox("MANAGER")
+    const handleRevokeRoleClient = e => {
+        e.preventDefault()
+        dispatchDialog({
+            callbackOnSave: () => {
+                revokeRoleClient()
+            },
+            callbackOnCancel: () => {
+                console.log("Cancel")
+            },
+        })
     }
 
-    const onChangeAdmin = () => {
-        setAdminCheckbox("ADMIN")
+    const handleRevokeRoleManager = e => {
+        e.preventDefault()
+        dispatchDialog({
+            callbackOnSave: () => {
+                revokeRoleManager()
+            },
+            callbackOnCancel: () => {
+                console.log("Cancel")
+            },
+        })
     }
+
+    const handleRevokeRoleAdmin = e => {
+        e.preventDefault()
+        dispatchDialog({
+            callbackOnSave: () => {
+                revokeRoleAdmin()
+            },
+            callbackOnCancel: () => {
+                console.log("Cancel")
+            },
+        })
+    }
+
+    const addRoleClient = () => (
+        api.grantAccessLevel(location.login, "CLIENT", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+                "If-Match": etagRole
+            }
+        }).then(res => {
+            dispatchNotificationSuccess({message: i18n.t('roleGrant.success')})
+        }).catch(err => {
+            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+        })
+    )
+
+    const addRoleManager = () => (
+        api.grantAccessLevel(location.login, "MANAGER", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+                "If-Match": etagRole
+            }
+        }).then((res) => {
+            dispatchNotificationSuccess({message: i18n.t('roleGrant.success')})
+        }).catch(err => {
+            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+        })
+    )
+
+    const addRoleAdmin = () => (
+        api.grantAccessLevel(location.login, "ADMIN", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+                "If-Match": etagRole
+            }
+        }).then((res) => {
+            dispatchNotificationSuccess({message: i18n.t('roleGrant.success')})
+        }).catch(err => {
+            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+        })
+    )
+
+    const revokeRoleClient = () => (
+        api.revokeAccessLevel(location.login, "CLIENT", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+                "If-Match": etagRole
+            }
+        }).then((res) => {
+            dispatchNotificationSuccess({message: i18n.t('roleRevoke.success')})
+        }).catch(err => {
+            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+        })
+    )
+
+    const revokeRoleManager = () => (
+        api.revokeAccessLevel(location.login, "MANAGER", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+                "If-Match": etagRole
+            }
+        }).then((res) => {
+            dispatchNotificationSuccess({message: i18n.t('roleRevoke.success')})
+        }).catch(err => {
+            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+        })
+    )
+
+    const revokeRoleAdmin = () => (
+        api.revokeAccessLevel(location.login, "ADMIN", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+                "If-Match": etagRole
+            }
+        }).then((res) => {
+            dispatchNotificationSuccess({message: i18n.t('roleRevoke.success')})
+        }).catch(err => {
+            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+        })
+    )
 
     return (
         <div className="container">
@@ -303,6 +415,7 @@ function EditOtherAccount(props) {
                         placeholder={i18n.t('oldPassword')}
                         required
                         autoFocus={true}
+                        type="password"
                         onChange={event => setOldPassword(event.target.value)}
                         style={{marginTop: "2rem", width: "90%", display: "inline-block"}}
                     />
@@ -313,6 +426,7 @@ function EditOtherAccount(props) {
                         placeholder={i18n.t('newPassword')}
                         required
                         autoFocus={true}
+                        type="password"
                         onChange={event => setNewPassword(event.target.value)}
                         style={{marginTop: "1rem", width: "90%", display: "inline-block"}}
                     />
@@ -323,6 +437,7 @@ function EditOtherAccount(props) {
                         placeholder={i18n.t('repeatNewPassword')}
                         required
                         autoFocus={true}
+                        type="password"
                         onChange={event => setRepeatedPassword(event.target.value)}
                         style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
                     />
@@ -369,26 +484,49 @@ function EditOtherAccount(props) {
                         {i18n.t('changeDetails')}
                     </button>
                     <div style={{marginBottom: "1rem"}}/>
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="checkbox" id="clientCheckbox" value="CLIENT"
-                               style={{backgroundColor: "#7749F8"}} onClick={onChangeClient}/>
-                        <label className="form-check-label" htmlFor="inlineCheckbox1">{t('client')}</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="checkbox" id="managerCheckbox" value="MANAGER"
-                               style={{backgroundColor: "#7749F8"}} onChange={onChangeManager}/>
-                        <label className="form-check-label" htmlFor="inlineCheckbox2">{t('manager')}</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="checkbox" id="adminCheckbox" value="ADMIN"
-                               style={{backgroundColor: "#7749F8"}} onChange={onChangeAdmin}/>
-                        <label className="form-check-label" htmlFor="inlineCheckbox3">{t('admin')}</label>
-                    </div>
-                    <div style={{marginBottom: "1rem"}}/>
-                    <button className="btn btn-lg btn-primary btn-block" type="submit"
-                            style={{backgroundColor: "#7749F8"}} onClick={handleRolesSubmit}>
-                        {t('changeRoles')}
-                    </button>
+                    {isClient() &&
+                        <button className="btn btn-lg btn-primary btn-block" type="submit"
+                                style={{backgroundColor: "red", marginBottom: "1rem"}}
+                                onClick={handleRevokeRoleClient}>
+                            {t('revokeRoleClient')}
+                        </button>
+                    }
+                    {isManager() &&
+                        <button className="btn btn-lg btn-primary btn-block" type="submit"
+                                style={{backgroundColor: "red", marginBottom: "1rem"}}
+                                onClick={handleRevokeRoleManager}>
+                            {t('revokeRoleManager')}
+                        </button>
+                    }
+                    {isAdmin() &&
+                        <button className="btn btn-lg  btn-primary btn-block" type="submit"
+                                style={{backgroundColor: "red", marginBottom: "1rem"}}
+                                onClick={handleRevokeRoleAdmin}>
+                            {t('revokeRoleAdmin')}
+                        </button>
+                    }
+                    {!isClient() &&
+                        <button className="btn btn-lg btn-primary btn-block" type="submit"
+                                style={{backgroundColor: "green", marginBottom: "1rem"}}
+                                onClick={handleAddRoleClient}>
+                            {t('addRoleClient')}
+                        </button>
+                    }
+                    {!isManager() &&
+                        <button className="btn btn-lg btn-primary btn-block" type="submit"
+                                style={{backgroundColor: "green", marginBottom: "1rem"}}
+                                onClick={handleAddRoleManager}>
+                            {t('addRoleManager')}
+                        </button>
+                    }
+                    {!isAdmin() &&
+                        <button className="btn btn-lg btn-primary btn-block" type="submit"
+                                style={{backgroundColor: "green", marginBottom: "1rem"}}
+                                onClick={handleAddRoleAdmin}>
+                            {t('addRoleAdmin')}
+                        </button>
+                    }
+                    <button className="btn btn-lg btn-primary btn-block" style={{backgroundColor: "#7749F8", marginBottom: "1rem"}} onClick={event => {handleDataFetch()}}>{t("refresh")}</button>
                 </form>
             </div>
         </div>

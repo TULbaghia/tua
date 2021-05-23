@@ -73,7 +73,12 @@
     "dialog.permanent_change.message": "Zmiana, którą próbujesz dokonać trwale modyfikuje dane. \n Czy jesteś tego pewny?",
 
     "userEdit": "Edycja użytkownika",
-    "changeRoles": "Zmień role",
+    "addRoleAdmin": "Przyznaj rolę Admin",
+    "addRoleManager": "Przyznaj rolę Manager",
+    "addRoleClient": "Przyznaj rolę Klient",
+    "revokeRoleAdmin": "Odbierz rolę Admin",
+    "revokeRoleManager": "Odbierz rolę Manager",
+    "revokeRoleClient": "Odbierz rolę Klient",
     "client": "Klient",
     "manager": "Manager",
     "admin": "Admin",
@@ -107,5 +112,6 @@
     "phoneSize": "Nieprawidłowa długość telefonu",
 
     "operationSuccess": "Operacja zakończona sukcesem",
-    "operationError": "Operacja zakończona niepowodzeniem"
+    "operationError": "Operacja zakończona niepowodzeniem",
+    "refresh": "Odśwież"
 }

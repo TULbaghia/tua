@@ -15,7 +15,6 @@ import i18n from '../i18n';
 
 
 function EditOwnAccount() {
-    // const {t, i18n} = props
     const history = useHistory();
     const {token, setToken} = useLocale();
     const [etag, setETag] = useState();
@@ -163,6 +162,7 @@ function EditOwnAccount() {
                     <input
                         id="oldPassword"
                         className="form-control"
+                        type="password"
                         placeholder={i18n.t('oldPassword')}
                         autoFocus={true}
                         onChange={event => setOldPassword(event.target.value)}
@@ -171,6 +171,7 @@ function EditOwnAccount() {
                     <input
                         id="newPassword"
                         className="form-control"
+                        type="password"
                         placeholder={i18n.t('newPassword')}
                         autoFocus={true}
                         onChange={event => setNewPassword(event.target.value)}
@@ -179,6 +180,7 @@ function EditOwnAccount() {
                     <input
                         id="repeatNewPassword"
                         className="form-control"
+                        type="password"
                         placeholder={i18n.t('repeatNewPassword')}
                         autoFocus={true}
                         onChange={event => setRepeatedPassword(event.target.value)}

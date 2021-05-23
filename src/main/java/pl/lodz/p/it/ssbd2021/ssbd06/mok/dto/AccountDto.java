@@ -28,7 +28,7 @@ public class AccountDto implements Signable {
     private boolean enabled;
     private boolean confirmed;
     private Long version;
-    private Date lasSuccessfulLoginDate;
+    private Date lastSuccessfulLoginDate;
     private String lastSuccessfulLoginIpAddress;
     private Date lastFailedLoginDate;
     private String lastFailedLoginIpAddress;

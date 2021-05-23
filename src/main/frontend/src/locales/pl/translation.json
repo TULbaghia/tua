@@ -79,6 +79,11 @@
     "passwordResetForm.success.info": "Hasło zostało zresetowane",
     "exception.account_same_password.account_same_password": "Aktualne hasło oraz nowe hasło muszą się różnić",
 
+    "emailConfirm.title": "Weryfikacja adresu email",
+    "emailConfirm.info": "Kliknij w przycisk znajdujący się poniżej w celu zweryfikowania adresu email",
+    "emailConfirm.action": "Weryfikuj adres email",
+    "emailConfirm.success.info": "Adres email został pomyślnie zweryfikowany",
+
     "notification.title.danger": "Błąd",
     "notification.title.warning": "Ostrzeżenie",
     "notification.title.success": "Sukces",

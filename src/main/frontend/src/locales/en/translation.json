@@ -79,6 +79,11 @@
     "passwordResetForm.success.info": "Password has been reset",
     "exception.account_same_password.account_same_password": "Current password and new password must different",
 
+    "emailConfirm.title": "Email address verification",
+    "emailConfirm.info": "Click the button below to verify your email address",
+    "emailConfirm.action": "Verify email address",
+    "emailConfirm.success.info": "Email has been verified",
+
     "notification.title.danger": "Error",
     "notification.title.warning": "Warning",
     "notification.title.success": "Success",

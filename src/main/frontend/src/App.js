@@ -18,6 +18,7 @@ import Forbidden from "./components/errorPages/Forbidden";
 import InternalError from "./components/errorPages/InternalError";
 import UserInfo from './components/UserInfo';
 import PasswordResetForm from "./components/PasswordReset/PasswordResetForm";
+import EmailConfirm from "./components/EmailConfirmation/EmailConfirm";
 import NotificationProvider from "./components/Notification/NotificationProvider";
 import CriticalOperationProvider from "./components/CriticalOperations/CriticalOperationProvider";
 
@@ -44,6 +45,7 @@ class App extends Component {
                                     <Route path="/confirmedAccount" component={ConfirmedAccount}/>
                                     <Route path="/home" component={UserInfo}/>
                                     <Route path="/reset/password/:code" component={PasswordResetForm}/>
+                                    <Route path="/confirm/email/:code" component={EmailConfirm}/>
                                     <Route component={NotFound}/>
                                 </Switch>
                                 <Footer/>

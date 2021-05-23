@@ -68,5 +68,6 @@
     "dialog.button.cancel": "Anuluj",
     "dialog.button.save": "Zapisz zmiany",
     "dialog.permanent_change.title": "Trwała zmiana danych",
-    "dialog.permanent_change.message": "Zmiana, którą próbujesz dokonać trwale modyfikuje dane. \n Czy jesteś tego pewny?"
+    "dialog.permanent_change.message": "Zmiana, którą próbujesz dokonać trwale modyfikuje dane. \n Czy jesteś tego pewny?",
+    "signInError": "Błąd logowania"
 }

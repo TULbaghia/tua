@@ -143,11 +143,10 @@ public class Config implements Serializable {
         RESET_PASSWORD("password_reset"),
         DELETE_UNCONFIRMED("delete"),
         ACTIVATE_ACCOUNT("activate"),
-        CHANGE_EMAIL("email_change");
+        CHANGE_EMAIL("email_change"),
+        ADMIN_LOGIN("admin_login");
 
         @Getter
         private final String value;
     }
-
-
 }

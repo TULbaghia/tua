@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.auth.endpoints.AuthEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AuthValidationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.JWTGenerator;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,9 @@ import java.util.Date;
 
 @Path("/auth")
 public class AuthController extends AbstractController {
+
+    @Inject
+    private JWTGenerator jwtGenerator;
 
     @Inject
     private AuthEndpointLocal authEndpoint;
@@ -45,6 +49,12 @@ public class AuthController extends AbstractController {
             String token = authEndpoint.login(loginDataDto.getLogin(), loginDataDto.getPassword());
             repeat(() -> accountEndpoint.updateValidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(),
                     Date.from(Instant.now())), accountEndpoint);
+
+            if(jwtGenerator.getCallerGroups(token).contains("ADMIN")) {
+                repeat(() -> accountEndpoint.sendAdminLoginInfo(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr()),
+                        accountEndpoint);
+            }
+
             return Response.accepted()
                     .type("application/json")
                     .entity(token)

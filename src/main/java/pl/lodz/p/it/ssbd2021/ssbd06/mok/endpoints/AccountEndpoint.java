@@ -200,4 +200,18 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     public void changeOwnAccessLevel(AccessLevel accessLevel) {
         log.log(Level.INFO, "User {0} change access level on: {1}", new Object[]{getLogin(), accessLevel.toString()});
     }
+
+    /**
+     * Wysyła email na konto użytkownika z poziomem administracyjnym po zalogowaniu.
+     * Reprezentuje powiadomienie o zalogowaniu na konto administratora.
+     *
+     * @param address adres logiczny z jakiego nastąpiło logowanie na konto z administracyjnym poziomem dostępu.
+     * @param adminLogin login konta administratora.
+     * @throws AppBaseException proces wysyłania powiadomienia zakończył się niepowodzeniem.
+     */
+    @Override
+    @PermitAll
+    public void sendAdminLoginInfo(String adminLogin, String address) throws AppBaseException {
+        accountManager.sendAdminLoginInfo(adminLogin, address);
+    }
 }

@@ -401,4 +401,18 @@ public class AccountManager {
         pendingCode.setUsed(true);
         accountFacade.edit(account);
     }
+
+    /**
+     * Wysyła email na konto użytkownika z poziomem administracyjnym po zalogowaniu.
+     * Reprezentuje powiadomienie o zalogowaniu na konto administratora.
+     *
+     * @param address adres logiczny z jakiego nastąpiło logowanie na konto z administracyjnym poziomem dostępu.
+     * @param adminLogin login konta administratora.
+     * @throws AppBaseException proces wysyłania powiadomienia zakończył się niepowodzeniem.
+     */
+    @PermitAll
+    public void sendAdminLoginInfo(String adminLogin, String address) throws AppBaseException {
+        Account account = accountFacade.findByLogin(adminLogin);
+        emailSender.sendAdminLogin(account, address);
+    }
 }

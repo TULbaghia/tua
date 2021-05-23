@@ -4,18 +4,17 @@ import {useLocale} from "./LoginContext";
 import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
-import jwt_decode from "jwt-decode";
 
 function Login(props) {
-    const {t, i18n} = props
+    const {t} = props
     const history = useHistory();
-    const {token, setToken} = useLocale();
+    const {setToken} = useLocale();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = e => {
         e.preventDefault()
-        history.push("/userpage")
+        history.push("/userPage")
 
         const requestOptions = {
             method: "POST",
@@ -36,7 +35,6 @@ function Login(props) {
                 const tokenBearer = 'Bearer ' + token;
                 setToken(tokenBearer);
                 localStorage.setItem('token', tokenBearer)
-                localStorage.setItem('username', jwt_decode(token)['sub'])
             })
             .catch(err => {
                 console.log(err.message)
@@ -82,9 +80,7 @@ function Login(props) {
                 </form>
             </div>
         </div>
-
     );
-
 }
 
 export default withNamespaces()(Login);

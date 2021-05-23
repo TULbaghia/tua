@@ -1,7 +1,9 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
+import lombok.extern.java.Log;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
@@ -23,8 +25,9 @@ import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 
-
+@Log
 @Stateful
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -190,5 +193,11 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @PermitAll
     public void confirmEmail(String code) throws AppBaseException {
         accountManager.confirmEmail(code);
+    }
+
+    @Override
+    @RolesAllowed("changeAccessLevel")
+    public void changeOwnAccessLevel(AccessLevel accessLevel) {
+        log.log(Level.INFO, "User {0} change access level on: {1}", new Object[]{getLogin(), accessLevel.toString()});
     }
 }

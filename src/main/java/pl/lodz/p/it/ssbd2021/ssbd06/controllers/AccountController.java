@@ -332,4 +332,16 @@ public class AccountController extends AbstractController {
     public void confirmEmail(@NotNull @PenCode @PathParam("code") @Valid String code) throws AppBaseException {
         repeat(() -> accountEndpoint.confirmEmail(code), accountEndpoint);
     }
+
+    /**
+     * Wywoływany w celu zapisania w dzienniku zdarzeń faktu wylogowania użytkownika
+     *
+     * @return kod odpowiedzi HTTP 200
+     */
+    @GET
+    @Path("changeOwnAccessLevel/{accessLevel}")
+    public Response changeOwnAccessLevel(@NotNull @PathParam("accessLevel") AccessLevel accessLevel) {
+        accountEndpoint.changeOwnAccessLevel(accessLevel);
+        return Response.ok().build();
+    }
 }

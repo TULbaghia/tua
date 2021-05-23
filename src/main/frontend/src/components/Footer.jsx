@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Dropdown, DropdownButton} from "react-bootstrap";
 import {withNamespaces} from "react-i18next";
 import userIcon from "../assets/userRole.svg"
@@ -6,16 +6,14 @@ import {useLocale} from "./LoginContext";
 import "../css/Footer.css"
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
-import jwt_decode from "jwt-decode";
+import {useNotificationSuccessAndShort} from "./Notification/NotificationProvider";
+import i18n from '../i18n';
 
 function AccessLevelSwitcher(props) {
 
-    const {t, i18n} = props;
-
-    const {setCurrentRole} = useLocale();
+    const {setCurrentRole, token, currentRole} = useLocale();
     const [levels, setLevels] = useState([]);
-    const [chosen, setChosen] = useState(0);
-
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
 
     useEffect(() => {
         if (props.levels) {
@@ -23,22 +21,38 @@ function AccessLevelSwitcher(props) {
         }
     }, [props.levels])
 
-    const handleSelect=(e)=> {
-        console.log(e);
-        setCurrentRole(e);
-        localStorage.setItem('currentRole', e)
+    const handleSelect=(level)=> {
+        setCurrentRole(level);
+        localStorage.setItem('currentRole', level);
+        dispatchNotificationSuccess({message: i18n.t('roleChanged') + i18n.t(level)});
+        if(level !== 'CLIENT' && level!== currentRole) {
+            handleChangeLevel(level);
+        }
+    }
+
+    const handleChangeLevel = (e) => {
+        const requestOptions = {
+            method: "GET",
+            headers: {
+                Authorization: token,
+            }
+        };
+        fetch('/resources/accounts/changeOwnAccessLevel/' + e, requestOptions)
+            .then((res) => {
+                console.log(e);
+            });
     }
 
     return (
         <div style={{display: "flex"}}>
-            <img src={userIcon} style={{marginRight: "1rem"}}/>
+            <img alt="userIcon" src={userIcon} style={{marginRight: "1rem"}}/>
             <Dropdown onSelect={handleSelect}>
                 <DropdownToggle id="dropdown-basic" key='up' drop='up' className="roleMenu">
-                    {t('roleChange')}
+                    {i18n.t('roleChange')}
                 </DropdownToggle>
                 <DropdownMenu>
                     {levels.map((level) => (
-                        <Dropdown.Item eventKey={level} className="item">{t(level)}</Dropdown.Item>
+                        <Dropdown.Item eventKey={level} className="item">{i18n.t(level)}</Dropdown.Item>
                     ))}
                 </DropdownMenu>
             </Dropdown>
@@ -47,30 +61,14 @@ function AccessLevelSwitcher(props) {
 }
 
 function Footer(props) {
-    const {t, i18n} = props;
-    const {token, setToken} = useLocale();
-    const {roles} = props;
-
-    const {currentRole} = useLocale();
-
-    const divStyle = () => {
-        switch (currentRole) {
-            case 'ADMIN':
-                return {backgroundColor: "#EF5DA8"};
-            case 'MANAGER':
-                return {backgroundColor: "#F178B6"};
-            case 'CLIENT':
-                return {backgroundColor: "#EFADCE"};
-            default:
-                return {backgroundColor: "#7749f8"}
-        }
-    };
+    const {token} = useLocale();
+    const {roles, divStyle} = props;
 
     return (
         <div className="footer" style={ divStyle() }>
             {token !== null && token !== '' ? (
                 <div style={{marginLeft: "10rem", width: "10%"}}>
-                    <AccessLevelSwitcher t={t} levels={roles}/>
+                    <AccessLevelSwitcher levels={roles}/>
                 </div>
             ) : null
             }

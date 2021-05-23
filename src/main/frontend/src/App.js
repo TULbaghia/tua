@@ -17,22 +17,21 @@ import NotFound from "./components/errorPages/NotFound";
 import Forbidden from "./components/errorPages/Forbidden";
 import InternalError from "./components/errorPages/InternalError";
 import UserInfo from './components/UserInfo';
-import PasswordResetForm from "./components/PasswordReset/PasswordResetForm";
-import EmailConfirm from "./components/EmailConfirmation/EmailConfirm";
-import EditOwnAccount from './components/EditOwnAccount';
-import NotificationProvider from "./components/Notification/NotificationProvider";
-import CriticalOperationProvider from "./components/CriticalOperations/CriticalOperationProvider";
 import jwt_decode from "jwt-decode";
 import {useLocale} from "./components/LoginContext";
 import AppUsersPage from "./components/AppUsersPage";
+import NotificationProvider from "./components/Notification/NotificationProvider";
+import CriticalOperationProvider from "./components/CriticalOperations/CriticalOperationProvider";
+import PasswordResetForm from "./components/PasswordReset/PasswordResetForm";
+import EmailConfirm from "./components/EmailConfirmation/EmailConfirm";
+import EditOwnAccount from './components/EditOwnAccount';
 
 library.add(fab, faSignInAlt, faUserPlus);
 
 function App() {
 
-    const {token, setToken} = useLocale();
+    const {token, currentRole, setCurrentRole, setUsername} = useLocale();
     const [roles, setRoles] = useState();
-    const [login, setLogin] = useState();
 
     useEffect(() => {
         if (token) {
@@ -40,9 +39,22 @@ function App() {
             const roles = decodeJwt['roles'].split(',');
             const login = decodeJwt['sub'];
             setRoles(roles);
-            setLogin(login);
+            setCurrentRole(roles[0])
+            setUsername(login)
+            localStorage.setItem('username', login)
         }
     }, [token])
+
+    const divStyle = () => {
+        switch (currentRole) {
+            case 'ADMIN':
+                return {backgroundColor: "#EF5DA8"};
+            case 'MANAGER':
+                return {backgroundColor: "#F178B6"};
+            case 'CLIENT':
+                return {backgroundColor: "#EFADCE"};
+        }
+    };
 
     return (
         <div className="App">
@@ -50,7 +62,7 @@ function App() {
                 <CriticalOperationProvider>
                     <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
                         <div>
-                            <NavigationBar roles={roles} login={login}/>
+                            <NavigationBar roles={roles} divStyle={divStyle}/>
                             <Switch>
                                 <Route exact path="/" component={Home}/>
                                 <Route path="/blog" component={BlogScreen}/>
@@ -61,14 +73,14 @@ function App() {
                                 <Route path="/errors/internal" component={InternalError}/>
                                 <Route path="/login/password-reset" component={PasswordReset}/>
                                 <Route path="/confirmedAccount" component={ConfirmedAccount}/>
-                                <Route path="/home" component={UserInfo}/>
-                                <Route path="/userpage" component={AppUsersPage}/>
+                                <Route path="/myAccount" component={UserInfo}/>
+                                <Route path="/userPage" component={AppUsersPage}/>
                                 <Route path="/editOwnAccount" component={EditOwnAccount}/>
                                 <Route path="/reset/password/:code" component={PasswordResetForm}/>
                                 <Route path="/confirm/email/:code" component={EmailConfirm}/>
                                 <Route component={NotFound}/>
                             </Switch>
-                            <Footer roles={roles} login={login}/>
+                            <Footer roles={roles} divStyle={divStyle}/>
                         </div>
                     </Router>
                 </CriticalOperationProvider>
@@ -76,6 +88,5 @@ function App() {
         </div>
     );
 }
-
 
 export default App;

@@ -4,6 +4,7 @@ import {useLocale} from "./LoginContext";
 import { withNamespaces } from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
+import { api } from "../Api";
 
 function SignUp(props) {
     const {t,i18n} = props
@@ -11,6 +12,26 @@ function SignUp(props) {
     const { token, setToken } = useLocale();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [constactNumber, setConstactNumber] = useState('');
+
+    const handleClick = (e) => {
+        e.preventDefault()
+        api.registerAccount({
+            login: login,
+            email: email,
+            password: password,
+            firstname: firstname,
+            lastname: lastname,
+            constactNumber: constactNumber
+        })
+        .then(res => {
+            console.log("registered")
+        })
+        .catch(err => console.log(err))
+    }
 
 
     return (
@@ -38,7 +59,7 @@ function SignUp(props) {
                         placeholder={t('emailAddress')}
                         required
                         autoFocus={true}
-                        onChange={event => setLogin(event.target.value)}
+                        onChange={event => setEmail(event.target.value)}
                         style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
                     />
                     <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
@@ -68,7 +89,7 @@ function SignUp(props) {
                         placeholder={t('name')}
                         required
                         autoFocus={true}
-                        onChange={event => setLogin(event.target.value)}
+                        onChange={event => setFirstname(event.target.value)}
                         style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
                     />
                     <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
@@ -78,7 +99,7 @@ function SignUp(props) {
                         placeholder={t('surname')}
                         required
                         autoFocus={true}
-                        onChange={event => setLogin(event.target.value)}
+                        onChange={event => setLastname(event.target.value)}
                         style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
                     />
                     <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
@@ -88,14 +109,14 @@ function SignUp(props) {
                         placeholder={t('phoneNumber')}
                         required
                         autoFocus={true}
-                        onChange={event => setLogin(event.target.value)}
+                        onChange={event => setConstactNumber(event.target.value)}
                         style={{marginTop: "1rem", marginBottom: "0rem", width: "90%", display: "inline-block"}}
                     />
                     <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
                     <div style={{color: "#7749F8", fontSize: 14, marginBottom: "3rem"}}>
                         {t('obligatoryFields')}
                     </div>
-                    <button className="btn btn-lg btn-primary btn-block" type="submit" style={{backgroundColor: "#7749F8"}}>
+                    <button className="btn btn-lg btn-primary btn-block" style={{backgroundColor: "#7749F8"}} onClick={handleClick}>
                         {t('signUp')}
                     </button>
                 </form>

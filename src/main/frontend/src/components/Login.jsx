@@ -10,7 +10,7 @@ import "../css/Login.css"
 function Login(props) {
     const {t,i18n} = props
     const history = useHistory();
-    const { token, setToken } = useLocale();
+    const { token, setToken, saveToken } = useLocale();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
@@ -23,7 +23,7 @@ function Login(props) {
                 login: login,
                 password: password
             })
-            setToken(res.data)
+            saveToken(res.data)
             history.push("/home")
         }catch(ex){
             console.log(ex);

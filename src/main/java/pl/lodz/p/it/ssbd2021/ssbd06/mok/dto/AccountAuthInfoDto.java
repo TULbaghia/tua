@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 public class AccountAuthInfoDto {
     private String login;
-    private Date lasSuccessfulLoginDate;
+    private Date lastSuccessfulLoginDate;
     private Date lastFailedLoginDate;
     private String lastSuccessfulLoginIpAddress;
     private String lastFailedLoginIpAddress;

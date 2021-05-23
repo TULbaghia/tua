@@ -34,7 +34,7 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode.PENDING_CODE_CON
         @NamedQuery(name = "PendingCode.findAllByCodeType", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.codeType = :codeType AND p.used = :isUsed"),
         @NamedQuery(name = "PendingCode.findAllAccountsWithUnusedCodes", query = "SELECT p.account FROM PendingCode p WHERE p.codeType = :codeType AND p.creationDate < :date AND p.used = false"),
         @NamedQuery(name = "PendingCode.findUnusedCodeByAccount", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.used = false AND p.codeType = :codeType"),
-        @NamedQuery(name = "PendingCode.findAllUnusedByCodeTypeAndBefore", query = "SELECT p FROM PendingCode p WHERE p.used = false AND p.codeType = :type AND p.creationDate < :date")
+        @NamedQuery(name = "PendingCode.findAllUnusedByCodeTypeAndBeforeAndAttemptCount", query = "SELECT p FROM PendingCode p WHERE p.used = false AND p.codeType = :type AND p.creationDate < :date AND p.sendAttempt = :attempts")
 }
 )
 @NoArgsConstructor
@@ -65,6 +65,13 @@ public class PendingCode extends AbstractEntity implements Serializable {
     @Basic(optional = false)
     @Column(name = "used", nullable = false)
     private boolean used;
+
+    @Getter
+    @Setter
+    @NotNull
+    @Basic(optional = false)
+    @Column(name = "send_attempt", nullable = false)
+    private int sendAttempt = 0;
 
     @Getter
     @Setter

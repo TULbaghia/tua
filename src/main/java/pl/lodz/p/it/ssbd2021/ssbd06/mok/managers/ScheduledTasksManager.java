@@ -13,10 +13,12 @@ import javax.annotation.Resource;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.servlet.ServletContext;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Startup
 @Singleton
@@ -27,12 +29,13 @@ public class ScheduledTasksManager {
     TimerService timerService;
     @Inject
     private AccountFacade accountFacade;
-
     @Inject
     private PendingCodeFacade pendingCodeFacade;
-
     @Inject
     private EmailSender emailSender;
+    @Inject
+    private ServletContext context;
+
 
     /**
      * Usuwa konta użytkowników nie potwierdzonych
@@ -43,41 +46,28 @@ public class ScheduledTasksManager {
     @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private void deleteUnverifiedAccounts(Timer time) throws AppBaseException {
+        int confirmationCodeExpirationTime = Integer
+                .parseInt(context.getInitParameter("accountConfirmationCodeExpirationTime"));
+        int confirmationCodeHalfOfExpirationTime = confirmationCodeExpirationTime / 2;
 
-        // usuwanie wszystkich niepotwierdzonych kont, które wygasły
-        Calendar calendar1 = Calendar.getInstance();
-        calendar1.add(Calendar.HOUR, -24);
-        Date expirationDateToRepeatEmail = calendar1.getTime();
-        List<Account> unverifiedAccountsToRemove = accountFacade.findUnverifiedBefore(expirationDateToRepeatEmail);
+        Instant expirationInstant = Instant.now().minus(confirmationCodeExpirationTime, ChronoUnit.HOURS);
+        Date expirationDate = Date.from(expirationInstant);
+
+        List<Account> unverifiedAccountsToRemove = accountFacade.findUnverifiedBefore(expirationDate);
         for (Account account : unverifiedAccountsToRemove) {
             accountFacade.remove(account);
+            emailSender.sendDeleteUnconfirmedAccountEmail(account);
         }
 
-        // oznaczenie wygasłych kodów aktywacyjnych
-        Calendar calendar2 = Calendar.getInstance();
-        calendar2.add(Calendar.HOUR, -12);
-        Date codeExpirationDate = calendar2.getTime();
-        List<PendingCode> unusedCodes = pendingCodeFacade.findAllUnusedByCodeTypeAndBefore(CodeType.ACCOUNT_ACTIVATION, codeExpirationDate);
+        // ponowne wysłanie kodów aktywacyjnych
+        Instant halfExpirationInstant = Instant.now().minus(confirmationCodeHalfOfExpirationTime, ChronoUnit.HOURS);
+        Date halfExpirationDate = Date.from(halfExpirationInstant);
+        List<PendingCode> unusedCodes = pendingCodeFacade.findAllUnusedByCodeTypeAndBeforeAndAttemptCount(CodeType.ACCOUNT_ACTIVATION, halfExpirationDate, 0);
         for (PendingCode code : unusedCodes) {
-            pendingCodeFacade.remove(code);
+            code.setSendAttempt(code.getSendAttempt() + 1);
+            pendingCodeFacade.edit(code);
+            emailSender.sendActivationEmail(code.getAccount(), code.getCode());
         }
-
-        // ponowne wysłanie maili na konta niepotwierdzonych użytkowników
-        List<Account> accountList = accountFacade.findUnverifiedBetweenDate(expirationDateToRepeatEmail, codeExpirationDate);
-        for (Account account : accountList) {
-            account.getPendingCodeList().add(new PendingCode(UUID.randomUUID().toString(), false, CodeType.ACCOUNT_ACTIVATION, account, account));
-//            sendRepeatedEmailNotification(account);
-        }
-    }
-
-    /**
-     * Wysyła powtórnie mail aktywacyjny do użytkownika
-     *
-     * @throws AppBaseException gdy dane konto nie istnieje lub jest zweryfikowane
-     */
-    public void sendRepeatedEmailNotification(Account account) throws AppBaseException {
-        var activationCode = pendingCodeFacade.findNotUsedByAccount(account);
-        emailSender.sendActivationEmail(account, activationCode.getCode());
     }
 
     /**

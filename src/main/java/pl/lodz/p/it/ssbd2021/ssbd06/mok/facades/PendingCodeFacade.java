@@ -135,11 +135,12 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         }
     }
 
-    public List<PendingCode> findAllUnusedByCodeTypeAndBefore(CodeType codeType, Date dateBefore) throws AppBaseException {
+    public List<PendingCode> findAllUnusedByCodeTypeAndBeforeAndAttemptCount(CodeType codeType, Date dateBefore, int attempts) throws AppBaseException {
         try {
-            TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findAllUnusedByCodeTypeAndBefore", PendingCode.class);
+            TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findAllUnusedByCodeTypeAndBeforeAndAttemptCount", PendingCode.class);
             query.setParameter("type", codeType);
             query.setParameter("date", dateBefore);
+            query.setParameter("attempts", attempts);
             return query.getResultList();
         } catch (NoResultException e) {
             throw NotFoundException.pendingCodeNotFound(e);

@@ -15,6 +15,7 @@
                       value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.cache.use_second_level_cache" value="false"/>
+            <property name="hibernate.jdbc.time_zone" value="UTC"/>
         </properties>
     </persistence-unit>
 
@@ -46,6 +47,7 @@
                       value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.cache.use_second_level_cache" value="false"/>
+            <property name="hibernate.jdbc.time_zone" value="UTC"/>
         </properties>
     </persistence-unit>
 
@@ -77,6 +79,7 @@
                       value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.cache.use_second_level_cache" value="false"/>
+            <property name="hibernate.jdbc.time_zone" value="UTC"/>
         </properties>
     </persistence-unit>
 </persistence>

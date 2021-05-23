@@ -4,10 +4,7 @@ import logo from "../images/logo.png"
 import hand from "../images/hand.jpg"
 import cat from "../images/cat.png"
 import {withNamespaces} from "react-i18next";
-import BreadCrumb from "./BreadCrumb";
-import {Link} from "react-router-dom";
 import "../css/Home.css"
-import {DefaultApi, Configuration} from "api-client"
 
 function Home(props) {
     const {t, i18n} = props
@@ -41,60 +38,6 @@ function Home(props) {
             </div>
         </div>
     );
-
-
-    // // *** ADMIN ***
-    // return (
-    //     <div className="Home">
-    //         <BreadCrumb>
-    //             <li className="breadcrumb-item">
-    //                 <Link to="/">
-    //                     <div className="back"> {t('mainPage')} </div>
-    //                 </Link>
-    //             </li>
-    //             <li className="breadcrumb-item active" aria-current="page">{t('adminDashboard')}</li>
-    //         </BreadCrumb>
-    //         <div>
-    //             <div className="greeting">{t('welcome')}, username</div>
-    //         </div>
-    //     </div>
-    // );
-
-
-    // *** MANAGER ***
-    // return (
-    //     <div className="Home">
-    //         <BreadCrumb>
-    //             <li className="breadcrumb-item">
-    //                 <Link to="/">
-    //                     <div className="back"> {t('mainPage')} </div>
-    //                 </Link>
-    //             </li>
-    //             <li className="breadcrumb-item active" aria-current="page">{t('managerDashboard')}</li>
-    //         </BreadCrumb>
-    //         <div>
-    //             <div className="greeting">{t('welcome')}, username</div>
-    //         </div>
-    //     </div>
-    // );
-
-
-    // *** USER ***
-    // return (
-    //     <div className="Home">
-    //         <BreadCrumb>
-    //             <li className="breadcrumb-item">
-    //                 <Link to="/">
-    //                     <div className="back"> {t('mainPage')} </div>
-    //                 </Link>
-    //             </li>
-    //             <li className="breadcrumb-item active" aria-current="page">{t('userDashboard')}</li>
-    //         </BreadCrumb>
-    //         <div>
-    //             <div className="greeting">{t('welcome')}, username</div>
-    //         </div>
-    //     </div>
-    // );
 }
 
 export default withNamespaces()(Home);

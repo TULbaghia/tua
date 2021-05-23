@@ -3,16 +3,16 @@ package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
-import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "rating", indexes = {
@@ -28,7 +28,6 @@ import javax.xml.bind.annotation.XmlRootElement;
         @NamedQuery(name = "Rating.findByHidden", query = "SELECT r FROM Rating r WHERE r.hidden = :hidden"),
         })
 @NoArgsConstructor
-@ToString(callSuper = true)
 public class Rating extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -73,5 +72,12 @@ public class Rating extends AbstractEntity implements Serializable {
 
     public Long getId() {
         return id;
+    }
+	
+	@Override public String toString() {
+        return new ToStringBuilder(this)
+                .append(super.toString())
+                .append("id", id)
+                .toString();
     }
 }

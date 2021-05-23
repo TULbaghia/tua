@@ -69,9 +69,6 @@ public abstract class Role extends AbstractEntity implements Serializable {
         return new ToStringBuilder(this)
                 .append(super.toString())
                 .append("id", id)
-                .append("accessLevel", accessLevel)
-                .append("enabled", enabled)
-                .append("account", account.getLogin())
                 .toString();
     }
 }

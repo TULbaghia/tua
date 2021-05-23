@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.*;
 
@@ -50,7 +50,6 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Account.EMAIL_CONSTRAINT;
                 query = "SELECT a FROM Account a WHERE a.confirmed = false AND a.creationDate < :date")
 })
 @NoArgsConstructor
-@ToString(callSuper = true)
 @Getter
 public class Account extends AbstractEntity implements Serializable {
 
@@ -89,7 +88,6 @@ public class Account extends AbstractEntity implements Serializable {
     @NotNull
     @Password
     @Column(name = "password", nullable = false, length = 64)
-    @ToString.Exclude
     private String password;
 
     @Setter
@@ -187,5 +185,12 @@ public class Account extends AbstractEntity implements Serializable {
     @XmlTransient
     public Set<PendingCode> getPendingCodeList() {
         return pendingCodeList;
+    }
+
+    @Override public String toString() {
+        return new ToStringBuilder(this)
+                .append(super.toString())
+                .append("id", id)
+                .toString();
     }
 }

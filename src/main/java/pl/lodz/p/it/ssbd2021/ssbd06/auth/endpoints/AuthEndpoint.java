@@ -41,9 +41,6 @@ public class AuthEndpoint extends AbstractEndpoint implements AuthEndpointLocal 
         }
     }
 
-    /**
-     * Zapisuje w dzienniku zdarzeń fakt wylogowanie użytkownika
-     */
     @Override
     @RolesAllowed("logoutUser")
     public void logout() {

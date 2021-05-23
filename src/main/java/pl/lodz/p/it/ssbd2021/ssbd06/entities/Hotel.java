@@ -96,12 +96,6 @@ public class Hotel extends AbstractEntity implements Serializable {
         return new ToStringBuilder(this)
                 .append(super.toString())
                 .append("id", id)
-                .append("name", name)
-                .append("rating", rating)
-                .append("address", address)
-                .append("boxList", boxList)
-                .append("managerDataList", managerDataList)
-                .append("city", city.getName())
                 .toString();
     }
 

@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
@@ -188,4 +189,10 @@ public interface AccountEndpointLocal extends CallingClass {
      */
     @PermitAll
     void confirmEmail(String code) throws AppBaseException;
+
+    /**
+     * Zapisuje w dzienniku zdarzeń fakt zmiany poziomu dostępu przez użytkownika
+     */
+    @RolesAllowed("changeAccessLevel")
+    void changeOwnAccessLevel(AccessLevel accessLevel);
 }

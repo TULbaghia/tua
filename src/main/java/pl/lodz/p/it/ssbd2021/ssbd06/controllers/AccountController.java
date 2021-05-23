@@ -131,7 +131,7 @@ public class AccountController extends AbstractController {
         RolesDto rolesDto = repeat(() -> roleEndpoint.getUserRole(login), roleEndpoint);
         return Response.ok()
                 .entity(rolesDto)
-                .tag(messageSigner.sign(rolesDto))
+                .header("ETag", messageSigner.sign(rolesDto))
                 .build();
     }
 
@@ -148,7 +148,7 @@ public class AccountController extends AbstractController {
         RolesDto rolesDto = repeat(() -> roleEndpoint.getUserRole(), roleEndpoint);
         return Response.ok()
                 .entity(rolesDto)
-                .tag(messageSigner.sign(rolesDto))
+                .header("ETag", messageSigner.sign(rolesDto))
                 .build();
     }
 
@@ -208,7 +208,7 @@ public class AccountController extends AbstractController {
         AccountDto accountDto = repeat(() -> accountEndpoint.getAccount(login), accountEndpoint);
         return Response.ok()
                 .entity(accountDto)
-                .tag(messageSigner.sign(accountDto))
+                .header("ETag", messageSigner.sign(accountDto))
                 .build();
     }
 
@@ -225,7 +225,7 @@ public class AccountController extends AbstractController {
         AccountDto accountDto = repeat(() -> accountEndpoint.getOwnAccountInfo(), accountEndpoint);
         return Response.ok()
                 .entity(accountDto)
-                .tag(messageSigner.sign(accountDto))
+                .header("ETag", messageSigner.sign(accountDto))
                 .build();
     }
 
@@ -332,5 +332,17 @@ public class AccountController extends AbstractController {
     @Path("/user/confirm/email/{code}")
     public void confirmEmail(@NotNull @PenCode @PathParam("code") @Valid String code) throws AppBaseException {
         repeat(() -> accountEndpoint.confirmEmail(code), accountEndpoint);
+    }
+
+    /**
+     * Wywoływany w celu zapisania w dzienniku zdarzeń faktu wylogowania użytkownika
+     *
+     * @return kod odpowiedzi HTTP 200
+     */
+    @GET
+    @Path("changeOwnAccessLevel/{accessLevel}")
+    public Response changeOwnAccessLevel(@NotNull @PathParam("accessLevel") AccessLevel accessLevel) {
+        accountEndpoint.changeOwnAccessLevel(accessLevel);
+        return Response.ok().build();
     }
 }

@@ -1,45 +1,34 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "./LoginContext";
-import styles from '../css/floatingbox.css';
-import { withNamespaces } from 'react-i18next';
+import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
+import {api} from "../Api";
+import "../css/Login.css"
 
 function Login(props) {
-    const {t,i18n} = props
+    const {t} = props
     const history = useHistory();
-    const { token, setToken } = useLocale();
+    const {saveToken} = useLocale();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
 
-    const handleLogin = e => {
+    const handleLogin = async e => {
         e.preventDefault()
-        history.push("/")
-
-        const requestOptions = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ login: login, password: password }),
-        };
-
-        fetch('/resources/auth/auth', requestOptions)
-            .then((res) => {
-                if(res.status !== 202) {
-                    throw Error('Invalid credentials')
-                }
-                return res.text()
+        try {
+            setError(false)
+            const res = await api.login({
+                login: login,
+                password: password
             })
-            .then((token) => {
-                const tokenBearer = 'Bearer ' + token;
-                setToken(tokenBearer);
-                localStorage.setItem('token', tokenBearer)
-            })
-            .catch(err => {
-                console.log(err.message)
-            })
+            saveToken("Bearer " + res.data)
+            history.push("/userPage")
+        } catch (ex) {
+            console.log(ex);
+            setError(true);
+        }
     }
 
     return (
@@ -51,6 +40,7 @@ function Login(props) {
             <div className="floating-box">
                 <form className="form-signin" onSubmit={handleLogin}>
                     <h1 className="h3">{t('logging')}</h1>
+                    {error && <span className="login-error-span">{t('signInError')}</span>}
                     <input
                         id="inputLogin"
                         className="form-control"
@@ -74,15 +64,14 @@ function Login(props) {
                     <button className="btn btn-lg btn-primary btn-block" type="submit" style={{backgroundColor: "#7749F8"}}>
                         {t('signIn')}
                     </button>
-                    <button className="btn btn-lg btn-primary btn-block" type="button" onClick={() => history.push("/login/password-reset")} style={{backgroundColor: "#7749F8"}}>
+                    <button className="btn btn-lg btn-primary btn-block" type="button"
+                            onClick={() => history.push("/login/password-reset")} style={{backgroundColor: "#7749F8"}}>
                         {t('passwordReset')}
                     </button>
                 </form>
             </div>
         </div>
-
     );
-
 }
 
 export default withNamespaces()(Login);

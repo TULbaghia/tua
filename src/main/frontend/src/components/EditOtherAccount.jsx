@@ -4,7 +4,6 @@ import {useLocale} from "./LoginContext";
 import { withNamespaces } from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
-import { api } from "../Api";
 import {
     useNotificationDangerAndLong,
     useNotificationSuccessAndShort,
@@ -80,30 +79,6 @@ function EditOtherAccount(props) {
             });
         }
     }
-
-    // React.useEffect(() => {
-    //     if (token) {
-    //         getEtag().then(r => setETag(r));
-    //         getRoles("admin1").then(res => {
-    //             console.log(res.data);
-    //             let data = "";
-    //             let i;
-    //             for(i = 0; i < res.data.rolesGranted.length; i++) {
-    //                 data += res.data.rolesGranted[i].roleName + ", ";
-    //             }
-    //             data = data.slice(0, data.length-2)
-    //             setRoles(data);
-    //         }).catch(err => {
-    //             if (err.response != null) {
-    //                 if (err.response.status === 403) {
-    //                     history.push("/errors/forbidden");
-    //                 } else if (err.response.status === 500) {
-    //                     history.push("/errors/internal");
-    //                 }
-    //             }
-    //         });
-    //     }
-    // }, [token]);
 
     const getEtag = async () => {
         const response = await fetch("/resources/accounts/user", {

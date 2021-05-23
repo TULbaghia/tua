@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
 import {Button, Form, FormCheck} from "react-bootstrap";
-import {getToken} from "../store/authentication";
+import { useLocale } from "./LoginContext";
 import {api} from "../Api";
 import {useDialogPermanentChange} from "./CriticalOperations/CriticalOperationProvider";
 import {useNotificationDangerAndLong, useNotificationSuccessAndShort} from "./Notification/NotificationProvider";
@@ -13,6 +13,8 @@ import {useHistory} from "react-router";
 function UserList(props) {
     const {t,i18n} = props
     const history = useHistory()
+    const {token, setToken} = useLocale();
+
     const [data, setData] = useState([
         {
             login: "",
@@ -114,7 +116,7 @@ function UserList(props) {
     ];
 
     useEffect(() => {
-        if(getToken()) {
+        if(token) {
             getAllAccounts().then(r => {
                 console.log(r);
                 setData(r.data);
@@ -132,11 +134,11 @@ function UserList(props) {
     }, []);
 
     const getAllAccounts = async () => {
-        return await api.getAllAccountsList({headers: {Authorization: "Bearer " + getToken().data}})
+        return await api.getAllAccountsList({headers: {Authorization: "Bearer " + token}})
     }
 
     const blockAccount = (login) => {
-        api.blockAccount(login, {headers: {Authorization: "Bearer " + getToken().data}}).then(res => {
+        api.blockAccount(login, {headers: {Authorization: "Bearer " + token}}).then(res => {
             dispatchNotificationSuccess({message: i18n.t('accountBlockSuccess')})
         }).catch(err => {
             if(err.response != null) {
@@ -151,7 +153,7 @@ function UserList(props) {
     }
 
     const unblockAccount = (login) => {
-        api.unblockAccount(login, {headers: {Authorization: "Bearer " + getToken().data}}).then(res => {
+        api.unblockAccount(login, {headers: {Authorization: "Bearer " + token}}).then(res => {
             dispatchNotificationSuccess({message: i18n.t('accountUnblockSuccess')})
         }).catch(err => {
             if(err.response != null) {

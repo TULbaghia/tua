@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^12.1.10",
     "api-client": "file:../api-client",
     "bootstrap": "^4.6.0",
+    "formik": "^2.2.7",
     "i18next": "^20.2.4",
     "i18next-browser-languagedetector": "^6.1.1",
     "node-sass": "^6.0.0",

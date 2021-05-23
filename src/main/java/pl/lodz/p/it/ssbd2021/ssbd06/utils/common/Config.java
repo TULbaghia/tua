@@ -8,7 +8,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.i18n.I18n;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -44,6 +43,10 @@ public class Config implements Serializable {
     private static final String MAIL_HOST = "mail.host";
     private static final String MAIL_PORT = "mail.port";
     private static final String MAIL_PASSWORD = "mail.password";
+    private static final String MAIL_URI = "mail.uri";
+    private static final String MAIL_ENDPOINT_PASSWORD_RESET = "mail.endpoint.password_reset";
+    private static final String MAIL_ENDPOINT_ACTIVATE = "mail.endpoint.activate";
+    private static final String MAIL_ENDPOINT_EMAIL_CHANGE = "mail.endpoint.email_change";
 
     private String get(String key) {
         return properties.getProperty(key);
@@ -91,6 +94,22 @@ public class Config implements Serializable {
 
     public String getMailPassword() {
         return get(MAIL_PASSWORD);
+    }
+
+    public String getMailUriScheme() {
+        return get(MAIL_URI);
+    }
+
+    public String getMailEndpointActivate() {
+        return get(MAIL_ENDPOINT_ACTIVATE);
+    }
+
+    public String getMailEndpointPasswordReset() {
+        return get(MAIL_ENDPOINT_PASSWORD_RESET);
+    }
+
+    public String getMailEndpointEmailChange() {
+        return get(MAIL_ENDPOINT_EMAIL_CHANGE);
     }
 
     public String getContentForType(String language, Config.MailType type, String... param) {

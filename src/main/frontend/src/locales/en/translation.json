@@ -61,6 +61,23 @@
     "userDetailsRoles": "Roles",
     "userDetailsEditBtn": "Edit",
     "userDetailsPasswordChangeBtn": "Change password",
+    "operationSuccess": "Operation successful",
+    "operationError": "Operation error",
+
+    "error.rest.validation": "Provided data is incorrect",
+    "exception.code.code_used": "Code has already been used",
+    "exception.code.code_invalid": "Code is invalid",
+    "exception.code.code_expired": "Code validity period expired",
+    "exception.account_not_confirmed.account_not_confirmed" : "Account has not been confirmed yet",
+    "exception.account_not_enabled.account_not_enabled" : "Account is disabled",
+
+    "passwordResetForm.error.title": "Reset password",
+    "passwordResetForm.error.length": "Password should contains 8 to 64 digits",
+    "passwordResetForm.error.match": "Passwords do not match",
+    "passwordResetForm.error.required": "New password is required",
+    "passwordResetForm.error.repeated.required": "Repeated new password is required",
+    "passwordResetForm.success.info": "Password has been reset",
+    "exception.account_same_password.account_same_password": "Current password and new password must different",
 
     "notification.title.danger": "Error",
     "notification.title.warning": "Warning",

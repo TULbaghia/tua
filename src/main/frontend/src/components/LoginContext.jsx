@@ -17,13 +17,17 @@ export const LoginProvider = ({children}) => {
         if (expirationDate < new Date()) {
             console.log("token expired")
             localStorage.removeItem("token")
+            localStorage.removeItem("username")
+            localStorage.removeItem("currentRole")
             setToken(null)
+            setUsername('')
+            setCurrentRole('')
         } else {
             setToken(storedToken)
         }
         setCurrentRole(localStorage.getItem('currentRole'));
         setUsername(localStorage.getItem('username'));
-    })
+    }, [])
 
     const saveToken = (value) => {
         setToken(value)

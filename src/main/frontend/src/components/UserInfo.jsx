@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {withNamespaces} from "react-i18next";
 import {Container, Button, Table} from "react-bootstrap";
 import "../css/UserInfo.css";
-import {getToken} from "../store/authentication";
+import { useLocale } from "./LoginContext";
 
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
@@ -12,6 +12,7 @@ import {useHistory} from "react-router";
 function UserInfo(props) {
     const {t, i18n} = props;
     const history = useHistory();
+    const {token, setToken} = useLocale();
     const [data, setData] = useState({
         login: "",
         email: "",
@@ -23,7 +24,7 @@ function UserInfo(props) {
     const [roles, setRoles] = useState("");
 
     React.useEffect(() => {
-        if (getToken()) {
+        if (token) {
             getUser().then(res => {
                 setData(res.data);
             }).catch(err => {
@@ -57,11 +58,11 @@ function UserInfo(props) {
     }, []);
 
     const getUser = async () => {
-        return await api.showAccountInformation({headers: {Authorization: "Bearer " + getToken().data}});
+        return await api.showAccountInformation({headers: {Authorization: "Bearer " + token}});
     }
 
     const getRoles = async () => {
-        return await api.getSelfRole({headers: {Authorization: "Bearer " + getToken().data}});
+        return await api.getSelfRole({headers: {Authorization: "Bearer " + token}});
     }
 
     return (

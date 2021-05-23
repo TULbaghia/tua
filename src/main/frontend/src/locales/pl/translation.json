@@ -60,5 +60,8 @@
     "userDetailsContactNumber": "Numer telefonu",
     "userDetailsRoles": "Role",
     "userDetailsEditBtn": "Edytuj Dane",
-    "userDetailsPasswordChangeBtn": "Zmień hasło"
+    "userDetailsPasswordChangeBtn": "Zmień hasło",
+    "dialog.expiring_token.title": "Wygaśnięcie żetonu",
+    "dialog.expiring_token.message": "Za chwilę twój żeton wygaśnie. Jeśli chcesz nadal korzystać z aplikacji ",
+    "dialog.expiring_token.refresh": "kliknij tutaj aby go odświeżyć"
 }

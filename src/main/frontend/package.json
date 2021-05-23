@@ -12,9 +12,12 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "api-client": "file:../api-client",
+    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "i18next": "^20.2.4",
     "i18next-browser-languagedetector": "^6.1.1",
+    "jwt-decode": "^3.1.2",
+    "node-sass": "^6.0.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",
@@ -48,5 +51,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "reactjs-popup": "^2.0.4",
+    "uuid": "^8.3.2"
   }
 }

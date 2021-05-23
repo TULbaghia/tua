@@ -21,6 +21,9 @@ import NotFound from "./components/errorPages/NotFound";
 import Forbidden from "./components/errorPages/Forbidden";
 import InternalError from "./components/errorPages/InternalError";
 import UserInfo from './components/UserInfo';
+import NotificationProvider from "./components/Notification/NotificationProvider";
+import CriticalOperationProvider from "./components/CriticalOperations/CriticalOperationProvider";
+import {LoginProvider} from "./components/LoginContext";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -28,25 +31,31 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
-                    <div>
-                        <NavigationBar />
-                        <Switch>
-                            <Route exact path="/" component={Home}/>
-                            <Route path="/blog" component={BlogScreen}/>
-                            <Route exact path="/login" component={Login}/>
-                            <Route path="/signUp" component={SignUp}/>
-                            <Route path="/pong" component={PingPong}/>
-                            <Route path="/errors/forbidden" component={Forbidden}/>
-                            <Route path="/errors/internal" component={InternalError}/>
-                            <Route path="/login/password-reset" component={PasswordReset}/>
-                            <Route path="/confirmedAccount" component={ConfirmedAccount} />
-                            <Route path="/home" component={UserInfo}/>
-                            <Route component={NotFound}/>
-                        </Switch>
-                        <Footer />
-                    </div>
-                </Router>
+                <NotificationProvider>
+                    <LoginProvider>
+                        <CriticalOperationProvider>
+                            <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
+                                <div>
+                                    <NavigationBar />
+                                    <Switch>
+                                        <Route exact path="/" component={Home}/>
+                                        <Route path="/blog" component={BlogScreen}/>
+                                        <Route exact path="/login" component={Login}/>
+                                        <Route path="/signUp" component={SignUp}/>
+                                        <Route path="/pong" component={PingPong}/>
+                                        <Route path="/errors/forbidden" component={Forbidden}/>
+                                        <Route path="/errors/internal" component={InternalError}/>
+                                        <Route path="/login/password-reset" component={PasswordReset}/>
+                                        <Route path="/confirmedAccount" component={ConfirmedAccount} />
+                                        <Route path="/home" component={UserInfo}/>
+                                        <Route component={NotFound}/>
+                                    </Switch>
+                                    <Footer />
+                                </div>
+                            </Router>
+                        </CriticalOperationProvider>
+                    </LoginProvider>
+                </NotificationProvider>
             </div>
         );
     }

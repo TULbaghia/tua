@@ -5,12 +5,15 @@ import "./i18n";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { LoginProvider } from "./components/LoginContext";
+import NotificationProvider from "./components/Notification/NotificationProvider";
 
 ReactDOM.render(
   <React.StrictMode>
-    <LoginProvider>
-      <App />
-    </LoginProvider>
+    <NotificationProvider>
+        <LoginProvider>
+            <App />
+        </LoginProvider>
+    </NotificationProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

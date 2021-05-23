@@ -6,8 +6,6 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 import {fab} from "@fortawesome/free-brands-svg-icons";
 import {faSignInAlt, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import Home from "./components/Home";
-import BlogScreen from "./components/Blog";
-import PingPong from "./components/PingPong";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
@@ -65,19 +63,17 @@ function App() {
                             <NavigationBar roles={roles} divStyle={divStyle}/>
                             <Switch>
                                 <Route exact path="/" component={Home}/>
-                                <Route path="/blog" component={BlogScreen}/>
                                 <Route exact path="/login" component={Login}/>
-                                <Route path="/signUp" component={SignUp}/>
-                                <Route path="/pong" component={PingPong}/>
-                                <Route path="/errors/forbidden" component={Forbidden}/>
-                                <Route path="/errors/internal" component={InternalError}/>
-                                <Route path="/login/password-reset" component={PasswordReset}/>
-                                <Route path="/confirmedAccount" component={ConfirmedAccount}/>
-                                <Route path="/myAccount" component={UserInfo}/>
-                                <Route path="/userPage" component={AppUsersPage}/>
-                                <Route path="/editOwnAccount" component={EditOwnAccount}/>
-                                <Route path="/reset/password/:code" component={PasswordResetForm}/>
-                                <Route path="/confirm/email/:code" component={EmailConfirm}/>
+                                <Route exact path="/signUp" component={SignUp}/>
+                                <Route exact path="/errors/forbidden" component={Forbidden}/>
+                                <Route exact path="/errors/internal" component={InternalError}/>
+                                <Route exact path="/login/password-reset" component={PasswordReset}/>
+                                <Route exact path="/confirmedAccount" component={ConfirmedAccount}/>
+                                <Route exact path="/myAccount" component={UserInfo}/>
+                                <Route exact path="/userPage" component={AppUsersPage}/>
+                                <Route exact path="/editOwnAccount" component={EditOwnAccount}/>
+                                <Route exact path="/reset/password/:code" component={PasswordResetForm}/>
+                                <Route exact path="/confirm/email/:code" component={EmailConfirm}/>
                                 <Route component={NotFound}/>
                             </Switch>
                             <Footer roles={roles} divStyle={divStyle}/>

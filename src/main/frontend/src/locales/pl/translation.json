@@ -60,6 +60,11 @@
     "userDetailsContactNumber": "Numer telefonu",
     "userDetailsRoles": "Role",
     "userDetailsEditBtn": "Edytuj Dane",
+
+    "form.validation.field.min_size": "Zbyt krótkie dane",
+    "form.validation.field.max_size": "Zbyt długie dane",
+    "form.validation.field.pattern": "Dane wejściowe nie pasują do wzorca",
+    "form.validation.field.not_allowed": "Dane wejściowe nie odpowiadają dozwolonym wartościom",
     "userDetailsPasswordChangeBtn": "Zmień hasło",
     "editProfile": "Edytuj profil",
     "change": "Zmień",

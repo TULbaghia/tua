@@ -62,6 +62,11 @@
     "userDetailsEditBtn": "Edit",
     "userDetailsPasswordChangeBtn": "Change password",
 
+    "form.validation.field.min_size": "Input size too small",
+    "form.validation.field.max_size": "Input size too big",
+    "form.validation.field.pattern": "Input does not match pattern",
+    "form.validation.field.not_allowed": "Input does not match allowed values",
+
     "exception.code.code_used": "Code has already been used",
     "exception.code.code_invalid": "Code is invalid",
     "exception.code.code_expired": "Code validity period expired",

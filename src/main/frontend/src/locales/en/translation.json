@@ -117,5 +117,6 @@
     "invalidEmailSyntax": "Incorrect email syntax",
     "nameSize": "Invalid name length",
     "surnameSize": "Invalid surname length",
-    "phoneSize": "Invalid contact phone length"
+    "phoneSize": "Invalid contact phone length",
+    "signInError": "Login error"
 }

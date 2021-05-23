@@ -4,10 +4,7 @@ import logo from "../images/logo.png"
 import hand from "../images/hand.jpg"
 import cat from "../images/cat.png"
 import {withNamespaces} from "react-i18next";
-import BreadCrumb from "./BreadCrumb";
-import {Link} from "react-router-dom";
 import "../css/Home.css"
-// import {DefaultApi, Configuration} from "api-client"
 
 function Home(props) {
     const {t, i18n} = props

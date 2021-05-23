@@ -49,4 +49,15 @@ public class AuthEndpoint extends AbstractEndpoint implements AuthEndpointLocal 
     public void logout() {
         log.log(Level.INFO, "User {0} was logged out", new Object[]{getLogin()});
     }
+
+    /**
+     * Odświeża token JWT
+     * @param currToken obecny token, wymagający odnowienia
+     * @return nowy token JWT
+     */
+    @Override
+    @RolesAllowed("refreshToken")
+    public String refreshToken(String currToken){
+        return jwtGenerator.updateJWTString(currToken);
+    }
 }

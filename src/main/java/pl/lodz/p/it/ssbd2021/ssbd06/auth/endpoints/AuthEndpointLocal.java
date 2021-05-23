@@ -25,4 +25,12 @@ public interface AuthEndpointLocal extends CallingClass {
      */
     @RolesAllowed("logoutUser")
     void logout();
+
+    /**
+     * Odświeża token JWT
+     * @param currToken obecny token, wymagający odnowienia
+     * @return nowy token JWT
+     */
+    @RolesAllowed("refreshToken")
+    public String refreshToken(String currToken);
 }

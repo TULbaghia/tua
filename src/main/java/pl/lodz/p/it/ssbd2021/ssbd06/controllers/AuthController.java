@@ -67,4 +67,16 @@ public class AuthController extends AbstractController {
         authEndpoint.logout();
         return Response.ok().build();
     }
+
+    /**
+     * Odświeża token JWT
+     * @param token obecny token, wymagający odnowienia
+     * @return nowy token JWT
+     */
+    @POST
+    @Path("/refresh-token")
+    public Response refreshToken(String token){
+        String refreshedToken = authEndpoint.refreshToken(token);
+        return Response.ok().entity(refreshedToken).build();
+    }
 }

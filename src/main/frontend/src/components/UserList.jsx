@@ -91,26 +91,16 @@ function UserList(props) {
             selector: 'edit',
             cell: row => {
               return(
-                  <Button className="btn-sm">{t("edit")}</Button>
+                  <Button className="btn-sm" onClick={event => {
+                      history.push({
+                          pathname: '/editOtherAccount',
+                          state: {
+                              login: row.login,
+                          }
+                      })
+                  }
+                  }>{t("edit")}</Button>
               )
-            },
-        },
-        {
-            name: t('changePassword'),
-            selector: 'changePassword',
-            cell: row => {
-                return(
-                    <Button className="btn-sm">{t("change")}</Button>
-                )
-            },
-        },
-        {
-            name: t('details'),
-            selector: 'details',
-            cell: row => {
-                return(
-                    <Button className="btn-sm">{t("details")}</Button>
-                )
             },
         },
     ];
@@ -171,13 +161,19 @@ function UserList(props) {
         <div className="container">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
+                <li className="breadcrumb-item"><Link to="/">{t('adminDashboard')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('userList')}</li>
             </BreadCrumb>
             <div className="floating-box">
                 <div>
                     <h1 className="float-left">{t('userList')}</h1>
-                    <Button className="btn-secondary float-right m-2">{t("refresh")}</Button>
-                    <Button className="btn-primary float-right m-2">{t("add")}</Button>
+                    <Button className="btn-secondary float-right m-2" onClick={event => {
+                        getAllAccounts().then(res => {
+                            setData(res.data);
+                        }).catch(err => {
+                            dispatchNotificationDanger({message: i18n.t(err.response.data.message)});
+                        })
+                    }}>{t("refresh")}</Button>
                 </div>
                 <DataTable
                     columns={columns}

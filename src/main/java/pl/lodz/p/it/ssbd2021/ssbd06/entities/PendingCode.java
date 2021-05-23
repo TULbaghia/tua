@@ -91,9 +91,6 @@ public class PendingCode extends AbstractEntity implements Serializable {
         return new ToStringBuilder(this)
                 .append(super.toString())
                 .append("id", id)
-                .append("used", used)
-                .append("account", account.getLogin())
-                .append("codeType", codeType)
                 .toString();
     }
 }

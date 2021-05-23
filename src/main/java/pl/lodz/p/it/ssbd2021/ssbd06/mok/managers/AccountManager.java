@@ -26,6 +26,8 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.*;
 import javax.security.enterprise.SecurityContext;
+import javax.servlet.ServletContext;
+import javax.ws.rs.core.Context;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -53,11 +55,19 @@ public class AccountManager {
     @Inject
     private Config codeConfig;
 
+    @Context
+    ServletContext servletContext;
+
     private static int RESET_EXPIRATION_MINUTES;
+
+    private static int INCORRECT_LOGIN_ATTEMPTS_LIMIT;
+
 
     @PostConstruct
     private void init() {
         RESET_EXPIRATION_MINUTES = codeConfig.getResetExpirationMinutes();
+        INCORRECT_LOGIN_ATTEMPTS_LIMIT = Integer
+                .parseInt(servletContext.getInitParameter("incorrectLoginAttemptsLimit"));
     }
 
     /**
@@ -164,7 +174,7 @@ public class AccountManager {
         account.setLastFailedLoginIpAddress(address);
         account.setLastFailedLoginDate(authDate);
         int incorrectLoginAttempts = account.getFailedLoginAttemptsCounter() + 1;
-        if (incorrectLoginAttempts == 3) {
+        if (incorrectLoginAttempts == INCORRECT_LOGIN_ATTEMPTS_LIMIT) {
             account.setEnabled(false);
             emailSender.sendLockAccountEmail(account);
             incorrectLoginAttempts = 0;
@@ -289,7 +299,7 @@ public class AccountManager {
         if (!resetCode.getCodeType().equals(CodeType.PASSWORD_RESET)) {
             throw CodeException.codeInvalid();
         }
-        if(resetCode.isUsed()) throw CodeException.codeUsed();
+        if (resetCode.isUsed()) throw CodeException.codeUsed();
         Date expirationTime = new Date(resetCode.getCreationDate().getTime() + (RESET_EXPIRATION_MINUTES * 60000L));
         Date localTime = Timestamp.valueOf(LocalDateTime.now());
         if (localTime.after(expirationTime)) {
@@ -325,7 +335,7 @@ public class AccountManager {
      * Wysyła żeton na aktualny adres email w celu potwierdzenia procesu zmiany adresu email na nowy.
      * Sprawdza, czy docelowy email nie jest loginem żadnego z aktualnych użytkowników.
      *
-     * @param login login użytkownika, którego email podlega zmianie.
+     * @param login    login użytkownika, którego email podlega zmianie.
      * @param newEmail nowy adres email.
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
@@ -336,7 +346,8 @@ public class AccountManager {
 
         try {
             accountExists = accountFacade.findByEmail(newEmail);
-        } catch (NotFoundException ignore) {}
+        } catch (NotFoundException ignore) {
+        }
 
         if (accountExists != null) {
             throw AccountException.emailExists();
@@ -363,7 +374,7 @@ public class AccountManager {
     /**
      * Tworzy obiekt PendingCode o podanym typie.
      *
-     * @param account konto użytkownika, które ma być właścicielem kodu.
+     * @param account  konto użytkownika, które ma być właścicielem kodu.
      * @param codeType typ kodu.
      */
     private PendingCode createPendingCode(Account account, CodeType codeType) {
@@ -388,7 +399,7 @@ public class AccountManager {
     @PermitAll
     public void confirmEmail(String code) throws AppBaseException {
         PendingCode pendingCode = pendingCodeFacade.findByCode(code);
-        if(pendingCode.getCodeType() != CodeType.EMAIL_CHANGE){
+        if (pendingCode.getCodeType() != CodeType.EMAIL_CHANGE) {
             throw CodeException.codeInvalid();
         }
         if (pendingCode.isUsed()) {

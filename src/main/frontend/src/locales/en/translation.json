@@ -26,9 +26,9 @@
     "pl": "Polish",
     "en": "English",
     "roleChange": "role change",
-    "ADMIN": "Administrator",
-    "MANAGER": "Manager",
-    "CLIENT": "User",
+    "admin": "Administrator",
+    "manager": "Manager",
+    "user": "User",
     "roleChoice": "ROLE CHOICE",
     "roleChanged": "Role: ",
     "cryingCat": "Crying cat",
@@ -87,6 +87,7 @@
     "emailConfirm.action": "Verify email address",
     "emailConfirm.success.info": "Email has been verified",
 
+    "accountInfo": "Account info",
     "notification.title.danger": "Error",
     "notification.title.warning": "Warning",
     "notification.title.success": "Success",
@@ -94,6 +95,8 @@
     "dialog.button.save": "Save changes",
     "dialog.permanent_change.title": "Permanent data change",
     "dialog.permanent_change.message": "The change you are trying to make permanently modifies the data. \n Are you sure about this?",
+    "signInError": "Login error",
+    "refresh": "Refresh",
     "editProfile": "Edit profile",
     "change": "Change",
     "changeEmail": "Change email",
@@ -117,6 +120,5 @@
     "invalidEmailSyntax": "Incorrect email syntax",
     "nameSize": "Invalid name length",
     "surnameSize": "Invalid surname length",
-    "phoneSize": "Invalid contact phone length",
-    "signInError": "Login error"
+    "phoneSize": "Invalid contact phone length"
 }

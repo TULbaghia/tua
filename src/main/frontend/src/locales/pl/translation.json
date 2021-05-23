@@ -32,9 +32,9 @@
     "pl": "Polski",
     "en": "Angielski",
     "roleChange": "zmiana roli",
-    "ADMIN": "Administrator",
-    "MANAGER": "Manager",
-    "CLIENT": "Użytkownik",
+    "admin": "Administrator",
+    "manager": "Manager",
+    "user": "Użytkownik",
     "roleChoice": "WYBÓR ROLI",
     "roleChanged": "Rola: ",
     "landingPageTitle": "Zarezerwuj już dziś!",
@@ -61,12 +61,12 @@
     "userDetailsContactNumber": "Numer telefonu",
     "userDetailsRoles": "Role",
     "userDetailsEditBtn": "Edytuj Dane",
-
     "form.validation.field.min_size": "Zbyt krótkie dane",
     "form.validation.field.max_size": "Zbyt długie dane",
     "form.validation.field.pattern": "Dane wejściowe nie pasują do wzorca",
     "form.validation.field.not_allowed": "Dane wejściowe nie odpowiadają dozwolonym wartościom",
     "userDetailsPasswordChangeBtn": "Zmień hasło",
+    "accountInfo": "Dane konta",
     "editProfile": "Edytuj profil",
     "change": "Zmień",
     "changeEmail": "Zmień email",
@@ -91,13 +91,11 @@
     "nameSize": "Nieprawidłowa długość imienia",
     "surnameSize": "Nieprawidłowa długość nazwiska",
     "phoneSize": "Nieprawidłowa długość telefonu",
-
     "exception.code.code_used": "Kod został wykorzystany",
     "exception.code.code_invalid": "Kod jest niepoprawny",
     "exception.code.code_expired": "Kod stracił ważność",
     "exception.account_not_confirmed.account_not_confirmed" : "Konto nie zostało jeszcze potwierdzone",
     "exception.account_not_enabled.account_not_enabled" : "Konto jest zablokowane",
-
     "passwordResetForm.error.title": "Zresetuj hasło",
     "passwordResetForm.error.length": "Hasło powinno zawierać od 8 do 64 znaków",
     "passwordResetForm.error.match": "Hasła nie są identyczne",
@@ -105,20 +103,17 @@
     "passwordResetForm.error.repeated.required": "Powtórzone nowe hasło jest wymagane",
     "passwordResetForm.success.info": "Hasło zostało zresetowane",
     "exception.account_same_password.account_same_password": "Aktualne hasło oraz nowe hasło muszą się różnić",
-
     "emailConfirm.title": "Weryfikacja adresu email",
     "emailConfirm.info": "Kliknij w przycisk znajdujący się poniżej w celu zweryfikowania adresu email",
     "emailConfirm.action": "Weryfikuj adres email",
     "emailConfirm.success.info": "Adres email został pomyślnie zweryfikowany",
-
     "notification.title.danger": "Błąd",
     "notification.title.warning": "Ostrzeżenie",
     "notification.title.success": "Sukces",
-
     "dialog.button.cancel": "Anuluj",
     "dialog.button.save": "Zapisz zmiany",
-
     "dialog.permanent_change.title": "Trwała zmiana danych",
     "dialog.permanent_change.message": "Zmiana, którą próbujesz dokonać trwale modyfikuje dane. \n Czy jesteś tego pewny?",
-    "signInError": "Błąd logowania"
+    "signInError": "Błąd logowania",
+    "refresh": "Odśwież"
 }

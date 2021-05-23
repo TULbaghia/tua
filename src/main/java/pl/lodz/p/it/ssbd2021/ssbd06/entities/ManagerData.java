@@ -31,7 +31,7 @@ public class ManagerData extends Role implements Serializable {
         ToStringBuilder toStringBuilder = new ToStringBuilder(this)
                 .append(super.toString());
         if (hotel != null) {
-            toStringBuilder.append("hotel", hotel.getName());
+            toStringBuilder.append("hotel", hotel.getId());
         }
         return toStringBuilder.toString();
     }

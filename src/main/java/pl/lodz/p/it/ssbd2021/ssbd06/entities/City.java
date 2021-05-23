@@ -3,17 +3,17 @@ package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import static pl.lodz.p.it.ssbd2021.ssbd06.entities.City.CITY_CONSTRAINT;
 
@@ -30,7 +30,6 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.City.CITY_CONSTRAINT;
     @NamedQuery(name = "City.findById", query = "SELECT c FROM City c WHERE c.id = :id"),
     @NamedQuery(name = "City.findByName", query = "SELECT c FROM City c WHERE c.name = :name")})
 @NoArgsConstructor
-@ToString(callSuper = true)
 public class City extends AbstractEntity implements Serializable {
 
     public static final String CITY_CONSTRAINT = "uk_city_name";
@@ -74,5 +73,12 @@ public class City extends AbstractEntity implements Serializable {
     @XmlTransient
     public Set<Hotel> getHotelList() {
         return hotelList;
+    }
+	
+	@Override public String toString() {
+        return new ToStringBuilder(this)
+                .append(super.toString())
+                .append("id", id)
+                .toString();
     }
 }

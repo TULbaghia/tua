@@ -104,13 +104,6 @@ public class Booking extends AbstractEntity implements Serializable {
         return new ToStringBuilder(this)
                 .append(super.toString())
                 .append("id", id)
-                .append("dateFrom", dateFrom)
-                .append("dateTo", dateTo)
-                .append("price", price)
-                .append("bookingLineList", bookingLineList)
-                .append("rating", rating)
-                .append("account", account.getLogin())
-                .append("status", status)
                 .toString();
     }
 

@@ -20,6 +20,8 @@ function UserInfo(props) {
         contactNumber: "",
     });
 
+    const [roles, setRoles] = useState("");
+
     React.useEffect(() => {
         if (getToken()) {
             getUser().then(res => {
@@ -27,9 +29,27 @@ function UserInfo(props) {
             }).catch(err => {
                 if (err.response != null) {
                     if (err.response.status === 403) {
-                        history.push("/errors/forbidden")
+                        history.push("/errors/forbidden");
                     } else if (err.response.status === 500) {
-                        history.push("/errors/internal")
+                        history.push("/errors/internal");
+                    }
+                }
+            });
+            getRoles().then(res => {
+                console.log(res.data);
+                let data = "";
+                let i;
+                for(i = 0; i < res.data.rolesGranted.length; i++) {
+                    data += res.data.rolesGranted[i].roleName + ", ";
+                }
+                data = data.slice(0, data.length-2)
+                setRoles(data);
+            }).catch(err => {
+                if (err.response != null) {
+                    if (err.response.status === 403) {
+                        history.push("/errors/forbidden");
+                    } else if (err.response.status === 500) {
+                        history.push("/errors/internal");
                     }
                 }
             });
@@ -37,13 +57,12 @@ function UserInfo(props) {
     }, []);
 
     const getUser = async () => {
-        return await api.showAccountInformation({headers: {Authorization: "Bearer " + getToken().data}})
+        return await api.showAccountInformation({headers: {Authorization: "Bearer " + getToken().data}});
     }
 
-    const userRoles = [
-        "MANAGER",
-        "CLIENT"
-    ]
+    const getRoles = async () => {
+        return await api.getSelfRole({headers: {Authorization: "Bearer " + getToken().data}});
+    }
 
     return (
         <div className="container">
@@ -78,7 +97,7 @@ function UserInfo(props) {
                     </tr>
                     <tr>
                         <td>{t("userDetailsRoles")}</td>
-                        <td>{userRoles.join(',')}</td>
+                        <td>{roles}</td>
                     </tr>
                     </tbody>
                 </table>

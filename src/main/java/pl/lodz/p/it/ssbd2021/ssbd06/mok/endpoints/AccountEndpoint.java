@@ -191,4 +191,11 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     public void confirmEmail(String code) throws AppBaseException {
         accountManager.confirmEmail(code);
     }
+
+    @Override
+    @RolesAllowed("editOwnLanguage")
+    public void editOwnLanguage(String language) throws AppBaseException {
+        Account editAccount = accountManager.findByLogin(getLogin());
+        editAccount.setLanguage(language);
+    }
 }

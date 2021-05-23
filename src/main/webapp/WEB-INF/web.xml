@@ -154,6 +154,9 @@
     <security-role>
         <role-name>getAllBoxes</role-name>
     </security-role>
+    <security-role>
+        <role-name>editOwnLanguage</role-name>
+    </security-role>
 
     <security-constraint>
         <web-resource-collection>

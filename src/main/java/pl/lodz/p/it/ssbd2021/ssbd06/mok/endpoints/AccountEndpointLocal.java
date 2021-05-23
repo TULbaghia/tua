@@ -188,4 +188,12 @@ public interface AccountEndpointLocal extends CallingClass {
      */
     @PermitAll
     void confirmEmail(String code) throws AppBaseException;
+
+    /**
+     * Edytuje język przypisany do konta użytkownika
+     * @param language nowy język, który ma być przypisany do konta
+     * @throws AppBaseException proces zmiany języka zakończył się niepowodzeniem
+     */
+    @RolesAllowed("editOwnLanguage")
+    void editOwnLanguage(String language) throws AppBaseException;
 }

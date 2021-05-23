@@ -6,10 +6,16 @@ import cat from "../images/cat.png";
 import { withNamespaces } from "react-i18next";
 import { Container, Button } from "react-bootstrap";
 import "../css/UserInfo.css";
+import { useLocale } from "./LoginContext";
+import {getUserLanguage} from "./Navbar";
 
 function UserInfo(props) {
   const { t, i18n } = props;
   const { isAuthenticated } = props;
+  const {token, setToken} = useLocale();
+
+  console.log(token)
+  getUserLanguage(token, i18n)
 
   const userInfo = {
     login: "mszewc",

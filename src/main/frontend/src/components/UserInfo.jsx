@@ -19,6 +19,7 @@ function UserInfo(props) {
         firstname: "",
         lastname: "",
         contactNumber: "",
+        lastSuccessfulLoginIpAddress: "",
     });
 
     const [roles, setRoles] = useState("");
@@ -30,6 +31,7 @@ function UserInfo(props) {
     const handleDataFetch = () => {
         if (token) {
             getUser().then(res => {
+                console.log(res.data);
                 setData(res.data);
             }).catch(err => {
                 if (err.response != null) {
@@ -103,6 +105,26 @@ function UserInfo(props) {
                     <tr>
                         <td>{t("userDetailsRoles")}</td>
                         <td>{roles}</td>
+                    </tr>
+                    <tr>
+                        <td>{t("lastSuccessfulLoginAddress")}</td>
+                        <td>{data.lastSuccessfulLoginIpAddress}</td>
+                    </tr>
+                    <tr>
+                        <td>{t("lastSuccessfulLoginDate")}</td>
+                        <td>{data.lastSuccessfulLoginDate}</td>
+                    </tr>
+                    <tr>
+                        <td>{t("lastFailedLoginIpAddress")}</td>
+                        <td>{data.lastFailedLoginIpAddress}</td>
+                    </tr>
+                    <tr>
+                        <td>{t("lastFailedLoginDate")}</td>
+                        <td>{data.lastFailedLoginDate}</td>
+                    </tr>
+                    <tr>
+                        <td>{t("language")}</td>
+                        <td>{data.language}</td>
                     </tr>
                     </tbody>
                 </table>

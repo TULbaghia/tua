@@ -115,5 +115,10 @@
     "dialog.permanent_change.title": "Trwała zmiana danych",
     "dialog.permanent_change.message": "Zmiana, którą próbujesz dokonać trwale modyfikuje dane. \n Czy jesteś tego pewny?",
     "signInError": "Błąd logowania",
-    "refresh": "Odśwież"
+    "refresh": "Odśwież",
+    "language": "Język",
+    "lastSuccessfulLoginAddress": "Adres ostatniego poprawnego logowania",
+    "lastSuccessfulLoginDate": "Data ostatniego poprawnego logowania",
+    "lastFailedLoginIpAddress": "Adres ostatniego niepoprawnego logowania",
+    "lastFailedLoginDate": "Data ostatniego niepoprawnego logowania"
 }

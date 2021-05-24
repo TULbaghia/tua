@@ -13,6 +13,7 @@
     "passwordResetting": "Password Resetting",
     "passwordResettingForm": "Password resetting form",
     "send": "Send",
+    "sendAgain": "Send again",
     "emailAddress": "E-mail address",
     "registering": "Join us",
     "repeatPassword": "Repeat password",
@@ -118,5 +119,6 @@
     "nameSize": "Invalid name length",
     "surnameSize": "Invalid surname length",
     "phoneSize": "Invalid contact phone length",
-    "signInError": "Login error"
+    "signInError": "Login error",
+    "passwordResetRequestSendSuccess": "Password reset request send successfully"
 }

@@ -19,6 +19,7 @@
     "passwordResetting": "Resetowanie hasła",
     "passwordResettingForm": "Formularz resetowania hasła",
     "send": "Wyślij",
+    "sendAgain": "Wyślij ponownie",
     "emailAddress": "Adres e-mail",
     "registering": "Dołącz do nas",
     "repeatPassword": "Powtórz hasło",
@@ -120,5 +121,7 @@
 
     "dialog.permanent_change.title": "Trwała zmiana danych",
     "dialog.permanent_change.message": "Zmiana, którą próbujesz dokonać trwale modyfikuje dane. \n Czy jesteś tego pewny?",
-    "signInError": "Błąd logowania"
+    "signInError": "Błąd logowania",
+    "passwordResetRequestSendSuccess": "Prośba zresetowania hasła została wysłana"
+
 }

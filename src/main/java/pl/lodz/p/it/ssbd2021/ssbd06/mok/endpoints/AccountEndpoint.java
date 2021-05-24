@@ -155,8 +155,8 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
 
     @Override
     @PermitAll
-    public void sendResetPasswordAgain(String login) throws AppBaseException {
-        pendingCodeManager.sendResetPasswordAgain(login);
+    public void sendResetPasswordAgain(String email) throws AppBaseException {
+        pendingCodeManager.sendResetPasswordAgain(email);
     }
 
     @Override

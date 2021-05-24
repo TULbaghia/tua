@@ -118,5 +118,6 @@
     "nameSize": "Invalid name length",
     "surnameSize": "Invalid surname length",
     "phoneSize": "Invalid contact phone length",
-    "signInError": "Login error"
+    "signInError": "Login error",
+    "recaptchaInvalid": "Please confirm that you are not a robot"
 }

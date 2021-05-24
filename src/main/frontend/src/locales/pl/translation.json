@@ -120,5 +120,5 @@
 
     "dialog.permanent_change.title": "Trwała zmiana danych",
     "dialog.permanent_change.message": "Zmiana, którą próbujesz dokonać trwale modyfikuje dane. \n Czy jesteś tego pewny?",
-    "signInError": "Błąd logowania"
+    "recaptchaInvalid": "Potwierdź, że nie jesteś robotem"
 }

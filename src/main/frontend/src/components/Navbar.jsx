@@ -34,7 +34,7 @@ function LanguageSwitcher(props){
         handleClickPl()
         axios.post('https://localhost:8181/resources/accounts/self/edit/language/pl',  null, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `${token}`
             }
         }).then(res => console.log(res))
     }
@@ -44,7 +44,7 @@ function LanguageSwitcher(props){
         handleClickEn()
         axios.post('https://localhost:8181/resources/accounts/self/edit/language/en', null, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `${token}`
             }
         }).then(res => console.log(res))
     }

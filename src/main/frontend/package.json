@@ -13,6 +13,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "api-client": "file:../api-client",
+    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "formik": "^2.2.7",
     "i18next": "^20.2.4",

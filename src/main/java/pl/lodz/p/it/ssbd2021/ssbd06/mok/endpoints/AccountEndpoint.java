@@ -214,4 +214,11 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     public void sendAdminLoginInfo(String adminLogin, String address) throws AppBaseException {
         accountManager.sendAdminLoginInfo(adminLogin, address);
     }
+
+    @Override
+    @RolesAllowed("editOwnLanguage")
+    public void editOwnLanguage(String language) throws AppBaseException {
+        Account editAccount = accountManager.findByLogin(getLogin());
+        editAccount.setLanguage(language);
+    }
 }

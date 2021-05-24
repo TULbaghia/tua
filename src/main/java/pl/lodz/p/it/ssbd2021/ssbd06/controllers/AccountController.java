@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.RoleEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.Language;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.PenCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.UserEmail;
@@ -361,5 +362,16 @@ public class AccountController extends AbstractController {
     public Response changeOwnAccessLevel(@NotNull @PathParam("accessLevel") AccessLevel accessLevel) {
         accountEndpoint.changeOwnAccessLevel(accessLevel);
         return Response.ok().build();
+    }
+
+    /**
+     * Edytuje język przypisany do konta użytkownika
+     * @param language nowy język, który ma być przypisany do konta
+     * @throws AppBaseException proces zmiany języka zakończył się niepowodzeniem
+     */
+    @POST
+    @Path("/self/edit/language/{lang}")
+    public void editOwnLanguage(@PathParam("lang") @NotNull @Language String language) throws AppBaseException {
+        repeat(() -> accountEndpoint.editOwnLanguage(language), accountEndpoint);
     }
 }

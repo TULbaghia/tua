@@ -124,7 +124,7 @@ function EditOtherAccount(props) {
                 "If-Match": etag
             }
         }).then((res) => {
-            history.push("/home");
+            history.push("/myAccount");
             dispatchNotificationSuccess({message: i18n.t('emailChangeSuccess')})
         }).catch(err => {
             dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
@@ -157,7 +157,7 @@ function EditOtherAccount(props) {
                 "If-Match": etag
             }
         }).then((res) => {
-            history.push("/home");
+            history.push("/myAccount");
             dispatchNotificationSuccess({message: i18n.t('passwordChangeSuccess')})
         }).catch(err => {
             dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
@@ -192,7 +192,7 @@ function EditOtherAccount(props) {
                 "If-Match": etag
             }
         }).then((res) => {
-            history.push("/home");
+            history.push("/myAccount");
             dispatchNotificationSuccess({message: i18n.t('detailsChangeSuccess')})
         }).catch(err => {
             dispatchNotificationDanger({message: i18n.t(err.response.data.message)})

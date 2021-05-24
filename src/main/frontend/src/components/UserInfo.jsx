@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {withNamespaces} from "react-i18next";
-import {Container, Button, Table} from "react-bootstrap";
+import {Button, Container} from "react-bootstrap";
 import "../css/UserInfo.css";
-import { useLocale } from "./LoginContext";
+import {useLocale} from "./LoginContext";
+import {getUserLanguage} from "./Navbar";
 
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
@@ -26,6 +27,7 @@ function UserInfo(props) {
 
     React.useEffect(() => {
         handleDataFetch();
+        getUserLanguage(token, i18n);
     }, []);
 
     const handleDataFetch = () => {
@@ -46,10 +48,10 @@ function UserInfo(props) {
                 console.log(res.data);
                 let data = "";
                 let i;
-                for(i = 0; i < res.data.rolesGranted.length; i++) {
+                for (i = 0; i < res.data.rolesGranted.length; i++) {
                     data += res.data.rolesGranted[i].roleName + ", ";
                 }
-                data = data.slice(0, data.length-2)
+                data = data.slice(0, data.length - 2)
                 setRoles(data);
             }).catch(err => {
                 if (err.response != null) {
@@ -129,8 +131,12 @@ function UserInfo(props) {
                     </tbody>
                 </table>
                 <div className="main-wrapper-actions-container">
-                    <Button className="btn-primary" onClick={event => {history.push("/editOwnAccount")}}>{t("userDetailsEditBtn")}</Button>
-                    <Button className="btn-primary" onClick={event => {handleDataFetch()}}>{t("refresh")}</Button>
+                    <Button className="btn-primary" onClick={event => {
+                        history.push("/editOwnAccount")
+                    }}>{t("userDetailsEditBtn")}</Button>
+                    <Button className="btn-primary" onClick={event => {
+                        handleDataFetch()
+                    }}>{t("refresh")}</Button>
                 </div>
             </Container>
         </div>

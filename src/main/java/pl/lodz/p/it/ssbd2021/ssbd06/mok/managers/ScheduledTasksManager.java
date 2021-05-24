@@ -16,7 +16,6 @@ import javax.interceptor.Interceptors;
 import javax.servlet.ServletContext;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -33,10 +32,6 @@ public class ScheduledTasksManager {
     private PendingCodeFacade pendingCodeFacade;
     @Inject
     private EmailSender emailSender;
-    @Inject
-    private ServletContext context;
-
-
     @Inject
     private ServletContext context;
 

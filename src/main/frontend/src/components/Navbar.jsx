@@ -9,53 +9,70 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import "../css/Navbar.css";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
+import axios from "axios";
 
 library.add(faUser);
 
-class LanguageSwitcher extends Component {
+function LanguageSwitcher(props){
 
-    constructor(props) {
-        super(props);
-        this.t = props.t
+    const {t,i18n} = props
+    const { token, setToken } = useLocale();
+
+    const langs = ['pl', 'en']
+    console.log(i18n.language)
+
+    const handleClickPl = () => {
+        setLanguage(i18n,"pl")
     }
 
-    state = {
-        langs: ['pl', 'en'],
-        chosen: 0
+    const handleClickEn = () => {
+        setLanguage(i18n, "en")
     }
 
-    handleClickPl = () => {
-        this.setState({
-            chosen: 0
-        });
+    const handleClickLoggedPl = () => {
+        console.log(token)
+        handleClickPl()
+        axios.post('https://localhost:8181/resources/accounts/self/edit/language/pl',  null, {
+            headers: {
+                Authorization: `${token}`
+            }
+        }).then(res => console.log(res))
     }
 
-    handleClickEn = () => {
-        this.setState({
-            chosen: 1
-        })
+    const handleClickLoggedEn = () => {
+        console.log(token)
+        handleClickEn()
+        axios.post('https://localhost:8181/resources/accounts/self/edit/language/en', null, {
+            headers: {
+                Authorization: `${token}`
+            }
+        }).then(res => console.log(res))
     }
 
-    render() {
-        return (
-            <>
-                <p style={{fontSize: 20, color: "black", marginRight: "10px"}}>{this.state.langs[this.state.chosen]}</p>
-                <Dropdown>
-                    <DropdownToggle id="dropdown-basic" className="dropButton" variant="Info">
-                    </DropdownToggle>
+    return(
+        <>
+            <p style={{fontSize: 20, color: "black", marginRight: "10px"}}>{i18n.language}</p>
+            <Dropdown>
+                <DropdownToggle id="dropdown-basic" className="dropButton" variant="Info">
+                </DropdownToggle>
 
-                    <Dropdown.Menu>
-                        <Dropdown.Item onClick={this.handleClickPl}>{this.t(this.state.langs[0])}</Dropdown.Item>
-                        <Dropdown.Item onClick={this.handleClickEn}>{this.t(this.state.langs[1])}</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-            </>
-        )
-    }
+                <Dropdown.Menu>
+                    <Dropdown.Item onClick={token!==null && token !== '' ? (
+                                       handleClickLoggedPl)
+                        : (
+                            handleClickPl)}>{t(langs[0])}</Dropdown.Item>
+                    <Dropdown.Item onClick={token!==null && token !== '' ? (
+                            handleClickLoggedEn)
+                        : (
+                            handleClickEn)}>{t(langs[1])}</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
+        </>
+    )
 }
 
 function NavigationBar(props) {
-    const {t, divStyle} = props
+    const {t, divStyle, i18n} = props
     const history = useHistory();
     const {token, username, setToken, currentRole, setCurrentRole, setUsername} = useLocale();
 
@@ -79,6 +96,8 @@ function NavigationBar(props) {
             .catch(err => console.log(err))
     }
 
+    // *** LANDING PAGE ***
+    const {isAuthenticated} = props;
     return (
         <>
             {token !== null && token !== '' ? (
@@ -131,7 +150,7 @@ function NavigationBar(props) {
                             )}
                         </Nav>
                         <Nav className="navbar-right">
-                            <LanguageSwitcher t={t}/>
+                            <LanguageSwitcher t={t} i18n={i18n}/>
                             <Dropdown alignRight={true}>
                                 <Dropdown.Toggle id="dropdown-basic" className="dropButton" variant="Info">
                                     <FontAwesomeIcon icon="user"/>
@@ -185,7 +204,7 @@ function NavigationBar(props) {
                             </LinkContainer>
                         </Nav>
                         <Nav className="navbar-right">
-                            <LanguageSwitcher t={t}/>
+                            <LanguageSwitcher t={t} i18n={i18n}/>
                             <LinkContainer to="/signUp">
                                 <Nav.Link className="signUp">
                                     <FontAwesomeIcon className="signUpIcon" icon="user-plus"/>
@@ -204,6 +223,22 @@ function NavigationBar(props) {
             )}
         </>
     )
+}
+
+export function setLanguage(i18n, lang){
+    i18n.changeLanguage(lang)
+}
+ export function getUserLanguage(token, i18n){
+    if(token !== null && token !== '') {
+        axios.get('https://localhost:8181/resources/accounts/user', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(res => res.data)
+            .then(data => data.language)
+            .then(result => setLanguage(i18n, result))
+    }
+    else setLanguage(i18n, "en")
 }
 
 export default withNamespaces()(NavigationBar);

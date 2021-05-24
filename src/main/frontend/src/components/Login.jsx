@@ -10,7 +10,7 @@ import "../css/Login.css"
 function Login(props) {
     const {t} = props
     const history = useHistory();
-    const {token, setToken, saveToken} = useLocale();
+    const {saveToken} = useLocale();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
@@ -23,7 +23,7 @@ function Login(props) {
                 login: login,
                 password: password
             })
-            saveToken(res.data)
+            saveToken("Bearer " + res.data)
             history.push("/userPage")
         } catch (ex) {
             console.log(ex);

@@ -4,8 +4,10 @@ import pl.lodz.p.it.ssbd2021.ssbd06.auth.dto.LoginDataDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.auth.endpoints.AuthEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AuthValidationException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints.AccountEndpointLocal;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -50,8 +52,12 @@ public class AuthController extends AbstractController {
                     .entity(token)
                     .build();
         } catch (AuthValidationException e) {
-            repeat(() -> accountEndpoint.updateInvalidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(),
-                    Date.from(Instant.now())), accountEndpoint);
+            try {
+                repeat(() -> accountEndpoint.updateInvalidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(),
+                        Date.from(Instant.now())), accountEndpoint);
+            } catch (NotFoundException notFoundException) {
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
@@ -62,6 +68,7 @@ public class AuthController extends AbstractController {
      * @return kod odpowiedzi HTTP 200
      */
     @GET
+    @RolesAllowed("logoutUser")
     @Path("logout")
     public Response logout() {
         authEndpoint.logout();

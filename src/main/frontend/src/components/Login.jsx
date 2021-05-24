@@ -8,15 +8,48 @@ import {api} from "../Api";
 import "../css/Login.css"
 import {validatorFactory, ValidatorType} from "./Validation/Validators";
 import {useNotificationWarningAndLong} from "./Notification/NotificationProvider";
+import {dialogDuration, dialogType} from "./Notification/Notification";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+import {useNotificationCustom} from "./Notification/NotificationProvider";
+
+const REFRESH_TIME = 60 * 1000;
 
 function Login(props) {
     const dispatchWarningNotification = useNotificationWarningAndLong();
-    const {t} = props
+    const {t,i18n} = props
     const history = useHistory();
-    const {saveToken} = useLocale();
+    const { token, setToken, saveToken } = useLocale();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
+
+    const dispatch = useNotificationCustom();
+
+    const handleRefreshBox = () => {
+        dispatch({
+            "type": dialogType.WARNING,
+            "duration": dialogDuration.MINUTE,
+            "title": `${i18n.t('dialog.expiring_token.title')}`,
+            "message":
+                (<> {i18n.t('dialog.expiring_token.message')} <span className={"text-primary"} style={{cursor: "pointer"}}
+                                                                    onClick={refreshToken}>{i18n.t('dialog.expiring_token.refresh')}</span></>)
+        })
+    }
+
+    const refreshToken = (event) => {
+        event.target.closest(".alert").querySelector(".close").click()
+
+        axios.post('https://localhost:8181/resources/auth/refresh-token', localStorage.getItem("token"), {
+            headers:{
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+        }).then(res => res.data)
+            .then(token => saveToken(token));
+        setTimeout(() => {
+            schedule();
+        }, 1000)
+    }
 
     const handleLogin = async e => {
         e.preventDefault()
@@ -37,7 +70,14 @@ function Login(props) {
                 console.log(ex);
                 setError(true);
             }
+            schedule();
         }
+    }
+
+    const schedule = () => {
+        return setTimeout(() => {
+            handleRefreshBox();
+        }, new Date(jwt_decode(localStorage.getItem("token")).exp * 1000) - new Date() - REFRESH_TIME);
     }
 
     return (

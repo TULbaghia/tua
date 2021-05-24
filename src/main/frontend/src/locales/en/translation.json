@@ -110,7 +110,6 @@
   "accountUnblockSuccess": "Successfully unlocked user account",
   "unlocked": "Unlocked",
   "active": "Active",
-  "userDetailsPasswordChangeBtn": "Change password",
   "userEdit": "Edit user",
   "addRoleAdmin": "Add Admin role",
   "addRoleManager": "Add Manager role",
@@ -150,9 +149,7 @@
   "passwordResetRequestSendSuccess": "Password reset request send successfully",
   "request.error.5xx": "Error from group 500",
   "request.error.4xx": "Error from group 400",
-
   "error.rest.resource_forbidden": "Access to this resource is forbidden",
-
   "exception.account.login_exists": "Account with this login already exists",
   "exception.account.contact_number": "Account with this number already exists",
   "exception.account_already_activated.already_activated": "Account already activated",
@@ -171,9 +168,7 @@
   "exception.role_exception.unsupported_access_level": "This access level is not supported",
   "exception.role_exception.unsupported_role_combination": "This role combination is not supported",
   "exception.transaction_exception.unexpected_fail": "Error during persistence operation",
-
   "request.exception.unknown_title": "Unknown error message",
-
   "validation.contactnumber.size": "Incorrect phone number length",
   "validation.contactnumber.pattern": "Incorrect phone number pattern",
   "validation.firstname.size": "Incorrect firstname length",
@@ -188,5 +183,9 @@
   "validation.pencode.size": "Incorrect pending code length",
   "validation.pencode.pattern": "Incorrect pending code pattern",
   "validation.email.size": "Incorrect email length",
-  "validation.email.pattern": "Incorrect email pattern"
+  "validation.email.pattern": "Incorrect email pattern",
+  "userDetailsPasswordChangeBtn": "Change password",
+  "dialog.expiring_token.title": "Token expiration",
+  "dialog.expiring_token.message": "Your token will expire in a while. If you want still using the app, please ",
+  "dialog.expiring_token.refresh": "click here to refresh it"
 }

@@ -7,7 +7,7 @@
   bottom: 0;
   z-index: 1;
   @include media-breakpoint-down(xs) {
-      left: 1rem;
+    left: 1rem;
   }
 
   @include media-breakpoint-up(sm) {
@@ -31,6 +31,7 @@
     right: -1px;
     height: 3px;
   }
+
   .progress-bar {
     width: 100%;
   }

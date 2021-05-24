@@ -25,23 +25,23 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 public class ScheduledTasksManager {
 
-    @Inject
-    private AccountFacade accountFacade;
-
-    @Inject
-    private PendingCodeFacade pendingCodeFacade;
-
-    @Inject
-    private EmailSender emailSender;
-
     @Resource
     TimerService timerService;
+    @Inject
+    private AccountFacade accountFacade;
+    @Inject
+    private PendingCodeFacade pendingCodeFacade;
+    @Inject
+    private EmailSender emailSender;
+    @Inject
+    private ServletContext context;
+
 
     @Inject
     private ServletContext context;
 
     /**
-     *  Usuwa konta użytkowników nie potwierdzonych
+     * Usuwa konta użytkowników nie potwierdzonych
      *
      * @param time
      * @throws AppBaseException
@@ -49,37 +49,38 @@ public class ScheduledTasksManager {
     @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private void deleteUnverifiedAccounts(Timer time) throws AppBaseException {
-        Calendar calendar1 = Calendar.getInstance();
-        calendar1.add(Calendar.HOUR, -24);
-        List<Account> unverifiedAccountListAfter24H = accountFacade.findUnverifiedBefore(calendar1.getTime());
-        for(Account account: unverifiedAccountListAfter24H){
+        int confirmationCodeExpirationTime = Integer
+                .parseInt(context.getInitParameter("accountConfirmationCodeExpirationTime"));
+        int confirmationCodeHalfOfExpirationTime = confirmationCodeExpirationTime / 2;
+
+        Instant expirationInstant = Instant.now().minus(confirmationCodeExpirationTime, ChronoUnit.HOURS);
+        Date expirationDate = Date.from(expirationInstant);
+
+        List<Account> unverifiedAccountsToRemove = accountFacade.findUnverifiedBefore(expirationDate);
+        for (Account account : unverifiedAccountsToRemove) {
             accountFacade.remove(account);
+            emailSender.sendDeleteUnconfirmedAccountEmail(account);
         }
-        Calendar calendar2 = Calendar.getInstance();
-        calendar2.add(Calendar.HOUR, -12);
-        List<Account> unverifiedAccountListAfter12H = accountFacade.findUnverifiedBefore(calendar2.getTime());
-        for(Account account: unverifiedAccountListAfter12H){
-            sendRepeatedEmailNotification(account);
+
+        // ponowne wysłanie kodów aktywacyjnych
+        Instant halfExpirationInstant = Instant.now().minus(confirmationCodeHalfOfExpirationTime, ChronoUnit.HOURS);
+        Date halfExpirationDate = Date.from(halfExpirationInstant);
+        List<PendingCode> unusedCodes = pendingCodeFacade.findAllUnusedByCodeTypeAndBeforeAndAttemptCount(CodeType.ACCOUNT_ACTIVATION, halfExpirationDate, 0);
+        for (PendingCode code : unusedCodes) {
+            code.setSendAttempt(code.getSendAttempt() + 1);
+            pendingCodeFacade.edit(code);
+            emailSender.sendActivationEmail(code.getAccount(), code.getCode());
         }
     }
 
     /**
-     * Wysyła powtórnie mail aktywacyjny do użytkownika
-     *
-     * @throws AppBaseException gdy dane konto nie istnieje lub jest zweryfikowane
-     */
-    public void sendRepeatedEmailNotification(Account account) throws AppBaseException {
-        var activationCode = pendingCodeFacade.findNotUsedByAccount(account);
-        emailSender.sendActivationEmail(account, activationCode.getCode());
-    }
-
-    /**
-     *  W przypadku, gdy żeton zmiany email nie został użyty przez ponad godzinę od momentu utworzenia, jednak czas ten
-     *  nie przekroczył 2 godzin od momentu utworzenia, następuje ponowne wysłanie emaila z informacją o rozpoczęciu
-     *  procesu zmiany adresu email dla konta użytkownka.
-     *
-     *  W przypadku, gdy żeton zmiany email nie został użyty przez ponad 2 godziny od momentu utworzenia,
-     *  następuje usunięcie żetonu.
+     * Ponownie wysyła email z informacją o rozpoczęciu procesu zmiany adresu email dla konta użytkownka.
+     * W przypadku, gdy żeton zmiany email nie został użyty przez ponad godzinę od momentu utworzenia, jednak czas ten
+     * nie przekroczył 2 godzin od momentu utworzenia, następuje ponowne wysłanie emaila z informacją o rozpoczęciu
+     * procesu zmiany adresu email dla konta użytkownka.
+     * <p>
+     * W przypadku, gdy żeton zmiany email nie został użyty przez ponad 2 godziny od momentu utworzenia,
+     * następuje usunięcie żetonu.
      *
      * @param time
      * @throws AppBaseException

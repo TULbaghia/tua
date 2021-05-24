@@ -281,6 +281,7 @@ create table pending_code
     code              varchar(128) not null,
     code_type         integer      not null,
     used              boolean      not null,
+    send_attempt      integer      default 0,
     created_by        bigint       not null,
     modified_by       bigint,
     account_id        bigint       not null,

@@ -9,6 +9,12 @@
         </session-timeout>
     </session-config>
 
+    <context-param>
+        <param-name>accountConfirmationCodeExpirationTime</param-name>
+        <param-value>24</param-value>
+    </context-param>
+
+
     <default-context-path>/</default-context-path>
 
     <welcome-file-list>

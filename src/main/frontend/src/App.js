@@ -25,6 +25,7 @@ import CriticalOperationProvider from "./components/CriticalOperations/CriticalO
 import PasswordResetForm from "./components/PasswordReset/PasswordResetForm";
 import EmailConfirm from "./components/EmailConfirmation/EmailConfirm";
 import EditOwnAccount from './components/EditOwnAccount';
+import AccountActivate from "./components/EmailConfirmation/AccountActivate";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -78,6 +79,7 @@ function App() {
                                 <Route path="/editOwnAccount" component={EditOwnAccount}/>
                                 <Route path="/reset/password/:code" component={PasswordResetForm}/>
                                 <Route path="/confirm/email/:code" component={EmailConfirm}/>
+                                <Route path="/activate/account/:code" component={AccountActivate}/>
                                 <Route component={NotFound}/>
                             </Switch>
                             <Footer roles={roles} divStyle={divStyle}/>

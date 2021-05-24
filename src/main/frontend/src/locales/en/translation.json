@@ -87,6 +87,11 @@
     "emailConfirm.action": "Verify email address",
     "emailConfirm.success.info": "Email has been verified",
 
+    "accountActivate.title": "Account activation",
+    "accountActivate.info": "Click the button below to activate your account",
+    "accountActivate.action": "Activate account",
+    "accountActivate.success.info": "Your account has been confirmed",
+
     "notification.title.danger": "Error",
     "notification.title.warning": "Warning",
     "notification.title.success": "Success",

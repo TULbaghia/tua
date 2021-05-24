@@ -111,6 +111,11 @@
     "emailConfirm.action": "Weryfikuj adres email",
     "emailConfirm.success.info": "Adres email został pomyślnie zweryfikowany",
 
+    "accountActivate.title": "Aktywacja konta",
+    "accountActivate.info": "Kliknij w przycisk znajdujący się poniżej aby aktywować konto",
+    "accountActivate.action": "Aktywuj konto",
+    "accountActivate.success.info": "Twoje konto zostało potwierdzone",
+
     "notification.title.danger": "Błąd",
     "notification.title.warning": "Ostrzeżenie",
     "notification.title.success": "Sukces",

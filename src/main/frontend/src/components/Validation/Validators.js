@@ -1,23 +1,24 @@
 import React from 'react';
+import i18n from "../../i18n";
 
 const sizeValidator = (data, minInclusive, maxInclusive) => {
     if (data.length < minInclusive) {
-        return "form.validation.field.min_size"
+        return i18n.t("form.validation.field.min_size");
     }
     if (data.length > maxInclusive) {
-        return "form.validation.field.max_size"
+        return i18n.t("form.validation.field.max_size");
     }
 }
 
 const patternValidator = (data, pattern) => {
     if (!pattern.test(data)) {
-        return "form.validation.field.pattern";
+        return i18n.t("form.validation.field.pattern");
     }
 }
 
 const allowedListValidator = (data, list) => {
     if (!list.includes(data)) {
-        return "form.validation.field.not_allowed"
+        return i18n.t("form.validation.field.not_allowed");
     }
 }
 
@@ -60,7 +61,7 @@ export const validateLogin = (data) => {
 export const validatePassword = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 8, 64));
-    // errors.push(patternValidator(data, /^[a-zA-Z0-9]+$/));
+    // errors.push(patternValidator(data, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$/));
     return errors.filter(err => err !== undefined);
 }
 

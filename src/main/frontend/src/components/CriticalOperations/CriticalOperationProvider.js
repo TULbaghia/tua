@@ -30,7 +30,7 @@ const CriticalOperationProvider = (props) => {
 export const useDialog = () => {
     const dispatch = useContext(CriticalOperation);
 
-    return ({title, message, callbackOnSave, callbackOnCancel, ...props}) => {
+    return ({title, message, callbackOnSave = (() => {}), callbackOnCancel = (() => {}), ...props}) => {
         dispatch({
             type: "ADD_DIALOG",
             payload: {
@@ -48,7 +48,7 @@ export const useDialog = () => {
 export const useDialogPermanentChange = () => {
     const dispatch = useContext(CriticalOperation);
 
-    return ({callbackOnSave, callbackOnCancel, ...props}) => {
+    return ({callbackOnSave = (() => {}), callbackOnCancel = (() => {}), ...props}) => {
         dispatch({
             type: "ADD_DIALOG",
             payload: {

@@ -120,5 +120,48 @@
 
     "dialog.permanent_change.title": "Trwała zmiana danych",
     "dialog.permanent_change.message": "Zmiana, którą próbujesz dokonać trwale modyfikuje dane. \n Czy jesteś tego pewny?",
-    "signInError": "Błąd logowania"
+    "signInError": "Błąd logowania",
+
+    "request.error.5xx": "Wystąpił błąd z grupy 5xx",
+    "request.error.4xx": "Wystąpił błąd z grupy 4xx",
+
+    "error.rest.resource_forbidden": "Brak dostępu do zasobu",
+
+    "exception.account.login_exists": "Konto z takim loginem juz istnieje",
+    "exception.account.contact_number": "Konto z takim numerem telefonu już istnieje",
+    "exception.account_already_activated.already_activated": "Konto zostało już aktywowane",
+    "exception.account.account_confirmed": "Konto zostało aktywowane",
+    "exception.runtime.signer": "Wystąpił problem z podpisem dto",
+    "exception.runtime.verifier": "Wystąpił problem z weryfikatorem podpisów",
+    "exception.runtime.config": "Wystąpił problem z configiem",
+    "exception.runtime.jwt": "Wystąpił błąd powiązany z żetonem JWT",
+    "exception.convert.ip": "Błąd podczas konwersji adresu IP",
+    "exception.database_query_exception.database_query_exception": "Wystąpił problem z wykonaniem kwerendy",
+    "exception.not_found_exception.account_not_found": "Nie znaleziono konta",
+    "exception.not_found_exception.pending_code_not_found": "Nie znaleziono kodu",
+    "exception.auth_validation.invalid_credentials": "Nieprawidłowe dane logowania",
+    "exception.role_exception.already_revoked": "Wystąpił problem, konto nie posiada już tej roli",
+    "exception.role_exception.already_granted": "Wystąpił problem, konto posiada już tę rolę",
+    "exception.role_exception.unsupported_access_level": "Ten poziom dostępu nie jest wspierany",
+    "exception.role_exception.unsupported_role_combination": "To połączenie ról nie jest wspierane",
+    "exception.transaction_exception.unexpected_fail": "Nie udało się utrwalić zmian w bazie danych",
+
+    "request.exception.unknown_title": "Nieznana kod błędu",
+
+    "validation.contactnumber.size": "Nieprawidłowa długość numeru telefonu",
+    "validation.contactnumber.pattern": "Nieprawidłowy wzorzec numeru telefonu",
+    "validation.firstname.size": "Nieprawidłowa długośc imienia",
+    "validation.firstname.pattern": "Nieprawidlowy wzorzec imienia",
+    "validation.language.size": "Nieprawidłowa długośc języka",
+    "validation.language.pattern": "Nieprawidłowy wzorzec języka",
+    "validation.lastname.size": "Nieprawidłowa długość nazwiska",
+    "validation.lastname.pattern": "Nieprawidłowy wzorzec nazwiska",
+    "validation.login.size": "Nieprawidłowa długość loginu",
+    "validation.login.pattern": "Nieprawidłowy wzorzec loginu",
+    "validation.password.size": "Nieprawidłowa długość hasła",
+    "validation.pencode.size": "Nieprawidłowa długośc kodu",
+    "validation.pencode.pattern": "Nieprawidłowy wzorzec kodu",
+    "validation.email.size": "Nieprawidłowa długość email",
+    "validation.email.pattern": "Nieprawidłowy wzorzec email"
+
 }

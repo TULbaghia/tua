@@ -5,9 +5,14 @@ import { withNamespaces } from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
 import { api } from "../Api";
+import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
+import {useNotificationDangerAndLong, useNotificationWarningAndLong} from "./Notification/NotificationProvider";
+import {validatorFactory, ValidatorType} from "./Validation/Validators";
 
 function SignUp(props) {
     const {t,i18n} = props
+    const dispatchNotificationDanger = useNotificationDangerAndLong();
+    const dispatchNotificationWarning = useNotificationWarningAndLong();
     const history = useHistory();
     const { token, setToken } = useLocale();
     const [login, setLogin] = useState('');
@@ -19,18 +24,49 @@ function SignUp(props) {
 
     const handleClick = (e) => {
         e.preventDefault()
-        api.registerAccount({
-            login: login,
-            email: email,
-            password: password,
-            firstname: firstname,
-            lastname: lastname,
-            constactNumber: constactNumber
+
+        let isError = false;
+
+        validatorFactory(login, ValidatorType.LOGIN).forEach(x => {
+            isError = true;
+            dispatchNotificationWarning({title: t('login'), message: x});
         })
-        .then(res => {
-            console.log("registered")
+        validatorFactory(password, ValidatorType.PASSWORD).forEach(x => {
+            isError = true;
+            dispatchNotificationWarning({title: t('password'), message: x});
         })
-        .catch(err => console.log(err))
+        validatorFactory(email, ValidatorType.USER_EMAIL).forEach(x => {
+            isError = true;
+            dispatchNotificationWarning({title: t('emailAddress'), message: x});
+        })
+        validatorFactory(firstname, ValidatorType.FIRSTNAME).forEach(x => {
+            isError = true;
+            dispatchNotificationWarning({title: t('name'), message: x});
+        })
+        validatorFactory(lastname, ValidatorType.LASTNAME).forEach(x => {
+            isError = true;
+            dispatchNotificationWarning({title: t('surname'), message: x});
+        })
+        validatorFactory(constactNumber, ValidatorType.CONTACT_NUMBER).forEach(x => {
+            isError = true;
+            dispatchNotificationWarning({title: t('phoneNumber'), message: x});
+        })
+        if (!isError) {
+            api.registerAccount({
+                login: login,
+                email: email,
+                password: password,
+                firstname: firstname,
+                lastname: lastname,
+                constactNumber: constactNumber
+            })
+                .then(res => {
+                    console.log("registered")
+                })
+                .catch(err => {
+                    ResponseErrorHandler(err, dispatchNotificationDanger);
+                })
+        }
     }
 
 

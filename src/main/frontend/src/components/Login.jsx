@@ -6,8 +6,11 @@ import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
 import {api} from "../Api";
 import "../css/Login.css"
+import {validatorFactory, ValidatorType} from "./Validation/Validators";
+import {useNotificationWarningAndLong} from "./Notification/NotificationProvider";
 
 function Login(props) {
+    const dispatchWarningNotification = useNotificationWarningAndLong();
     const {t} = props
     const history = useHistory();
     const {saveToken} = useLocale();
@@ -17,17 +20,23 @@ function Login(props) {
 
     const handleLogin = async e => {
         e.preventDefault()
-        try {
-            setError(false)
-            const res = await api.login({
-                login: login,
-                password: password
+        if(validatorFactory(login, ValidatorType.LOGIN).length > 0) {
+            validatorFactory(login, ValidatorType.LOGIN).forEach(x => {
+                dispatchWarningNotification({message: x});
             })
-            saveToken("Bearer " + res.data)
-            history.push("/userPage")
-        } catch (ex) {
-            console.log(ex);
-            setError(true);
+        } else {
+            try {
+                setError(false)
+                const res = await api.login({
+                    login: login,
+                    password: password
+                })
+                saveToken("Bearer " + res.data)
+                history.push("/userPage")
+            } catch (ex) {
+                console.log(ex);
+                setError(true);
+            }
         }
     }
 

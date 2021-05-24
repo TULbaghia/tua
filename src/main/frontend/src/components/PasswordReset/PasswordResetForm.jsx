@@ -6,12 +6,15 @@ import {Link, useParams} from "react-router-dom";
 import {Form, Formik} from 'formik';
 import FieldComponent from "./FieldComponent";
 import BreadCrumb from "../BreadCrumb";
-import {useNotificationCustom} from "../Notification/NotificationProvider";
+import {useNotificationCustom, useNotificationDangerAndLong} from "../Notification/NotificationProvider";
 import {useDialogPermanentChange} from "../CriticalOperations/CriticalOperationProvider";
 import {dialogDuration, dialogType} from "../Notification/Notification";
+import {dispatchErrors, ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
+import {validatorFactory, ValidatorType} from "../Validation/Validators";
 
 function PasswordResetForm({t, i18n}) {
     const dispatchNotification = useNotificationCustom();
+    const dispatchNotificationDanger = useNotificationDangerAndLong();
     const dispatchCriticalDialog = useDialogPermanentChange();
     const history = useHistory();
     let {code} = useParams();
@@ -36,12 +39,9 @@ function PasswordResetForm({t, i18n}) {
             })
             history.push("/login");
         }).catch(err => {
-            dispatchNotification({
-                dialogType: dialogType.DANGER,
-                dialogDuration: dialogDuration.SHORT,
-                message: t(err.response.data.message),
-                title: t('operationError')
-            })
+            ResponseErrorHandler(err, dispatchNotificationDanger, false, (error) => {
+                dispatchErrors(error, dispatchNotificationDanger);
+            });
             setSubmitting(false);
         });
     }
@@ -62,14 +62,18 @@ function PasswordResetForm({t, i18n}) {
                             const errors = {};
                             if (!values.newPassword) {
                                 errors.newPassword = t('passwordResetForm.error.required');
-                            } else if (values.newPassword.length > 64 || values.newPassword.length < 8) {
-                                errors.newPassword = t('passwordResetForm.error.length');
+                            } else {
+                                validatorFactory(values.newPassword, ValidatorType.PASSWORD).forEach(x => {
+                                    errors.newPassword = x;
+                                })
                             }
 
                             if (!values.repeatedNewPassword) {
                                 errors.repeatedNewPassword = t('passwordResetForm.error.repeated.required');
-                            } else if (values.repeatedNewPassword.length > 64 || values.repeatedNewPassword.length < 8) {
-                                errors.repeatedNewPassword = t('passwordResetForm.error.length');
+                            } else {
+                                validatorFactory(values.repeatedNewPassword, ValidatorType.PASSWORD).forEach(x => {
+                                    errors.repeatedNewPassword = x;
+                                })
                             }
 
                             if (!(values.repeatedNewPassword === values.newPassword)) {

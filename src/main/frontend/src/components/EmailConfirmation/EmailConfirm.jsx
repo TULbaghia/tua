@@ -4,13 +4,24 @@ import {Link, useParams} from "react-router-dom";
 import { withNamespaces } from 'react-i18next';
 import BreadCrumb from "../BreadCrumb"
 import {Configuration, DefaultApi} from "api-client";
-import {useNotificationCustom} from "../Notification/NotificationProvider";
+import {
+    useNotificationCustom,
+    useNotificationDangerAndLong,
+    useNotificationSuccessAndShort
+} from "../Notification/NotificationProvider";
 import {useDialogPermanentChange} from "../CriticalOperations/CriticalOperationProvider";
 import {dialogDuration, dialogType} from "../Notification/Notification";
 import i18n from "../../i18n";
+import {HandleThenErrors, validatorFactory, ValidatorType} from "../Validation/Validators";
+import {
+    dispatchErrors,
+    isValidationConstraintException,
+    ResponseErrorHandler
+} from "../Validation/ResponseErrorHandler";
 
 function EmailConfirm() {
-    const dispatchNotification = useNotificationCustom();
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
+    const dispatchNotificationDanger = useNotificationDangerAndLong();
     const dispatchCriticalDialog = useDialogPermanentChange();
     const history = useHistory();
     let {code} = useParams();
@@ -20,27 +31,22 @@ function EmailConfirm() {
     const handleConfirmation = () => (
         dispatchCriticalDialog({
             callbackOnSave: () => handleSubmit(),
-            callbackOnCancel: () => {}
         })
     )
 
     const handleSubmit = () => {
-        api.confirmEmail(code).then((res) => {
-            dispatchNotification({
-                dialogType: dialogType.SUCCESS,
-                dialogDuration: dialogDuration.SHORT,
-                message: i18n.t('emailConfirm.success.info'),
-                title: i18n.t('operationSuccess')
+        if (validatorFactory(code, ValidatorType.PEN_CODE)) {
+            api.confirmEmail(code).then((res) => {
+                dispatchNotificationSuccess({
+                    message: i18n.t('emailConfirm.success.info')
+                });
+                history.push("/login");
+            }).catch(err => {
+                ResponseErrorHandler(err, dispatchNotificationDanger, false, (error) => {
+                    dispatchErrors(error, dispatchNotificationDanger);
+                });
             })
-            history.push("/login");
-        }).catch(err => {
-            dispatchNotification({
-                dialogType: dialogType.DANGER,
-                dialogDuration: dialogDuration.SHORT,
-                message: i18n.t(err.response.data.message),
-                title: i18n.t('operationError')
-            })
-        })
+        }
     }
 
     return (

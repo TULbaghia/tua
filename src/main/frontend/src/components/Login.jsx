@@ -8,7 +8,7 @@ import { api } from "../Api";
 import {dialogDuration, dialogType} from "./Notification/Notification";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import {useRefreshNotificationCustom} from "./Notification/RefreshNotificationProvider";
+import {useNotificationCustom} from "./Notification/NotificationProvider";
 
 const REFRESH_TIME = 60 * 1000;
 
@@ -20,7 +20,7 @@ function Login(props) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
 
-    const dispatch = useRefreshNotificationCustom();
+    const dispatch = useNotificationCustom();
 
     const handleRefreshBox = () => {
         dispatch({
@@ -28,12 +28,14 @@ function Login(props) {
             "duration": dialogDuration.MINUTE,
             "title": `${i18n.t('dialog.expiring_token.title')}`,
             "message":
-                (<> {i18n.t('dialog.expiring_token.message')} <span className={"text-primary"}
+                (<> {i18n.t('dialog.expiring_token.message')} <span className={"text-primary"} style={{cursor: "pointer"}}
                                                                     onClick={refreshToken}>{i18n.t('dialog.expiring_token.refresh')}</span></>)
         })
     }
 
-    const refreshToken = () => {
+    const refreshToken = (event) => {
+        event.target.closest(".alert").querySelector(".close").click()
+
         axios.post('https://localhost:8181/resources/auth/refresh-token', localStorage.getItem("token"), {
             headers:{
                 "Authorization": `Bearer ${localStorage.getItem("token")}`

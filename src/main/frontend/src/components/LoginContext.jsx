@@ -4,7 +4,6 @@ import {useNotificationCustom} from "./Notification/NotificationProvider";
 import {dialogDuration, dialogType} from "./Notification/Notification";
 import i18n from "../i18n";
 import axios from "axios";
-import {useRefreshNotificationCustom} from "./Notification/RefreshNotificationProvider";
 
 const REFRESH_TIME = 60 * 1000;
 const LoginContext = React.createContext('');
@@ -12,7 +11,7 @@ const LoginContext = React.createContext('');
 export const LoginProvider = ({ children }) => {
     const [token, setToken] = useState('');
 
-    const dispatch = useRefreshNotificationCustom();
+    const dispatch = useNotificationCustom();
 
     const handleRefreshBox = () => {
         dispatch({
@@ -20,12 +19,14 @@ export const LoginProvider = ({ children }) => {
             "duration": dialogDuration.MINUTE,
             "title": `${i18n.t('dialog.expiring_token.title')}`,
             "message":
-                (<> {i18n.t('dialog.expiring_token.message')} <span className={"text-primary"}
+                (<> {i18n.t('dialog.expiring_token.message')} <span className={"text-primary"} style={{cursor: "pointer"}}
                                                                     onClick={refreshToken}>{i18n.t('dialog.expiring_token.refresh')}</span></>)
         })
     }
 
-    const refreshToken = () => {
+    const refreshToken = (event) => {
+        event.target.closest(".alert").querySelector(".close").click()
+
         axios.post('https://localhost:8181/resources/auth/refresh-token', localStorage.getItem("token"), {
             headers:{
                 "Authorization": `Bearer ${localStorage.getItem("token")}`

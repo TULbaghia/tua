@@ -21,6 +21,7 @@ import UserList from "./components/UserList";
 import jwt_decode from "jwt-decode";
 import {useLocale} from "./components/LoginContext";
 import AppUsersPage from "./components/AppUsersPage";
+import EditOtherAccount from "./components/EditOtherAccount";
 import NotificationProvider from "./components/Notification/NotificationProvider";
 import CriticalOperationProvider from "./components/CriticalOperations/CriticalOperationProvider";
 import PasswordResetForm from "./components/PasswordReset/PasswordResetForm";
@@ -77,6 +78,7 @@ function App() {
                                 <Route path="/myAccount" component={UserInfo}/>
                                 <Route path="/userPage" component={AppUsersPage}/>
                                 <Route path="/accounts" component={UserList}/>
+                                <Route path="/editOtherAccount" component={EditOtherAccount}/>
                                 <Route path="/editOwnAccount" component={EditOwnAccount}/>
                                 <Route path="/reset/password/:code" component={PasswordResetForm}/>
                                 <Route path="/confirm/email/:code" component={EmailConfirm}/>

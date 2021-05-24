@@ -10,7 +10,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.validation.PenCode;
 import javax.validation.constraints.NotNull;
 
 /**
- * Klasa DTO reprezentująca proces resetowania hasła użytkownika
+ * Klasa DTO reprezentująca resetowanie hasła użytkownika
  */
 @Data
 @AllArgsConstructor

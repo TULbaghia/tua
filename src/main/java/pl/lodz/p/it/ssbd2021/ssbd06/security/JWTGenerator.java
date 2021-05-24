@@ -34,6 +34,11 @@ public class JWTGenerator {
         JWT_ISS = jwtConfig.getJwtIss();
     }
 
+    /**
+     * Generuje token JWT w formacie String
+     * @param result
+     * @return wygenerowany token
+     */
     public String generateJWTString(CredentialValidationResult result) {
         try {
             final JWSSigner signer = new MACSigner(SECRET_KEY);
@@ -54,6 +59,11 @@ public class JWTGenerator {
         }
     }
 
+    /**
+     * Odświeża podany token JWT
+     * @param tokenToUpdate token przeznaczony do odświeżenia
+     * @return nowy token JWT
+     */
     public String updateJWTString(String tokenToUpdate) {
         try {
             final JWSSigner signer = new MACSigner(SECRET_KEY);
@@ -77,6 +87,11 @@ public class JWTGenerator {
         }
     }
 
+    /**
+     * Przeprowadza proces walidacji tokenu JWT
+     * @param tokenToValidate token przeznaczony do walidacji
+     * @return wartość prawda/fałsz reprezentująca poprawność tokenu JWT
+     */
     public boolean validateJWT(String tokenToValidate) {
         try {
             JWSObject jwsObject = JWSObject.parse(tokenToValidate);

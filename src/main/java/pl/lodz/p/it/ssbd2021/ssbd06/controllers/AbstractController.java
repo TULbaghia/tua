@@ -11,7 +11,8 @@ import javax.ws.rs.core.Context;
 import java.util.logging.Level;
 
 /**
- * Do powtarzania transakcji aplikacyjnych.
+ * Klasa abstrakcyjna definiująca metody wspólne dla wszystkich kontrolerów.
+ * Służy do powtarzania transakcji aplikacyjnych.
  */
 @Log
 public abstract class AbstractController {

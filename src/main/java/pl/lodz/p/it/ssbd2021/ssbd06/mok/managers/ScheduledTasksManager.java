@@ -16,6 +16,9 @@ import javax.interceptor.Interceptors;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Odpowiada za przetwarzanie logiki biznesowej dotyczącej działań wykonywanych w konkretnym momencie czasu przez system.
+ */
 @Startup
 @Singleton
 @Interceptors({LoggingInterceptor.class})
@@ -37,7 +40,7 @@ public class ScheduledTasksManager {
      *  Usuwa konta użytkowników nie potwierdzonych
      *
      * @param time
-     * @throws AppBaseException
+     * @throws AppBaseException w przypadku gdy operacja zakończy się niepowodzeniem
      */
     @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -58,7 +61,7 @@ public class ScheduledTasksManager {
 
     /**
      * Wysyła powtórnie mail aktywacyjny do użytkownika
-     *
+     * @param account konto użytkownika do którego ma zostać wysłany mail
      * @throws AppBaseException gdy dane konto nie istnieje lub jest zweryfikowane
      */
     public void sendRepeatedEmailNotification(Account account) throws AppBaseException {
@@ -75,7 +78,7 @@ public class ScheduledTasksManager {
      *  następuje usunięcie żetonu.
      *
      * @param time
-     * @throws AppBaseException
+     * @throws AppBaseException w przypadku gdy operacja zakończy się niepowodzeniem
      */
     @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)

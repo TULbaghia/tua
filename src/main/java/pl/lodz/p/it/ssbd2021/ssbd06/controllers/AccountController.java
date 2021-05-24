@@ -19,6 +19,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+/**
+ * Kontroler odpowiadający zasobom reprezentującym logikę obsługi kont.
+ */
 @Path("/accounts")
 public class AccountController extends AbstractController {
 
@@ -182,9 +185,9 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Zwraca listę wszystkich użytkowników systemu reprezentowanych jako DTO.
+     * Zwraca listę wszystkich użytkowników systemu.
      *
-     * @return lista użytkowników w formie DTO
+     * @return lista użytkowników
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @GET

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component, useEffect} from "react";
 import dog from "../images/dog_gradient.jpg";
 import logo from "../images/logo.png";
 import hand from "../images/hand.jpg";
@@ -15,7 +15,9 @@ function UserInfo(props) {
   const {token, setToken} = useLocale();
 
   console.log(token)
-  getUserLanguage(token, i18n)
+  useEffect(() => {
+    getUserLanguage(token, i18n)
+  }, [])
 
   const userInfo = {
     login: "mszewc",

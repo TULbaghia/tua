@@ -1,13 +1,10 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 
-import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ClientData;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.*;
-import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
@@ -194,18 +191,14 @@ public class AccountManager {
     }
 
     /**
-     * Zwraca listę wszystkich kont w systemie w formacie DTO.
+     * Zwraca listę wszystkich kont w systemie.
      *
-     * @return lista kont jako DTO
+     * @return lista kont
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @RolesAllowed("getAllAccounts")
-    public List<AccountDto> getAllAccounts() throws AppBaseException {
-        List<AccountDto> resultList = new ArrayList<>();
-        for (Account account : accountFacade.findAll()) {
-            resultList.add(Mappers.getMapper(IAccountMapper.class).toAccountDto(account));
-        }
-        return resultList;
+    public List<Account> getAllAccounts() throws AppBaseException {
+        return new ArrayList<>(accountFacade.findAll());
     }
 
     /**
@@ -216,8 +209,8 @@ public class AccountManager {
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @RolesAllowed({"getOwnAccountInfo", "getOtherAccountInfo"})
-    public AccountDto getAccount(String login) throws AppBaseException {
-        return Mappers.getMapper(IAccountMapper.class).toAccountDto(accountFacade.findByLogin(login));
+    public Account getAccount(String login) throws AppBaseException {
+        return (accountFacade.findByLogin(login));
     }
 
     /**

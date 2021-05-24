@@ -21,6 +21,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -107,19 +108,24 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("getAllAccounts")
     public List<AccountDto> getAllAccounts() throws AppBaseException {
-        return accountManager.getAllAccounts();
+        List<Account> accounts = accountManager.getAllAccounts();
+        List<AccountDto> result = new ArrayList<>();
+        for (Account account: accounts){
+            result.add(Mappers.getMapper(IAccountMapper.class).toAccountDto(account));
+        }
+        return result;
     }
 
     @Override
     @RolesAllowed("getOtherAccountInfo")
     public AccountDto getAccount(String login) throws AppBaseException {
-        return accountManager.getAccount(login);
+        return Mappers.getMapper(IAccountMapper.class).toAccountDto(accountManager.getAccount(login));
     }
 
     @Override
     @RolesAllowed("getOwnAccountInfo")
     public AccountDto getOwnAccountInfo() throws AppBaseException {
-        return accountManager.getAccount(super.getLogin());
+        return Mappers.getMapper(IAccountMapper.class).toAccountDto(accountManager.getAccount(getLogin()));
     }
 
     @Override

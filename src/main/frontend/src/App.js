@@ -34,25 +34,27 @@ class App extends Component {
                 <NotificationProvider>
                     <LoginProvider>
                         <CriticalOperationProvider>
-                            <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
-                                <div>
-                                    <NavigationBar />
-                                    <Switch>
-                                        <Route exact path="/" component={Home}/>
-                                        <Route path="/blog" component={BlogScreen}/>
-                                        <Route exact path="/login" component={Login}/>
-                                        <Route path="/signUp" component={SignUp}/>
-                                        <Route path="/pong" component={PingPong}/>
-                                        <Route path="/errors/forbidden" component={Forbidden}/>
-                                        <Route path="/errors/internal" component={InternalError}/>
-                                        <Route path="/login/password-reset" component={PasswordReset}/>
-                                        <Route path="/confirmedAccount" component={ConfirmedAccount} />
-                                        <Route path="/home" component={UserInfo}/>
-                                        <Route component={NotFound}/>
-                                    </Switch>
-                                    <Footer />
-                                </div>
-                            </Router>
+                            <LoginProvider>
+                                <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
+                                    <div>
+                                        <NavigationBar />
+                                        <Switch>
+                                            <Route exact path="/" component={Home}/>
+                                            <Route path="/blog" component={BlogScreen}/>
+                                            <Route exact path="/login" component={Login}/>
+                                            <Route path="/signUp" component={SignUp}/>
+                                            <Route path="/pong" component={PingPong}/>
+                                            <Route path="/errors/forbidden" component={Forbidden}/>
+                                            <Route path="/errors/internal" component={InternalError}/>
+                                            <Route path="/login/password-reset" component={PasswordReset}/>
+                                            <Route path="/confirmedAccount" component={ConfirmedAccount} />
+                                            <Route path="/home" component={UserInfo}/>
+                                            <Route component={NotFound}/>
+                                        </Switch>
+                                        <Footer />
+                                    </div>
+                                </Router>
+                            </LoginProvider>
                         </CriticalOperationProvider>
                     </LoginProvider>
                 </NotificationProvider>

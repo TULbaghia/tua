@@ -4,13 +4,14 @@ import {useNotificationCustom} from "./Notification/NotificationProvider";
 import {dialogDuration, dialogType} from "./Notification/Notification";
 import i18n from "../i18n";
 import axios from "axios";
+import {useRefreshNotificationCustom} from "./Notification/RefreshNotificationProvider";
 
 const LoginContext = React.createContext('');
 
 export const LoginProvider = ({ children }) => {
     const [token, setToken] = useState('');
 
-    const dispatch = useNotificationCustom();
+    const dispatch = useRefreshNotificationCustom();
 
     const handleRefreshBox = () => {
         dispatch({
@@ -24,13 +25,23 @@ export const LoginProvider = ({ children }) => {
     }
 
     const refreshToken = () => {
-        axios.post('https://localhost:8181/resources/auth/refresh-token', token, {
+        axios.post('https://localhost:8181/resources/auth/refresh-token', localStorage.getItem("token"), {
             headers:{
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             }
         }).then(res => res.data)
-            .then(token => saveToken(token))
+            .then(token => saveToken(token));
+        setTimeout(() => {
+            schedule();
+        }, 1000)
     }
+
+    const schedule = () => {
+        return setTimeout(() => {
+            handleRefreshBox();
+        }, new Date(jwt_decode(localStorage.getItem("token")).exp * 1000) - new Date() - REFRESH_TIME);
+    }
+
     useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if(storedToken === undefined || storedToken == null) return
@@ -49,6 +60,12 @@ export const LoginProvider = ({ children }) => {
         setToken(storedToken)
     }
 })
+
+    useEffect(() =>{
+        const storedToken = localStorage.getItem("token");
+        if(storedToken === undefined || storedToken == null) return
+        schedule()
+    }, [])
 
 const saveToken = (value) => {
     setToken(value)

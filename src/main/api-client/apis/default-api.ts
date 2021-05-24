@@ -24,6 +24,8 @@ import { PasswordChangeDto } from '../models';
 import { PasswordChangeOtherDto } from '../models';
 import { PasswordResetDto } from '../models';
 import { RegisterAccountDto } from '../models';
+// @ts-ignore
+import { handleError } from '../../frontend/src/errorHandler.js';
 /**
  * DefaultApi - axios parameter creator
  * @export
@@ -37,37 +39,41 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         blockAccount: async (login: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'login' is not null or undefined
-            if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling blockAccount.');
-            }
-            const localVarPath = `/resources/accounts/{login}/block`
-                .replace(`{${"login"}}`, encodeURIComponent(String(login)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                // verify required parameter 'login' is not null or undefined
+                if (login === null || login === undefined) {
+                    throw new RequiredError('login','Required parameter login was null or undefined when calling blockAccount.');
+                }
+                const localVarPath = `/resources/accounts/{login}/block`
+                    .replace(`{${"login"}}`, encodeURIComponent(String(login)));
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -76,36 +82,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         changeOtherPassword: async (body?: PasswordChangeOtherDto, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts/user/password`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                const localVarPath = `/resources/accounts/user/password`;
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+                localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+                localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -114,36 +124,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         changePassword: async (body?: PasswordChangeDto, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts/self/password`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                const localVarPath = `/resources/accounts/self/password`;
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+                localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+                localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -152,37 +166,41 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         confirm: async (code: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'code' is not null or undefined
-            if (code === null || code === undefined) {
-                throw new RequiredError('code','Required parameter code was null or undefined when calling confirm.');
-            }
-            const localVarPath = `/resources/accounts/confirm/{code}`
-                .replace(`{${"code"}}`, encodeURIComponent(String(code)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                // verify required parameter 'code' is not null or undefined
+                if (code === null || code === undefined) {
+                    throw new RequiredError('code','Required parameter code was null or undefined when calling confirm.');
+                }
+                const localVarPath = `/resources/accounts/confirm/{code}`
+                    .replace(`{${"code"}}`, encodeURIComponent(String(code)));
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -191,37 +209,41 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         confirmEmail: async (code: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'code' is not null or undefined
-            if (code === null || code === undefined) {
-                throw new RequiredError('code','Required parameter code was null or undefined when calling confirmEmail.');
-            }
-            const localVarPath = `/resources/accounts/user/confirm/email/{code}`
-                .replace(`{${"code"}}`, encodeURIComponent(String(code)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                // verify required parameter 'code' is not null or undefined
+                if (code === null || code === undefined) {
+                    throw new RequiredError('code','Required parameter code was null or undefined when calling confirmEmail.');
+                }
+                const localVarPath = `/resources/accounts/user/confirm/email/{code}`
+                    .replace(`{${"code"}}`, encodeURIComponent(String(code)));
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -231,41 +253,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         editOtherAccountDetails: async (login: string, body?: AccountPersonalDetailsDto, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'login' is not null or undefined
-            if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling editOtherAccountDetails.');
-            }
-            const localVarPath = `/resources/accounts/edit/{login}`
-                .replace(`{${"login"}}`, encodeURIComponent(String(login)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                // verify required parameter 'login' is not null or undefined
+                if (login === null || login === undefined) {
+                    throw new RequiredError('login','Required parameter login was null or undefined when calling editOtherAccountDetails.');
+                }
+                const localVarPath = `/resources/accounts/edit/{login}`
+                    .replace(`{${"login"}}`, encodeURIComponent(String(login)));
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+                localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+                localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -275,41 +301,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         editOtherAccountEmail: async (login: string, body?: EmailDto, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'login' is not null or undefined
-            if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling editOtherAccountEmail.');
-            }
-            const localVarPath = `/resources/accounts/user/edit/email/{login}`
-                .replace(`{${"login"}}`, encodeURIComponent(String(login)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                // verify required parameter 'login' is not null or undefined
+                if (login === null || login === undefined) {
+                    throw new RequiredError('login','Required parameter login was null or undefined when calling editOtherAccountEmail.');
+                }
+                const localVarPath = `/resources/accounts/user/edit/email/{login}`
+                    .replace(`{${"login"}}`, encodeURIComponent(String(login)));
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+                localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+                localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -318,36 +348,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         editOwnAccountDetails: async (body?: AccountPersonalDetailsDto, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts/edit`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                const localVarPath = `/resources/accounts/edit`;
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+                localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+                localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -356,36 +390,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         editOwnAccountEmail: async (body?: EmailDto, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts/self/edit/email`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                const localVarPath = `/resources/accounts/self/edit/email`;
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+                localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+                localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -393,32 +431,36 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         getAllAccountsList: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                const localVarPath = `/resources/accounts`;
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -426,32 +468,36 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         getSelfRole: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts/self/role`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                const localVarPath = `/resources/accounts/self/role`;
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -460,37 +506,41 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         getUserRole: async (login: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'login' is not null or undefined
-            if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling getUserRole.');
-            }
-            const localVarPath = `/resources/accounts/{login}/role`
-                .replace(`{${"login"}}`, encodeURIComponent(String(login)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                // verify required parameter 'login' is not null or undefined
+                if (login === null || login === undefined) {
+                    throw new RequiredError('login','Required parameter login was null or undefined when calling getUserRole.');
+                }
+                const localVarPath = `/resources/accounts/{login}/role`
+                    .replace(`{${"login"}}`, encodeURIComponent(String(login)));
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -500,42 +550,46 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         grantAccessLevel: async (login: string, accessLevel: any, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'login' is not null or undefined
-            if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling grantAccessLevel.');
-            }
-            // verify required parameter 'accessLevel' is not null or undefined
-            if (accessLevel === null || accessLevel === undefined) {
-                throw new RequiredError('accessLevel','Required parameter accessLevel was null or undefined when calling grantAccessLevel.');
-            }
-            const localVarPath = `/resources/accounts/user/{login}/grant/{accessLevel}`
-                .replace(`{${"login"}}`, encodeURIComponent(String(login)))
-                .replace(`{${"accessLevel"}}`, encodeURIComponent(String(accessLevel)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                // verify required parameter 'login' is not null or undefined
+                if (login === null || login === undefined) {
+                    throw new RequiredError('login','Required parameter login was null or undefined when calling grantAccessLevel.');
+                }
+                // verify required parameter 'accessLevel' is not null or undefined
+                if (accessLevel === null || accessLevel === undefined) {
+                    throw new RequiredError('accessLevel','Required parameter accessLevel was null or undefined when calling grantAccessLevel.');
+                }
+                const localVarPath = `/resources/accounts/user/{login}/grant/{accessLevel}`
+                    .replace(`{${"login"}}`, encodeURIComponent(String(login)))
+                    .replace(`{${"accessLevel"}}`, encodeURIComponent(String(accessLevel)));
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -544,36 +598,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         login: async (body?: LoginDataDto, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/auth/auth`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                const localVarPath = `/resources/auth/auth`;
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+                localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+                localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -581,32 +639,36 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         logout: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/auth/logout`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                const localVarPath = `/resources/auth/logout`;
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -615,36 +677,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         registerAccount: async (body?: RegisterAccountDto, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts/register`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                const localVarPath = `/resources/accounts/register`;
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+                localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+                localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -653,36 +719,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         resetPassword: async (body?: PasswordResetDto, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts/user/reset`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                const localVarPath = `/resources/accounts/user/reset`;
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+                localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+                localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -692,42 +762,46 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         revokeAccessLevel: async (login: string, accessLevel: any, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'login' is not null or undefined
-            if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling revokeAccessLevel.');
-            }
-            // verify required parameter 'accessLevel' is not null or undefined
-            if (accessLevel === null || accessLevel === undefined) {
-                throw new RequiredError('accessLevel','Required parameter accessLevel was null or undefined when calling revokeAccessLevel.');
-            }
-            const localVarPath = `/resources/accounts/user/{login}/revoke/{accessLevel}`
-                .replace(`{${"login"}}`, encodeURIComponent(String(login)))
-                .replace(`{${"accessLevel"}}`, encodeURIComponent(String(accessLevel)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                // verify required parameter 'login' is not null or undefined
+                if (login === null || login === undefined) {
+                    throw new RequiredError('login','Required parameter login was null or undefined when calling revokeAccessLevel.');
+                }
+                // verify required parameter 'accessLevel' is not null or undefined
+                if (accessLevel === null || accessLevel === undefined) {
+                    throw new RequiredError('accessLevel','Required parameter accessLevel was null or undefined when calling revokeAccessLevel.');
+                }
+                const localVarPath = `/resources/accounts/user/{login}/revoke/{accessLevel}`
+                    .replace(`{${"login"}}`, encodeURIComponent(String(login)))
+                    .replace(`{${"accessLevel"}}`, encodeURIComponent(String(accessLevel)));
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -736,37 +810,41 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         sendResetPassword: async (login: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'login' is not null or undefined
-            if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling sendResetPassword.');
-            }
-            const localVarPath = `/resources/accounts/user/{login}/reset`
-                .replace(`{${"login"}}`, encodeURIComponent(String(login)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                // verify required parameter 'login' is not null or undefined
+                if (login === null || login === undefined) {
+                    throw new RequiredError('login','Required parameter login was null or undefined when calling sendResetPassword.');
+                }
+                const localVarPath = `/resources/accounts/user/{login}/reset`
+                    .replace(`{${"login"}}`, encodeURIComponent(String(login)));
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -775,37 +853,41 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         sendResetPasswordAgain: async (login: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'login' is not null or undefined
-            if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling sendResetPasswordAgain.');
-            }
-            const localVarPath = `/resources/accounts/user/{login}/resetagain`
-                .replace(`{${"login"}}`, encodeURIComponent(String(login)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                // verify required parameter 'login' is not null or undefined
+                if (login === null || login === undefined) {
+                    throw new RequiredError('login','Required parameter login was null or undefined when calling sendResetPasswordAgain.');
+                }
+                const localVarPath = `/resources/accounts/user/{login}/resetagain`
+                    .replace(`{${"login"}}`, encodeURIComponent(String(login)));
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -814,37 +896,41 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         showAccount: async (login: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'login' is not null or undefined
-            if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling showAccount.');
-            }
-            const localVarPath = `/resources/accounts/user/{login}`
-                .replace(`{${"login"}}`, encodeURIComponent(String(login)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                // verify required parameter 'login' is not null or undefined
+                if (login === null || login === undefined) {
+                    throw new RequiredError('login','Required parameter login was null or undefined when calling showAccount.');
+                }
+                const localVarPath = `/resources/accounts/user/{login}`
+                    .replace(`{${"login"}}`, encodeURIComponent(String(login)));
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -852,32 +938,36 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         showAccountInformation: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/accounts/user`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                const localVarPath = `/resources/accounts/user`;
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -886,37 +976,41 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         unblockAccount: async (login: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'login' is not null or undefined
-            if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling unblockAccount.');
-            }
-            const localVarPath = `/resources/accounts/{login}/unblock`
-                .replace(`{${"login"}}`, encodeURIComponent(String(login)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            try {
+                // verify required parameter 'login' is not null or undefined
+                if (login === null || login === undefined) {
+                    throw new RequiredError('login','Required parameter login was null or undefined when calling unblockAccount.');
+                }
+                const localVarPath = `/resources/accounts/{login}/unblock`
+                    .replace(`{${"login"}}`, encodeURIComponent(String(login)));
+                // use dummy base URL string because the URL constructor only accepts absolute URLs.
+                const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+                let baseOptions;
+                if (configuration) {
+                    baseOptions = configuration.baseOptions;
+                }
+                const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+                const localVarHeaderParameter = {} as any;
+                const localVarQueryParameter = {} as any;
 
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+                const query = new URLSearchParams(localVarUrlObj.search);
+                for (const key in localVarQueryParameter) {
+                    query.set(key, localVarQueryParameter[key]);
+                }
+                for (const key in options.query) {
+                    query.set(key, options.query[key]);
+                }
+                localVarUrlObj.search = (new URLSearchParams(query)).toString();
+                let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+                localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
+                return {
+                    url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                    options: localVarRequestOptions,
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
     }
 };
@@ -934,11 +1028,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async blockAccount(login: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).blockAccount(login, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).blockAccount(login, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -947,11 +1045,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async changeOtherPassword(body?: PasswordChangeOtherDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).changeOtherPassword(body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).changeOtherPassword(body, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -960,11 +1062,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async changePassword(body?: PasswordChangeDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            try {
             const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).changePassword(body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -973,11 +1079,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async confirm(code: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).confirm(code, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).confirm(code, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -986,11 +1096,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async confirmEmail(code: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).confirmEmail(code, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).confirmEmail(code, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1000,11 +1114,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async editOtherAccountDetails(login: string, body?: AccountPersonalDetailsDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).editOtherAccountDetails(login, body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).editOtherAccountDetails(login, body, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1014,11 +1132,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async editOtherAccountEmail(login: string, body?: EmailDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).editOtherAccountEmail(login, body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).editOtherAccountEmail(login, body, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1027,11 +1149,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async editOwnAccountDetails(body?: AccountPersonalDetailsDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).editOwnAccountDetails(body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).editOwnAccountDetails(body, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1040,11 +1166,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async editOwnAccountEmail(body?: EmailDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).editOwnAccountEmail(body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).editOwnAccountEmail(body, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1052,11 +1182,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async getAllAccountsList(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AccountDto>>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getAllAccountsList(options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getAllAccountsList(options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1064,11 +1198,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async getSelfRole(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getSelfRole(options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getSelfRole(options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1077,11 +1215,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async getUserRole(login: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getUserRole(login, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getUserRole(login, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1091,11 +1233,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async grantAccessLevel(login: string, accessLevel: any, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).grantAccessLevel(login, accessLevel, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).grantAccessLevel(login, accessLevel, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1104,11 +1250,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async login(body?: LoginDataDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).login(body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).login(body, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1116,11 +1266,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async logout(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).logout(options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).logout(options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1129,11 +1283,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async registerAccount(body?: RegisterAccountDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).registerAccount(body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).registerAccount(body, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1142,11 +1300,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async resetPassword(body?: PasswordResetDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).resetPassword(body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).resetPassword(body, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1156,11 +1318,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async revokeAccessLevel(login: string, accessLevel: any, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).revokeAccessLevel(login, accessLevel, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).revokeAccessLevel(login, accessLevel, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1169,11 +1335,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async sendResetPassword(login: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).sendResetPassword(login, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).sendResetPassword(login, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1182,11 +1352,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async sendResetPasswordAgain(login: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).sendResetPasswordAgain(login, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).sendResetPasswordAgain(login, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1195,11 +1369,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async showAccount(login: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).showAccount(login, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).showAccount(login, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1207,11 +1385,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async showAccountInformation(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).showAccountInformation(options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).showAccountInformation(options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1220,11 +1402,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async unblockAccount(login: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).unblockAccount(login, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            try {
+                const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).unblockAccount(login, options);
+                return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                    const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                    return axios.request(axiosRequestArgs);
+                };
+            } catch (e) {
+                handleError(e);
+            }
         },
     }
 };
@@ -1242,7 +1428,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         blockAccount(login: string, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).blockAccount(login, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).blockAccount(login, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1251,7 +1441,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         changeOtherPassword(body?: PasswordChangeOtherDto, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).changeOtherPassword(body, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).changeOtherPassword(body, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1260,7 +1454,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         changePassword(body?: PasswordChangeDto, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).changePassword(body, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).changePassword(body, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1269,7 +1467,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         confirm(code: string, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).confirm(code, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).confirm(code, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1278,7 +1480,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         confirmEmail(code: string, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).confirmEmail(code, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).confirmEmail(code, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1288,7 +1494,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         editOtherAccountDetails(login: string, body?: AccountPersonalDetailsDto, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).editOtherAccountDetails(login, body, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).editOtherAccountDetails(login, body, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1298,7 +1508,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         editOtherAccountEmail(login: string, body?: EmailDto, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).editOtherAccountEmail(login, body, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).editOtherAccountEmail(login, body, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1307,7 +1521,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         editOwnAccountDetails(body?: AccountPersonalDetailsDto, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).editOwnAccountDetails(body, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).editOwnAccountDetails(body, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1316,7 +1534,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         editOwnAccountEmail(body?: EmailDto, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).editOwnAccountEmail(body, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).editOwnAccountEmail(body, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1324,7 +1546,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         getAllAccountsList(options?: any): AxiosPromise<Array<AccountDto>> {
-            return DefaultApiFp(configuration).getAllAccountsList(options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).getAllAccountsList(options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1332,7 +1558,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         getSelfRole(options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).getSelfRole(options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).getSelfRole(options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1341,7 +1571,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         getUserRole(login: string, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).getUserRole(login, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).getUserRole(login, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1351,7 +1585,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         grantAccessLevel(login: string, accessLevel: any, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).grantAccessLevel(login, accessLevel, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).grantAccessLevel(login, accessLevel, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1360,7 +1598,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         login(body?: LoginDataDto, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).login(body, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).login(body, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1368,7 +1610,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         logout(options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).logout(options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).logout(options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1377,7 +1623,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         registerAccount(body?: RegisterAccountDto, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).registerAccount(body, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).registerAccount(body, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1386,7 +1636,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         resetPassword(body?: PasswordResetDto, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).resetPassword(body, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).resetPassword(body, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1396,7 +1650,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         revokeAccessLevel(login: string, accessLevel: any, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).revokeAccessLevel(login, accessLevel, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).revokeAccessLevel(login, accessLevel, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1405,7 +1663,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         sendResetPassword(login: string, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).sendResetPassword(login, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).sendResetPassword(login, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1414,7 +1676,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         sendResetPasswordAgain(login: string, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).sendResetPasswordAgain(login, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).sendResetPasswordAgain(login, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1423,7 +1689,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         showAccount(login: string, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).showAccount(login, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).showAccount(login, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1431,7 +1701,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         showAccountInformation(options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).showAccountInformation(options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).showAccountInformation(options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
         /**
          * 
@@ -1440,7 +1714,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         unblockAccount(login: string, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).unblockAccount(login, options).then((request) => request(axios, basePath));
+            try {
+                return DefaultApiFp(configuration).unblockAccount(login, options).then((request) => request(axios, basePath));
+            } catch (e) {
+                handleError(e);
+            }
         },
     };
 };
@@ -1460,7 +1738,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public blockAccount(login: string, options?: any) {
-        return DefaultApiFp(this.configuration).blockAccount(login, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).blockAccount(login, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1470,7 +1752,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public changeOtherPassword(body?: PasswordChangeOtherDto, options?: any) {
-        return DefaultApiFp(this.configuration).changeOtherPassword(body, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).changeOtherPassword(body, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1480,7 +1766,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public changePassword(body?: PasswordChangeDto, options?: any) {
-        return DefaultApiFp(this.configuration).changePassword(body, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).changePassword(body, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1490,7 +1780,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public confirm(code: string, options?: any) {
-        return DefaultApiFp(this.configuration).confirm(code, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).confirm(code, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1500,7 +1794,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public confirmEmail(code: string, options?: any) {
-        return DefaultApiFp(this.configuration).confirmEmail(code, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).confirmEmail(code, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1511,7 +1809,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public editOtherAccountDetails(login: string, body?: AccountPersonalDetailsDto, options?: any) {
-        return DefaultApiFp(this.configuration).editOtherAccountDetails(login, body, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).editOtherAccountDetails(login, body, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1522,7 +1824,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public editOtherAccountEmail(login: string, body?: EmailDto, options?: any) {
-        return DefaultApiFp(this.configuration).editOtherAccountEmail(login, body, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).editOtherAccountEmail(login, body, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1532,7 +1838,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public editOwnAccountDetails(body?: AccountPersonalDetailsDto, options?: any) {
-        return DefaultApiFp(this.configuration).editOwnAccountDetails(body, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).editOwnAccountDetails(body, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1542,7 +1852,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public editOwnAccountEmail(body?: EmailDto, options?: any) {
-        return DefaultApiFp(this.configuration).editOwnAccountEmail(body, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).editOwnAccountEmail(body, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1551,7 +1865,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public getAllAccountsList(options?: any) {
-        return DefaultApiFp(this.configuration).getAllAccountsList(options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).getAllAccountsList(options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1560,7 +1878,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public getSelfRole(options?: any) {
-        return DefaultApiFp(this.configuration).getSelfRole(options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).getSelfRole(options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1570,7 +1892,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public getUserRole(login: string, options?: any) {
-        return DefaultApiFp(this.configuration).getUserRole(login, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).getUserRole(login, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1581,7 +1907,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public grantAccessLevel(login: string, accessLevel: any, options?: any) {
-        return DefaultApiFp(this.configuration).grantAccessLevel(login, accessLevel, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).grantAccessLevel(login, accessLevel, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1591,7 +1921,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public login(body?: LoginDataDto, options?: any) {
-        return DefaultApiFp(this.configuration).login(body, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).login(body, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1600,7 +1934,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public logout(options?: any) {
-        return DefaultApiFp(this.configuration).logout(options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).logout(options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1610,7 +1948,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public registerAccount(body?: RegisterAccountDto, options?: any) {
-        return DefaultApiFp(this.configuration).registerAccount(body, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).registerAccount(body, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1620,7 +1962,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public resetPassword(body?: PasswordResetDto, options?: any) {
-        return DefaultApiFp(this.configuration).resetPassword(body, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).resetPassword(body, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1631,7 +1977,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public revokeAccessLevel(login: string, accessLevel: any, options?: any) {
-        return DefaultApiFp(this.configuration).revokeAccessLevel(login, accessLevel, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).revokeAccessLevel(login, accessLevel, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1641,7 +1991,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public sendResetPassword(login: string, options?: any) {
-        return DefaultApiFp(this.configuration).sendResetPassword(login, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).sendResetPassword(login, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1651,7 +2005,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public sendResetPasswordAgain(login: string, options?: any) {
-        return DefaultApiFp(this.configuration).sendResetPasswordAgain(login, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).sendResetPasswordAgain(login, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1661,7 +2019,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public showAccount(login: string, options?: any) {
-        return DefaultApiFp(this.configuration).showAccount(login, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).showAccount(login, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1670,7 +2032,11 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public showAccountInformation(options?: any) {
-        return DefaultApiFp(this.configuration).showAccountInformation(options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).showAccountInformation(options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
     /**
      * 
@@ -1680,6 +2046,10 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public unblockAccount(login: string, options?: any) {
-        return DefaultApiFp(this.configuration).unblockAccount(login, options).then((request) => request(this.axios, this.basePath));
+        try {
+            return DefaultApiFp(this.configuration).unblockAccount(login, options).then((request) => request(this.axios, this.basePath));
+        } catch (e) {
+            handleError(e);
+        }
     }
 }

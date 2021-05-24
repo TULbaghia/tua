@@ -22,8 +22,12 @@ function SignUp(props) {
     const recaptchaRef = React.createRef();
     const dispatchNotificationWarning = useNotificationWarningAndLong();
 
-    const handleClick = (e) => {
-        e.preventDefault()
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleRecaptcha(handleClick, recaptchaRef, dispatchNotificationWarning);
+    }
+
+    const handleClick = () => {
         api.registerAccount({
             login: login,
             email: email,
@@ -123,11 +127,11 @@ function SignUp(props) {
                     </div>
                     <button className="btn btn-lg btn-primary btn-block mb-3"
                             style={{backgroundColor: "#7749F8"}}
-                            onClick={() => handleRecaptcha(handleClick, recaptchaRef, dispatchNotificationWarning)}>
+                            onClick={handleSubmit}>
                         {t('signUp')}
                     </button>
+                    <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                 </form>
-                <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
             </div>
         </div>
 

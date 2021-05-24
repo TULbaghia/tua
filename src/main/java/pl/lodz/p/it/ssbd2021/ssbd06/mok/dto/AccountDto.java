@@ -4,7 +4,6 @@ import lombok.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.Signable;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.*;
 
-import java.net.Inet4Address;
 import java.util.Date;
 
 /**
@@ -29,10 +28,10 @@ public class AccountDto implements Signable {
     private boolean enabled;
     private boolean confirmed;
     private Long version;
-    private Date lasSuccessfulLoginDate;
-    private Inet4Address lastSuccessfulLoginIpAddress;
+    private Date lastSuccessfulLoginDate;
+    private String lastSuccessfulLoginIpAddress;
     private Date lastFailedLoginDate;
-    private Inet4Address lastFailedLoginIpAddress;
+    private String lastFailedLoginIpAddress;
 
     @Override
     public String getMessageToSign() {

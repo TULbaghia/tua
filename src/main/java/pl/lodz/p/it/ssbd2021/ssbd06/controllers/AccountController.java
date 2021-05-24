@@ -12,6 +12,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.PenCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.UserEmail;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -39,6 +40,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException gdy nie udało się zablokowanie konta.
      */
     @PUT
+    @RolesAllowed("blockAccount")
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
     public void blockAccount(@NotNull @Login @PathParam("login") @Valid String login)
@@ -53,6 +55,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException gdy nie udało się odblokowanie konta.
      */
     @PUT
+    @RolesAllowed("unblockAccount")
     @Path("/{login}/unblock")
     @Consumes(MediaType.APPLICATION_JSON)
     public void unblockAccount(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {
@@ -92,6 +95,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
     @PUT
+    @RolesAllowed("editOwnAccountDetails")
     @EtagValidatorFilterBinding
     @Path("/edit")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -108,6 +112,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
     @PUT
+    @RolesAllowed("editOtherAccountDetails")
     @EtagValidatorFilterBinding
     @Path("/edit/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -125,6 +130,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @GET
+    @RolesAllowed("getOtherAccountInfo")
     @Path("/{login}/role")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserRole(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {
@@ -142,6 +148,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @GET
+    @RolesAllowed("getOwnAccountInfo")
     @Path("/self/role")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSelfRole() throws AppBaseException {
@@ -160,6 +167,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PATCH
+    @RolesAllowed("addAccessLevel")
     @EtagValidatorFilterBinding
     @Path("/user/{login}/grant/{accessLevel}")
     public void grantAccessLevel(@NotNull @Login @PathParam("login") @Valid String login,
@@ -175,6 +183,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PATCH
+    @RolesAllowed("deleteAccessLevel")
     @EtagValidatorFilterBinding
     @Path("/user/{login}/revoke/{accessLevel}")
     public void revokeAccessLevel(@NotNull @Login @PathParam("login") @Valid String login,
@@ -189,6 +198,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @GET
+    @RolesAllowed("getAllAccounts")
     @Produces(MediaType.APPLICATION_JSON)
     public List<AccountDto> getAllAccountsList() throws AppBaseException {
         return repeat(() -> accountEndpoint.getAllAccounts(), accountEndpoint);
@@ -202,6 +212,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @GET
+    @RolesAllowed("getOtherAccountInfo")
     @Path("/user/{login}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response showAccount(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {
@@ -219,6 +230,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @GET
+    @RolesAllowed("getOwnAccountInfo")
     @Path("/user")
     @Produces(MediaType.APPLICATION_JSON)
     public Response showAccountInformation() throws AppBaseException {
@@ -236,6 +248,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PUT
+    @RolesAllowed("editOwnPassword")
     @EtagValidatorFilterBinding
     @Path("/self/password")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -287,6 +300,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PUT
+    @RolesAllowed("editOtherPassword")
     @Path("/user/password")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changeOtherPassword(@NotNull @Valid PasswordChangeOtherDto passwordChangeOtherDto) throws AppBaseException {
@@ -300,6 +314,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
     @PUT
+    @RolesAllowed("editOwnAccountEmail")
     @EtagValidatorFilterBinding
     @Path("/self/edit/email")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -314,6 +329,7 @@ public class AccountController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
     @PUT
+    @RolesAllowed("editOtherAccountEmail")
     @EtagValidatorFilterBinding
     @Path("/user/edit/email/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -340,6 +356,7 @@ public class AccountController extends AbstractController {
      * @return kod odpowiedzi HTTP 200
      */
     @GET
+    @RolesAllowed("changeAccessLevel")
     @Path("changeOwnAccessLevel/{accessLevel}")
     public Response changeOwnAccessLevel(@NotNull @PathParam("accessLevel") AccessLevel accessLevel) {
         accountEndpoint.changeOwnAccessLevel(accessLevel);

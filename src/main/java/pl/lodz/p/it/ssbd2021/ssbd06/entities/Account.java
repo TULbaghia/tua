@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
-import java.net.Inet4Address;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -129,7 +128,7 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Setter
     @Column(name = "last_successful_login_ip_address")
-    private Inet4Address lastSuccessfulLoginIpAddress;
+    private String lastSuccessfulLoginIpAddress;
 
     @Setter
     @Temporal(TemporalType.TIMESTAMP)
@@ -138,7 +137,7 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Setter
     @Column(name = "last_failed_login_ip_address")
-    private Inet4Address lastFailedLoginIpAddress;
+    private String lastFailedLoginIpAddress;
 
     @Setter
     @Min(value = 0)

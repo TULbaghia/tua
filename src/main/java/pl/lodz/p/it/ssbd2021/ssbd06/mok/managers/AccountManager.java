@@ -5,10 +5,12 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ClientData;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.*;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
@@ -24,13 +26,12 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import java.util.*;
 import javax.security.enterprise.SecurityContext;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import javax.servlet.ServletContext;
+import javax.ws.rs.core.Context;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -53,11 +54,19 @@ public class AccountManager {
     @Inject
     private Config codeConfig;
 
+    @Context
+    ServletContext servletContext;
+
     private static int RESET_EXPIRATION_MINUTES;
+
+    private static int INCORRECT_LOGIN_ATTEMPTS_LIMIT;
+
 
     @PostConstruct
     private void init() {
         RESET_EXPIRATION_MINUTES = codeConfig.getResetExpirationMinutes();
+        INCORRECT_LOGIN_ATTEMPTS_LIMIT = Integer
+                .parseInt(servletContext.getInitParameter("incorrectLoginAttemptsLimit"));
     }
 
     /**
@@ -160,11 +169,10 @@ public class AccountManager {
     @PermitAll
     public void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
-        Inet4Address address = Inet4AddressFromString(ipAddress);
-        account.setLastFailedLoginIpAddress(address);
+        account.setLastFailedLoginIpAddress(ipAddress);
         account.setLastFailedLoginDate(authDate);
         int incorrectLoginAttempts = account.getFailedLoginAttemptsCounter() + 1;
-        if (incorrectLoginAttempts == 3) {
+        if (incorrectLoginAttempts == INCORRECT_LOGIN_ATTEMPTS_LIMIT) {
             account.setEnabled(false);
             emailSender.sendLockAccountEmail(account);
             incorrectLoginAttempts = 0;
@@ -185,8 +193,7 @@ public class AccountManager {
     @PermitAll
     public void updateValidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
-        Inet4Address address = Inet4AddressFromString(ipAddress);
-        account.setLastSuccessfulLoginIpAddress(address);
+        account.setLastSuccessfulLoginIpAddress(ipAddress);
         account.setLastSuccessfulLoginDate(authDate);
         account.setFailedLoginAttemptsCounter(0);
 
@@ -289,7 +296,7 @@ public class AccountManager {
         if (!resetCode.getCodeType().equals(CodeType.PASSWORD_RESET)) {
             throw CodeException.codeInvalid();
         }
-        if(resetCode.isUsed()) throw CodeException.codeUsed();
+        if (resetCode.isUsed()) throw CodeException.codeUsed();
         Date expirationTime = new Date(resetCode.getCreationDate().getTime() + (RESET_EXPIRATION_MINUTES * 60000L));
         Date localTime = Timestamp.valueOf(LocalDateTime.now());
         if (localTime.after(expirationTime)) {
@@ -301,31 +308,11 @@ public class AccountManager {
     }
 
     /**
-     * Konwertuje adres IP z String na Inet4Address
-     *
-     * @param ipAddress adres ip jako String
-     * @return adres ip jako Inet4Address
-     */
-    private Inet4Address Inet4AddressFromString(String ipAddress) throws AppBaseException {
-        Inet4Address address = null;
-        try {
-            for (InetAddress addr : Inet4Address.getAllByName(ipAddress)) {
-                if (addr instanceof Inet4Address) {
-                    address = (Inet4Address) addr;
-                }
-            }
-        } catch (UnknownHostException | SecurityException e) {
-            throw ConvertException.convertingIpException(e);
-        }
-        return address;
-    }
-
-    /**
      * Zmienia adres email przypisany do konta użytkownika.
      * Wysyła żeton na aktualny adres email w celu potwierdzenia procesu zmiany adresu email na nowy.
      * Sprawdza, czy docelowy email nie jest loginem żadnego z aktualnych użytkowników.
      *
-     * @param login login użytkownika, którego email podlega zmianie.
+     * @param login    login użytkownika, którego email podlega zmianie.
      * @param newEmail nowy adres email.
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
@@ -336,7 +323,8 @@ public class AccountManager {
 
         try {
             accountExists = accountFacade.findByEmail(newEmail);
-        } catch (NotFoundException ignore) {}
+        } catch (NotFoundException ignore) {
+        }
 
         if (accountExists != null) {
             throw AccountException.emailExists();
@@ -363,7 +351,7 @@ public class AccountManager {
     /**
      * Tworzy obiekt PendingCode o podanym typie.
      *
-     * @param account konto użytkownika, które ma być właścicielem kodu.
+     * @param account  konto użytkownika, które ma być właścicielem kodu.
      * @param codeType typ kodu.
      */
     private PendingCode createPendingCode(Account account, CodeType codeType) {
@@ -378,9 +366,11 @@ public class AccountManager {
     }
 
     /**
-     * Przypisuje nowy adres email do konta użytkownika, które jest właścicielem żetonu. (aktualizacja loginu użytkownika)
+     * Przypisuje nowy adres email do konta użytkownika, które jest właścicielem żetonu. (aktualizacja loginu
+     * użytkownika)
      * Dezaktywuje żeton.
-     * Czyści pole odpowiedzialne za przechowywanie adresu email na potrzeby procesu weryfikacji (pole Account.newEmail).
+     * Czyści pole odpowiedzialne za przechowywanie adresu email na potrzeby procesu weryfikacji (pole Account
+     * .newEmail).
      *
      * @param code żeton zmiany adresu email przypisanego do konta.
      * @throws AppBaseException proces zmiany adresu email przypisanego do konta zakończył się niepowodzeniem.
@@ -388,7 +378,7 @@ public class AccountManager {
     @PermitAll
     public void confirmEmail(String code) throws AppBaseException {
         PendingCode pendingCode = pendingCodeFacade.findByCode(code);
-        if(pendingCode.getCodeType() != CodeType.EMAIL_CHANGE){
+        if (pendingCode.getCodeType() != CodeType.EMAIL_CHANGE) {
             throw CodeException.codeInvalid();
         }
         if (pendingCode.isUsed()) {

@@ -76,7 +76,7 @@ export interface AccountDto {
      * @type {any}
      * @memberof AccountDto
      */
-    lasSuccessfulLoginDate?: any;
+    lastSuccessfulLoginDate?: any;
     /**
      * 
      * @type {any}

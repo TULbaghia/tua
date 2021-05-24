@@ -33,6 +33,9 @@ public class JWTAuthenticationMechanism implements HttpAuthenticationMechanism {
         String authHeader = httpServletRequest.getHeader(AUTHORIZATION);
 
         if (authHeader == null || !authHeader.startsWith(BEARER)) {
+            if (httpMessageContext.isProtected()) {
+                return httpMessageContext.responseUnauthorized();
+            }
             return httpMessageContext.doNothing();
         }
 

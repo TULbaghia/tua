@@ -13,7 +13,11 @@ import javax.annotation.Resource;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.servlet.ServletContext;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Startup
@@ -32,6 +36,9 @@ public class ScheduledTasksManager {
 
     @Resource
     TimerService timerService;
+
+    @Inject
+    private ServletContext context;
 
     /**
      *  Usuwa konta użytkowników nie potwierdzonych
@@ -80,17 +87,21 @@ public class ScheduledTasksManager {
     @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private void sendRepeatedEmailChange(Timer time) throws AppBaseException {
-        Calendar calendarRemoveCode = Calendar.getInstance();
-        calendarRemoveCode.add(Calendar.HOUR, -2);
-        List<Account> accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, calendarRemoveCode.getTime());
+        int emailChangeCodeExpirationTime = Integer
+                .parseInt(context.getInitParameter("emailChangeCodeExpirationTime"));
+        Instant expirationInstant = Instant.now().minus(emailChangeCodeExpirationTime, ChronoUnit.HOURS);
+        Date expirationDate = Date.from(expirationInstant);
+        List<Account> accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, expirationDate);
         for (Account account : accountsUnusedCodes) {
-            PendingCode pc = pendingCodeFacade.findUnusedCodeByAccount(account, CodeType.EMAIL_CHANGE);
-            pendingCodeFacade.remove(pc);
+            account.getPendingCodeList().removeIf(x -> x.getCodeType().equals(CodeType.EMAIL_CHANGE) && !x.isUsed());
+            accountFacade.edit(account);
         }
 
-        Calendar calendarRepeat = Calendar.getInstance();
-        calendarRepeat.add(Calendar.HOUR, -1);
-        accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, calendarRepeat.getTime());
+        int emailChangeCodeRepeatTime = Integer
+                .parseInt(context.getInitParameter("emailChangeCodeRepeatTime"));
+        Instant repeatInstant = Instant.now().minus(emailChangeCodeRepeatTime, ChronoUnit.HOURS);
+        Date repeatDate = Date.from(repeatInstant);
+        accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, repeatDate);
         for (Account account : accountsUnusedCodes) {
             PendingCode pc = pendingCodeFacade.findUnusedCodeByAccount(account, CodeType.EMAIL_CHANGE);
             emailSender.sendEmailChange(account, pc.getCode());

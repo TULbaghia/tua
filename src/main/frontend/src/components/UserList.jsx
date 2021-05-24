@@ -124,11 +124,11 @@ function UserList(props) {
     }, []);
 
     const getAllAccounts = async () => {
-        return await api.getAllAccountsList({headers: {Authorization: "Bearer " + token}})
+        return await api.getAllAccountsList({headers: {Authorization: token}})
     }
 
     const blockAccount = (login) => {
-        api.blockAccount(login, {headers: {Authorization: "Bearer " + token}}).then(res => {
+        api.blockAccount(login, {headers: {Authorization: token}}).then(res => {
             dispatchNotificationSuccess({message: i18n.t('accountBlockSuccess')})
         }).catch(err => {
             if(err.response != null) {
@@ -143,7 +143,7 @@ function UserList(props) {
     }
 
     const unblockAccount = (login) => {
-        api.unblockAccount(login, {headers: {Authorization: "Bearer " + token}}).then(res => {
+        api.unblockAccount(login, {headers: {Authorization: token}}).then(res => {
             dispatchNotificationSuccess({message: i18n.t('accountUnblockSuccess')})
         }).catch(err => {
             if(err.response != null) {

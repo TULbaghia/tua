@@ -23,46 +23,46 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
 
     @Override
     public BookingDto get(Long id) throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<BookingDto> getAll() throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<BookingDto> getAll(String... option) throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void cancelBooking(Long bookingId) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void endBooking(Long bookingId) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void startBooking(Long bookingId) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<BookingDto> showActiveBooking() throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<BookingDto> showEndedBooking() throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

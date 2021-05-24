@@ -22,26 +22,26 @@ import java.util.List;
 public class RatingEndpoint  extends AbstractEndpoint implements RatingEndpointLocal {
     @Override
     public List<RatingDto> getAll(Long hotelId) throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void addRating(RatingDto ratingDto) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void updateRating(RatingDto ratingDto) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void deleteRating(Long ratingId) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 }

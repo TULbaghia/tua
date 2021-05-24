@@ -25,51 +25,51 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
 
     @Override
     public HotelDto get(Long id) throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<HotelDto> getAll() throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public HotelDto lookForHotel(String... option) throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<HotelDto> getAllFilter(String... option) throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void addHotel(NewHotelDto hotelDto) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void updateHotel(UpdateHotelDto hotelDto) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void deleteHotel(Long hotelId) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void addManagerToHotel(Long hotelId, String managerLogin) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void deleteManagerFromHotel(String managerLogin) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public GenerateReportDto generateReport(Long hotelId, String from, String to) throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

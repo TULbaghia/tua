@@ -21,26 +21,26 @@ import java.util.List;
 public class CityEndpoint extends AbstractEndpoint implements CityEndpointLocal {
     @Override
     public CityDto get(Long id) throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<CityDto> getAll() throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void addCity(CityDto cityDto) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void updateCity(CityDto cityDto) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void deleteCity(Long cityId) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 }

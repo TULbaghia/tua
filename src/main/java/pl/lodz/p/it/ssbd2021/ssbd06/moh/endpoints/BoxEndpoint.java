@@ -22,26 +22,26 @@ import java.util.List;
 public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
     @Override
     public BoxDto get(Long id) throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<BoxDto> getAll() throws AppBaseException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void addBox(NewBoxDto boxDto) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void updateBox(BoxDto boxDto) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void deleteBox(Long boxId) throws AppBaseException {
-
+        throw new UnsupportedOperationException();
     }
 }

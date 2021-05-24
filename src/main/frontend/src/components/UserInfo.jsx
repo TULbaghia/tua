@@ -64,11 +64,11 @@ function UserInfo(props) {
     }
 
     const getUser = async () => {
-        return await api.showAccountInformation({headers: {Authorization: "Bearer " + token}});
+        return await api.showAccountInformation({headers: {Authorization: token}});
     }
 
     const getRoles = async () => {
-        return await api.getSelfRole({headers: {Authorization: "Bearer " + token}});
+        return await api.getSelfRole({headers: {Authorization: token}});
     }
 
     return (

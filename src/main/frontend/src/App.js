@@ -6,8 +6,6 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 import {fab} from "@fortawesome/free-brands-svg-icons";
 import {faSignInAlt, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import Home from "./components/Home";
-import BlogScreen from "./components/Blog";
-import PingPong from "./components/PingPong";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
@@ -22,8 +20,6 @@ import jwt_decode from "jwt-decode";
 import {useLocale} from "./components/LoginContext";
 import AppUsersPage from "./components/AppUsersPage";
 import EditOtherAccount from "./components/EditOtherAccount";
-import NotificationProvider from "./components/Notification/NotificationProvider";
-import CriticalOperationProvider from "./components/CriticalOperations/CriticalOperationProvider";
 import PasswordResetForm from "./components/PasswordReset/PasswordResetForm";
 import EmailConfirm from "./components/EmailConfirmation/EmailConfirm";
 import EditOwnAccount from './components/EditOwnAccount';
@@ -66,10 +62,8 @@ function App() {
                     <NavigationBar roles={roles} divStyle={divStyle}/>
                     <Switch>
                         <Route exact path="/" component={Home}/>
-                        <Route path="/blog" component={BlogScreen}/>
                         <Route exact path="/login" component={Login}/>
                         <Route path="/signUp" component={SignUp}/>
-                        <Route path="/pong" component={PingPong}/>
                         <Route path="/errors/forbidden" component={Forbidden}/>
                         <Route path="/errors/internal" component={InternalError}/>
                         <Route path="/login/password-reset" component={PasswordReset}/>

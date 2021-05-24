@@ -1,5 +1,4 @@
-import {Component} from "react";
-import {Navbar, Nav, Dropdown} from "react-bootstrap";
+import {Dropdown, Nav, Navbar} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useHistory} from "react-router-dom";
@@ -13,16 +12,16 @@ import axios from "axios";
 
 library.add(faUser);
 
-function LanguageSwitcher(props){
+function LanguageSwitcher(props) {
 
-    const {t,i18n} = props
-    const { token, setToken } = useLocale();
+    const {t, i18n} = props
+    const {token, setToken} = useLocale();
 
     const langs = ['pl', 'en']
     console.log(i18n.language)
 
     const handleClickPl = () => {
-        setLanguage(i18n,"pl")
+        setLanguage(i18n, "pl")
     }
 
     const handleClickEn = () => {
@@ -30,9 +29,8 @@ function LanguageSwitcher(props){
     }
 
     const handleClickLoggedPl = () => {
-        console.log(token)
         handleClickPl()
-        axios.post('https://localhost:8181/resources/accounts/self/edit/language/pl',  null, {
+        axios.post('https://localhost:8181/resources/accounts/self/edit/language/pl', null, {
             headers: {
                 Authorization: `${token}`
             }
@@ -40,7 +38,6 @@ function LanguageSwitcher(props){
     }
 
     const handleClickLoggedEn = () => {
-        console.log(token)
         handleClickEn()
         axios.post('https://localhost:8181/resources/accounts/self/edit/language/en', null, {
             headers: {
@@ -49,7 +46,7 @@ function LanguageSwitcher(props){
         }).then(res => console.log(res))
     }
 
-    return(
+    return (
         <>
             <p style={{fontSize: 20, color: "black", marginRight: "10px"}}>{i18n.language}</p>
             <Dropdown>
@@ -57,11 +54,11 @@ function LanguageSwitcher(props){
                 </DropdownToggle>
 
                 <Dropdown.Menu>
-                    <Dropdown.Item onClick={token!==null && token !== '' ? (
-                                       handleClickLoggedPl)
+                    <Dropdown.Item onClick={token !== null && token !== '' ? (
+                            handleClickLoggedPl)
                         : (
                             handleClickPl)}>{t(langs[0])}</Dropdown.Item>
-                    <Dropdown.Item onClick={token!==null && token !== '' ? (
+                    <Dropdown.Item onClick={token !== null && token !== '' ? (
                             handleClickLoggedEn)
                         : (
                             handleClickEn)}>{t(langs[1])}</Dropdown.Item>
@@ -102,7 +99,7 @@ function NavigationBar(props) {
         <>
             {token !== null && token !== '' ? (
                 //------------------------LOGGED USER VIEW----------------------------
-                <Navbar expand="lg" className="main-navbar" style={ divStyle() }>
+                <Navbar expand="lg" className="main-navbar" style={divStyle()}>
                     <Navbar.Brand>
                         <div className="name">{t('animalHotel')}</div>
                     </Navbar.Brand>
@@ -225,11 +222,12 @@ function NavigationBar(props) {
     )
 }
 
-export function setLanguage(i18n, lang){
+export function setLanguage(i18n, lang) {
     i18n.changeLanguage(lang)
 }
- export function getUserLanguage(token, i18n){
-    if(token !== null && token !== '') {
+
+export function getUserLanguage(token, i18n) {
+    if (token !== null && token !== '') {
         axios.get('https://localhost:8181/resources/accounts/user', {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -237,8 +235,7 @@ export function setLanguage(i18n, lang){
         }).then(res => res.data)
             .then(data => data.language)
             .then(result => setLanguage(i18n, result))
-    }
-    else setLanguage(i18n, "en")
+    } else setLanguage(i18n, "en")
 }
 
 export default withNamespaces()(NavigationBar);

@@ -86,4 +86,13 @@ public class JWTGenerator {
             throw AppRuntimeException.jwtException(e);
         }
     }
+
+    public String getCallerGroups(String token) {
+        try {
+            SignedJWT jwtToken = SignedJWT.parse(token);
+            return jwtToken.getJWTClaimsSet().getStringClaim("roles");
+        } catch (ParseException e) {
+            throw AppRuntimeException.jwtException(e);
+        }
+    }
 }

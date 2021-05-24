@@ -11,7 +11,11 @@ import {
     useNotificationWarningAndLong,
 } from "./Notification/NotificationProvider";
 import {useDialogPermanentChange} from "./CriticalOperations/CriticalOperationProvider";
+import ReCAPTCHA from "react-google-recaptcha";
 import i18n from '../i18n';
+import {handleRecaptcha} from "./Recaptcha/RecaptchaCallback";
+import {validatorFactory, ValidatorType} from "./Validation/Validators";
+import {dispatchErrors, ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 
 
 function EditOwnAccount() {
@@ -33,7 +37,7 @@ function EditOwnAccount() {
 
     const conf = new Configuration();
     const api = new DefaultApi(conf);
-
+    const recaptchaRef = React.createRef();
 
     React.useEffect(() => {
         if (token) {
@@ -53,11 +57,11 @@ function EditOwnAccount() {
 
     const handleEmailSubmit = e => {
         e.preventDefault()
-        if (!email.includes("@") || !email.includes(".")) {
+        if (validatorFactory(email, ValidatorType.USER_EMAIL).length > 0) {
             dispatchNotificationWarning({message: i18n.t('invalidEmailSyntax')})
         } else {
             dispatchDialog({
-                callbackOnSave: () => {editEmail()},
+                callbackOnSave: () => {handleRecaptcha(editEmail, recaptchaRef, dispatchNotificationWarning)},
                 callbackOnCancel: () => {console.log("Cancel")},
             })
         }
@@ -74,7 +78,7 @@ function EditOwnAccount() {
             history.push("/myAccount");
             dispatchNotificationSuccess({message: i18n.t('emailChangeSuccess')})
         }).catch(err => {
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            ResponseErrorHandler(err, dispatchNotificationDanger);
         });
     };
 
@@ -86,7 +90,7 @@ function EditOwnAccount() {
             dispatchNotificationWarning({message: i18n.t('oldPasswordEqualsNew')})
         } else {
             dispatchDialog({
-                callbackOnSave: () => {editPassword()},
+                callbackOnSave: () => {handleRecaptcha(editPassword, recaptchaRef, dispatchNotificationWarning)},
                 callbackOnCancel: () => {console.log("Cancel")},
             })
         }
@@ -103,21 +107,27 @@ function EditOwnAccount() {
             history.push("/myAccount");
             dispatchNotificationSuccess({message: i18n.t('passwordChangeSuccess')})
         }).catch(err => {
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            ResponseErrorHandler(err, dispatchNotificationDanger);
         });
     };
 
     const handleDetailsSubmit = e => {
         e.preventDefault()
-        if (name.length < 3 || name.length > 31) {
-            dispatchNotificationWarning({message: i18n.t('nameSize')})
-        } else if (surname.length < 2 || surname.length > 31) {
-            dispatchNotificationWarning({message: i18n.t('surnameSize')})
-        } else if (contactNumber.length < 9 || contactNumber.length > 15) {
-            dispatchNotificationWarning({message: i18n.t('phoneSize')})
+        if (validatorFactory(name, ValidatorType.FIRSTNAME).length > 0) {
+            validatorFactory(name, ValidatorType.FIRSTNAME).forEach(x => {
+                dispatchNotificationWarning({message: x})
+            });
+        } else if (validatorFactory(surname, ValidatorType.LASTNAME).length > 0) {
+            validatorFactory(surname, ValidatorType.LASTNAME).forEach(x => {
+                dispatchNotificationWarning({message: x})
+            });
+        } else if (validatorFactory(contactNumber, ValidatorType.CONTACT_NUMBER).length > 0) {
+            validatorFactory(contactNumber, ValidatorType.CONTACT_NUMBER).forEach(x => {
+                dispatchNotificationWarning({message: x})
+            });
         } else {
             dispatchDialog({
-                callbackOnSave: () => {editDetails()},
+                callbackOnSave: () => {handleRecaptcha(editDetails, recaptchaRef, dispatchNotificationWarning)},
                 callbackOnCancel: () => {console.log("Cancel")},
             })
         }
@@ -134,7 +144,7 @@ function EditOwnAccount() {
             history.push("/myAccount");
             dispatchNotificationSuccess({message: i18n.t('detailsChangeSuccess')})
         }).catch(err => {
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            ResponseErrorHandler(err, dispatchNotificationDanger);
         });
     };
 
@@ -144,9 +154,9 @@ function EditOwnAccount() {
                 <li className="breadcrumb-item"><Link to="/">{i18n.t('mainPage')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{i18n.t('signUp')}</li>
             </BreadCrumb>
-            <div className="floating-box">
+            <div className="floating-box pt-2 pb-0">
                 <form className="form-signup">
-                    <h1 className="h3">{i18n.t('editProfile')}</h1>
+                    <h1 className="h3 mb-0">{i18n.t('editProfile')}</h1>
                     <input
                         id="email"
                         className="form-control"
@@ -214,10 +224,11 @@ function EditOwnAccount() {
                         onChange={event => setContactNumber(event.target.value)}
                         style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
                     />
-                    <button className="btn btn-lg btn-primary btn-block" onClick={handleDetailsSubmit} type="submit"
+                    <button className="btn btn-lg btn-primary btn-block mb-3" onClick={handleDetailsSubmit} type="submit"
                             style={{backgroundColor: "#7749F8"}}>
                         {i18n.t('changeDetails')}
                     </button>
+                    <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                 </form>
             </div>
         </div>

@@ -33,7 +33,9 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode.PENDING_CODE_CON
         @NamedQuery(name = "PendingCode.findNotUsedByAccount", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.used = false AND p.codeType = 0"),
         @NamedQuery(name = "PendingCode.findAllByCodeType", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.codeType = :codeType AND p.used = :isUsed"),
         @NamedQuery(name = "PendingCode.findAllAccountsWithUnusedCodes", query = "SELECT p.account FROM PendingCode p WHERE p.codeType = :codeType AND p.creationDate < :date AND p.used = false"),
-        @NamedQuery(name = "PendingCode.findUnusedCodeByAccount", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.used = false AND p.codeType = :codeType")}
+        @NamedQuery(name = "PendingCode.findUnusedCodeByAccount", query = "SELECT p FROM PendingCode p WHERE p.account = :account AND p.used = false AND p.codeType = :codeType"),
+        @NamedQuery(name = "PendingCode.findAllUnusedByCodeTypeAndBeforeAndAttemptCount", query = "SELECT p FROM PendingCode p WHERE p.used = false AND p.codeType = :type AND p.creationDate < :date AND p.sendAttempt = :attempts")
+}
 )
 @NoArgsConstructor
 @ToString(callSuper = true)
@@ -66,6 +68,13 @@ public class PendingCode extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
+    @NotNull
+    @Basic(optional = false)
+    @Column(name = "send_attempt", nullable = false)
+    private int sendAttempt = 0;
+
+    @Getter
+    @Setter
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     private Account account;
@@ -76,9 +85,12 @@ public class PendingCode extends AbstractEntity implements Serializable {
     @Column(name = "code_type", nullable = false)
     private CodeType codeType;
 
-    public PendingCode(String code, boolean used) {
+    public PendingCode(String code, boolean used, CodeType codeType, Account createdBy, Account account) {
         this.code = code;
         this.used = used;
+        this.codeType = codeType;
+        this.setCreatedBy(createdBy);
+        this.account = account;
     }
 
     @Override

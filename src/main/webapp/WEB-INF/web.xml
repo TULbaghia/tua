@@ -9,6 +9,12 @@
         </session-timeout>
     </session-config>
 
+    <context-param>
+        <param-name>accountConfirmationCodeExpirationTime</param-name>
+        <param-value>24</param-value>
+    </context-param>
+
+
     <default-context-path>/</default-context-path>
 
     <welcome-file-list>
@@ -19,6 +25,16 @@
         <error-code>404</error-code>
         <location>/index.html</location>
     </error-page>
+
+    <context-param>
+        <param-name>emailChangeCodeExpirationTime</param-name>
+        <param-value>2</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>emailChangeCodeRepeatTime</param-name>
+        <param-value>1</param-value>
+    </context-param>
 
     <context-param>
         <param-name>repeatTransactionNumber</param-name>

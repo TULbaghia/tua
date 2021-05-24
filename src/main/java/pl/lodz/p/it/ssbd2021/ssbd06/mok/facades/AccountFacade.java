@@ -138,4 +138,17 @@ public class AccountFacade extends AbstractFacade<Account> {
             throw DatabaseQueryException.databaseQueryException(e);
         }
     }
+
+    public List<Account> findUnverifiedBetweenDate(Date dateBefore, Date dateAfter) throws AppBaseException {
+        try {
+            TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findUnverifiedBetweenDate", Account.class);
+            accountTypedQuery.setParameter("dateBefore", dateBefore);
+            accountTypedQuery.setParameter("dateAfter", dateAfter);
+            return accountTypedQuery.getResultList();
+        } catch (NoResultException e) {
+            throw NotFoundException.accountNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
+    }
 }

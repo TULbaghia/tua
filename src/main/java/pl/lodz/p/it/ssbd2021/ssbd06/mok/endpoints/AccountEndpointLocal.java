@@ -195,4 +195,15 @@ public interface AccountEndpointLocal extends CallingClass {
      */
     @RolesAllowed("changeAccessLevel")
     void changeOwnAccessLevel(AccessLevel accessLevel);
+
+    /**
+     * Wysyła email na konto użytkownika z poziomem administracyjnym po zalogowaniu.
+     * Reprezentuje powiadomienie o zalogowaniu na konto administratora.
+     *
+     * @param address adres logiczny z jakiego nastąpiło logowanie na konto z administracyjnym poziomem dostępu.
+     * @param adminLogin login konta administratora.
+     * @throws AppBaseException proces wysyłania powiadomienia zakończył się niepowodzeniem.
+     */
+    @PermitAll
+    void sendAdminLoginInfo(String adminLogin, String address) throws AppBaseException;
 }

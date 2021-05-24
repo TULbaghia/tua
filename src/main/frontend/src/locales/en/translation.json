@@ -26,9 +26,9 @@
     "pl": "Polish",
     "en": "English",
     "roleChange": "role change",
-    "ADMIN": "Administrator",
-    "MANAGER": "Manager",
-    "CLIENT": "User",
+    "admin": "Administrator",
+    "manager": "Manager",
+    "user": "User",
     "roleChoice": "ROLE CHOICE",
     "roleChanged": "Role: ",
     "cryingCat": "Crying cat",
@@ -62,18 +62,15 @@
     "userDetailsRoles": "Roles",
     "userDetailsEditBtn": "Edit",
     "userDetailsPasswordChangeBtn": "Change password",
-
     "form.validation.field.min_size": "Input size too small",
     "form.validation.field.max_size": "Input size too big",
     "form.validation.field.pattern": "Input does not match pattern",
     "form.validation.field.not_allowed": "Input does not match allowed values",
-
     "exception.code.code_used": "Code has already been used",
     "exception.code.code_invalid": "Code is invalid",
     "exception.code.code_expired": "Code validity period expired",
     "exception.account_not_confirmed.account_not_confirmed" : "Account has not been confirmed yet",
     "exception.account_not_enabled.account_not_enabled" : "Account is disabled",
-
     "passwordResetForm.error.title": "Reset password",
     "passwordResetForm.error.length": "Password should contains 8 to 64 digits",
     "passwordResetForm.error.match": "Passwords do not match",
@@ -81,12 +78,11 @@
     "passwordResetForm.error.repeated.required": "Repeated new password is required",
     "passwordResetForm.success.info": "Password has been reset",
     "exception.account_same_password.account_same_password": "Current password and new password must different",
-
     "emailConfirm.title": "Email address verification",
     "emailConfirm.info": "Click the button below to verify your email address",
     "emailConfirm.action": "Verify email address",
     "emailConfirm.success.info": "Email has been verified",
-
+    "accountInfo": "Account info",
     "notification.title.danger": "Error",
     "notification.title.warning": "Warning",
     "notification.title.success": "Success",
@@ -94,6 +90,8 @@
     "dialog.button.save": "Save changes",
     "dialog.permanent_change.title": "Permanent data change",
     "dialog.permanent_change.message": "The change you are trying to make permanently modifies the data. \n Are you sure about this?",
+    "signInError": "Login error",
+    "refresh": "Refresh",
     "editProfile": "Edit profile",
     "change": "Change",
     "changeEmail": "Change email",
@@ -118,5 +116,9 @@
     "nameSize": "Invalid name length",
     "surnameSize": "Invalid surname length",
     "phoneSize": "Invalid contact phone length",
-    "signInError": "Login error"
+    "language": "Language",
+    "lastSuccessfulLoginAddress": "Adres ostatniego poprawnego logowania",
+    "lastSuccessfulLoginDate": "Data ostatniego poprawnego logowania",
+    "lastFailedLoginIpAddress": "Adres ostatniego niepoprawnego logowania",
+    "lastFailedLoginDate": "Data ostatniego niepoprawnego logowania"
 }

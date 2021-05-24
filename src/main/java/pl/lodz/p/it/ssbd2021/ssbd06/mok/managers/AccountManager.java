@@ -26,9 +26,6 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.*;
 import javax.security.enterprise.SecurityContext;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
@@ -160,8 +157,7 @@ public class AccountManager {
     @PermitAll
     public void updateInvalidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
-        Inet4Address address = Inet4AddressFromString(ipAddress);
-        account.setLastFailedLoginIpAddress(address);
+        account.setLastFailedLoginIpAddress(ipAddress);
         account.setLastFailedLoginDate(authDate);
         int incorrectLoginAttempts = account.getFailedLoginAttemptsCounter() + 1;
         if (incorrectLoginAttempts == 3) {
@@ -185,8 +181,7 @@ public class AccountManager {
     @PermitAll
     public void updateValidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
-        Inet4Address address = Inet4AddressFromString(ipAddress);
-        account.setLastSuccessfulLoginIpAddress(address);
+        account.setLastSuccessfulLoginIpAddress(ipAddress);
         account.setLastSuccessfulLoginDate(authDate);
         account.setFailedLoginAttemptsCounter(0);
 
@@ -298,26 +293,6 @@ public class AccountManager {
         resetCode.setUsed(true);
         pendingCodeFacade.edit(resetCode);
         changePassword(account, password);
-    }
-
-    /**
-     * Konwertuje adres IP z String na Inet4Address
-     *
-     * @param ipAddress adres ip jako String
-     * @return adres ip jako Inet4Address
-     */
-    private Inet4Address Inet4AddressFromString(String ipAddress) throws AppBaseException {
-        Inet4Address address = null;
-        try {
-            for (InetAddress addr : Inet4Address.getAllByName(ipAddress)) {
-                if (addr instanceof Inet4Address) {
-                    address = (Inet4Address) addr;
-                }
-            }
-        } catch (UnknownHostException | SecurityException e) {
-            throw ConvertException.convertingIpException(e);
-        }
-        return address;
     }
 
     /**

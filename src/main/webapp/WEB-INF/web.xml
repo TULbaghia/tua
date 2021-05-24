@@ -21,6 +21,16 @@
     </error-page>
 
     <context-param>
+        <param-name>emailChangeCodeExpirationTime</param-name>
+        <param-value>2</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>emailChangeCodeRepeatTime</param-name>
+        <param-value>1</param-value>
+    </context-param>
+
+    <context-param>
         <param-name>repeatTransactionNumber</param-name>
         <param-value>5</param-value>
     </context-param>

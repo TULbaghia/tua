@@ -5,6 +5,9 @@ import { withNamespaces } from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
 import { api } from "../Api";
+import {handleRecaptcha} from "./Recaptcha/RecaptchaCallback";
+import ReCAPTCHA from "react-google-recaptcha";
+import {useNotificationWarningAndLong,} from "./Notification/NotificationProvider";
 
 function SignUp(props) {
     const {t,i18n} = props
@@ -16,9 +19,15 @@ function SignUp(props) {
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [constactNumber, setConstactNumber] = useState('');
+    const recaptchaRef = React.createRef();
+    const dispatchNotificationWarning = useNotificationWarningAndLong();
 
-    const handleClick = (e) => {
-        e.preventDefault()
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleRecaptcha(handleClick, recaptchaRef, dispatchNotificationWarning);
+    }
+
+    const handleClick = () => {
         api.registerAccount({
             login: login,
             email: email,
@@ -40,17 +49,17 @@ function SignUp(props) {
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('signUp')}</li>
             </BreadCrumb>
-            <div className="floating-box">
+            <div className="floating-box pt-2 pb-2">
                 <form className="form-signup">
                     <h1 className="h3">{t('registering')}</h1>
                     <input
                         id="inputLogin"
-                        className="form-control"
+                        className="form-control mt-3"
                         placeholder={t('login')}
                         required
                         autoFocus={true}
                         onChange={event => setLogin(event.target.value)}
-                        style={{marginTop: "3rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
+                        style={{marginBottom: "1rem", width: "90%", display: "inline-block"}}
                     />
                     <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
                     <input
@@ -116,9 +125,12 @@ function SignUp(props) {
                     <div style={{color: "#7749F8", fontSize: 14, marginBottom: "3rem"}}>
                         {t('obligatoryFields')}
                     </div>
-                    <button className="btn btn-lg btn-primary btn-block" style={{backgroundColor: "#7749F8"}} onClick={handleClick}>
+                    <button className="btn btn-lg btn-primary btn-block mb-3"
+                            style={{backgroundColor: "#7749F8"}}
+                            onClick={handleSubmit}>
                         {t('signUp')}
                     </button>
+                    <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                 </form>
             </div>
         </div>

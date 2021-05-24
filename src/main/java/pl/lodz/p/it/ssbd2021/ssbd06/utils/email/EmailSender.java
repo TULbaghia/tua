@@ -142,6 +142,20 @@ public class EmailSender {
     }
 
     /**
+     * Wysyła email na konto użytkownika z poziomem administracyjnym po zalogowaniu.
+     *
+     * @param address adres logiczny z jakiego nastąpiło logowanie na konto z administracyjnym poziomem dostępu.
+     * @param account odbiorca wiadomości, konto z poziomem administratora.
+     * @throws AppBaseException wysyłanie wiadomości email nie powiodło się.
+     */
+    public void sendAdminLogin(Account account, String address) throws AppBaseException {
+        String lang = account.getLanguage();
+        String adminInfoContent = emailConfig.getContentForType(lang, Config.MailType.ADMIN_LOGIN, account.getLogin(), address);
+        String adminInfoSubject = emailConfig.getSubjectForType(lang, Config.MailType.ADMIN_LOGIN);
+        sendEmail(account.getEmail(), adminInfoSubject, adminInfoContent);
+    }
+
+    /**
      * Tworzy link, który jest wysyłany do użytkownika.
      * Link zawiera unikalny kod, który służy do potwierdzania procesów biznesowych.
      *

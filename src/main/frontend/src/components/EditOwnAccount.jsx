@@ -14,6 +14,8 @@ import {useDialogPermanentChange} from "./CriticalOperations/CriticalOperationPr
 import ReCAPTCHA from "react-google-recaptcha";
 import i18n from '../i18n';
 import {handleRecaptcha} from "./Recaptcha/RecaptchaCallback";
+import {validatorFactory, ValidatorType} from "./Validation/Validators";
+import {dispatchErrors, ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 
 
 function EditOwnAccount() {
@@ -55,7 +57,7 @@ function EditOwnAccount() {
 
     const handleEmailSubmit = e => {
         e.preventDefault()
-        if (!email.includes("@") || !email.includes(".")) {
+        if (validatorFactory(email, ValidatorType.USER_EMAIL).length > 0) {
             dispatchNotificationWarning({message: i18n.t('invalidEmailSyntax')})
         } else {
             dispatchDialog({
@@ -76,7 +78,7 @@ function EditOwnAccount() {
             history.push("/myAccount");
             dispatchNotificationSuccess({message: i18n.t('emailChangeSuccess')})
         }).catch(err => {
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            ResponseErrorHandler(err, dispatchNotificationDanger);
         });
     };
 
@@ -105,18 +107,24 @@ function EditOwnAccount() {
             history.push("/myAccount");
             dispatchNotificationSuccess({message: i18n.t('passwordChangeSuccess')})
         }).catch(err => {
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            ResponseErrorHandler(err, dispatchNotificationDanger);
         });
     };
 
     const handleDetailsSubmit = e => {
         e.preventDefault()
-        if (name.length < 3 || name.length > 31) {
-            dispatchNotificationWarning({message: i18n.t('nameSize')})
-        } else if (surname.length < 2 || surname.length > 31) {
-            dispatchNotificationWarning({message: i18n.t('surnameSize')})
-        } else if (contactNumber.length < 9 || contactNumber.length > 15) {
-            dispatchNotificationWarning({message: i18n.t('phoneSize')})
+        if (validatorFactory(name, ValidatorType.FIRSTNAME).length > 0) {
+            validatorFactory(name, ValidatorType.FIRSTNAME).forEach(x => {
+                dispatchNotificationWarning({message: x})
+            });
+        } else if (validatorFactory(surname, ValidatorType.LASTNAME).length > 0) {
+            validatorFactory(surname, ValidatorType.LASTNAME).forEach(x => {
+                dispatchNotificationWarning({message: x})
+            });
+        } else if (validatorFactory(contactNumber, ValidatorType.CONTACT_NUMBER).length > 0) {
+            validatorFactory(contactNumber, ValidatorType.CONTACT_NUMBER).forEach(x => {
+                dispatchNotificationWarning({message: x})
+            });
         } else {
             dispatchDialog({
                 callbackOnSave: () => {handleRecaptcha(editDetails, recaptchaRef, dispatchNotificationWarning)},
@@ -136,7 +144,7 @@ function EditOwnAccount() {
             history.push("/myAccount");
             dispatchNotificationSuccess({message: i18n.t('detailsChangeSuccess')})
         }).catch(err => {
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            ResponseErrorHandler(err, dispatchNotificationDanger);
         });
     };
 

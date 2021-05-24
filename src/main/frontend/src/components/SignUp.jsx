@@ -1,45 +1,80 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "./LoginContext";
-import { withNamespaces } from 'react-i18next';
+import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
-import { api } from "../Api";
-import {handleRecaptcha} from "./Recaptcha/RecaptchaCallback";
+import {api} from "../Api";
 import ReCAPTCHA from "react-google-recaptcha";
-import {useNotificationWarningAndLong,} from "./Notification/NotificationProvider";
+import {handleRecaptcha} from "./Recaptcha/RecaptchaCallback";
+import {useNotificationDangerAndLong, useNotificationWarningAndLong,} from "./Notification/NotificationProvider";
+import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
+import {validatorFactory, ValidatorType} from "./Validation/Validators";
 
 function SignUp(props) {
-    const {t,i18n} = props
+    const {t, i18n} = props
+    const dispatchNotificationDanger = useNotificationDangerAndLong();
+    const dispatchNotificationWarning = useNotificationWarningAndLong();
     const history = useHistory();
-    const { token, setToken } = useLocale();
+    const {token, setToken} = useLocale();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
-    const [constactNumber, setConstactNumber] = useState('');
+    const [contactNumber, setContactNumber] = useState('');
     const recaptchaRef = React.createRef();
-    const dispatchNotificationWarning = useNotificationWarningAndLong();
 
     const handleSubmit = (e) => {
         e.preventDefault();
         handleRecaptcha(handleClick, recaptchaRef, dispatchNotificationWarning);
     }
 
-    const handleClick = () => {
-        api.registerAccount({
-            login: login,
-            email: email,
-            password: password,
-            firstname: firstname,
-            lastname: lastname,
-            constactNumber: constactNumber
+    const handleClick = (e) => {
+        e.preventDefault()
+
+        let isError = false;
+
+        validatorFactory(login, ValidatorType.LOGIN).forEach(x => {
+            isError = true;
+            dispatchNotificationWarning({title: t('login'), message: x});
         })
-        .then(res => {
-            console.log("registered")
+        validatorFactory(password, ValidatorType.PASSWORD).forEach(x => {
+            isError = true;
+            dispatchNotificationWarning({title: t('password'), message: x});
         })
-        .catch(err => console.log(err))
+        validatorFactory(email, ValidatorType.USER_EMAIL).forEach(x => {
+            isError = true;
+            dispatchNotificationWarning({title: t('emailAddress'), message: x});
+        })
+        validatorFactory(firstname, ValidatorType.FIRSTNAME).forEach(x => {
+            isError = true;
+            dispatchNotificationWarning({title: t('name'), message: x});
+        })
+        validatorFactory(lastname, ValidatorType.LASTNAME).forEach(x => {
+            isError = true;
+            dispatchNotificationWarning({title: t('surname'), message: x});
+        })
+        validatorFactory(contactNumber, ValidatorType.CONTACT_NUMBER).forEach(x => {
+            isError = true;
+            dispatchNotificationWarning({title: t('phoneNumber'), message: x});
+        })
+        if (!isError) {
+            api.registerAccount({
+                login: login,
+                email: email,
+                password: password,
+                firstname: firstname,
+                lastname: lastname,
+                constactNumber: contactNumber
+            })
+                .then(res => {
+                    console.log("registered")
+                })
+                .catch(err => {
+                    ResponseErrorHandler(err, dispatchNotificationDanger);
+                })
+        }
     }
 
 
@@ -118,7 +153,7 @@ function SignUp(props) {
                         placeholder={t('phoneNumber')}
                         required
                         autoFocus={true}
-                        onChange={event => setConstactNumber(event.target.value)}
+                        onChange={event => setContactNumber(event.target.value)}
                         style={{marginTop: "1rem", marginBottom: "0rem", width: "90%", display: "inline-block"}}
                     />
                     <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>

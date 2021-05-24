@@ -61,36 +61,32 @@ function App() {
 
     return (
         <div className="App">
-            <NotificationProvider>
-                <CriticalOperationProvider>
-                    <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
-                        <div>
-                            <NavigationBar roles={roles} divStyle={divStyle}/>
-                            <Switch>
-                                <Route exact path="/" component={Home}/>
-                                <Route path="/blog" component={BlogScreen}/>
-                                <Route exact path="/login" component={Login}/>
-                                <Route path="/signUp" component={SignUp}/>
-                                <Route path="/pong" component={PingPong}/>
-                                <Route path="/errors/forbidden" component={Forbidden}/>
-                                <Route path="/errors/internal" component={InternalError}/>
-                                <Route path="/login/password-reset" component={PasswordReset}/>
-                                <Route path="/confirmedAccount" component={ConfirmedAccount}/>
-                                <Route path="/myAccount" component={UserInfo}/>
-                                <Route path="/userPage" component={AppUsersPage}/>
-                                <Route path="/accounts" component={UserList}/>
-                                <Route path="/editOtherAccount" component={EditOtherAccount}/>
-                                <Route path="/editOwnAccount" component={EditOwnAccount}/>
-                                <Route path="/reset/password/:code" component={PasswordResetForm}/>
-                                <Route path="/confirm/email/:code" component={EmailConfirm}/>
-                                <Route path="/activate/account/:code" component={AccountActivate}/>
-                                <Route component={NotFound}/>
-                            </Switch>
-                            <Footer roles={roles} divStyle={divStyle}/>
-                        </div>
-                    </Router>
-                </CriticalOperationProvider>
-            </NotificationProvider>
+            <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
+                <div>
+                    <NavigationBar roles={roles} divStyle={divStyle}/>
+                    <Switch>
+                        <Route exact path="/" component={Home}/>
+                        <Route path="/blog" component={BlogScreen}/>
+                        <Route exact path="/login" component={Login}/>
+                        <Route path="/signUp" component={SignUp}/>
+                        <Route path="/pong" component={PingPong}/>
+                        <Route path="/errors/forbidden" component={Forbidden}/>
+                        <Route path="/errors/internal" component={InternalError}/>
+                        <Route path="/login/password-reset" component={PasswordReset}/>
+                        <Route path="/confirmedAccount" component={ConfirmedAccount}/>
+                        <Route path="/myAccount" component={UserInfo}/>
+                        <Route path="/userPage" component={AppUsersPage}/>
+                        <Route path="/accounts" component={UserList}/>
+                        <Route path="/editOtherAccount" component={EditOtherAccount}/>
+                        <Route path="/editOwnAccount" component={EditOwnAccount}/>
+                        <Route path="/reset/password/:code" component={PasswordResetForm}/>
+                        <Route path="/confirm/email/:code" component={EmailConfirm}/>
+                        <Route path="/activate/account/:code" component={AccountActivate}/>
+                        <Route component={NotFound}/>
+                    </Switch>
+                    <Footer roles={roles} divStyle={divStyle}/>
+                </div>
+            </Router>
         </div>
     );
 }

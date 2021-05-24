@@ -3,16 +3,22 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import "./i18n";
 import App from "./App";
+import NotificationProvider from "./components/Notification/NotificationProvider";
+import CriticalOperationProvider from "./components/CriticalOperations/CriticalOperationProvider";
 import reportWebVitals from "./reportWebVitals";
-import { LoginProvider } from "./components/LoginContext";
+import {LoginProvider} from "./components/LoginContext";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <LoginProvider>
-      <App />
-    </LoginProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+    <React.StrictMode>
+        <NotificationProvider>
+            <CriticalOperationProvider>
+                <LoginProvider>
+                    <App/>
+                </LoginProvider>
+            </CriticalOperationProvider>
+        </NotificationProvider>
+    </React.StrictMode>,
+    document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -139,11 +139,11 @@ public interface AccountEndpointLocal extends CallingClass {
     /**
      * Wysyła token resetujący hasło użytkownika o podanym emailu.
      *
-     * @param login login konta, na którego email zostanie wysłana wiadomość dotycząca resetowania
+     * @param email email konta, na którego email zostanie wysłana wiadomość dotycząca resetowania
      * @throws AppBaseException gdy nie udało się zaktualizować danych
      */
     @PermitAll
-    void sendResetPassword(String login) throws AppBaseException;
+    void sendResetPassword(String email) throws AppBaseException;
 
     /**
      * Wysyła ponownie token resetujący hasło użytkownika o podanym emailu.

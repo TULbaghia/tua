@@ -1,4 +1,4 @@
-import React, {createContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import jwt_decode from "jwt-decode";
 import {useNotificationCustom} from "./Notification/NotificationProvider";
 import {dialogDuration, dialogType} from "./Notification/Notification";
@@ -6,6 +6,7 @@ import i18n from "../i18n";
 import axios from "axios";
 import {useRefreshNotificationCustom} from "./Notification/RefreshNotificationProvider";
 
+const REFRESH_TIME = 60 * 1000;
 const LoginContext = React.createContext('');
 
 export const LoginProvider = ({ children }) => {
@@ -48,9 +49,9 @@ export const LoginProvider = ({ children }) => {
     const decoded = jwt_decode(storedToken);
     const expirationDate = new Date(decoded.exp * 1000)
     console.log(`token expires at ${expirationDate}`)
-    if(expirationDate - new Date() < 60000 && expirationDate > new Date()){
-        handleRefreshBox()
-    }
+    // if(expirationDate - new Date() < REFRESH_TIME && expirationDate > new Date()){
+    //     handleRefreshBox()
+    // }
     if(expirationDate < new Date()){
         console.log("token expired")
         localStorage.removeItem("token")
@@ -82,8 +83,3 @@ return <LoginContext.Provider value={values}>{children}</LoginContext.Provider>;
 };
 
 export const useLocale = () => React.useContext(LoginContext);
-
-export function Refresh(){
-    console.log("refresh")
-
-}

@@ -23,6 +23,7 @@ import InternalError from "./components/errorPages/InternalError";
 import UserInfo from './components/UserInfo';
 import NotificationProvider from "./components/Notification/NotificationProvider";
 import CriticalOperationProvider from "./components/CriticalOperations/CriticalOperationProvider";
+import RefreshNotificationProvider from "./components/Notification/RefreshNotificationProvider";
 import {LoginProvider} from "./components/LoginContext";
 
 library.add(fab, faSignInAlt, faUserPlus);
@@ -32,7 +33,7 @@ class App extends Component {
         return (
             <div className="App">
                 <NotificationProvider>
-                    <LoginProvider>
+                    <RefreshNotificationProvider>
                         <CriticalOperationProvider>
                             <LoginProvider>
                                 <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
@@ -56,7 +57,7 @@ class App extends Component {
                                 </Router>
                             </LoginProvider>
                         </CriticalOperationProvider>
-                    </LoginProvider>
+                    </RefreshNotificationProvider>
                 </NotificationProvider>
             </div>
         );

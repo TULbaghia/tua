@@ -29,7 +29,7 @@ function LanguageSwitcher(props) {
 
     const handleClickLoggedPl = () => {
         handleClickPl()
-        axios.post('https://localhost:8181/resources/accounts/self/edit/language/pl', null, {
+        axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/self/edit/language/pl`, null, {
             headers: {
                 Authorization: token
             }
@@ -38,7 +38,7 @@ function LanguageSwitcher(props) {
 
     const handleClickLoggedEn = () => {
         handleClickEn()
-        axios.post('https://localhost:8181/resources/accounts/self/edit/language/en', null, {
+        axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/self/edit/language/en`, null, {
             headers: {
                 Authorization: token
             }
@@ -80,7 +80,7 @@ function NavigationBar(props) {
                 Authorization: token,
             }
         };
-        fetch('/resources/auth/logout', requestOptions)
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/resources/auth/logout`, requestOptions)
             .then((res) => {
                 setToken('');
                 setCurrentRole('');
@@ -227,7 +227,7 @@ export function setLanguage(i18n, lang) {
 
 export function getUserLanguage(token, i18n) {
     if (token !== null && token !== '') {
-        axios.get('https://localhost:8181/resources/accounts/user', {
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/user`, {
             headers: {
                 Authorization: token
             }

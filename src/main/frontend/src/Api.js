@@ -1,6 +1,6 @@
 const { Configuration, DefaultApi } = require("api-client");
 
-const url = "https://localhost:8181";
+const url = process.env.REACT_APP_API_BASE_URL;
 const configuration = new Configuration({
     basePath: url,
 });

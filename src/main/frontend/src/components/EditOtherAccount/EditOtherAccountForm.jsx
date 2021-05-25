@@ -16,6 +16,7 @@ import ContactNumberComponent from "./ContactNumberComponent";
 import {useLocale} from "../LoginContext";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
+import {Button} from "react-bootstrap";
 
 function EditOtherAccountForm({t, i18n}) {
     const dispatchNotification = useNotificationCustom();
@@ -305,11 +306,12 @@ function EditOtherAccountForm({t, i18n}) {
 
             <div className="floating-box" style={{minWidth: "30rem", minHeight: "30rem"}}>
                 <div>
-                    <h1 className="h3 mb-4">{t('userEdit')}</h1>
-                    <div style={{color: "#7749F8", fontSize: 14, marginBottom: "0.3rem"}}>
+                    <h1 className="h3 mb-0.5">{t('userEdit')}</h1>
+                    <Button className="btn btn-secondary" style={{backgroundColor: "#7749F8", width: "20%", margin: "auto"}} onClick={event => {handleDataFetch()}}>{t("refresh")}</Button>
+                    <div style={{color: "#7749F8", fontSize: 14, marginBottom: "0.5rem"}}>
                         {t('obligatoryFields')}
                     </div>
-                    <div className="container">
+                    <div className="container float-left">
                         <Tabs defaultActiveKey="tab1" className="categories m-3">
                             <Tab eventKey="tab1" title={t('editEmail')}>
                                 <Formik

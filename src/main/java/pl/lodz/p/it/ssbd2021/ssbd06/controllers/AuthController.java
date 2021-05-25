@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.auth.dto.LoginDataDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.auth.endpoints.AuthEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AuthValidationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
@@ -52,7 +53,7 @@ public class AuthController extends AbstractController {
             repeat(() -> accountEndpoint.updateValidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(),
                     Date.from(Instant.now())), accountEndpoint);
 
-            if(jwtGenerator.getCallerGroups(token).contains("ADMIN")) {
+            if(jwtGenerator.getCallerGroups(token).contains(AccessLevel.ADMIN.name())) {
                 repeat(() -> accountEndpoint.sendAdminLoginInfo(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr()),
                         accountEndpoint);
             }

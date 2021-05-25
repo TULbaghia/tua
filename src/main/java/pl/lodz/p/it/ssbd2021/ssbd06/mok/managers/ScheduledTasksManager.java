@@ -87,7 +87,7 @@ public class ScheduledTasksManager {
     private void sendRepeatedEmailChange(Timer time) throws AppBaseException {
         int emailChangeCodeExpirationTime = Integer
                 .parseInt(context.getInitParameter("emailChangeCodeExpirationTime"));
-        Instant expirationInstant = Instant.now().minus(emailChangeCodeExpirationTime, ChronoUnit.HOURS).atZone(ZoneOffset.UTC).toInstant();
+        Instant expirationInstant = Instant.now().minus(emailChangeCodeExpirationTime, ChronoUnit.HOURS);
         Date expirationDate = Date.from(expirationInstant);
         List<Account> accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, expirationDate);
         for (Account account : accountsUnusedCodes) {
@@ -97,7 +97,7 @@ public class ScheduledTasksManager {
 
         int emailChangeCodeRepeatTime = Integer
                 .parseInt(context.getInitParameter("emailChangeCodeRepeatTime"));
-        Instant repeatInstant = Instant.now().minus(emailChangeCodeRepeatTime, ChronoUnit.HOURS).atZone(ZoneOffset.UTC).toInstant();
+        Instant repeatInstant = Instant.now().minus(emailChangeCodeRepeatTime, ChronoUnit.HOURS);
         Date repeatDate = Date.from(repeatInstant);
         accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, repeatDate);
         for (Account account : accountsUnusedCodes) {

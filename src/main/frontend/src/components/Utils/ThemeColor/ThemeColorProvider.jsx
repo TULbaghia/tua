@@ -106,7 +106,7 @@ export const useDispatchThemeColorAfterLogin = () => {
                 if(response.status === 200 && response.data !== undefined && response.data.themeColor) {
                     let color = response.data.themeColor.toString().toLowerCase() === "dark" ? ThemeColorAllowed.DARK : ThemeColorAllowed.LIGHT;
                     dispatch.dispatch(color);
-                    DispatchNotification(useSuccess, {"message": i18n.t("theme.changed.scheme." + response.data.themeColor)});
+                    DispatchNotification(useSuccess, {"message": i18n.t("theme.changed.scheme." + response.data.themeColor.toLowerCase())});
                 }
             }).catch((e) => {
                 ResponseErrorHandler(e, useDanger);

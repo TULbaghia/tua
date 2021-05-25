@@ -127,7 +127,6 @@
   "newPassword": "Nowe hasło",
   "repeatNewPassword": "Powtórz nowe hasło",
   "passwordsNotMatch": "Hasła nie są takie same",
-  "oldPasswordEqualsNew": "Nowe hasło nie może być takie samo jak stare",
   "exception.passwords_dont_match.passwords_dont_match": "Wprowadzone dane są niepoprawne",
   "exception.app_optimistic_lock.optimistic_lock": "Błąd blokady optymistycznej",
   "error.rest.validation": "Wprowadzone dane są niepoprawne",
@@ -218,5 +217,12 @@
   "editOtherAccountForm.lastname.error.pattern": "Wprowadzone nazwisko nie jest poprawne",
   "editOtherAccountForm.contactNumber.error.required": "Numer kontaktowy jest wymagany",
   "editOtherAccountForm.contactNumber.error.length": "Numer kontaktowy powinien zawierać od 9 do 15 znaków",
-  "editOtherAccountForm.contactNumber.error.pattern": "Wprowadzone dane nie są numerem kontaktowym"
+  "editOtherAccountForm.contactNumber.error.pattern": "Wprowadzone dane nie są numerem kontaktowym",
+  "email.error.required": "Email jest wymagany",
+  "oldPassword.error.required": "Stare hasło jest wymagane",
+  "name.error.required": "Imię jest wymagane",
+  "surname.error.required": "Nazwisko jest wymagane",
+  "contactNumber.error.required": "Numer kontaktowy jest wymagany",
+  "passwordResetForm.error.oldPasswordEqualsNew": "Nowe hasło nie może być takie samo jak stare",
+  "table.no.result": "Brak rezultatów do wyświetlenia"
 }

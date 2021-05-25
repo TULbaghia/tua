@@ -81,7 +81,7 @@ public abstract class AbstractEndpoint {
     /**
      * Zwraca login użytkownika
      *
-     * @return login użytkownika lub 'guest' dla gościa
+     * @return login użytkownika lub 'Guest' dla gościa
      */
     protected String getLogin() {
         Principal principal = securityContext.getCallerPrincipal();

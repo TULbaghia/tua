@@ -32,6 +32,12 @@ public class PasswordHasher implements PasswordHash {
         return DigestUtils.sha256Hex(password);
     }
 
+    /**
+     * Sprawdza zgodność hasła w postaci jawnej z hasłem w postaci niejawnej.
+     * @param password hasło w postaci jawnej
+     * @param hashedPassword hasło w postaci niejawnej
+     * @return wynik operacji jako prawda/fałsz
+     */
     public static boolean check(String password, String hashedPassword) {
         String toVerify = generate(password);
         if(hashedPassword.equals(toVerify)) {

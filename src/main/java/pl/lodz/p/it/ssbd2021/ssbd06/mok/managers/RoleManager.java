@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Odpowiada za przetwarzanie logiki biznesowej dotyczącej dystrybucji ról użytkowników w systemie.
+ */
 @Stateless
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)

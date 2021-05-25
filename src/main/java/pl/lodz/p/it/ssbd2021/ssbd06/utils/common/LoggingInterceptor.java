@@ -9,7 +9,7 @@ import javax.interceptor.InvocationContext;
 import java.util.logging.Level;
 
 /**
- * Interceptor zapewniający rejestrowanie szczegółów wywowłania metod komponentów EJB w dzienniku zdarzeń.
+ * Interceptor zapewniający rejestrowanie szczegółów wywołania metod komponentów EJB w dzienniku zdarzeń.
  */
 @Log
 public class LoggingInterceptor {

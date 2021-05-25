@@ -19,6 +19,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Odpowiada za przetwarzanie logiki biznesowej dotyczącej działań wykonywanych w konkretnym momencie czasu przez system.
+ */
 @Startup
 @Singleton
 @Interceptors({LoggingInterceptor.class})
@@ -39,7 +42,7 @@ public class ScheduledTasksManager {
      * Usuwa konta użytkowników nie potwierdzonych
      *
      * @param time
-     * @throws AppBaseException
+     * @throws AppBaseException w przypadku gdy operacja zakończy się niepowodzeniem
      */
     @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -73,12 +76,12 @@ public class ScheduledTasksManager {
      * W przypadku, gdy żeton zmiany email nie został użyty przez ponad godzinę od momentu utworzenia, jednak czas ten
      * nie przekroczył 2 godzin od momentu utworzenia, następuje ponowne wysłanie emaila z informacją o rozpoczęciu
      * procesu zmiany adresu email dla konta użytkownka.
-     * <p>
+     *
      * W przypadku, gdy żeton zmiany email nie został użyty przez ponad 2 godziny od momentu utworzenia,
      * następuje usunięcie żetonu.
      *
      * @param time
-     * @throws AppBaseException
+     * @throws AppBaseException w przypadku gdy operacja zakończy się niepowodzeniem
      */
     @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)

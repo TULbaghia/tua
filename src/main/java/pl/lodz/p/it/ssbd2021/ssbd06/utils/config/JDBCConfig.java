@@ -4,6 +4,10 @@ import javax.annotation.sql.DataSourceDefinition;
 import javax.ejb.Stateless;
 import java.sql.Connection;
 
+/**
+ * Zawiera dane potrzebne do uwierzytelnienia w bazie danych
+ */
+
 @DataSourceDefinition(
         name = "java:app/jdbc/ssbd06authDS",
         className = "org.postgresql.ds.PGSimpleDataSource",

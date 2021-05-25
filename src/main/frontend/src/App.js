@@ -6,24 +6,25 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 import {fab} from "@fortawesome/free-brands-svg-icons";
 import {faSignInAlt, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import Home from "./components/Home";
-import Login from "./components/Login";
+import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
 import ConfirmedAccount from "./components/ConfirmedAccount";
 import PasswordReset from "./components/PasswordReset";
-import NotFound from "./components/errorPages/NotFound";
-import Forbidden from "./components/errorPages/Forbidden";
-import InternalError from "./components/errorPages/InternalError";
+import NotFound from "./components/ErrorPages/NotFound";
+import Forbidden from "./components/ErrorPages/Forbidden";
+import InternalError from "./components/ErrorPages/InternalError";
 import UserInfo from './components/UserInfo';
 import UserList from "./components/UserList";
 import jwt_decode from "jwt-decode";
 import {useLocale} from "./components/LoginContext";
 import AppUsersPage from "./components/AppUsersPage";
-import EditOtherAccount from "./components/EditOtherAccount";
+import EditOtherAccountForm from "./components/EditOtherAccount/EditOtherAccountForm";
 import PasswordResetForm from "./components/PasswordReset/PasswordResetForm";
 import EmailConfirm from "./components/EmailConfirmation/EmailConfirm";
 import EditOwnAccount from './components/EditOwnAccount';
 import AccountActivate from "./components/EmailConfirmation/AccountActivate";
+import {rolesConstant} from "./Constants";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -46,11 +47,11 @@ function App() {
 
     const divStyle = () => {
         switch (currentRole) {
-            case 'ADMIN':
+            case rolesConstant.admin:
                 return {backgroundColor: "#EF5DA8"};
-            case 'MANAGER':
+            case rolesConstant.manager:
                 return {backgroundColor: "#F178B6"};
-            case 'CLIENT':
+            case rolesConstant.client:
                 return {backgroundColor: "#EFADCE"};
         }
     };
@@ -63,19 +64,19 @@ function App() {
                     <Switch>
                         <Route exact path="/" component={Home}/>
                         <Route exact path="/login" component={Login}/>
-                        <Route path="/signUp" component={SignUp}/>
-                        <Route path="/errors/forbidden" component={Forbidden}/>
-                        <Route path="/errors/internal" component={InternalError}/>
-                        <Route path="/login/password-reset" component={PasswordReset}/>
-                        <Route path="/confirmedAccount" component={ConfirmedAccount}/>
-                        <Route path="/myAccount" component={UserInfo}/>
-                        <Route path="/userPage" component={AppUsersPage}/>
-                        <Route path="/accounts" component={UserList}/>
-                        <Route path="/editOtherAccount" component={EditOtherAccount}/>
-                        <Route path="/editOwnAccount" component={EditOwnAccount}/>
-                        <Route path="/reset/password/:code" component={PasswordResetForm}/>
-                        <Route path="/confirm/email/:code" component={EmailConfirm}/>
-                        <Route path="/activate/account/:code" component={AccountActivate}/>
+                        <Route exact path="/signUp" component={SignUp}/>
+                        <Route exact path="/errors/forbidden" component={Forbidden}/>
+                        <Route exact path="/errors/internal" component={InternalError}/>
+                        <Route exact path="/login/password-reset" component={PasswordReset}/>
+                        <Route exact path="/confirmedAccount" component={ConfirmedAccount}/>
+                        <Route exact path="/myAccount" component={UserInfo}/>
+                        <Route exact path="/userPage" component={AppUsersPage}/>
+                        <Route exact path="/accounts" component={UserList}/>
+                        <Route exact path="/editOtherAccount" component={EditOtherAccountForm}/>
+                        <Route exact path="/editOwnAccount" component={EditOwnAccount}/>
+                        <Route exact path="/reset/password/:code" component={PasswordResetForm}/>
+                        <Route exact path="/confirm/email/:code" component={EmailConfirm}/>
+                        <Route exact path="/activate/account/:code" component={AccountActivate}/>
                         <Route component={NotFound}/>
                     </Switch>
                     <Footer roles={roles} divStyle={divStyle}/>

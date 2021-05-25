@@ -17,6 +17,9 @@ import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStoreHandler;
 import java.util.logging.Level;
 
+/**
+ * Zarządza procesem uwierzytelniania
+ */
 @Log
 @Stateful
 public class AuthEndpoint extends AbstractEndpoint implements AuthEndpointLocal {

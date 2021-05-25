@@ -38,6 +38,12 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         super(PendingCode.class);
     }
 
+    /**
+     * Zwraca obiekt encji PendingCode na podstawie kodu przekazanego jako parametr
+     * @param code Kod w formacie String
+     * @return obiekt encyjnej klasy PendingCode
+     * @throws AppBaseException gdy operacja zakończyła się niepowodzeniem
+     */
     @PermitAll
     public PendingCode findByCode(String code) throws AppBaseException {
         try {
@@ -51,6 +57,12 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         }
     }
 
+    /**
+     * Zwraca listę obiektów klasy encyjnej PendingCode przypisanych do konta
+     * @param account konto, do któego przypisane są obiekty PendingCode
+     * @return Lista obiektów PendingCode
+     * @throws AppBaseException gdy operacja zakończy się niepowodzeniem
+     */
     @PermitAll
     public List<PendingCode> findResetCodesByAccount(Account account) throws AppBaseException {
         try {
@@ -90,6 +102,12 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         }
     }
 
+    /**
+     * Zwraca obiekt klasy PendingCode zawierający kod niewykorzystany przez użytkownika
+     * @param account konto, dla którego wyszukwiany jest kod aktywacyjny
+     * @return kod aktywacyjny
+     * @throws AppBaseException gdy operacja zakończy się niepowodzeniem
+     */
     @PermitAll
     public PendingCode findNotUsedByAccount(Account account) throws AppBaseException {
         try {
@@ -126,6 +144,7 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
     /**
      * Zwraca kod, który nie został wykorzystany, dla wskazanego konta użytkownika.
      * @param account konto użytkownika, dla którego wyszukiwany jest kod.
+     * @return kod aktywacyjny
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
      */
     @PermitAll

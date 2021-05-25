@@ -7,6 +7,9 @@ import pl.lodz.p.it.ssbd2021.ssbd06.validation.UserEmail;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Klasa DTO reprezentująca zmianę adresu e-mail
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

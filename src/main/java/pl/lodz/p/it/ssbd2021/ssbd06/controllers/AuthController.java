@@ -20,6 +20,9 @@ import javax.ws.rs.core.Response;
 import java.time.Instant;
 import java.util.Date;
 
+/**
+ * Umożliwia proces uwierzytelnienia oraz wylogowania.
+ */
 @Path("/auth")
 public class AuthController extends AbstractController {
 

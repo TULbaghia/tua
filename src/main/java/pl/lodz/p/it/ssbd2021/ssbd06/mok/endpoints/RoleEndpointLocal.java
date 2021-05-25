@@ -8,6 +8,9 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 
+/**
+ * Wykonuje operacje związane z dystrybucją ról użytkowników.
+ */
 @Local
 public interface RoleEndpointLocal extends CallingClass {
 

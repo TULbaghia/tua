@@ -152,7 +152,8 @@ function EditOwnAccount() {
         <div className="container">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{i18n.t('mainPage')}</Link></li>
-                <li className="breadcrumb-item active" aria-current="page">{i18n.t('signUp')}</li>
+                <li className="breadcrumb-item"><Link to="/myAccount">{i18n.t('accountInfo')}</Link></li>
+                <li className="breadcrumb-item active" aria-current="page">{i18n.t('editAccount.title')}</li>
             </BreadCrumb>
             <div className="floating-box pt-2 pb-0">
                 <form className="form-signup">
@@ -228,7 +229,7 @@ function EditOwnAccount() {
                             style={{backgroundColor: "#7749F8"}}>
                         {i18n.t('changeDetails')}
                     </button>
-                    <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
+                    <ReCAPTCHA hl={i18n.language} ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                 </form>
             </div>
         </div>

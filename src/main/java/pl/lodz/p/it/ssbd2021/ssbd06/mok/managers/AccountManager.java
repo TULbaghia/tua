@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.managers;
 
-import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ClientData;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
@@ -9,8 +8,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
@@ -34,6 +31,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Odpowiada za przetwarzanie logiki biznesowej związanej z modelem obsługi kont.
+ */
 @Stateless
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -80,12 +80,13 @@ public class AccountManager {
         Account account = accountFacade.findByLogin(login);
         account.setEnabled(false);
         account.setFailedLoginAttemptsCounter(0);
+        account.setModifiedBy(getCurrentUser());
         accountFacade.edit(account);
         emailSender.sendLockAccountEmail(account);
     }
 
     /**
-     * Odblokowywuje konto użytkownika o podanym loginie.
+     * Odblokowuje konto użytkownika o podanym loginie.
      *
      * @param login login konta, które ma zostać odblokowane.
      * @throws AppBaseException gdy nie udało się odblokowanie konta.
@@ -94,6 +95,7 @@ public class AccountManager {
     public void unblockAccount(String login) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
         account.setEnabled(true);
+        account.setModifiedBy(getCurrentUser());
         accountFacade.edit(account);
         emailSender.sendUnlockAccountEmail(account);
     }
@@ -201,18 +203,14 @@ public class AccountManager {
     }
 
     /**
-     * Zwraca listę wszystkich kont w systemie w formacie DTO.
+     * Zwraca listę wszystkich kont w systemie.
      *
-     * @return lista kont jako DTO
+     * @return lista kont
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @RolesAllowed("getAllAccounts")
-    public List<AccountDto> getAllAccounts() throws AppBaseException {
-        List<AccountDto> resultList = new ArrayList<>();
-        for (Account account : accountFacade.findAll()) {
-            resultList.add(Mappers.getMapper(IAccountMapper.class).toAccountDto(account));
-        }
-        return resultList;
+    public List<Account> getAllAccounts() throws AppBaseException {
+        return new ArrayList<>(accountFacade.findAll());
     }
 
     /**
@@ -223,8 +221,8 @@ public class AccountManager {
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @RolesAllowed({"getOwnAccountInfo", "getOtherAccountInfo"})
-    public AccountDto getAccount(String login) throws AppBaseException {
-        return Mappers.getMapper(IAccountMapper.class).toAccountDto(accountFacade.findByLogin(login));
+    public Account getAccount(String login) throws AppBaseException {
+        return (accountFacade.findByLogin(login));
     }
 
     /**
@@ -235,6 +233,7 @@ public class AccountManager {
      */
     @RolesAllowed({"editOwnAccountDetails", "editOtherAccountDetails"})
     public void editAccountDetails(Account account) throws AppBaseException {
+        account.setModifiedBy(getCurrentUser());
         accountFacade.edit(account);
     }
 
@@ -242,7 +241,7 @@ public class AccountManager {
      * Wyszukuje obiekt Acccount o podanym loginie.
      *
      * @param login login wyszukiwanego konta użytkownika.
-     * @return encja użytkownika
+     * @return konto wyszukiwanego użytkownika
      * @throws AppBaseException gdy nie udało się pobrać danych
      */
     @PermitAll
@@ -263,12 +262,14 @@ public class AccountManager {
             throw AccountException.samePassword();
         }
         account.setPassword(PasswordHasher.generate(password));
+        account.setModifiedBy(getCurrentUser());
         accountFacade.edit(account);
     }
 
     /**
      * Zwraca obecnego użytkownika
      *
+     * @return konto aktualnego użytkownika
      * @throws AppBaseException gdy operacja się nie powiedzie
      */
     @RolesAllowed("editOwnPassword")
@@ -280,7 +281,7 @@ public class AccountManager {
      * Resetuje hasło użytkownika
      *
      * @param password nowe hasło
-     * @param code     token służący resetowniu
+     * @param code token służący resetowaniu
      * @throws AppBaseException w przypadku nieudanej operacji
      */
     @PermitAll
@@ -353,6 +354,7 @@ public class AccountManager {
      *
      * @param account  konto użytkownika, które ma być właścicielem kodu.
      * @param codeType typ kodu.
+     * @return obiekt klasy PendingCode
      */
     private PendingCode createPendingCode(Account account, CodeType codeType) {
         PendingCode pendingCode = new PendingCode();

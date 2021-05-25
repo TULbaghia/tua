@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 
 /**
- * Klasa DTO dziedzicząca po RoleDto, reprezentująca rolę Manager w systemie
+ * Klasa DTO potomna RoleDto, reprezentująca rolę Manager w systemie
  */
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor

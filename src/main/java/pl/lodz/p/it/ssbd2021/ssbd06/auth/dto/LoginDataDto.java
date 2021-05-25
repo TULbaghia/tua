@@ -7,6 +7,9 @@ import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * DTO reprezentujący dane potrzebne do przeprowadzenia procesu logowania
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

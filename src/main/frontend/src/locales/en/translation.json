@@ -191,5 +191,7 @@
   "userDetailsPasswordChangeBtn": "Change password",
   "dialog.expiring_token.title": "Token expiration",
   "dialog.expiring_token.message": "Your token will expire in a while. If you want still using the app, please ",
-  "dialog.expiring_token.refresh": "click here to refresh it"
+  "dialog.expiring_token.refresh": "click here to refresh it",
+  "LoginForm.error.login.required": "Login is required",
+  "LoginForm.error.password.required": "Password is required"
 }

@@ -6,7 +6,7 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 import {fab} from "@fortawesome/free-brands-svg-icons";
 import {faSignInAlt, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import Home from "./components/Home";
-import Login from "./components/Login";
+import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
 import ConfirmedAccount from "./components/ConfirmedAccount";

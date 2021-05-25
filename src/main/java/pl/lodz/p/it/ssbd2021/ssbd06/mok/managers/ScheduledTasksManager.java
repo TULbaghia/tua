@@ -15,6 +15,8 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.ServletContext;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
@@ -85,7 +87,7 @@ public class ScheduledTasksManager {
     private void sendRepeatedEmailChange(Timer time) throws AppBaseException {
         int emailChangeCodeExpirationTime = Integer
                 .parseInt(context.getInitParameter("emailChangeCodeExpirationTime"));
-        Instant expirationInstant = Instant.now().minus(emailChangeCodeExpirationTime, ChronoUnit.HOURS);
+        Instant expirationInstant = Instant.now().minus(emailChangeCodeExpirationTime, ChronoUnit.HOURS).atZone(ZoneOffset.UTC).toInstant();
         Date expirationDate = Date.from(expirationInstant);
         List<Account> accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, expirationDate);
         for (Account account : accountsUnusedCodes) {
@@ -95,7 +97,7 @@ public class ScheduledTasksManager {
 
         int emailChangeCodeRepeatTime = Integer
                 .parseInt(context.getInitParameter("emailChangeCodeRepeatTime"));
-        Instant repeatInstant = Instant.now().minus(emailChangeCodeRepeatTime, ChronoUnit.HOURS);
+        Instant repeatInstant = Instant.now().minus(emailChangeCodeRepeatTime, ChronoUnit.HOURS).atZone(ZoneOffset.UTC).toInstant();
         Date repeatDate = Date.from(repeatInstant);
         accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, repeatDate);
         for (Account account : accountsUnusedCodes) {

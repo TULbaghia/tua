@@ -17,6 +17,7 @@ import {useLocale} from "../LoginContext";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import {Button} from "react-bootstrap";
+import {rolesConstant} from "../../Constants";
 
 function EditOtherAccountForm({t, i18n}) {
     const dispatchNotification = useNotificationCustom();
@@ -38,16 +39,8 @@ function EditOtherAccountForm({t, i18n}) {
         return await api.getUserRole(location.login, {headers: {Authorization: "Bearer " + token}});
     }
 
-    const isClient = () => {
-        return roles.includes("CLIENT");
-    }
-
-    const isManager = () => {
-        return roles.includes("MANAGER");
-    }
-
-    const isAdmin = () => {
-        return roles.includes("ADMIN");
+    const isRole = (role) => {
+        return roles.includes(role);
     }
 
     React.useEffect(() => {
@@ -131,7 +124,7 @@ function EditOtherAccountForm({t, i18n}) {
         e.preventDefault()
         dispatchDialog({
             callbackOnSave: () => {
-                addRole("CLIENT")
+                addRole(rolesConstant.client)
             },
             callbackOnCancel: () => {
                 console.log("Cancel")
@@ -143,7 +136,7 @@ function EditOtherAccountForm({t, i18n}) {
         e.preventDefault()
         dispatchDialog({
             callbackOnSave: () => {
-                addRole("MANAGER")
+                addRole(rolesConstant.manager)
             },
             callbackOnCancel: () => {
                 console.log("Cancel")
@@ -155,7 +148,7 @@ function EditOtherAccountForm({t, i18n}) {
         e.preventDefault()
         dispatchDialog({
             callbackOnSave: () => {
-                addRole("ADMIN")
+                addRole(rolesConstant.admin)
             },
             callbackOnCancel: () => {
                 console.log("Cancel")
@@ -167,7 +160,7 @@ function EditOtherAccountForm({t, i18n}) {
         e.preventDefault()
         dispatchDialog({
             callbackOnSave: () => {
-                revokeRole("CLIENT")
+                revokeRole(rolesConstant.client)
             },
             callbackOnCancel: () => {
                 console.log("Cancel")
@@ -179,7 +172,7 @@ function EditOtherAccountForm({t, i18n}) {
         e.preventDefault()
         dispatchDialog({
             callbackOnSave: () => {
-                revokeRole("MANAGER")
+                revokeRole(rolesConstant.manager)
             },
             callbackOnCancel: () => {
                 console.log("Cancel")
@@ -191,7 +184,7 @@ function EditOtherAccountForm({t, i18n}) {
         e.preventDefault()
         dispatchDialog({
             callbackOnSave: () => {
-                revokeRole("ADMIN")
+                revokeRole(rolesConstant.admin)
             },
             callbackOnCancel: () => {
                 console.log("Cancel")
@@ -203,7 +196,7 @@ function EditOtherAccountForm({t, i18n}) {
         dispatchCriticalDialog({
             callbackOnSave: () => handleEmailSubmit(values, setSubmitting),
             callbackOnCancel: () => setSubmitting(false)
-            })
+        })
     )
 
     const handlePasswordConfirmation = (values, setSubmitting) => (
@@ -433,42 +426,42 @@ function EditOtherAccountForm({t, i18n}) {
                                 </Formik>
                             </Tab>
                             <Tab eventKey="tab4" title={t('editRoles')}>
-                                {!isClient() &&
+                                {!isRole(rolesConstant.client) &&
                                 <button className="btn btn-lg btn-primary btn-block" type="submit"
                                         style={{backgroundColor: "forestgreen", marginBottom: "1rem"}}
                                         onClick={handleAddRoleClient}>
                                     {t('addRoleClient')}
                                 </button>
                                 }
-                                {isClient() &&
+                                {isRole(rolesConstant.client) &&
                                 <button className="btn btn-lg btn-primary btn-block" type="submit"
                                         style={{backgroundColor: "indianred", marginBottom: "1rem"}}
                                         onClick={handleRevokeRoleClient}>
                                     {t('revokeRoleClient')}
                                 </button>
                                 }
-                                {!isManager() &&
+                                {!isRole(rolesConstant.manager) &&
                                 <button className="btn btn-lg btn-primary btn-block" type="submit"
                                         style={{backgroundColor: "forestgreen", marginBottom: "1rem"}}
                                         onClick={handleAddRoleManager}>
                                     {t('addRoleManager')}
                                 </button>
                                 }
-                                {isManager() &&
+                                {isRole(rolesConstant.manager) &&
                                 <button className="btn btn-lg btn-primary btn-block" type="submit"
                                         style={{backgroundColor: "indianred", marginBottom: "1rem"}}
                                         onClick={handleRevokeRoleManager}>
                                     {t('revokeRoleManager')}
                                 </button>
                                 }
-                                {!isAdmin() &&
+                                {!isRole(rolesConstant.admin) &&
                                 <button className="btn btn-lg btn-primary btn-block" type="submit"
                                         style={{backgroundColor: "forestgreen", marginBottom: "1rem"}}
                                         onClick={handleAddRoleAdmin}>
                                     {t('addRoleAdmin')}
                                 </button>
                                 }
-                                {isAdmin() &&
+                                {isRole(rolesConstant.admin) &&
                                 <button className="btn btn-lg btn-primary btn-block" type="submit"
                                         style={{backgroundColor: "indianred", marginBottom: "1rem"}}
                                         onClick={handleRevokeRoleAdmin}>

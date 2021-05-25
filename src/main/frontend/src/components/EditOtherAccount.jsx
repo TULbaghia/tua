@@ -36,7 +36,7 @@ function EditOtherAccount(props) {
     const location = useLocation();
 
     const getRoles = async () => {
-        return await api.getUserRole(location.login, {headers: {Authorization: "Bearer " + token}});
+        return await api.getUserRole(location.login, {headers: {Authorization: token}});
     }
 
     const isClient = () => {
@@ -60,7 +60,6 @@ function EditOtherAccount(props) {
             getEtag().then(r => setETag(r));
             getEtagRole(location.login).then(r => setETagRole(r));
             getRoles().then(res => {
-                console.log(res.data);
                 let data = "";
                 let i;
                 for(i = 0; i < res.data.rolesGranted.length; i++) {

@@ -29,12 +29,12 @@ export const LoginProvider = ({children}) => {
     const refreshToken = (event) => {
         event.target.closest(".alert").querySelector(".close").click()
 
-        axios.post('https://localhost:8181/resources/auth/refresh-token', localStorage.getItem("token"), {
+        axios.post(`${process.env.REACT_APP_API_BASE_URL}resources/auth/refresh-token`, localStorage.getItem("token"), {
             headers:{
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
+                "Authorization": `${localStorage.getItem("token")}`
             }
         }).then(res => res.data)
-            .then(token => saveToken(token));
+            .then(token => saveToken("Bearer " + token));
         setTimeout(() => {
             schedule();
         }, 1000)
@@ -51,7 +51,6 @@ export const LoginProvider = ({children}) => {
         if (storedToken === undefined || storedToken == null) return
         const decoded = jwt_decode(storedToken);
         const expirationDate = new Date(decoded.exp * 1000)
-        console.log(`token expires at ${expirationDate}`)
         if (expirationDate < new Date()) {
             console.log("token expired")
             localStorage.removeItem("token")

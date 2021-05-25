@@ -38,14 +38,14 @@ function Login(props) {
     }
 
     const refreshToken = (event) => {
-        event.target.closest(".alert").querySelector(".close").click()
+        event.target.closest(".alert").querySelector(".close").click();
 
-        axios.post('https://localhost:8181/resources/auth/refresh-token', localStorage.getItem("token"), {
+        axios.post(`${process.env.REACT_APP_API_BASE_URL}resources/auth/refresh-token`, localStorage.getItem("token"), {
             headers:{
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
+                "Authorization": `${localStorage.getItem("token")}`
             }
         }).then(res => res.data)
-            .then(token => saveToken(token));
+            .then(token => saveToken("Bearer " + token));
         setTimeout(() => {
             schedule();
         }, 1000)

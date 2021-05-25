@@ -1,12 +1,20 @@
 import {withNamespaces} from "react-i18next";
-import React from "react";
+import React, {useEffect} from "react";
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
 import {useLocale} from "./LoginContext";
+import {getUserLanguage} from "./Navbar";
 
 function AppUsersPage(props) {
-    const {t} = props
+    const {t, i18n} = props
+    const {token, setToken} = useLocale();
     const {currentRole, username} = useLocale();
+
+   useEffect(() => {
+       if (token) {
+           getUserLanguage(token, i18n);
+       }
+    }, []);
 
     return (
         <div className="Home">

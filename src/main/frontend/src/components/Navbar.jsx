@@ -18,7 +18,6 @@ function LanguageSwitcher(props) {
     const {token, setToken} = useLocale();
 
     const langs = ['pl', 'en']
-    console.log(i18n.language)
 
     const handleClickPl = () => {
         setLanguage(i18n, "pl")
@@ -32,18 +31,18 @@ function LanguageSwitcher(props) {
         handleClickPl()
         axios.post('https://localhost:8181/resources/accounts/self/edit/language/pl', null, {
             headers: {
-                Authorization: `${token}`
+                Authorization: token
             }
-        }).then(res => console.log(res))
+        })
     }
 
     const handleClickLoggedEn = () => {
         handleClickEn()
         axios.post('https://localhost:8181/resources/accounts/self/edit/language/en', null, {
             headers: {
-                Authorization: `${token}`
+                Authorization: token
             }
-        }).then(res => console.log(res))
+        })
     }
 
     return (
@@ -230,7 +229,7 @@ export function getUserLanguage(token, i18n) {
     if (token !== null && token !== '') {
         axios.get('https://localhost:8181/resources/accounts/user', {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: token
             }
         }).then(res => res.data)
             .then(data => data.language)

@@ -55,6 +55,6 @@ public class AuthEndpoint extends AbstractEndpoint implements AuthEndpointLocal 
     @Override
     @RolesAllowed("refreshToken")
     public String refreshToken(String currToken){
-        return jwtGenerator.updateJWTString(currToken);
+        return jwtGenerator.updateJWTString(currToken.substring(7));
     }
 }

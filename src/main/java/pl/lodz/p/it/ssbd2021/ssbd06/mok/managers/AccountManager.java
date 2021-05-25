@@ -155,6 +155,7 @@ public class AccountManager {
         pendingCode.setUsed(true);
         pendingCodeFacade.edit(pendingCode);
         accountFacade.edit(account);
+        emailSender.sendActivationSuccessEmail(account);
     }
 
     /**
@@ -320,6 +321,18 @@ public class AccountManager {
     public void editAccountEmail(String login, String newEmail) throws AppBaseException {
         Account accountEmail = accountFacade.findByLogin(login);
         Account accountExists = null;
+
+//        W bloku "try" następuje próba pozyskania z tabeli account konta, które posiada przypisany adres email,
+//        identyczny jak adres email wykorzystywany w aktualnie przetwarzanym procesie zmiany tego zasobu.
+//
+//        1. W przypadku, gdy takie konto istnieje, zmienna accountExists nie będzie nullem, co powinno spowodować
+//        zgłoszenie wyjątku AccountException.emailExists() - zgodnie z ograniczeniami, każdy adres email użytkownika
+//        istniejący w bazie danych musi być unikalny.
+//
+//        2. W sytuacji, gdy nie następuje próba zmiany adresu email na taki, który obecnie posiada inny użytkownik,
+//        wykonywanie metody accountFacade.findByEmail(newEmail), powinno zakończyć się wyjątkiem. Wyjątek ten - NotFoundException
+//        jest dla nas informacją, że w bazie danych nie istnieje konflikt adresów email, a zatem proces zmiany można kontynuować,
+//        dlatego też blok "catch" jest w tym przypadku pusty.
 
         try {
             accountExists = accountFacade.findByEmail(newEmail);

@@ -144,7 +144,8 @@ public class Config implements Serializable {
         DELETE_UNCONFIRMED("delete"),
         ACTIVATE_ACCOUNT("activate"),
         CHANGE_EMAIL("email_change"),
-        ADMIN_LOGIN("admin_login");
+        ADMIN_LOGIN("admin_login"),
+        ACTIVATE_SUCCESS("activate_success");
 
         @Getter
         private final String value;

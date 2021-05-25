@@ -311,7 +311,7 @@ function EditOtherAccountForm({t, i18n}) {
                     <div style={{color: "#7749F8", fontSize: 14, marginBottom: "0.5rem"}}>
                         {t('obligatoryFields')}
                     </div>
-                    <div className="container float-left">
+                    <div className="container">
                         <Tabs defaultActiveKey="tab1" className="categories m-3">
                             <Tab eventKey="tab1" title={t('editEmail')}>
                                 <Formik

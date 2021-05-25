@@ -116,6 +116,10 @@ function Login(props) {
                                     style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
                                 {t('signIn')}
                             </button>
+                            <button className="btn btn-lg btn-primary btn-block mt-2" type="button"
+                                    onClick={() => history.push("/login/password-reset")} style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
+                                {t('passwordReset')}
+                            </button>
                         </Form>
                     )}
                 </Formik>

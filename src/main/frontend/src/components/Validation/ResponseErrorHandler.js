@@ -4,21 +4,21 @@ import {dialogDuration} from "../Notification/Notification";
 
 export const ResponseErrorHandler = (error, errorNotifier, shouldDispatchViolations = true, callbackAfter = ((x) => {})) => {
     let errorHandled = false;
+    const responseData = error.response.data;
+
     if (error.response.status === 500) {
         errorNotifier({
             "dialogDuration": dialogDuration.SECOND,
             "message": i18n.t("request.error.5xx")
         });
     }
-    if (error.response.status === 404) {
+    else if (error.response.status === 404) {
         errorNotifier({
             "dialogDuration": dialogDuration.SECOND,
             "message": i18n.t("request.error.4xx")
         });
     }
-    const responseData = error.response.data;
-
-    if (responseData) {
+    else if (responseData) {
         if (responseData.message === "error.rest.validation") {
             if (shouldDispatchViolations) {
                 dispatchErrors(error, errorNotifier)

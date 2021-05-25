@@ -33,7 +33,7 @@ public class RolesDto implements Signable {
     }
 
     /**
-     * Klasa DTO reprezentująca rolę, w systemie, przypisaną do użytkownika
+     * Klasa DTO reprezentująca rolę w systemie, przypisaną do użytkownika
      */
     @NoArgsConstructor
     @AllArgsConstructor

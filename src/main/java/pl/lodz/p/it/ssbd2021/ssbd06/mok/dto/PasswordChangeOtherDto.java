@@ -10,7 +10,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.validation.Password;
 import javax.validation.constraints.NotNull;
 
 /**
- * Klasa DTO reprezentująca proces zmiany hasła innego użytkownika
+ * Klasa DTO reprezentująca zmianę hasła innego użytkownika
  */
 @Data
 @AllArgsConstructor

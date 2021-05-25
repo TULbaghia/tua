@@ -103,7 +103,7 @@ public class AccountException extends AppBaseException {
 
     /**
      *  Tworzy wyjątek reprezentujący niepowodzenie usunięcia konta ze względu na to, że konto zostało zweryfikowane
-     * @return
+     * @return wyjątek typu  AccountException
      */
     public static AccountException confirmed(){
         return new AccountException(ACCOUNT_IS_CONFIRMED);

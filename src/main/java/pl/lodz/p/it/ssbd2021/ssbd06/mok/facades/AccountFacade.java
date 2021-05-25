@@ -109,6 +109,11 @@ public class AccountFacade extends AbstractFacade<Account> {
         return super.findAll();
     }
 
+    /**
+     * Przeprowadza operację edycji obiektu encji.
+     * @param entity obiekt encji.
+     * @throws AppBaseException gdy nie udało się przeprowadzić operacji edycji
+     */
     @Override
     @PermitAll
     public void edit(Account entity) throws AppBaseException {
@@ -126,6 +131,12 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Zwraca listę kont niezweryfikowanych
+     * @param expirationDate data wygaśnięcia możliwości aktywacji konta
+     * @return lista kont
+     * @throws AppBaseException gdy nie udało się przeprowadzić operacji wyświetlenia listy kont
+     */
     @PermitAll
     public List<Account> findUnverifiedBefore(Date expirationDate) throws AppBaseException {
         try {

@@ -112,17 +112,33 @@ public class Config implements Serializable {
         return get(MAIL_ENDPOINT_EMAIL_CHANGE);
     }
 
+    /**
+     * Zwraca zawartość wiadamości w zależności od parametrów
+     * @param language określa język wiadomości
+     * @param type określa typ wiadomości email
+     * @param param
+     * @return wygenerowana wiadomość
+     */
     public String getContentForType(String language, Config.MailType type, String... param) {
         String mailType = String.format(MAIL_CONTENT_SCHEME, type.getValue());
         String pattern = i18n.getMessage(new Locale(language), mailType);
         return MessageFormat.format(pattern, (Object[]) param);
     }
 
+    /**
+     * Zwraca temat wiadomości
+     * @param language język wiadomości
+     * @param type typ wiadomości
+     * @return wygenerowany temat
+     */
     public String getSubjectForType(String language, Config.MailType type) {
         String mailType = String.format(MAIL_SUBJECT_SCHEME, type.getValue());
         return i18n.getMessage(new Locale(language), mailType);
     }
 
+    /**
+     * Metoda inicjująca
+     */
     @PostConstruct
     private void init() {
         try {

@@ -12,6 +12,9 @@ import javax.ejb.Local;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Wykonuje konwersje klas DTO na model biznesowy
+ */
 @Local
 public interface AccountEndpointLocal extends CallingClass {
     /**

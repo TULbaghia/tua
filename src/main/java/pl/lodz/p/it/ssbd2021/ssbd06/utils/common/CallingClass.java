@@ -7,7 +7,7 @@ public interface CallingClass {
     /**
      * Zwraca identyfikator transakcji aplikacyjnej
      *
-     * @return identufikator transakcji aplikacyjnej
+     * @return identyfikator transakcji aplikacyjnej
      */
     String getTransactionId();
 

@@ -8,6 +8,7 @@ import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import {useNotificationSuccessAndShort} from "./Notification/NotificationProvider";
 import i18n from '../i18n';
+import {rolesConstant} from "../Constants";
 
 function AccessLevelSwitcher(props) {
 
@@ -25,7 +26,7 @@ function AccessLevelSwitcher(props) {
         setCurrentRole(level);
         localStorage.setItem('currentRole', level);
         dispatchNotificationSuccess({message: i18n.t('roleChanged') + i18n.t(level)});
-        if(level !== 'CLIENT' && level!== currentRole) {
+        if(level !== rolesConstant.client && level!== currentRole) {
             handleChangeLevel(level);
         }
     }

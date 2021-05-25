@@ -187,7 +187,7 @@ function UserList(props) {
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/">{t('adminDashboard')}</Link></li>
-                <li className="breadcrumb-item active" aria-current="page">{t('userList')}</li>
+                <li className="breadcrumb-item active" aria-current="page">{t('accountList')}</li>
             </BreadCrumb>
             <div className="floating-box">
                 <div>

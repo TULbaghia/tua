@@ -11,6 +11,7 @@ import {
 } from "./Notification/NotificationProvider";
 import {useDialogPermanentChange} from "./CriticalOperations/CriticalOperationProvider";
 import {Configuration, DefaultApi} from "api-client";
+import {rolesConstant} from "../Constants";
 
 function EditOtherAccount(props) {
     const {t, i18n} = props
@@ -40,15 +41,15 @@ function EditOtherAccount(props) {
     }
 
     const isClient = () => {
-        return roles.includes("CLIENT");
+        return roles.includes(rolesConstant.client);
     }
 
     const isManager = () => {
-        return roles.includes("MANAGER");
+        return roles.includes(rolesConstant.manager);
     }
 
     const isAdmin = () => {
-        return roles.includes("ADMIN");
+        return roles.includes(rolesConstant.admin);
     }
 
     React.useEffect(() => {
@@ -271,7 +272,7 @@ function EditOtherAccount(props) {
     }
 
     const addRoleClient = () => (
-        api.grantAccessLevel(location.login, "CLIENT", {
+        api.grantAccessLevel(location.login, rolesConstant.client, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -285,7 +286,7 @@ function EditOtherAccount(props) {
     )
 
     const addRoleManager = () => (
-        api.grantAccessLevel(location.login, "MANAGER", {
+        api.grantAccessLevel(location.login, rolesConstant.manager, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -299,7 +300,7 @@ function EditOtherAccount(props) {
     )
 
     const addRoleAdmin = () => (
-        api.grantAccessLevel(location.login, "ADMIN", {
+        api.grantAccessLevel(location.login, rolesConstant.admin, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -313,7 +314,7 @@ function EditOtherAccount(props) {
     )
 
     const revokeRoleClient = () => (
-        api.revokeAccessLevel(location.login, "CLIENT", {
+        api.revokeAccessLevel(location.login, rolesConstant.client, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -327,7 +328,7 @@ function EditOtherAccount(props) {
     )
 
     const revokeRoleManager = () => (
-        api.revokeAccessLevel(location.login, "MANAGER", {
+        api.revokeAccessLevel(location.login, rolesConstant.manager, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -341,7 +342,7 @@ function EditOtherAccount(props) {
     )
 
     const revokeRoleAdmin = () => (
-        api.revokeAccessLevel(location.login, "ADMIN", {
+        api.revokeAccessLevel(location.login, rolesConstant.admin, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,

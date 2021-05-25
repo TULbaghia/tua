@@ -131,7 +131,7 @@
     "exception.passwords_dont_match.passwords_dont_match": "Wprowadzone dane są niepoprawne",
     "exception.app_optimistic_lock.optimistic_lock": "Błąd blokady optymistycznej",
     "error.rest.validation": "Wprowadzone dane są niepoprawne",
-    "exception.account.email_exists": "Wprowadzone dane są niepoprawne",
+    "exception.account.email_invalid": "Adres email jest niepoprawny lub jest zajęty",
     "exception.email_exception.email_not_sent": "Wystąpił błąd podczas wysyłania maila",
     "error.rest.processing_error": "Błąd podczas przetwarzania operacji",
     "operationSuccess": "Operacja zakończona sukcesem",
@@ -157,7 +157,7 @@
 
     "error.rest.resource_forbidden": "Brak dostępu do zasobu",
 
-    "exception.account.login_exists": "Konto z takim loginem juz istnieje",
+    "exception.account.login_invalid": "Login jest niepoprawny lub jest zajęty",
     "exception.account.contact_number": "Konto z takim numerem telefonu już istnieje",
     "exception.account_already_activated.already_activated": "Konto zostało już aktywowane",
     "exception.account.account_confirmed": "Konto zostało aktywowane",

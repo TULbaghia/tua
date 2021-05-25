@@ -11,6 +11,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
@@ -69,6 +70,9 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         try {
             super.create(entity);
         } catch (ConstraintViolationException e) {
+            if(e.getCause().getMessage().contains(PendingCode.PENDING_CODE_CONSTRAINT)){
+                throw CodeException.codeDuplicated(e.getCause());
+            }
             throw DatabaseQueryException.databaseQueryException(e.getCause());
         }
     }
@@ -79,6 +83,9 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         try {
             super.edit(entity);
         } catch (ConstraintViolationException e) {
+            if(e.getCause().getMessage().contains(PendingCode.PENDING_CODE_CONSTRAINT)){
+                throw CodeException.codeDuplicated(e.getCause());
+            }
             throw DatabaseQueryException.databaseQueryException(e.getCause());
         }
     }

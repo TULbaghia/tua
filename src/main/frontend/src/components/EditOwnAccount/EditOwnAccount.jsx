@@ -7,7 +7,6 @@ import ReCAPTCHA from "react-google-recaptcha";
 import {Link} from "react-router-dom";
 import {Configuration, DefaultApi} from "api-client";
 import {
-    useNotificationCustom,
     useNotificationDangerAndLong,
     useNotificationSuccessAndShort,
     useNotificationWarningAndLong,
@@ -21,7 +20,7 @@ import {validatorFactory, ValidatorType} from "../Validation/Validators";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 
-function EditOwnAccount(props) {
+function EditOwnAccount() {
     const history = useHistory();
     const {token, setToken} = useLocale();
     const [etag, setETag] = useState();
@@ -89,16 +88,6 @@ function EditOwnAccount(props) {
                 setSubmitting(false)
             },
         })}, recaptchaRef2, dispatchNotificationWarning, () => setSubmitting(false))
-
-
-        // dispatchDialog({
-        //     callbackOnSave: () => {
-        //         handleRecaptcha(editPassword(values, setSubmitting), recaptchaRef2, dispatchNotificationWarning)
-        //     },
-        //     callbackOnCancel: () => {
-        //         setSubmitting(false)
-        //     },
-        // })
     }
 
 
@@ -127,19 +116,10 @@ function EditOwnAccount(props) {
                 setSubmitting(false)
             },
         })}, recaptchaRef3, dispatchNotificationWarning, () => setSubmitting(false))
-
-        // dispatchDialog({
-        //     callbackOnSave: () => {
-        //         handleRecaptcha(editDetails(values, setSubmitting), recaptchaRef3, dispatchNotificationWarning)
-        //     },
-        //     callbackOnCancel: () => {
-        //         setSubmitting(false)
-        //     },
-        // })
     }
 
     const editDetails = (values, setSubmitting) => {
-        api.editOwnAccountDetails({firstname: values.name, lastname: values.surname, contactNumber: values.contactNumber}, {
+        api.editOwnAccountDetails({firstname: values.name, lastname: values.surname, contactNumber: values.phoneNumber}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -336,83 +316,6 @@ function EditOwnAccount(props) {
                         </Tabs>
                     </div>
                 </div>
-
-
-                {/*<form className="form-signup" style={{minWidth: "30rem"}}>*/}
-                {/*    <h1 className="h3">{i18n.t('editProfile')}</h1>*/}
-                {/*    <input*/}
-                {/*        id="email"*/}
-                {/*        className="form-control"*/}
-                {/*        placeholder={i18n.t('emailAddress')}*/}
-                {/*        autoFocus={true}*/}
-                {/*        onChange={event => setEmail(event.target.value)}*/}
-                {/*        style={{marginTop: "1.5rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}*/}
-                {/*    />*/}
-                {/*    <button className="btn btn-lg btn-primary btn-block" onClick={handleEmailSubmit} type="submit"*/}
-                {/*            style={{backgroundColor: "#7749F8"}}>*/}
-                {/*        {i18n.t('changeEmail')}*/}
-                {/*    </button>*/}
-                {/*    <input*/}
-                {/*        id="oldPassword"*/}
-                {/*        className="form-control"*/}
-                {/*        type="password"*/}
-                {/*        placeholder={i18n.t('oldPassword')}*/}
-                {/*        autoFocus={true}*/}
-                {/*        onChange={event => setOldPassword(event.target.value)}*/}
-                {/*        style={{marginTop: "2rem", width: "90%", display: "inline-block"}}*/}
-                {/*    />*/}
-                {/*    <input*/}
-                {/*        id="newPassword"*/}
-                {/*        className="form-control"*/}
-                {/*        type="password"*/}
-                {/*        placeholder={i18n.t('newPassword')}*/}
-                {/*        autoFocus={true}*/}
-                {/*        onChange={event => setNewPassword(event.target.value)}*/}
-                {/*        style={{marginTop: "1rem", width: "90%", display: "inline-block"}}*/}
-                {/*    />*/}
-                {/*    <input*/}
-                {/*        id="repeatNewPassword"*/}
-                {/*        className="form-control"*/}
-                {/*        type="password"*/}
-                {/*        placeholder={i18n.t('repeatNewPassword')}*/}
-                {/*        autoFocus={true}*/}
-                {/*        onChange={event => setRepeatedPassword(event.target.value)}*/}
-                {/*        style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}*/}
-                {/*    />*/}
-                {/*    <button className="btn btn-lg btn-primary btn-block" onClick={handlePasswordSubmit} type="submit"*/}
-                {/*            style={{backgroundColor: "#7749F8"}}>*/}
-                {/*        {i18n.t('changePassword')}*/}
-                {/*    </button>*/}
-                {/*    <input*/}
-                {/*        id="name"*/}
-                {/*        className="form-control"*/}
-                {/*        placeholder={i18n.t('name')}*/}
-                {/*        autoFocus={true}*/}
-                {/*        onChange={event => setName(event.target.value)}*/}
-                {/*        style={{marginTop: "2rem", width: "90%", display: "inline-block"}}*/}
-                {/*    />*/}
-                {/*    <input*/}
-                {/*        id="surname"*/}
-                {/*        className="form-control"*/}
-                {/*        placeholder={i18n.t('surname')}*/}
-                {/*        autoFocus={true}*/}
-                {/*        onChange={event => setSurname(event.target.value)}*/}
-                {/*        style={{marginTop: "1rem", width: "90%", display: "inline-block"}}*/}
-                {/*    />*/}
-                {/*    <input*/}
-                {/*        id="phoneNumber"*/}
-                {/*        className="form-control"*/}
-                {/*        placeholder={i18n.t('phoneNumber')}*/}
-                {/*        autoFocus={true}*/}
-                {/*        onChange={event => setContactNumber(event.target.value)}*/}
-                {/*        style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}*/}
-                {/*    />*/}
-                {/*    <button className="btn btn-lg btn-primary btn-block mb-3" onClick={handleDetailsSubmit} type="submit"*/}
-                {/*            style={{backgroundColor: "#7749F8"}}>*/}
-                {/*        {i18n.t('changeDetails')}*/}
-                {/*    </button>*/}
-                {/*    <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>*/}
-                {/*</form>*/}
             </div>
         </div>
     );

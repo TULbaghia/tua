@@ -116,7 +116,7 @@ function App() {
                             <GuardedRoute exact path="/reset/password/:code" component={PasswordResetForm} meta={{ auth: false }}/>
                             <GuardedRoute exact path="/confirm/email/:code" component={EmailConfirm} meta={{ auth: false }}/>
                             <GuardedRoute exact path="/accounts" component={UserList} meta={{ auth: true, admin: true, logged, currentRole }}/>
-                            <GuardedRoute component={NotFound}/>
+                            <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>
                     <Footer roles={roles} divStyle={divStyle}/>

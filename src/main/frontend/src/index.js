@@ -7,16 +7,19 @@ import NotificationProvider from "./components/Notification/NotificationProvider
 import CriticalOperationProvider from "./components/CriticalOperations/CriticalOperationProvider";
 import reportWebVitals from "./reportWebVitals";
 import {LoginProvider} from "./components/LoginContext";
+import ThemeColorProvider from "./components/Utils/ThemeColor/ThemeColorProvider";
 
 ReactDOM.render(
     <React.StrictMode>
-        <NotificationProvider>
-            <CriticalOperationProvider>
-                <LoginProvider>
-                    <App/>
-                </LoginProvider>
-            </CriticalOperationProvider>
-        </NotificationProvider>
+        <ThemeColorProvider>
+            <NotificationProvider>
+                <CriticalOperationProvider>
+                    <LoginProvider>
+                        <App/>
+                    </LoginProvider>
+                </CriticalOperationProvider>
+            </NotificationProvider>
+        </ThemeColorProvider>
     </React.StrictMode>,
     document.getElementById("root")
 );

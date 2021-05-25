@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.ThemeColor;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
@@ -52,9 +53,9 @@ public interface AccountEndpointLocal extends CallingClass {
     /**
      * Aktualizuje dane związane z niepoprawnym uwierzytelnieniem się użytkownika.
      *
-     * @param login login użytkownika
+     * @param login     login użytkownika
      * @param ipAddress adres ip użytkownika
-     * @param authDate data udanego uwierzytelnienia
+     * @param authDate  data udanego uwierzytelnienia
      * @throws AppBaseException gdy nie udało się zaktualizować danych
      */
     @PermitAll
@@ -63,9 +64,9 @@ public interface AccountEndpointLocal extends CallingClass {
     /**
      * Aktualizuje dane związane z poprawnym uwierzytelnieniem się użytkownika.
      *
-     * @param login login użytkownika
+     * @param login     login użytkownika
      * @param ipAddress adres ip użytkownika
-     * @param authDate data nieudanego uwierzytelnienia
+     * @param authDate  data nieudanego uwierzytelnienia
      * @throws AppBaseException gdy nie udało się zaktualizować danych
      */
     @PermitAll
@@ -83,7 +84,7 @@ public interface AccountEndpointLocal extends CallingClass {
     /**
      * Zmienia dane wskazanego konta użytkownika użytkownika w zakresie: imienia, nazwiska oraz numeru kontaktowego.
      *
-     * @param login login użytkownika, którego konto podlega modyfikacji.
+     * @param login                     login użytkownika, którego konto podlega modyfikacji.
      * @param accountPersonalDetailsDto obiekt konta zmodyfikowany w dostępnym zakresie.
      * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
@@ -200,7 +201,7 @@ public interface AccountEndpointLocal extends CallingClass {
      * Wysyła email na konto użytkownika z poziomem administracyjnym po zalogowaniu.
      * Reprezentuje powiadomienie o zalogowaniu na konto administratora.
      *
-     * @param address adres logiczny z jakiego nastąpiło logowanie na konto z administracyjnym poziomem dostępu.
+     * @param address    adres logiczny z jakiego nastąpiło logowanie na konto z administracyjnym poziomem dostępu.
      * @param adminLogin login konta administratora.
      * @throws AppBaseException proces wysyłania powiadomienia zakończył się niepowodzeniem.
      */
@@ -209,9 +210,18 @@ public interface AccountEndpointLocal extends CallingClass {
 
     /**
      * Edytuje język przypisany do konta użytkownika
+     *
      * @param language nowy język, który ma być przypisany do konta
      * @throws AppBaseException proces zmiany języka zakończył się niepowodzeniem
      */
     @RolesAllowed("editOwnLanguage")
     void editOwnLanguage(String language) throws AppBaseException;
+
+    /**
+     * Aktualizuje motyw interfejsu dla użytkownika.
+     *
+     * @param themeColor kolor interfejsu preferowany przez użytkownika
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    void changeThemeColor(ThemeColor themeColor) throws AppBaseException;
 }

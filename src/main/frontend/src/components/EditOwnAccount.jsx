@@ -16,6 +16,8 @@ import i18n from '../i18n';
 import {handleRecaptcha} from "./Recaptcha/RecaptchaCallback";
 import {validatorFactory, ValidatorType} from "./Validation/Validators";
 import {dispatchErrors, ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
+import {ThemeColorAllowed, useThemeColor} from "./Utils/ThemeColor/ThemeColorProvider";
+import {v4} from "uuid";
 
 
 function EditOwnAccount() {
@@ -29,6 +31,13 @@ function EditOwnAccount() {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [contactNumber, setContactNumber] = useState('');
+    const [reCaptchaKey, setReCaptchaKey] = useState(v4());
+
+    const colorTheme = useThemeColor();
+
+    React.useEffect(() => {
+        setReCaptchaKey(v4());
+    }, [colorTheme])
 
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationWarning = useNotificationWarningAndLong();
@@ -225,10 +234,10 @@ function EditOwnAccount() {
                         style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
                     />
                     <button className="btn btn-lg btn-primary btn-block mb-3" onClick={handleDetailsSubmit} type="submit"
-                            style={{backgroundColor: "#7749F8"}}>
+                            style={{backgroundColor: "var(--purple)"}}>
                         {i18n.t('changeDetails')}
                     </button>
-                    <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
+                    <ReCAPTCHA key={reCaptchaKey} theme={colorTheme} ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                 </form>
             </div>
         </div>

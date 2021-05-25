@@ -1,5 +1,6 @@
 .name {
     font-weight: bold;
+    color: var(--dark)
 }
 
 .signUp {
@@ -9,13 +10,12 @@
     padding: 10px 4px;
     right: 170px;
     top: 10px;
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
     line-height: 14px;
-    color: #7749F8;
-    border: 1px solid #7749F8;
+    color: var(--purple);
+    border: 1px solid var(--purple);
     box-sizing: border-box;
     border-radius: 4px;
     width: 140px;
@@ -30,8 +30,8 @@
     padding: 10px 4px;
     right: 30px;
     top: 10px;
-    background: #7749F8;
-    border: 1px solid #7749F8;
+    background: var(--purple);
+    border: 1px solid var(--purple);
     box-sizing: border-box;
     border-radius: 4px;
     width: 120px;
@@ -39,12 +39,11 @@
 }
 
 .signUpIcon {
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
     line-height: 14px;
-    color: #7749F8;
+    color: var(--purple);
     flex: none;
     order: 1;
     flex-grow: 0;
@@ -52,12 +51,11 @@
 }
 
 .loginIcon {
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
     line-height: 14px;
-    color: #FFFFFF;
+    color: var(--white);
     flex: none;
     order: 1;
     flex-grow: 0;
@@ -65,12 +63,11 @@
 }
 
 .signUpText {
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 14px;
-    color: #7749F8;
+    color: var(--purple);
     flex: none;
     order: 1;
     flex-grow: 0;
@@ -79,12 +76,11 @@
 
 
 .loginText {
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 14px;
-    color: #FFFFFF;
+    color: var(--white);
     flex: none;
     order: 1;
     flex-grow: 0;
@@ -94,32 +90,48 @@
 .dropButton {
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid rgba(0, 0, 0, 0);
-    color: black;
+    color: var(--dark);
 }
 
 .dropButton:hover {
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid rgba(0, 0, 0, 0);
-    color: black;
+    color: var(--dark);
 }
 
 .show > .dropButton:focus {
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid rgba(0, 0, 0, 0);
-    color: black;
+    color: var(--dark);
 }
 
 .nav .open > item, .nav .open > item:focus, .nav .open > item:hover {
-    background: #EBE5FC;
-    color: #5227CC;
+    background: var(--hover-gray);
+    color: var(--indigo);
 }
 
 .nav > li > item:focus, .nav > li > item:hover {
-    background: white;
-    color: black;
+    background: var(--light);
+    color: var(--dark);
 }
 
 .main-navbar {
     width: 100%;
-    background-color: #f8f9fa;
+    background-color: var(--light);
+    color: var(--dark);
+}
+
+.main-navbar.navbar-light .navbar-nav .nav-link {
+    color: var(--dark);
+}
+
+.dropdown-menu.show {
+    background: var(--light);
+}
+.dropdown-menu.show .dropdown-item {
+    color: var(--dark);
+}
+.dropdown-menu.show .dropdown-item:hover {
+    background-color: var(--hover-gray);
+    color: var(--light);
 }

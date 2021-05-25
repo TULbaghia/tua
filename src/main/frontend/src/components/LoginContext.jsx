@@ -4,6 +4,7 @@ import {useNotificationCustom} from "./Notification/NotificationProvider";
 import {dialogDuration, dialogType} from "./Notification/Notification";
 import i18n from "../i18n";
 import axios from "axios";
+import ThemeColor from "./Utils/ThemeColor/ThemeColorProvider";
 
 const REFRESH_TIME = 60 * 1000;
 const LoginContext = React.createContext('');
@@ -86,7 +87,7 @@ export const LoginProvider = ({children}) => {
         username,
         setUsername
     }
-    return <LoginContext.Provider value={values}>{children}</LoginContext.Provider>;
+    return (<LoginContext.Provider value={values}>{children}</LoginContext.Provider>);
 };
 
 export const useLocale = () => React.useContext(LoginContext);

@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ClientData;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.ThemeColor;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
@@ -404,5 +405,23 @@ public class AccountManager {
     public void sendAdminLoginInfo(String adminLogin, String address) throws AppBaseException {
         Account account = accountFacade.findByLogin(adminLogin);
         emailSender.sendAdminLogin(account, address);
+    }
+
+    /**
+     * Aktualizuje motyw interfejsu dla użytkownika.
+     *
+     * @param login login zalogowanego użytkownika
+     * @param themeColor kolor interfejsu preferowany przez użytkownika
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @RolesAllowed("editOwnThemeSettings")
+    public void changeThemeColor(String login, ThemeColor themeColor) throws AppBaseException {
+        Account account = accountFacade.findByLogin(login);
+        if (account.getThemeColor().equals(themeColor)) {
+            throw AccountException.themeAlreadySet();
+        }
+        account.setThemeColor(themeColor);
+        account.setModifiedBy(account);
+        accountFacade.edit(account);
     }
 }

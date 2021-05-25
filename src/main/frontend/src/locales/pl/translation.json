@@ -194,6 +194,10 @@
     "validation.email.size": "Nieprawidłowa długość email",
     "validation.email.pattern": "Nieprawidłowy wzorzec email",
     "dialog.expiring_token.title": "Wygaśnięcie żetonu",
+
     "dialog.expiring_token.message": "Za chwilę twój żeton wygaśnie. Jeśli chcesz nadal korzystać z aplikacji ",
-    "dialog.expiring_token.refresh": "kliknij tutaj aby go odświeżyć"
+    "dialog.expiring_token.refresh": "kliknij tutaj aby go odświeżyć",
+
+    "theme.color.dark": "Tryb ciemny",
+    "theme.color.light": "Tryb jasny"
 }

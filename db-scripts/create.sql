@@ -75,6 +75,7 @@ create table account
     language                         varchar(2),
     last_failed_login_date           timestamp,
     last_failed_login_ip_address     varchar(39),
+    theme_color                      varchar(31) not null,
     last_successful_login_date       timestamp,
     last_successful_login_ip_address varchar(39),
     lastname                         varchar(31)  not null,

@@ -10,6 +10,8 @@ import {handleRecaptcha} from "./Recaptcha/RecaptchaCallback";
 import {useNotificationDangerAndLong, useNotificationWarningAndLong,} from "./Notification/NotificationProvider";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import {validatorFactory, ValidatorType} from "./Validation/Validators";
+import {useThemeColor} from "./Utils/ThemeColor/ThemeColorProvider";
+import {v4} from "uuid";
 
 function SignUp(props) {
     const {t, i18n} = props
@@ -23,7 +25,15 @@ function SignUp(props) {
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [contactNumber, setContactNumber] = useState('');
+    const [reCaptchaKey, setReCaptchaKey] = useState(v4());
     const recaptchaRef = React.createRef();
+
+    const colorTheme = useThemeColor();
+
+    React.useEffect(() => {
+        setReCaptchaKey(v4());
+    }, [colorTheme])
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -165,7 +175,7 @@ function SignUp(props) {
                             onClick={handleSubmit}>
                         {t('signUp')}
                     </button>
-                    <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
+                    <ReCAPTCHA key={reCaptchaKey} theme={colorTheme} ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                 </form>
             </div>
         </div>

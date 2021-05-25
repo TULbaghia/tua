@@ -47,11 +47,11 @@ function App() {
     const divStyle = () => {
         switch (currentRole) {
             case 'ADMIN':
-                return {backgroundColor: "#EF5DA8"};
+                return {backgroundColor: "var(--admin-color)"};
             case 'MANAGER':
-                return {backgroundColor: "#F178B6"};
+                return {backgroundColor: "var(--manager-color)"};
             case 'CLIENT':
-                return {backgroundColor: "#EFADCE"};
+                return {backgroundColor: "var(--client-color)"};
         }
     };
 

@@ -9,6 +9,7 @@ import {faUser} from "@fortawesome/free-solid-svg-icons";
 import "../css/Navbar.css";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import axios from "axios";
+import ThemeColorSwitcher from "./Utils/ThemeColor/ThemeColorSwitcher";
 
 library.add(faUser);
 
@@ -29,7 +30,7 @@ function LanguageSwitcher(props) {
 
     const handleClickLoggedPl = () => {
         handleClickPl()
-        axios.post('https://localhost:8181/resources/accounts/self/edit/language/pl', null, {
+        axios.post('/resources/accounts/self/edit/language/pl', null, {
             headers: {
                 Authorization: token
             }
@@ -38,7 +39,7 @@ function LanguageSwitcher(props) {
 
     const handleClickLoggedEn = () => {
         handleClickEn()
-        axios.post('https://localhost:8181/resources/accounts/self/edit/language/en', null, {
+        axios.post('/resources/accounts/self/edit/language/en', null, {
             headers: {
                 Authorization: token
             }
@@ -47,9 +48,9 @@ function LanguageSwitcher(props) {
 
     return (
         <>
-            <p style={{fontSize: 20, color: "black", marginRight: "10px"}}>{i18n.language}</p>
             <Dropdown>
                 <DropdownToggle id="dropdown-basic" className="dropButton" variant="Info">
+                    <span style={{marginRight: "10px"}}>{i18n.t("language")} [{i18n.language.toUpperCase()}]</span>
                 </DropdownToggle>
 
                 <Dropdown.Menu>
@@ -146,6 +147,7 @@ function NavigationBar(props) {
                             )}
                         </Nav>
                         <Nav className="navbar-right">
+                            <ThemeColorSwitcher/>
                             <LanguageSwitcher t={t} i18n={i18n}/>
                             <Dropdown alignRight={true}>
                                 <Dropdown.Toggle id="dropdown-basic" className="dropButton" variant="Info">
@@ -184,7 +186,9 @@ function NavigationBar(props) {
                 //------------------------GUEST VIEW----------------------------
                 <Navbar expand="lg" className="main-navbar" style={divStyle()}>
                     <Navbar.Brand>
-                        <div className="name">{t('animalHotel')}</div>
+                        <LinkContainer to="/">
+                            <div className="name"><Nav.Link className={"text-dark"}>{t('animalHotel')}</Nav.Link></div>
+                        </LinkContainer>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -200,6 +204,7 @@ function NavigationBar(props) {
                             </LinkContainer>
                         </Nav>
                         <Nav className="navbar-right">
+                            <ThemeColorSwitcher/>
                             <LanguageSwitcher t={t} i18n={i18n}/>
                             <LinkContainer to="/signUp">
                                 <Nav.Link className="signUp">

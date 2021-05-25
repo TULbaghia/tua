@@ -1,13 +1,17 @@
 import { withNamespaces } from 'react-i18next';
-import BreadCrumb from "./BreadCrumb";
+import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
 import {Button, Form, FormCheck} from "react-bootstrap";
 import { useLocale } from "./LoginContext";
 import {api} from "../Api";
-import {useDialogPermanentChange} from "./CriticalOperations/CriticalOperationProvider";
-import {useNotificationDangerAndLong, useNotificationSuccessAndShort} from "./Notification/NotificationProvider";
+import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
+import {
+    useNotificationDangerAndInfinity,
+    useNotificationDangerAndLong,
+    useNotificationSuccessAndShort
+} from "./Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
 
 function UserList(props) {
@@ -27,7 +31,7 @@ function UserList(props) {
     ]);
     const dispatchDialog = useDialogPermanentChange();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
-    const dispatchNotificationDanger = useNotificationDangerAndLong();
+    const dispatchNotificationDanger = useNotificationDangerAndInfinity();
 
     const columns = [
         {

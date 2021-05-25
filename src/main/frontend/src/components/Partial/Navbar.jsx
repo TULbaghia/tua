@@ -2,14 +2,14 @@ import {Dropdown, Nav, Navbar} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useHistory} from "react-router-dom";
-import {useLocale} from "./LoginContext";
+import {useLocale} from "../LoginContext";
 import {withNamespaces} from 'react-i18next';
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
-import "../css/Navbar.css";
+import "../../css/Navbar.css";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import axios from "axios";
-import ThemeColorSwitcher from "./Utils/ThemeColor/ThemeColorSwitcher";
+import ThemeColorSwitcher from "../Utils/ThemeColor/ThemeColorSwitcher";
 
 library.add(faUser);
 
@@ -187,7 +187,7 @@ function NavigationBar(props) {
                 <Navbar expand="lg" className="main-navbar" style={divStyle()}>
                     <Navbar.Brand>
                         <LinkContainer to="/">
-                            <div className="name"><Nav.Link className={"text-dark"}>{t('animalHotel')}</Nav.Link></div>
+                            <div className="name"><span className={"text-dark"}>{t('animalHotel')}</span></div>
                         </LinkContainer>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>

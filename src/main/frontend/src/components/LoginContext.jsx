@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import jwt_decode from "jwt-decode";
-import {useNotificationCustom} from "./Notification/NotificationProvider";
-import {dialogDuration, dialogType} from "./Notification/Notification";
+import {useNotificationCustom} from "./Utils/Notification/NotificationProvider";
+import {dialogDuration, dialogType} from "./Utils/Notification/Notification";
 import i18n from "../i18n";
 import axios from "axios";
-import ThemeColor from "./Utils/ThemeColor/ThemeColorProvider";
+import {useDispatchThemeColorAfterLogin} from "./Utils/ThemeColor/ThemeColorProvider";
 
 const REFRESH_TIME = 60 * 1000;
 const LoginContext = React.createContext('');
@@ -15,6 +15,8 @@ export const LoginProvider = ({children}) => {
     const [username, setUsername] = useState('');
 
     const dispatch = useNotificationCustom();
+
+    const dispatchThemeChangeAfterLogin = useDispatchThemeColorAfterLogin()
 
     const handleRefreshBox = () => {
         dispatch({
@@ -76,6 +78,7 @@ export const LoginProvider = ({children}) => {
     const saveToken = (value) => {
         setToken(value)
         localStorage.setItem("token", value)
+        dispatchThemeChangeAfterLogin(value);
     }
 
     const values = {

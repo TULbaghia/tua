@@ -1,7 +1,7 @@
 import React, {createContext, useContext, useReducer} from "react";
 import Dialog from "./Dialog";
 import {v4} from "uuid";
-import i18n from '../../i18n';
+import i18n from '../../../i18n';
 
 const CriticalOperation = createContext();
 

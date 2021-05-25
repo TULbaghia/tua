@@ -1,9 +1,9 @@
 import {withNamespaces} from "react-i18next";
-import BreadCrumb from "./BreadCrumb";
+import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useState} from "react";
 import { api } from "../Api";
-import {useNotificationSuccessAndShort} from "./Notification/NotificationProvider";
+import {useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
 
 function PasswordReset(props) {
     const {t,i18n} = props

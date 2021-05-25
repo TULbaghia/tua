@@ -2,16 +2,16 @@ import React, {useState} from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "./LoginContext";
 import {withNamespaces} from 'react-i18next';
-import BreadCrumb from "./BreadCrumb";
+import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {api} from "../Api";
 import "../css/Login.css"
 import {validatorFactory, ValidatorType} from "./Validation/Validators";
-import {useNotificationWarningAndLong} from "./Notification/NotificationProvider";
-import {dialogDuration, dialogType} from "./Notification/Notification";
+import {useNotificationWarningAndLong} from "./Utils/Notification/NotificationProvider";
+import {dialogDuration, dialogType} from "./Utils/Notification/Notification";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import {useNotificationCustom} from "./Notification/NotificationProvider";
+import {useNotificationCustom} from "./Utils/Notification/NotificationProvider";
 
 const REFRESH_TIME = 60 * 1000;
 
@@ -66,11 +66,11 @@ function Login(props) {
                 })
                 saveToken("Bearer " + res.data)
                 history.push("/userPage")
+                schedule();
             } catch (ex) {
                 console.log(ex);
                 setError(true);
             }
-            schedule();
         }
     }
 

@@ -2,12 +2,16 @@ import React, {useState} from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "./LoginContext";
 import {withNamespaces} from 'react-i18next';
-import BreadCrumb from "./BreadCrumb";
+import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {api} from "../Api";
 import ReCAPTCHA from "react-google-recaptcha";
 import {handleRecaptcha} from "./Recaptcha/RecaptchaCallback";
-import {useNotificationDangerAndLong, useNotificationWarningAndLong,} from "./Notification/NotificationProvider";
+import {
+    useNotificationDangerAndInfinity,
+    useNotificationDangerAndLong,
+    useNotificationWarningAndLong,
+} from "./Utils/Notification/NotificationProvider";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import {validatorFactory, ValidatorType} from "./Validation/Validators";
 import {useThemeColor} from "./Utils/ThemeColor/ThemeColorProvider";
@@ -15,7 +19,7 @@ import {v4} from "uuid";
 
 function SignUp(props) {
     const {t, i18n} = props
-    const dispatchNotificationDanger = useNotificationDangerAndLong();
+    const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchNotificationWarning = useNotificationWarningAndLong();
     const history = useHistory();
     const {token, setToken} = useLocale();
@@ -40,9 +44,7 @@ function SignUp(props) {
         handleRecaptcha(handleClick, recaptchaRef, dispatchNotificationWarning);
     }
 
-    const handleClick = (e) => {
-        e.preventDefault()
-
+    const handleClick = () => {
         let isError = false;
 
         validatorFactory(login, ValidatorType.LOGIN).forEach(x => {

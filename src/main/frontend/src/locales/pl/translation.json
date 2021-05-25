@@ -39,7 +39,7 @@
     "roleChanged": "Rola: ",
     "landingPageTitle": "Zarezerwuj już dziś!",
     "landingPageLeft": "Komfortowy wypoczynek dla twojego zwierzaka",
-    "landingPageRight": "Masz hotel dla zwierząt? Dołącz do nas już dziś!",
+    "landingPageRight": "Wyjeżdżasz na wakację? Zostaw swojego pupila u nas!",
     "adminDashboard": "Widok admina",
     "managerDashboard": "Widok managera",
     "userDashboard": "Widok klienta",
@@ -199,5 +199,8 @@
     "dialog.expiring_token.refresh": "kliknij tutaj aby go odświeżyć",
 
     "theme.color.dark": "Tryb ciemny",
-    "theme.color.light": "Tryb jasny"
+    "theme.color.light": "Tryb jasny",
+
+    "theme.changed.scheme.light": "Zmieniono tryb wyświetlania na jasny",
+    "theme.changed.scheme.dark": "Zmieniono tryb wyświetlania na ciemny"
 }

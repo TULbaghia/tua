@@ -12,13 +12,14 @@
     top: 10px;
     font-style: normal;
     font-weight: normal;
-    font-size: 12px;
+    font-size: 1rem;
     line-height: 14px;
     color: var(--purple);
     border: 1px solid var(--purple);
     box-sizing: border-box;
     border-radius: 4px;
-    width: 140px;
+    width: -moz-fit-content;
+    width: fit-content;
     margin-right: 1rem;
     margin-left: 10px;
 }
@@ -34,7 +35,8 @@
     border: 1px solid var(--purple);
     box-sizing: border-box;
     border-radius: 4px;
-    width: 120px;
+    width: -moz-fit-content;
+    width: fit-content;
     margin-right: 1rem;
 }
 
@@ -51,10 +53,7 @@
 }
 
 .loginIcon {
-    font-style: normal;
-    font-weight: normal;
     font-size: 18px;
-    line-height: 14px;
     color: var(--white);
     flex: none;
     order: 1;
@@ -63,10 +62,6 @@
 }
 
 .signUpText {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 14px;
     color: var(--purple);
     flex: none;
     order: 1;
@@ -76,10 +71,7 @@
 
 
 .loginText {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 14px;
+    font-size: 1rem;
     color: var(--white);
     flex: none;
     order: 1;

@@ -1,13 +1,13 @@
 import {useEffect, useState} from "react";
 import {Dropdown, DropdownButton} from "react-bootstrap";
 import {withNamespaces} from "react-i18next";
-import userIcon from "../assets/userRole.svg"
-import {useLocale} from "./LoginContext";
-import "../css/Footer.css"
+import userIcon from "../../assets/userRole.svg"
+import {useLocale} from "../LoginContext";
+import "../../css/Footer.css"
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
-import {useNotificationSuccessAndShort} from "./Notification/NotificationProvider";
-import i18n from '../i18n';
+import {useNotificationSuccessAndShort} from "../Utils/Notification/NotificationProvider";
+import i18n from '../../i18n';
 
 function AccessLevelSwitcher(props) {
 

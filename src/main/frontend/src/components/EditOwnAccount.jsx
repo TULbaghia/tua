@@ -2,15 +2,16 @@ import React, {useState} from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "./LoginContext";
 import {withNamespaces} from 'react-i18next';
-import BreadCrumb from "./BreadCrumb";
+import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {Configuration, DefaultApi} from "api-client";
 import {
+    useNotificationDangerAndInfinity,
     useNotificationDangerAndLong,
     useNotificationSuccessAndShort,
     useNotificationWarningAndLong,
-} from "./Notification/NotificationProvider";
-import {useDialogPermanentChange} from "./CriticalOperations/CriticalOperationProvider";
+} from "./Utils/Notification/NotificationProvider";
+import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
 import ReCAPTCHA from "react-google-recaptcha";
 import i18n from '../i18n';
 import {handleRecaptcha} from "./Recaptcha/RecaptchaCallback";
@@ -41,7 +42,7 @@ function EditOwnAccount() {
 
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationWarning = useNotificationWarningAndLong();
-    const dispatchNotificationDanger = useNotificationDangerAndLong();
+    const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchDialog = useDialogPermanentChange();
 
     const conf = new Configuration();

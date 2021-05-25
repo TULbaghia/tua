@@ -30,6 +30,7 @@ public class AccountDto implements Signable {
     private Long version;
     private Date lastSuccessfulLoginDate;
     private String lastSuccessfulLoginIpAddress;
+    private String themeColor;
     private Date lastFailedLoginDate;
     private String lastFailedLoginIpAddress;
 

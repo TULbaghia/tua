@@ -154,9 +154,7 @@
     "recaptchaInvalid": "Potwierdź, że nie jesteś robotem",
     "request.error.5xx": "Wystąpił błąd z grupy 5xx",
     "request.error.4xx": "Wystąpił błąd z grupy 4xx",
-
     "error.rest.resource_forbidden": "Brak dostępu do zasobu",
-
     "exception.account.login_exists": "Konto z takim loginem juz istnieje",
     "exception.account.contact_number": "Konto z takim numerem telefonu już istnieje",
     "exception.account_already_activated.already_activated": "Konto zostało już aktywowane",
@@ -175,9 +173,7 @@
     "exception.role_exception.unsupported_access_level": "Ten poziom dostępu nie jest wspierany",
     "exception.role_exception.unsupported_role_combination": "To połączenie ról nie jest wspierane",
     "exception.transaction_exception.unexpected_fail": "Nie udało się utrwalić zmian w bazie danych",
-
     "request.exception.unknown_title": "Nieznany kod błędu",
-
     "validation.contactnumber.size": "Nieprawidłowa długość numeru telefonu",
     "validation.contactnumber.pattern": "Nieprawidłowy wzorzec numeru telefonu",
     "validation.firstname.size": "Nieprawidłowa długość imienia",
@@ -195,5 +191,6 @@
     "validation.email.pattern": "Nieprawidłowy wzorzec email",
     "dialog.expiring_token.title": "Wygaśnięcie żetonu",
     "dialog.expiring_token.message": "Za chwilę twój żeton wygaśnie. Jeśli chcesz nadal korzystać z aplikacji ",
-    "dialog.expiring_token.refresh": "kliknij tutaj aby go odświeżyć"
+    "dialog.expiring_token.refresh": "kliknij tutaj aby go odświeżyć",
+    "filterPhase": "Szukana fraza"
 }

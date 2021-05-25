@@ -1,26 +1,35 @@
-import { withNamespaces } from 'react-i18next';
+import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
 import {Button, Form, FormCheck} from "react-bootstrap";
-import { useLocale } from "./LoginContext";
+import {useLocale} from "./LoginContext";
 import {api} from "../Api";
 import {useDialogPermanentChange} from "./CriticalOperations/CriticalOperationProvider";
 import {useNotificationDangerAndLong, useNotificationSuccessAndShort} from "./Notification/NotificationProvider";
 import {useHistory} from "react-router";
 
+const FilterComponent = ({filterText, onFilter, placeholderText}) => (
+    <>
+        <Form>
+            <Form.Control type="text" value={filterText} onChange={onFilter} placeholder={placeholderText}/>
+        </Form>
+    </>
+);
+
+
 function UserList(props) {
-    const {t,i18n} = props
+    const {t, i18n} = props
     const history = useHistory()
     const {token, setToken} = useLocale();
-
+    const [filterText, setFilterText] = React.useState('');
     const [data, setData] = useState([
         {
             login: "",
             email: "",
-            name: "",
-            surname: "",
+            firstname: "",
+            lastname: "",
             unlocked: false,
             active: false,
         }
@@ -28,47 +37,56 @@ function UserList(props) {
     const dispatchDialog = useDialogPermanentChange();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndLong();
+    const filteredItems = data.filter(item => {
+        return item.firstname && item.firstname.toLowerCase().includes(filterText.toLowerCase())
+            || item.lastname && item.lastname.toLowerCase().includes(filterText.toLowerCase());
+    });
 
     const columns = [
         {
             name: 'Login',
             selector: 'login',
             sortable: true,
+            width: "10rem"
         },
         {
             name: 'E-mail',
             selector: 'email',
             sortable: true,
-            minWidth: 100
+            width: "10rem"
         },
         {
             name: t('name'),
             selector: 'firstname',
             sortable: true,
+            width: "10rem"
         },
         {
             name: t('surname'),
             selector: 'lastname',
             sortable: true,
+            width: "10rem"
         },
         {
             name: t('unlocked'),
             selector: 'enabled',
             cell: row => {
                 const checked = row.enabled;
-                return(
-                    <>
+                return (
+                    <div style={{margin: "auto"}}>
                         <Form.Check defaultChecked={checked} onChange={event => {
                             let value = event.target.checked;
                             dispatchDialog({
-                                callbackOnSave: () => {value ? unblockAccount(row.login) : blockAccount(row.login)},
+                                callbackOnSave: () => {
+                                    value ? unblockAccount(row.login) : blockAccount(row.login)
+                                },
                                 callbackOnCancel: () => {
                                     console.log("Cancel")
                                     event.target.checked = !value;
                                 },
                             })
                         }}/>
-                    </>
+                    </div>
                 )
             },
         },
@@ -90,28 +108,28 @@ function UserList(props) {
             name: t('edit'),
             selector: 'edit',
             cell: row => {
-              return(
-                  <Button className="btn-sm" onClick={event => {
-                      history.push({
-                          pathname: '/editOtherAccount',
-                          state: {
-                              login: row.login,
-                          }
-                      })
-                  }
-                  }>{t("edit")}</Button>
-              )
+                return (
+                    <Button className="btn-sm" onClick={event => {
+                        history.push({
+                            pathname: '/editOtherAccount',
+                            state: {
+                                login: row.login,
+                            }
+                        })
+                    }
+                    }>{t("edit")}</Button>
+                )
             },
         },
     ];
 
     useEffect(() => {
-        if(token) {
+        if (token) {
             getAllAccounts().then(r => {
                 console.log(r);
                 setData(r.data);
             }).catch(r => {
-                if(r.response != null) {
+                if (r.response != null) {
                     if (r.response.status === 403) {
                         history.push("/errors/forbidden")
                     } else if (r.response.status === 500) {
@@ -131,7 +149,7 @@ function UserList(props) {
         api.blockAccount(login, {headers: {Authorization: token}}).then(res => {
             dispatchNotificationSuccess({message: i18n.t('accountBlockSuccess')})
         }).catch(err => {
-            if(err.response != null) {
+            if (err.response != null) {
                 if (err.response.status === 403) {
                     history.push("/errors/forbidden")
                 } else if (err.response.status === 500) {
@@ -146,7 +164,7 @@ function UserList(props) {
         api.unblockAccount(login, {headers: {Authorization: token}}).then(res => {
             dispatchNotificationSuccess({message: i18n.t('accountUnblockSuccess')})
         }).catch(err => {
-            if(err.response != null) {
+            if (err.response != null) {
                 if (err.response.status === 403) {
                     history.push("/errors/forbidden")
                 } else if (err.response.status === 500) {
@@ -156,6 +174,13 @@ function UserList(props) {
             dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
         })
     }
+
+    const subHeaderComponentMemo = React.useMemo(() => {
+
+        return <FilterComponent onFilter={e => {
+            setFilterText(e.target.value);
+        }} filterText={filterText} placeholderText={t('filterPhase')}/>;
+    }, [filterText]);
 
     return (
         <div className="container">
@@ -170,6 +195,7 @@ function UserList(props) {
                     <Button className="btn-secondary float-right m-2" onClick={event => {
                         getAllAccounts().then(res => {
                             setData(res.data);
+                            setFilterText('')
                         }).catch(err => {
                             dispatchNotificationDanger({message: i18n.t(err.response.data.message)});
                         })
@@ -177,10 +203,13 @@ function UserList(props) {
                 </div>
                 <DataTable
                     columns={columns}
-                    data={data}
+                    data={filteredItems}
+                    subHeader
+                    subHeaderComponent={subHeaderComponentMemo}
                 />
             </div>
         </div>
     )
 }
+
 export default withNamespaces()(UserList);

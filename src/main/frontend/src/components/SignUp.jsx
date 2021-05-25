@@ -165,7 +165,7 @@ function SignUp(props) {
                             onClick={handleSubmit}>
                         {t('signUp')}
                     </button>
-                    <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
+                    <ReCAPTCHA hl={i18n.language} ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                 </form>
             </div>
         </div>

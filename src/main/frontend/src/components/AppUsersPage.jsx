@@ -4,6 +4,7 @@ import BreadCrumb from "./BreadCrumb";
 import {Link} from "react-router-dom";
 import {useLocale} from "./LoginContext";
 import {getUserLanguage} from "./Navbar";
+import {rolesConstant} from "../Constants";
 
 function AppUsersPage(props) {
     const {t, i18n} = props
@@ -24,11 +25,11 @@ function AppUsersPage(props) {
                         <div className="back"> {t('mainPage')} </div>
                     </Link>
                 </li>
-                {currentRole === "ADMIN" && (
+                {currentRole === rolesConstant.admin && (
                     <li className="breadcrumb-item active" aria-current="page">{t('adminDashboard')}</li>)}
-                {currentRole === "MANAGER" && (
+                {currentRole === rolesConstant.manager && (
                     <li className="breadcrumb-item active" aria-current="page">{t('managerDashboard')}</li>)}
-                {currentRole === "CLIENT" && (
+                {currentRole === rolesConstant.client && (
                     <li className="breadcrumb-item active" aria-current="page">{t('userDashboard')}</li>)}
             </BreadCrumb>
             <div>

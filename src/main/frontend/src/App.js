@@ -11,9 +11,9 @@ import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
 import ConfirmedAccount from "./components/ConfirmedAccount";
 import PasswordReset from "./components/PasswordReset";
-import NotFound from "./components/errorPages/NotFound";
-import Forbidden from "./components/errorPages/Forbidden";
-import InternalError from "./components/errorPages/InternalError";
+import NotFound from "./components/ErrorPages/NotFound";
+import Forbidden from "./components/ErrorPages/Forbidden";
+import InternalError from "./components/ErrorPages/InternalError";
 import UserInfo from './components/UserInfo';
 import UserList from "./components/UserList";
 import jwt_decode from "jwt-decode";
@@ -24,6 +24,7 @@ import PasswordResetForm from "./components/PasswordReset/PasswordResetForm";
 import EmailConfirm from "./components/EmailConfirmation/EmailConfirm";
 import EditOwnAccount from './components/EditOwnAccount';
 import AccountActivate from "./components/EmailConfirmation/AccountActivate";
+import {rolesConstant} from "./Constants";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -46,11 +47,11 @@ function App() {
 
     const divStyle = () => {
         switch (currentRole) {
-            case 'ADMIN':
+            case rolesConstant.admin:
                 return {backgroundColor: "#EF5DA8"};
-            case 'MANAGER':
+            case rolesConstant.manager:
                 return {backgroundColor: "#F178B6"};
-            case 'CLIENT':
+            case rolesConstant.client:
                 return {backgroundColor: "#EFADCE"};
         }
     };

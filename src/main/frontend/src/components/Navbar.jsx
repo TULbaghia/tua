@@ -9,6 +9,7 @@ import {faUser} from "@fortawesome/free-solid-svg-icons";
 import "../css/Navbar.css";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import axios from "axios";
+import {rolesConstant} from "../Constants";
 
 library.add(faUser);
 
@@ -111,7 +112,7 @@ function NavigationBar(props) {
                             <LinkContainer to="/hotels">
                                 <Nav.Link>{t('hotels')}</Nav.Link>
                             </LinkContainer>
-                            {currentRole === 'ADMIN' && (
+                            {currentRole === rolesConstant.admin && (
                                 <>
                                     <LinkContainer to="/accounts">
                                         <Nav.Link>{t('accountList')}</Nav.Link>
@@ -121,7 +122,7 @@ function NavigationBar(props) {
                                     </LinkContainer>
                                 </>
                             )}
-                            {currentRole === 'MANAGER' && (
+                            {currentRole === rolesConstant.manager && (
                                 <>
                                     <LinkContainer to="/myHotel">
                                         <Nav.Link>{t('myHotel')}</Nav.Link>
@@ -134,7 +135,7 @@ function NavigationBar(props) {
                                     </LinkContainer>
                                 </>
                             )}
-                            {currentRole === 'CLIENT' && (
+                            {currentRole === rolesConstant.client && (
                                 <>
                                     <LinkContainer to="/cities">
                                         <Nav.Link>{t('cities')}</Nav.Link>
@@ -158,13 +159,6 @@ function NavigationBar(props) {
                                         <a href="#/action-1" className="item">
                                             <LinkContainer to="/myAccount">
                                                 <Nav.Link>{t('myAccount')}</Nav.Link>
-                                            </LinkContainer>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#/action-2" className="item">
-                                            <LinkContainer to="/changePassword">
-                                                <Nav.Link>{t('changePassword')}</Nav.Link>
                                             </LinkContainer>
                                         </a>
                                     </li>

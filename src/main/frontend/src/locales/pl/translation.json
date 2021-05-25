@@ -191,6 +191,7 @@
     "validation.email.pattern": "Nieprawidłowy wzorzec email",
     "dialog.expiring_token.title": "Wygaśnięcie żetonu",
     "dialog.expiring_token.message": "Za chwilę twój żeton wygaśnie. Jeśli chcesz nadal korzystać z aplikacji ",
+    "filterPhase": "Szukana fraza",
     "dialog.expiring_token.refresh": "kliknij tutaj aby go odświeżyć",
     "LoginForm.error.login.required": "Login jest wymagany",
     "LoginForm.error.password.required": "Hasło jest wymagane"

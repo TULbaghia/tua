@@ -99,20 +99,39 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
         }
     }
 
-    public List<T> findRange(int[] range) {
-        CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
-        cq.select(cq.from(entityClass));
-        TypedQuery<T> q = getEntityManager().createQuery(cq);
-        q.setMaxResults(range[1] - range[0] + 1);
-        q.setFirstResult(range[0]);
-        return q.getResultList();
+    /**
+     * Zwraca listę encji odpowiadających zadanym kluczom w liście
+     * @param range lista kluczy głównych encji
+     * @return listę encji odpowiadającą kryteriom
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    public List<T> findRange(int[] range) throws AppBaseException {
+        try{
+            CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
+            cq.select(cq.from(entityClass));
+            TypedQuery<T> q = getEntityManager().createQuery(cq);
+            q.setMaxResults(range[1] - range[0] + 1);
+            q.setFirstResult(range[0]);
+            return q.getResultList();
+        }catch (PersistenceException e){
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
-    public int count() {
-        CriteriaQuery<Long> cq = getEntityManager().getCriteriaBuilder().createQuery(Long.class);
-        Root<T> rt = cq.from(entityClass);
-        cq.select(getEntityManager().getCriteriaBuilder().count(rt));
-        TypedQuery<Long> q = getEntityManager().createQuery(cq);
-        return q.getSingleResult().intValue();
+    /**
+     * Zwraca ilość encji
+     * @return ilość encji
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    public int count() throws AppBaseException {
+        try{
+            CriteriaQuery<Long> cq = getEntityManager().getCriteriaBuilder().createQuery(Long.class);
+            Root<T> rt = cq.from(entityClass);
+            cq.select(getEntityManager().getCriteriaBuilder().count(rt));
+            TypedQuery<Long> q = getEntityManager().createQuery(cq);
+            return q.getSingleResult().intValue();
+        }catch (PersistenceException e){
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 }

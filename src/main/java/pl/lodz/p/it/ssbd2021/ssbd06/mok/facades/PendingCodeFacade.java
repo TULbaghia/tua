@@ -161,6 +161,16 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         }
     }
 
+
+    /**
+     * Zwraca listę kodów podanego typu, które powstały przed zadaną datą i liczba attempts odpowiadająca zadanej
+     * @param codeType typ kodu
+     * @param dateBefore maksymalna data utworzenia kodu
+     * @param attempts liczba odpowiadająca liczbie podejść do wysłania kodu
+     * @return lista kodów spełniających kryteria
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
+     */
+    @PermitAll
     public List<PendingCode> findAllUnusedByCodeTypeAndBeforeAndAttemptCount(CodeType codeType, Date dateBefore, int attempts) throws AppBaseException {
         try {
             TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findAllUnusedByCodeTypeAndBeforeAndAttemptCount", PendingCode.class);
@@ -173,5 +183,35 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         } catch (PersistenceException e) {
             throw DatabaseQueryException.databaseQueryException(e);
         }
+    }
+
+    @PermitAll
+    @Override
+    public void remove(PendingCode entity) throws AppBaseException {
+        super.remove(entity);
+    }
+
+    @PermitAll
+    @Override
+    public PendingCode find(Object id) {
+        return super.find(id);
+    }
+
+    @PermitAll
+    @Override
+    public List<PendingCode> findAll() throws AppBaseException {
+        return super.findAll();
+    }
+
+    @PermitAll
+    @Override
+    public List<PendingCode> findRange(int[] range) throws AppBaseException {
+        return super.findRange(range);
+    }
+
+    @PermitAll
+    @Override
+    public int count() throws AppBaseException {
+        return super.count();
     }
 }

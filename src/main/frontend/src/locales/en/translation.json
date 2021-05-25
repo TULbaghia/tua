@@ -83,7 +83,6 @@
 	"error.rest.validation": "Entered data is not correct",
 	"exception.account.account_confirmed": "Account activated",
 	"exception.account.contact_number": "Account with this number already exists",
-	"exception.account.email_exists": "Entered email is not correct",
 	"exception.account.email_invalid": "Invalid email or already taken",
 	"exception.account.login_invalid": "Invalid login or already taken",
 	"exception.account_already_activated.already_activated": "Account already activated",

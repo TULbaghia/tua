@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, HashRouter, Route, Switch} from 'react-router-dom';
 import './App.css';
 import NavigationBar from "./components/Navbar";
 import {library} from "@fortawesome/fontawesome-svg-core";
@@ -73,8 +73,11 @@ function App() {
     }
 
     const requireRoles = (to, from, next) => {
+        console.log("auth")
         if (to.meta.auth) {
+            console.log("test")
             if (token) {
+                console.log("test")
                 if (to.meta.client) {
                     if (currentRole === 'CLIENT') {
                         next();
@@ -95,15 +98,17 @@ function App() {
                 }
                 next.redirect('/errors/internal');
             }
-            next.redirect('/login');
+            else {
+                next.redirect('/login');
+            }
         } else {
             next();
         }
     };
 
     return (
-        <div className="App">
-            <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
+        <HashRouter basename={process.env.REACT_APP_ROUTER_BASE || ''}>
+            <div className="App">
                 <div>
                     <NavigationBar roles={roles} divStyle={divStyle}/>
                     <GuardProvider guards={[requireRoles]} error={NotFound}>
@@ -115,11 +120,12 @@ function App() {
                             <GuardedRoute exact path="/errors/internal" component={InternalError}/>
                             <GuardedRoute exact path="/login/password-reset" component={PasswordReset} meta={{ auth: false }}/>
                             <GuardedRoute exact path="/confirmedAccount" component={ConfirmedAccount} meta={{ auth: false }}/>
-                            <GuardedRoute exact path="/myAccount" component={UserInfo} meta={{ auth:true, client: false }}/>
+                            <GuardedRoute exact path="/myAccount" component={UserInfo} meta={{ auth:true, client: false, admin: true, manager: true }}/>
                             <GuardedRoute exact path="/userPage" component={AppUsersPage} meta={{ auth: true }}/>
                             <GuardedRoute exact path="/editOwnAccount" component={EditOwnAccount} meta={{ auth: true }}/>
                             <GuardedRoute exact path="/reset/password/:code" component={PasswordResetForm} meta={{ auth: false }}/>
                             <GuardedRoute exact path="/confirm/email/:code" component={EmailConfirm} meta={{ auth: false }}/>
+                            <GuardedRoute exact path="/accounts" component={UserList} meta={{ auth: true, admin: true }}/>
                             <GuardedRoute component={NotFound}/>
                         </Switch>
                     </GuardProvider>
@@ -140,8 +146,8 @@ function App() {
                     {/*</Switch>*/}
                     <Footer roles={roles} divStyle={divStyle}/>
                 </div>
-            </Router>
-        </div>
+            </div>
+        </HashRouter>
     );
 }
 

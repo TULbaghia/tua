@@ -403,6 +403,6 @@ public class AccountManager {
     @PermitAll
     public void sendAdminLoginInfo(String adminLogin, String address) throws AppBaseException {
         Account account = accountFacade.findByLogin(adminLogin);
-        emailSender.sendAdminLogin(account, address);
+//        emailSender.sendAdminLogin(account, address);
     }
 }

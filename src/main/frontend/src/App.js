@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
-import NavigationBar from "./components/Navbar";
+import NavigationBar from "./components/Partial/Navbar";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {fab} from "@fortawesome/free-brands-svg-icons";
 import {faSignInAlt, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import Home from "./components/Home";
 import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp";
-import Footer from "./components/Footer";
+import Footer from "./components/Partial/Footer";
 import ConfirmedAccount from "./components/ConfirmedAccount";
 import PasswordReset from "./components/PasswordReset";
 import NotFound from "./components/ErrorPages/NotFound";
@@ -48,11 +48,11 @@ function App() {
     const divStyle = () => {
         switch (currentRole) {
             case rolesConstant.admin:
-                return {backgroundColor: "#EF5DA8"};
+                return {backgroundColor: "var(--admin-color)"};
             case rolesConstant.manager:
-                return {backgroundColor: "#F178B6"};
+                return {backgroundColor: "var(--manager-color)"};
             case rolesConstant.client:
-                return {backgroundColor: "#EFADCE"};
+                return {backgroundColor: "var(--client-color)"};
         }
     };
 

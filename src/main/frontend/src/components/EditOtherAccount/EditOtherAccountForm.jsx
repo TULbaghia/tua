@@ -5,10 +5,10 @@ import {Configuration, DefaultApi} from "api-client";
 import {Link, useParams} from "react-router-dom";
 import {Form, Formik} from 'formik';
 import PasswordComponent from "./PasswordComponent";
-import BreadCrumb from "../BreadCrumb";
-import {useNotificationCustom, useNotificationDangerAndLong, useNotificationSuccessAndShort} from "../Notification/NotificationProvider";
-import {useDialogPermanentChange} from "../CriticalOperations/CriticalOperationProvider";
-import {dialogDuration, dialogType} from "../Notification/Notification";
+import BreadCrumb from "../Partial/BreadCrumb";
+import {useNotificationCustom, useNotificationDangerAndLong, useNotificationSuccessAndShort} from "../Utils/Notification/NotificationProvider";
+import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
+import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import EmailComponent from "./EmailComponent";
 import FirstnameComponent from "./FirstnameComponent";
 import LastnameComponent from "./LastnameComponent";
@@ -36,7 +36,7 @@ function EditOtherAccountForm({t, i18n}) {
     const dispatchDialog = useDialogPermanentChange();
 
     const getRoles = async () => {
-        return await api.getUserRole(location.login, {headers: {Authorization: "Bearer " + token}});
+        return await api.getUserRole(location.state.login, {headers: {Authorization: token}});
     }
 
     const isRole = (role) => {
@@ -49,8 +49,8 @@ function EditOtherAccountForm({t, i18n}) {
 
     const handleDataFetch = () => {
         if (token) {
-            getEtag().then(r => setETag(r));
-            getEtagRole(location.login).then(r => setETagRole(r));
+            getEtag(location.state.login).then(r => setETag(r));
+            getEtagRole(location.state.login).then(r => setETagRole(r));
             getRoles().then(res => {
                 console.log(res.data);
                 let data = "";
@@ -72,8 +72,8 @@ function EditOtherAccountForm({t, i18n}) {
         }
     }
 
-    const getEtag = async () => {
-        const response = await fetch("/resources/accounts/user", {
+    const getEtag = async (login) => {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/user/${login}`, {
             method: "GET",
             headers: {
                 Authorization: token,
@@ -83,7 +83,7 @@ function EditOtherAccountForm({t, i18n}) {
     };
 
     const getEtagRole = async (login) => {
-        const response = await fetch("/" + login + "/role", {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/${login}/role`, {
             method: "GET",
             headers: {
                 Authorization: token,
@@ -93,7 +93,7 @@ function EditOtherAccountForm({t, i18n}) {
     };
 
     const addRole = (role) => (
-        api.grantAccessLevel(location.login, role, {
+        api.grantAccessLevel(location.state.login, role, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -107,7 +107,7 @@ function EditOtherAccountForm({t, i18n}) {
     )
 
     const revokeRole = (role) => (
-        api.revokeAccessLevel(location.login, role, {
+        api.revokeAccessLevel(location.state.login, role, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -214,7 +214,7 @@ function EditOtherAccountForm({t, i18n}) {
     )
 
     const handleEmailSubmit = (values, setSubmitting) => {
-        api.editOtherAccountEmail(location.login, {newEmail: values.email}, {
+        api.editOtherAccountEmail(location.state.login, {newEmail: values.email}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -239,7 +239,7 @@ function EditOtherAccountForm({t, i18n}) {
     }
 
     const handlePasswordSubmit = (values, setSubmitting) => {
-        api.changeOtherPassword({login: location.login, oldPassword: values.oldPassword, newPassword: values.newPassword}, {
+        api.changeOtherPassword({login: location.state.login, oldPassword: values.oldPassword, newPassword: values.newPassword}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -264,7 +264,7 @@ function EditOtherAccountForm({t, i18n}) {
     }
 
     const handleDetailsSubmit = (values, setSubmitting) => {
-        api.editOtherAccountDetails(location.login, {firstname: values.firstname, lastname: values.lastname, contactNumber: values.contactNumber}, {
+        api.editOtherAccountDetails(location.state.login, {firstname: values.firstname, lastname: values.lastname, contactNumber: values.contactNumber}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,

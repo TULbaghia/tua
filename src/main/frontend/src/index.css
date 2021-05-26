@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  color: white;
+  color: var(--white);
   background-image: url("./images/background.jpg");
   min-height: 100vh;
   background-size: cover;

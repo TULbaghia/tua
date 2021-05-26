@@ -39,7 +39,7 @@
   "roleChanged": "Rola: ",
   "landingPageTitle": "Zarezerwuj już dziś!",
   "landingPageLeft": "Komfortowy wypoczynek dla twojego zwierzaka",
-  "landingPageRight": "Masz hotel dla zwierząt? Dołącz do nas już dziś!",
+  "landingPageRight": "Wyjeżdżasz na wakację? Zostaw swojego pupila u nas!",
   "adminDashboard": "Widok admina",
   "managerDashboard": "Widok managera",
   "userDashboard": "Widok klienta",
@@ -218,5 +218,11 @@
   "editOtherAccountForm.lastname.error.pattern": "Wprowadzone nazwisko nie jest poprawne",
   "editOtherAccountForm.contactNumber.error.required": "Numer kontaktowy jest wymagany",
   "editOtherAccountForm.contactNumber.error.length": "Numer kontaktowy powinien zawierać od 9 do 15 znaków",
-  "editOtherAccountForm.contactNumber.error.pattern": "Wprowadzone dane nie są numerem kontaktowym"
+  "editOtherAccountForm.contactNumber.error.pattern": "Wprowadzone dane nie są numerem kontaktowym",
+  "theme.color.dark": "Tryb ciemny",
+  "theme.color.light": "Tryb jasny",
+
+  "theme.changed.scheme.light": "Zmieniono tryb wyświetlania na jasny",
+  "theme.changed.scheme.dark": "Zmieniono tryb wyświetlania na ciemny"
+
 }

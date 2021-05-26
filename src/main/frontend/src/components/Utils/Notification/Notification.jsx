@@ -12,10 +12,12 @@ export const dialogType = {
 }
 
 export const dialogDuration = {
+    INFINITY: -1,
     MINUTE: 60_000,
     LONG: 10_000,
     SHORT: 5_000,
     SECOND: 1_000,
+
 }
 
 const Notification = (props) => {
@@ -26,17 +28,19 @@ const Notification = (props) => {
     const step = 1;
 
     const handleStartTimer = () => {
-        const id = setInterval(() => {
-            setWidth(prev => {
-                if (prev < 100) {
-                    return prev + step;
-                }
+        if(props.dialogDuration > 0) {
+            const id = setInterval(() => {
+                setWidth(prev => {
+                    if (prev < 100) {
+                        return prev + step;
+                    }
 
-                clearInterval(id);
-                return prev;
-            });
-        }, (props.dialogDuration + 500) / (100 / step));
-        setIntervalId(id);
+                    clearInterval(id);
+                    return prev;
+                });
+            }, (props.dialogDuration + 500) / (100 / step));
+            setIntervalId(id);
+        }
     };
 
     const handlePauseTimer = () => {

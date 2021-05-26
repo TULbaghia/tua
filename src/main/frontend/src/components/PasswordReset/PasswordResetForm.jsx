@@ -5,16 +5,20 @@ import {Configuration, DefaultApi} from "api-client";
 import {Link, useParams} from "react-router-dom";
 import {Form, Formik} from 'formik';
 import FieldComponent from "./FieldComponent";
-import BreadCrumb from "../BreadCrumb";
-import {useNotificationCustom, useNotificationDangerAndLong} from "../Notification/NotificationProvider";
-import {useDialogPermanentChange} from "../CriticalOperations/CriticalOperationProvider";
-import {dialogDuration, dialogType} from "../Notification/Notification";
+import BreadCrumb from "../Partial/BreadCrumb";
+import {
+    useNotificationCustom,
+    useNotificationDangerAndInfinity,
+    useNotificationDangerAndLong
+} from "../Utils/Notification/NotificationProvider";
+import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
+import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import {dispatchErrors, ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
 
 function PasswordResetForm({t, i18n}) {
     const dispatchNotification = useNotificationCustom();
-    const dispatchNotificationDanger = useNotificationDangerAndLong();
+    const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchCriticalDialog = useDialogPermanentChange();
     const history = useHistory();
     let {code} = useParams();

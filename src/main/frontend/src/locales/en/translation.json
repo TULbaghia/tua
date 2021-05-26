@@ -40,7 +40,7 @@
   "internal": "INTERNAL SERVER ERROR",
   "landingPageTitle": "Book today!",
   "landingPageLeft": "Comfortable rest for your pet ",
-  "landingPageRight": "Do you have a pet hotel? Join us today!",
+  "landingPageRight": "Going on holiday? Leave your pet with us!",
   "adminDashboard": "Admin's view",
   "managerDashboard": "Manager's view",
   "userDashboard": "Client's view",
@@ -218,5 +218,10 @@
   "editOtherAccountForm.lastname.error.pattern": "Entered last name is not valid",
   "editOtherAccountForm.contactNumber.error.required": "Contact number is required",
   "editOtherAccountForm.contactNumber.error.length": "Contact number should contains 9 to 15 digits",
-  "editOtherAccountForm.contactNumber.error.pattern" : "Entered data is not contact number"
+  "editOtherAccountForm.contactNumber.error.pattern" : "Entered data is not contact number",
+  "theme.color.dark": "Dark mode",
+  "theme.color.light": "Light mode",
+
+  "theme.changed.scheme.light": "Theme changed to light mode",
+  "theme.changed.scheme.dark": "Theme changed to dark mode"
 }

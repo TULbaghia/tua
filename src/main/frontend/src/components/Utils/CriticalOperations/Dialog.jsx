@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Modal} from "react-bootstrap";
-import i18n from '../../i18n';
+import i18n from '../../../i18n';
 
 function Dialog(props) {
     const [show, setShow] = useState(true);

@@ -2,20 +2,23 @@ import React, {useState} from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "./LoginContext";
 import {withNamespaces} from 'react-i18next';
-import BreadCrumb from "./BreadCrumb";
+import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {Configuration, DefaultApi} from "api-client";
 import {
+    useNotificationDangerAndInfinity,
     useNotificationDangerAndLong,
     useNotificationSuccessAndShort,
     useNotificationWarningAndLong,
-} from "./Notification/NotificationProvider";
-import {useDialogPermanentChange} from "./CriticalOperations/CriticalOperationProvider";
+} from "./Utils/Notification/NotificationProvider";
+import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
 import ReCAPTCHA from "react-google-recaptcha";
 import i18n from '../i18n';
 import {handleRecaptcha} from "./Recaptcha/RecaptchaCallback";
 import {validatorFactory, ValidatorType} from "./Validation/Validators";
 import {dispatchErrors, ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
+import {ThemeColorAllowed, useThemeColor} from "./Utils/ThemeColor/ThemeColorProvider";
+import {v4} from "uuid";
 
 
 function EditOwnAccount() {
@@ -29,10 +32,17 @@ function EditOwnAccount() {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [contactNumber, setContactNumber] = useState('');
+    const [reCaptchaKey, setReCaptchaKey] = useState(v4());
+
+    const colorTheme = useThemeColor();
+
+    React.useEffect(() => {
+        setReCaptchaKey(v4());
+    }, [colorTheme])
 
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationWarning = useNotificationWarningAndLong();
-    const dispatchNotificationDanger = useNotificationDangerAndLong();
+    const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchDialog = useDialogPermanentChange();
 
     const conf = new Configuration();
@@ -226,10 +236,10 @@ function EditOwnAccount() {
                         style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
                     />
                     <button className="btn btn-lg btn-primary btn-block mb-3" onClick={handleDetailsSubmit} type="submit"
-                            style={{backgroundColor: "#7749F8"}}>
+                            style={{backgroundColor: "var(--purple)"}}>
                         {i18n.t('changeDetails')}
                     </button>
-                    <ReCAPTCHA hl={i18n.language} ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
+                    <ReCAPTCHA hl={i18n.language} key={reCaptchaKey} theme={colorTheme} ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                 </form>
             </div>
         </div>

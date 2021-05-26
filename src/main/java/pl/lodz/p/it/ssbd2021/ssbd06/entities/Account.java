@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.ThemeColor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.*;
 
@@ -148,8 +149,55 @@ public class Account extends AbstractEntity implements Serializable {
     private Integer failedLoginAttemptsCounter = 0;
 
     @Setter
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "enable_modification_date")
+    private Date enableModificationDate;
+
+    @Setter
+    @OneToOne
+    @JoinColumn(name = "enable_modification_by")
+    private Account enableModificationBy;
+
+    @Setter
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "confirm_modification_date")
+    private Date confirmModificationDate;
+
+    @Setter
+    @OneToOne
+    @JoinColumn(name = "confirm_modification_by")
+    private Account confirmModificationBy;
+
+    @Setter
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "email_modification_date")
+    private Date emailModificationDate;
+
+    @Setter
+    @OneToOne
+    @JoinColumn(name = "email_modification_by")
+    private Account emailModificationBy;
+
+    @Setter
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "password_modification_date")
+    private Date passwordModificationDate;
+
+    @Setter
+    @OneToOne
+    @JoinColumn(name = "password_modification_by")
+    private Account passwordModificationBy;
+
+
+    @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account", fetch = FetchType.LAZY)
     private Set<Booking> bookingList = new HashSet<>();
+
+    @Setter
+    @Column(name = "theme_color", nullable = false)
+    @Basic(optional = false)
+    @Enumerated(EnumType.STRING)
+    private ThemeColor themeColor = ThemeColor.LIGHT;
 
     @Setter
     @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "account")

@@ -45,6 +45,19 @@ public class EmailSender {
     }
 
     /**
+     * Wysyła email z powiadomieniem o pomyślnym zakończeniu procesu aktywacji konta.
+     *
+     * @param account odbiorca wiadomości.
+     * @throws AppBaseException wysyłanie wiadomości email nie powiodło się.
+     */
+    public void sendActivationSuccessEmail(Account account) throws AppBaseException {
+        String lang = account.getLanguage();
+        String successContent = emailConfig.getContentForType(lang, Config.MailType.ACTIVATE_SUCCESS, account.getLogin());
+        String successSubject = emailConfig.getSubjectForType(lang, Config.MailType.ACTIVATE_SUCCESS);
+        sendEmail(account.getEmail(), successSubject, successContent);
+    }
+
+    /**
      * Wysyła wiadomość email z informacją o blokadzie konta użytkownika.
      *
      * @param account odbiorca wiadomości.

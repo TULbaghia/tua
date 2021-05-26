@@ -2,7 +2,7 @@ import React, {createContext, useContext, useReducer} from 'react';
 import Notification, {dialogDuration, dialogType} from "./Notification";
 import {v4} from "uuid";
 import './NotificationWrapper.scss'
-import i18n from '../../i18n';
+import i18n from '../../../i18n';
 
 const NotificationContext = createContext();
 
@@ -76,6 +76,28 @@ export const useNotificationDangerAndLong = () => {
                 id: v4(),
                 dialogType: dialogType.DANGER,
                 dialogDuration: dialogDuration.LONG,
+                title: i18n.t("notification.title.danger"),
+                message: message,
+                ...props
+            }
+        })
+    }
+};
+
+export const DispatchNotification = (dispatch, options) => {
+    dispatch(options);
+}
+
+export const useNotificationDangerAndInfinity = () => {
+    const dispatch = useContext(NotificationContext);
+
+    return ({message, ...props}) => {
+        dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+                id: v4(),
+                dialogType: dialogType.DANGER,
+                dialogDuration: dialogDuration.INFINITY,
                 title: i18n.t("notification.title.danger"),
                 message: message,
                 ...props

@@ -2,11 +2,11 @@ import React from "react";
 import {useHistory} from "react-router";
 import {Link, useParams} from "react-router-dom";
 import { withNamespaces } from 'react-i18next';
-import BreadCrumb from "../BreadCrumb"
+import BreadCrumb from "../Partial/BreadCrumb"
 import {Configuration, DefaultApi} from "api-client";
-import {useNotificationCustom} from "../Notification/NotificationProvider";
-import {useDialogPermanentChange} from "../CriticalOperations/CriticalOperationProvider";
-import {dialogDuration, dialogType} from "../Notification/Notification";
+import {useNotificationCustom} from "../Utils/Notification/NotificationProvider";
+import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
+import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import i18n from "../../i18n";
 
 function AccountActivate() {

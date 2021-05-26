@@ -79,7 +79,7 @@ export interface AccountDto {
     lastSuccessfulLoginDate?: any;
     /**
      * 
-     * @type {any}
+     * @type {string}
      * @memberof AccountDto
      */
     lastSuccessfulLoginIpAddress?: any;
@@ -91,7 +91,7 @@ export interface AccountDto {
     lastFailedLoginDate?: any;
     /**
      * 
-     * @type {any}
+     * @type {string}
      * @memberof AccountDto
      */
     lastFailedLoginIpAddress?: any;

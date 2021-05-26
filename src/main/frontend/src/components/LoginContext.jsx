@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
 import jwt_decode from "jwt-decode";
-import {useNotificationCustom} from "./Notification/NotificationProvider";
-import {dialogDuration, dialogType} from "./Notification/Notification";
+import {useNotificationCustom} from "./Utils/Notification/NotificationProvider";
+import {dialogDuration, dialogType} from "./Utils/Notification/Notification";
 import i18n from "../i18n";
 import axios from "axios";
+import {useDispatchThemeColorAfterLogin} from "./Utils/ThemeColor/ThemeColorProvider";
 
 const REFRESH_TIME = 60 * 1000;
 const LoginContext = React.createContext('');
@@ -14,6 +15,8 @@ export const LoginProvider = ({children}) => {
     const [username, setUsername] = useState('');
 
     const dispatch = useNotificationCustom();
+
+    const dispatchThemeChangeAfterLogin = useDispatchThemeColorAfterLogin()
 
     const handleRefreshBox = () => {
         dispatch({
@@ -29,7 +32,7 @@ export const LoginProvider = ({children}) => {
     const refreshToken = (event) => {
         event.target.closest(".alert").querySelector(".close").click()
 
-        axios.post(`${process.env.REACT_APP_API_BASE_URL}resources/auth/refresh-token`, localStorage.getItem("token"), {
+        axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/auth/refresh-token`, localStorage.getItem("token"), {
             headers:{
                 "Authorization": `${localStorage.getItem("token")}`
             }
@@ -75,6 +78,7 @@ export const LoginProvider = ({children}) => {
     const saveToken = (value) => {
         setToken(value)
         localStorage.setItem("token", value)
+        dispatchThemeChangeAfterLogin(value);
     }
 
     const values = {
@@ -86,7 +90,7 @@ export const LoginProvider = ({children}) => {
         username,
         setUsername
     }
-    return <LoginContext.Provider value={values}>{children}</LoginContext.Provider>;
+    return (<LoginContext.Provider value={values}>{children}</LoginContext.Provider>);
 };
 
 export const useLocale = () => React.useContext(LoginContext);

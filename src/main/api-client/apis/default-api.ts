@@ -109,6 +109,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {any} accessLevel 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        changeOwnAccessLevel: async (accessLevel: any, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'accessLevel' is not null or undefined
+            if (accessLevel === null || accessLevel === undefined) {
+                throw new RequiredError('accessLevel','Required parameter accessLevel was null or undefined when calling changeOwnAccessLevel.');
+            }
+            const localVarPath = `/resources/accounts/changeOwnAccessLevel/{accessLevel}`
+                .replace(`{${"accessLevel"}}`, encodeURIComponent(String(accessLevel)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {PasswordChangeDto} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -139,6 +178,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {any} themeColor 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        changeThemeColor: async (themeColor: any, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'themeColor' is not null or undefined
+            if (themeColor === null || themeColor === undefined) {
+                throw new RequiredError('themeColor','Required parameter themeColor was null or undefined when calling changeThemeColor.');
+            }
+            const localVarPath = `/resources/accounts/theme/{themeColor}`
+                .replace(`{${"themeColor"}}`, encodeURIComponent(String(themeColor)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -389,6 +467,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {string} lang 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        editOwnLanguage: async (lang: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'lang' is not null or undefined
+            if (lang === null || lang === undefined) {
+                throw new RequiredError('lang','Required parameter lang was null or undefined when calling editOwnLanguage.');
+            }
+            const localVarPath = `/resources/accounts/self/edit/language/{lang}`
+                .replace(`{${"lang"}}`, encodeURIComponent(String(lang)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -610,6 +727,44 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {string} [body] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refreshToken: async (body?: string, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/resources/auth/refresh-token`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = '*/*';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {RegisterAccountDto} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -736,12 +891,12 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         sendResetPassword: async (email: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'login' is not null or undefined
+            // verify required parameter 'email' is not null or undefined
             if (email === null || email === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling sendResetPassword.');
+                throw new RequiredError('email','Required parameter email was null or undefined when calling sendResetPassword.');
             }
-            const localVarPath = `/resources/accounts/user/{login}/reset`
-                .replace(`{${"login"}}`, encodeURIComponent(String(email)));
+            const localVarPath = `/resources/accounts/user/{email}/reset`
+                .replace(`{${"email"}}`, encodeURIComponent(String(email)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -770,17 +925,17 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @param {string} login 
+         * @param {string} email 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sendResetPasswordAgain: async (login: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'login' is not null or undefined
-            if (login === null || login === undefined) {
-                throw new RequiredError('login','Required parameter login was null or undefined when calling sendResetPasswordAgain.');
+        sendResetPasswordAgain: async (email: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'email' is not null or undefined
+            if (email === null || email === undefined) {
+                throw new RequiredError('email','Required parameter email was null or undefined when calling sendResetPasswordAgain.');
             }
-            const localVarPath = `/resources/accounts/user/{login}/resetagain`
-                .replace(`{${"login"}}`, encodeURIComponent(String(login)));
+            const localVarPath = `/resources/accounts/user/{email}/resetagain`
+                .replace(`{${"email"}}`, encodeURIComponent(String(email)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -955,12 +1110,38 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {any} accessLevel 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async changeOwnAccessLevel(accessLevel: any, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).changeOwnAccessLevel(accessLevel, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @param {PasswordChangeDto} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         async changePassword(body?: PasswordChangeDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
             const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).changePassword(body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {any} themeColor 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async changeThemeColor(themeColor: any, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).changeThemeColor(themeColor, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1048,6 +1229,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} lang 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async editOwnLanguage(lang: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).editOwnLanguage(lang, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1124,6 +1318,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} [body] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refreshToken(body?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).refreshToken(body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @param {RegisterAccountDto} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1177,12 +1384,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {string} login 
+         * @param {string} email 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sendResetPasswordAgain(login: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).sendResetPasswordAgain(login, options);
+        async sendResetPasswordAgain(email: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).sendResetPasswordAgain(email, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1255,12 +1462,30 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @param {any} accessLevel 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        changeOwnAccessLevel(accessLevel: any, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).changeOwnAccessLevel(accessLevel, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {PasswordChangeDto} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         changePassword(body?: PasswordChangeDto, options?: any): AxiosPromise<any> {
             return DefaultApiFp(configuration).changePassword(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {any} themeColor 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        changeThemeColor(themeColor: any, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).changeThemeColor(themeColor, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1320,6 +1545,15 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @param {string} lang 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        editOwnLanguage(lang: string, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).editOwnLanguage(lang, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1372,6 +1606,15 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @param {string} [body] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refreshToken(body?: string, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).refreshToken(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {RegisterAccountDto} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1409,12 +1652,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @param {string} login 
+         * @param {string} email 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sendResetPasswordAgain(login: string, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).sendResetPasswordAgain(login, options).then((request) => request(axios, basePath));
+        sendResetPasswordAgain(email: string, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).sendResetPasswordAgain(email, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1474,6 +1717,16 @@ export class DefaultApi extends BaseAPI {
     }
     /**
      * 
+     * @param {any} accessLevel 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public changeOwnAccessLevel(accessLevel: any, options?: any) {
+        return DefaultApiFp(this.configuration).changeOwnAccessLevel(accessLevel, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
      * @param {PasswordChangeDto} [body] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1481,6 +1734,16 @@ export class DefaultApi extends BaseAPI {
      */
     public changePassword(body?: PasswordChangeDto, options?: any) {
         return DefaultApiFp(this.configuration).changePassword(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @param {any} themeColor 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public changeThemeColor(themeColor: any, options?: any) {
+        return DefaultApiFp(this.configuration).changeThemeColor(themeColor, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1546,6 +1809,16 @@ export class DefaultApi extends BaseAPI {
     }
     /**
      * 
+     * @param {string} lang 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public editOwnLanguage(lang: string, options?: any) {
+        return DefaultApiFp(this.configuration).editOwnLanguage(lang, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
@@ -1604,6 +1877,16 @@ export class DefaultApi extends BaseAPI {
     }
     /**
      * 
+     * @param {string} [body] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public refreshToken(body?: string, options?: any) {
+        return DefaultApiFp(this.configuration).refreshToken(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
      * @param {RegisterAccountDto} [body] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1645,13 +1928,13 @@ export class DefaultApi extends BaseAPI {
     }
     /**
      * 
-     * @param {string} login 
+     * @param {string} email 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public sendResetPasswordAgain(login: string, options?: any) {
-        return DefaultApiFp(this.configuration).sendResetPasswordAgain(login, options).then((request) => request(this.axios, this.basePath));
+    public sendResetPasswordAgain(email: string, options?: any) {
+        return DefaultApiFp(this.configuration).sendResetPasswordAgain(email, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

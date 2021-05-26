@@ -66,6 +66,9 @@
         <role-name>editOwnAccountDetails</role-name>
     </security-role>
     <security-role>
+        <role-name>editOwnThemeSettings</role-name>
+    </security-role>
+    <security-role>
         <role-name>editOtherAccountDetails</role-name>
     </security-role>
     <security-role>

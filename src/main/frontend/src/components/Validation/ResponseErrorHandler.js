@@ -1,6 +1,6 @@
 import React from 'react';
 import i18n from "../../i18n";
-import {dialogDuration} from "../Notification/Notification";
+import {dialogDuration} from "../Utils/Notification/Notification";
 
 export const ResponseErrorHandler = (error, errorNotifier, shouldDispatchViolations = true, callbackAfter = ((x) => {})) => {
     let errorHandled = false;

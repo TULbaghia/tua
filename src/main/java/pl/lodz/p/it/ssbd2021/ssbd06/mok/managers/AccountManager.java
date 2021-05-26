@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ClientData;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.PendingCode;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.ThemeColor;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CodeException;
@@ -27,6 +28,7 @@ import javax.security.enterprise.SecurityContext;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -81,6 +83,8 @@ public class AccountManager {
         account.setEnabled(false);
         account.setFailedLoginAttemptsCounter(0);
         account.setModifiedBy(getCurrentUser());
+        account.setEnableModificationDate(Date.from(Instant.now()));
+        account.setEnableModificationBy(getCurrentUser());
         accountFacade.edit(account);
         emailSender.sendLockAccountEmail(account);
     }
@@ -95,7 +99,10 @@ public class AccountManager {
     public void unblockAccount(String login) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
         account.setEnabled(true);
+        account.setFailedLoginAttemptsCounter(0);
         account.setModifiedBy(getCurrentUser());
+        account.setEnableModificationDate(Date.from(Instant.now()));
+        account.setEnableModificationBy(getCurrentUser());
         accountFacade.edit(account);
         emailSender.sendUnlockAccountEmail(account);
     }
@@ -152,11 +159,15 @@ public class AccountManager {
         clientData.setAccount(account);
         clientData.setCreatedBy(account);
         account.getRoleList().add(clientData);
+        account.setConfirmModificationDate(Date.from(Instant.now()));
+        account.setConfirmModificationBy(account);
 
         account.setConfirmed(true);
         pendingCode.setUsed(true);
+        pendingCode.setModifiedBy(account);
         pendingCodeFacade.edit(pendingCode);
         accountFacade.edit(account);
+        emailSender.sendActivationSuccessEmail(account);
     }
 
     /**
@@ -176,8 +187,9 @@ public class AccountManager {
         int incorrectLoginAttempts = account.getFailedLoginAttemptsCounter() + 1;
         if (incorrectLoginAttempts == INCORRECT_LOGIN_ATTEMPTS_LIMIT) {
             account.setEnabled(false);
+            account.setEnableModificationDate(Date.from(Instant.now()));
+            account.setEnableModificationBy(null);
             emailSender.sendLockAccountEmail(account);
-            incorrectLoginAttempts = 0;
         }
         account.setFailedLoginAttemptsCounter(incorrectLoginAttempts);
 
@@ -262,7 +274,14 @@ public class AccountManager {
             throw AccountException.samePassword();
         }
         account.setPassword(PasswordHasher.generate(password));
-        account.setModifiedBy(getCurrentUser());
+        account.setPasswordModificationDate(Date.from(Instant.now()));
+
+        try {
+            account.setPasswordModificationBy(getCurrentUser());
+        } catch (NullPointerException e) {
+            account.setPasswordModificationBy(account);
+        }
+
         accountFacade.edit(account);
     }
 
@@ -304,6 +323,7 @@ public class AccountManager {
             throw CodeException.codeExpired();
         }
         resetCode.setUsed(true);
+        resetCode.setModifiedBy(account);
         pendingCodeFacade.edit(resetCode);
         changePassword(account, password);
     }
@@ -321,6 +341,18 @@ public class AccountManager {
     public void editAccountEmail(String login, String newEmail) throws AppBaseException {
         Account accountEmail = accountFacade.findByLogin(login);
         Account accountExists = null;
+
+//        W bloku "try" następuje próba pozyskania z tabeli account konta, które posiada przypisany adres email,
+//        identyczny jak adres email wykorzystywany w aktualnie przetwarzanym procesie zmiany tego zasobu.
+//
+//        1. W przypadku, gdy takie konto istnieje, zmienna accountExists nie będzie nullem, co powinno spowodować
+//        zgłoszenie wyjątku AccountException.emailExists() - zgodnie z ograniczeniami, każdy adres email użytkownika
+//        istniejący w bazie danych musi być unikalny.
+//
+//        2. W sytuacji, gdy nie następuje próba zmiany adresu email na taki, który obecnie posiada inny użytkownik,
+//        wykonywanie metody accountFacade.findByEmail(newEmail), powinno zakończyć się wyjątkiem. Wyjątek ten - NotFoundException
+//        jest dla nas informacją, że w bazie danych nie istnieje konflikt adresów email, a zatem proces zmiany można kontynuować,
+//        dlatego też blok "catch" jest w tym przypadku pusty.
 
         try {
             accountExists = accountFacade.findByEmail(newEmail);
@@ -342,8 +374,10 @@ public class AccountManager {
         }
 
         PendingCode pendingCode = createPendingCode(accountEmail, CodeType.EMAIL_CHANGE);
+        pendingCode.setCreatedBy(getCurrentUser());
         accountEmail.getPendingCodeList().add(pendingCode);
         accountEmail.setNewEmail(newEmail);
+        accountEmail.setModifiedBy(getCurrentUser());
 
         accountFacade.edit(accountEmail);
         emailSender.sendEmailChange(accountEmail, pendingCode.getCode());
@@ -390,7 +424,11 @@ public class AccountManager {
         Account account = pendingCode.getAccount();
         account.setEmail(account.getNewEmail());
         account.setNewEmail(null);
+        account.setEmailModificationDate(Date.from(Instant.now()));
+        account.setEmailModificationBy(account);
+
         pendingCode.setUsed(true);
+        pendingCode.setModifiedBy(account);
         accountFacade.edit(account);
     }
 
@@ -406,5 +444,23 @@ public class AccountManager {
     public void sendAdminLoginInfo(String adminLogin, String address) throws AppBaseException {
         Account account = accountFacade.findByLogin(adminLogin);
         emailSender.sendAdminLogin(account, address);
+    }
+
+    /**
+     * Aktualizuje motyw interfejsu dla użytkownika.
+     *
+     * @param login login zalogowanego użytkownika
+     * @param themeColor kolor interfejsu preferowany przez użytkownika
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @RolesAllowed("editOwnThemeSettings")
+    public void changeThemeColor(String login, ThemeColor themeColor) throws AppBaseException {
+        Account account = accountFacade.findByLogin(login);
+        if (account.getThemeColor().equals(themeColor)) {
+            throw AccountException.themeAlreadySet();
+        }
+        account.setThemeColor(themeColor);
+        account.setModifiedBy(account);
+        accountFacade.edit(account);
     }
 }

@@ -10,14 +10,13 @@
   position: absolute;
   top: 200px;
   left: 100px;
-  font-family: Gabriela;
   font-style: normal;
   font-weight: normal;
   font-size: 72px;
   line-height: 92px;
   display: flex;
   align-items: center;
-  color: #FFFFFF;
+  color: var(--white);
 }
 
 .logo {
@@ -60,7 +59,6 @@
   top: 5%;
   left: 10%;
   right: 10%;
-  font-family: Inter;
   font-style: normal;
   font-weight: bold;
   font-size: 36px;
@@ -68,12 +66,12 @@
   display: flex;
   align-items: center;
   text-align: left;
-  color: #152536;
+  color: var(--dark);
   margin: 5%;
 }
 
 .columnLeft {
-  background-color: white;
+  background-color: var(--light);
   position: absolute;
   height: 100%;
   top: 61%;
@@ -96,7 +94,6 @@
   top: 5%;
   left: 3%;
   right: 10%;
-  font-family: Inter;
   font-style: normal;
   font-weight: bold;
   font-size: 36px;
@@ -104,12 +101,12 @@
   display: flex;
   align-items: center;
   text-align: left;
-  color: #152536;
+  color: var(--dark);
   margin: 5%;
 }
 
 .columnRight{
-  background-color: white;
+  background-color: var(--light);
   position: absolute;
   height: 100%;
   right: 0;
@@ -121,7 +118,7 @@
 .back {
   font-style: normal;
   font-weight: 500;
-  color: #7749F8;
+  color: var(--purple);
 }
 
 .greeting {

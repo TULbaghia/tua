@@ -2,18 +2,24 @@ import React, {useState} from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "./LoginContext";
 import {withNamespaces} from 'react-i18next';
-import BreadCrumb from "./BreadCrumb";
+import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {api} from "../Api";
 import ReCAPTCHA from "react-google-recaptcha";
 import {handleRecaptcha} from "./Recaptcha/RecaptchaCallback";
-import {useNotificationDangerAndLong, useNotificationWarningAndLong,} from "./Notification/NotificationProvider";
+import {
+    useNotificationDangerAndInfinity,
+    useNotificationDangerAndLong,
+    useNotificationWarningAndLong,
+} from "./Utils/Notification/NotificationProvider";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import {validatorFactory, ValidatorType} from "./Validation/Validators";
+import {useThemeColor} from "./Utils/ThemeColor/ThemeColorProvider";
+import {v4} from "uuid";
 
 function SignUp(props) {
     const {t, i18n} = props
-    const dispatchNotificationDanger = useNotificationDangerAndLong();
+    const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchNotificationWarning = useNotificationWarningAndLong();
     const history = useHistory();
     const {token, setToken} = useLocale();
@@ -23,16 +29,22 @@ function SignUp(props) {
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [contactNumber, setContactNumber] = useState('');
+    const [reCaptchaKey, setReCaptchaKey] = useState(v4());
     const recaptchaRef = React.createRef();
+
+    const colorTheme = useThemeColor();
+
+    React.useEffect(() => {
+        setReCaptchaKey(v4());
+    }, [colorTheme])
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
         handleRecaptcha(handleClick, recaptchaRef, dispatchNotificationWarning);
     }
 
-    const handleClick = (e) => {
-        e.preventDefault()
-
+    const handleClick = () => {
         let isError = false;
 
         validatorFactory(login, ValidatorType.LOGIN).forEach(x => {
@@ -165,7 +177,7 @@ function SignUp(props) {
                             onClick={handleSubmit}>
                         {t('signUp')}
                     </button>
-                    <ReCAPTCHA hl={i18n.language} ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
+                    <ReCAPTCHA hl={i18n.language} key={reCaptchaKey} theme={colorTheme} ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                 </form>
             </div>
         </div>

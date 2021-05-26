@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public interface BoxEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista klatek
      */
+    @RolesAllowed("getAllBoxes")
     List<BoxDto> getAll() throws AppBaseException;
 
     /**
@@ -35,6 +37,7 @@ public interface BoxEndpointLocal extends CallingClass {
      * @param boxDto dto z danymi nowej klatki
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("addBox")
     void addBox(NewBoxDto boxDto) throws AppBaseException;
 
     /**
@@ -43,6 +46,7 @@ public interface BoxEndpointLocal extends CallingClass {
      * @param boxDto dto z danymi klatki
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("updateBox")
     void updateBox(BoxDto boxDto) throws AppBaseException;
 
     /**
@@ -51,5 +55,6 @@ public interface BoxEndpointLocal extends CallingClass {
      * @param boxId identyfikator klatki
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("deleteBox")
     void deleteBox(Long boxId) throws AppBaseException;
 }

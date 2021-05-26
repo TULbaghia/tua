@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.RatingEndpointLocal
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -26,21 +27,25 @@ public class RatingEndpoint  extends AbstractEndpoint implements RatingEndpointL
     }
 
     @Override
+    @RolesAllowed("addHotelRating")
     public void addRating(RatingDto ratingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @RolesAllowed("updateHotelRating")
     public void updateRating(RatingDto ratingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @RolesAllowed("deleteHotelRating")
     public void deleteRating(Long ratingId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @RolesAllowed("hideHotelRating")
     public void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException {
         throw new UnsupportedOperationException();
     }

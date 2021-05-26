@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public interface CityEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista miast
      */
+    @RolesAllowed("getAllCities")
     List<CityDto> getAll() throws AppBaseException;
 
     /**
@@ -35,6 +37,7 @@ public interface CityEndpointLocal extends CallingClass {
      * @param cityDto dto z danymi miasta
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("addCity")
     void addCity(CityDto cityDto) throws AppBaseException;
 
     /**
@@ -43,6 +46,7 @@ public interface CityEndpointLocal extends CallingClass {
      * @param cityDto dto z danymi miasta
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("updateCity")
     void updateCity(CityDto cityDto) throws AppBaseException;
 
     /**
@@ -51,5 +55,6 @@ public interface CityEndpointLocal extends CallingClass {
      * @param cityId identyfikator miasta
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("deleteCity")
     void deleteCity(Long cityId) throws AppBaseException;
 }

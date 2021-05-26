@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BookingEndpointLoca
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -37,16 +38,19 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     }
 
     @Override
+    @RolesAllowed("bookReservation")
     public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @RolesAllowed("cancelReservation")
     public void cancelBooking(Long bookingId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @RolesAllowed("endReservation")
     public void endBooking(Long bookingId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -57,11 +61,13 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     }
 
     @Override
+    @RolesAllowed("getAllActiveReservations")
     public List<BookingDto> showActiveBooking() throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @RolesAllowed("getAllArchiveReservations")
     public List<BookingDto> showEndedBooking() throws AppBaseException {
         throw new UnsupportedOperationException();
     }

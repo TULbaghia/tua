@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import java.util.List;
 
@@ -49,6 +50,7 @@ public interface BookingEndpointLocal extends CallingClass {
      *
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("bookReservation")
     void addBooking(NewBookingDto bookingDto) throws AppBaseException;
 
     /**
@@ -57,6 +59,7 @@ public interface BookingEndpointLocal extends CallingClass {
      * @param bookingId identyfikator rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("cancelReservation")
     void cancelBooking(Long bookingId) throws AppBaseException;
 
     /**
@@ -65,6 +68,7 @@ public interface BookingEndpointLocal extends CallingClass {
      * @param bookingId identyfikator rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("endReservation")
     void endBooking(Long bookingId) throws AppBaseException;
 
     /**
@@ -83,6 +87,7 @@ public interface BookingEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
      */
+    @RolesAllowed("getAllActiveReservations")
     List<BookingDto> showActiveBooking() throws AppBaseException;
 
     /**
@@ -93,5 +98,6 @@ public interface BookingEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
      */
+    @RolesAllowed("getAllArchiveReservations")
     List<BookingDto> showEndedBooking() throws AppBaseException;
 }

@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public interface RatingEndpointLocal extends CallingClass {
      * @param ratingDto dto z danymi oceny
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("addHotelRating")
     void addRating(RatingDto ratingDto) throws AppBaseException;
 
     /**
@@ -36,6 +38,7 @@ public interface RatingEndpointLocal extends CallingClass {
      * @param ratingDto dto z danymi oceny
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("updateHotelRating")
     void updateRating(RatingDto ratingDto) throws AppBaseException;
 
     /**
@@ -44,6 +47,7 @@ public interface RatingEndpointLocal extends CallingClass {
      * @param ratingId identyfikator oceny
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("deleteHotelRating")
     void deleteRating(Long ratingId) throws AppBaseException;
 
     /**
@@ -53,5 +57,6 @@ public interface RatingEndpointLocal extends CallingClass {
      * @param ratingVisibility poziom widoczności
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("hideHotelRating")
     void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException;
 }

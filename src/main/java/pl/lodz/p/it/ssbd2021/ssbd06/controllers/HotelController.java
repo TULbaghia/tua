@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import java.util.List;
 
@@ -70,6 +71,7 @@ public class HotelController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z dodawaniem hotelu
      */
     @POST
+    @RolesAllowed("addHotel")
     public void addHotel(NewHotelDto hotelDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -81,6 +83,7 @@ public class HotelController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z aktualizacją hotelu
      */
     @PUT
+    @RolesAllowed("updateHotel")
     public void updateHotel(UpdateHotelDto hotelDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -92,6 +95,7 @@ public class HotelController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z usuwaniem hotelu
      */
     @DELETE
+    @RolesAllowed("deleteHotel")
     public void deleteHotel(Long hotelId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -104,6 +108,7 @@ public class HotelController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z przypisywaniem managera do hotelu
      */
     @PATCH
+    @RolesAllowed("addManagerToHotel")
     @Path("/add/{managerLogin}/{hotelId}")
     public void addManagerToHotel(@PathParam("hotelId") Long hotelId, @PathParam("managerLogin") String managerLogin) throws AppBaseException {
         throw new UnsupportedOperationException();
@@ -116,6 +121,7 @@ public class HotelController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z usunięciem managera z hotelu
      */
     @PATCH
+    @RolesAllowed("deleteManagerFromHotel")
     @Path("/remove/{managerLogin}")
     public void deleteManagerFromHotel(@PathParam("managerLogin") String managerLogin) throws AppBaseException {
         throw new UnsupportedOperationException();
@@ -130,6 +136,7 @@ public class HotelController extends AbstractController {
      * @return dane potrzebne do wygenerowania raportu
      */
     @GET
+    @RolesAllowed("generateReport")
     @Path("/raport/{hotelId}/{from}/{to}")
     public GenerateReportDto generateReport(@PathParam("hotelId") Long hotelId, @PathParam("from") String from, @PathParam("to") String to) throws AppBaseException {
         throw new UnsupportedOperationException();

@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -61,6 +62,7 @@ public class BookingManager {
      *
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("bookReservation")
     void addBooking(NewBookingDto bookingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -71,6 +73,7 @@ public class BookingManager {
      * @param bookingId identyfikator rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("cancelReservation")
     void cancelBooking(Long bookingId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -81,6 +84,7 @@ public class BookingManager {
      * @param bookingId identyfikator rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("endReservation")
     void endBooking(Long bookingId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -103,6 +107,7 @@ public class BookingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
      */
+    @RolesAllowed("getAllActiveReservations")
     List<Booking> showActiveBooking() throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -115,6 +120,7 @@ public class BookingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
      */
+    @RolesAllowed("getAllArchiveReservations")
     List<Booking> showEndedBooking() throws AppBaseException {
         throw new UnsupportedOperationException();
     }

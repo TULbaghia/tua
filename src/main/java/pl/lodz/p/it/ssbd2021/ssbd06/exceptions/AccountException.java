@@ -4,14 +4,14 @@ package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
  * Reprezentuje błąd dotyczący encji Account
  */
 public class AccountException extends AppBaseException {
-    private static final String ACCOUNT_LOGIN_EXISTS = "exception.account.login_exists";
+    private static final String ACCOUNT_LOGIN_INVALID = "exception.account.login_invalid";
     private static final String ACCOUNT_CONTACT_NUMBER = "exception.account.contact_number";
     private static final String ACCOUNT_ALREADY_ACTIVATED = "exception.account_already_activated.already_activated";
     private static final String ACCOUNT_SAME_PASSWORD = "exception.account_same_password.account_same_password";
     private static final String ACCOUNT_PASSWORDS_DONT_MATCH = "exception.passwords_dont_match.passwords_dont_match";
     private static final String ACCOUNT_NOT_ENABLED = "exception.account_not_enabled.account_not_enabled";
     private static final String ACCOUNT_NOT_CONFIRMED = "exception.account_not_confirmed.account_not_confirmed";
-    private static final String ACCOUNT_EMAIL_EXISTS = "exception.account.email_exists";
+    private static final String ACCOUNT_EMAIL_INVALID = "exception.account.email_invalid";
     private static final String ACCOUNT_IS_CONFIRMED = "exception.account.account_confirmed";
     private static final String ACCOUNT_THEME_ALREADY_SET = "exception.account.theme_already_set";
 
@@ -30,7 +30,7 @@ public class AccountException extends AppBaseException {
      * @return wyjątek AccountException
      */
     public static AccountException loginExists(Throwable cause) {
-        return new AccountException(ACCOUNT_LOGIN_EXISTS, cause);
+        return new AccountException(ACCOUNT_LOGIN_INVALID, cause);
     }
 
     /**
@@ -50,7 +50,7 @@ public class AccountException extends AppBaseException {
      * @return wyjątek AccountException
      */
     public static AccountException emailExists(Throwable cause) {
-        return new AccountException(ACCOUNT_EMAIL_EXISTS, cause);
+        return new AccountException(ACCOUNT_EMAIL_INVALID, cause);
     }
 
     /**
@@ -59,7 +59,7 @@ public class AccountException extends AppBaseException {
      * @return wyjątek AccountException
      */
     public static AccountException emailExists() {
-        return new AccountException(ACCOUNT_EMAIL_EXISTS);
+        return new AccountException(ACCOUNT_EMAIL_INVALID);
     }
 
     /**

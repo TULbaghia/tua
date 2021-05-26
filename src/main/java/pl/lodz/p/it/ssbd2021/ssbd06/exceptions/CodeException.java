@@ -7,6 +7,7 @@ public class CodeException extends AppBaseException {
     private static final String CODE_EXPIRED = "exception.code.code_expired";
     private static final String CODE_INVALID = "exception.code.code_invalid";
     private static final String CODE_USED = "exception.code.code_used";
+    private static final String CODE_DUPLICATED = "exception.code.code_duplicated";
 
     private CodeException(String message, Throwable cause) {
         super(message, cause);
@@ -38,5 +39,13 @@ public class CodeException extends AppBaseException {
      */
     public static CodeException codeUsed() {
         return new CodeException(CODE_USED);
+    }
+
+    /**
+     * Tworzy wyjątek reprezentujący duplikowany kod.
+     * @return wyjątek CodeException
+     */
+    public static CodeException codeDuplicated(Throwable cause) {
+        return new CodeException(CODE_DUPLICATED, cause);
     }
 }

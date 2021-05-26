@@ -86,6 +86,8 @@
   "emailConfirm.info": "Kliknij w przycisk znajdujący się poniżej w celu zweryfikowania adresu email",
   "emailConfirm.action": "Weryfikuj adres email",
   "emailConfirm.success.info": "Adres email został pomyślnie zweryfikowany",
+  "exception.account.email_invalid": "Adres email jest niepoprawny lub jest zajęty",
+  "exception.account.login_invalid": "Login jest niepoprawny lub jest zajęty",
   "refresh": "Odśwież",
   "language": "Język",
   "lastSuccessfulLoginAddress": "Adres ostatniego poprawnego logowania",
@@ -229,7 +231,6 @@
   "theme.color.light": "Tryb jasny",
 
   "theme.changed.scheme.light": "Zmieniono tryb wyświetlania na jasny",
-  "theme.changed.scheme.dark": "Zmieniono tryb wyświetlania na ciemny",
-  "request.error.login401": "Błędne dane logowania"
+  "theme.changed.scheme.dark": "Zmieniono tryb wyświetlania na ciemny"
 
 }

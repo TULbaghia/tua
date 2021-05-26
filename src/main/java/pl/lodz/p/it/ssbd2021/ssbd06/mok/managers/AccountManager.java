@@ -27,6 +27,7 @@ import javax.security.enterprise.SecurityContext;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -81,6 +82,8 @@ public class AccountManager {
         account.setEnabled(false);
         account.setFailedLoginAttemptsCounter(0);
         account.setModifiedBy(getCurrentUser());
+        account.setEnableModificationDate(Date.from(Instant.now()));
+        account.setEnableModificationBy(getCurrentUser());
         accountFacade.edit(account);
         emailSender.sendLockAccountEmail(account);
     }
@@ -95,7 +98,10 @@ public class AccountManager {
     public void unblockAccount(String login) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
         account.setEnabled(true);
+        account.setFailedLoginAttemptsCounter(0);
         account.setModifiedBy(getCurrentUser());
+        account.setEnableModificationDate(Date.from(Instant.now()));
+        account.setEnableModificationBy(getCurrentUser());
         accountFacade.edit(account);
         emailSender.sendUnlockAccountEmail(account);
     }
@@ -152,9 +158,12 @@ public class AccountManager {
         clientData.setAccount(account);
         clientData.setCreatedBy(account);
         account.getRoleList().add(clientData);
+        account.setConfirmModificationDate(Date.from(Instant.now()));
+        account.setConfirmModificationBy(account);
 
         account.setConfirmed(true);
         pendingCode.setUsed(true);
+        pendingCode.setModifiedBy(account);
         pendingCodeFacade.edit(pendingCode);
         accountFacade.edit(account);
     }
@@ -176,8 +185,9 @@ public class AccountManager {
         int incorrectLoginAttempts = account.getFailedLoginAttemptsCounter() + 1;
         if (incorrectLoginAttempts == INCORRECT_LOGIN_ATTEMPTS_LIMIT) {
             account.setEnabled(false);
+            account.setEnableModificationDate(Date.from(Instant.now()));
+            account.setEnableModificationBy(null);
             emailSender.sendLockAccountEmail(account);
-            incorrectLoginAttempts = 0;
         }
         account.setFailedLoginAttemptsCounter(incorrectLoginAttempts);
 
@@ -262,7 +272,14 @@ public class AccountManager {
             throw AccountException.samePassword();
         }
         account.setPassword(PasswordHasher.generate(password));
-        account.setModifiedBy(getCurrentUser());
+        account.setPasswordModificationDate(Date.from(Instant.now()));
+
+        try {
+            account.setPasswordModificationBy(getCurrentUser());
+        } catch (NullPointerException e) {
+            account.setPasswordModificationBy(account);
+        }
+
         accountFacade.edit(account);
     }
 
@@ -304,6 +321,7 @@ public class AccountManager {
             throw CodeException.codeExpired();
         }
         resetCode.setUsed(true);
+        resetCode.setModifiedBy(account);
         pendingCodeFacade.edit(resetCode);
         changePassword(account, password);
     }
@@ -342,8 +360,10 @@ public class AccountManager {
         }
 
         PendingCode pendingCode = createPendingCode(accountEmail, CodeType.EMAIL_CHANGE);
+        pendingCode.setCreatedBy(getCurrentUser());
         accountEmail.getPendingCodeList().add(pendingCode);
         accountEmail.setNewEmail(newEmail);
+        accountEmail.setModifiedBy(getCurrentUser());
 
         accountFacade.edit(accountEmail);
         emailSender.sendEmailChange(accountEmail, pendingCode.getCode());
@@ -390,7 +410,11 @@ public class AccountManager {
         Account account = pendingCode.getAccount();
         account.setEmail(account.getNewEmail());
         account.setNewEmail(null);
+        account.setEmailModificationDate(Date.from(Instant.now()));
+        account.setEmailModificationBy(account);
+
         pendingCode.setUsed(true);
+        pendingCode.setModifiedBy(account);
         accountFacade.edit(account);
     }
 

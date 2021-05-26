@@ -79,6 +79,7 @@ function Login(props) {
                 <li className="breadcrumb-item active" aria-current="page">{t('logging')}</li>
             </BreadCrumb>
             <div className="floating-box">
+                <h1 className="h3">{t('logging')}</h1>
                 <Formik initialValues={{login: '', password: ''}}
                         validate={values => {
                             const errors = {};

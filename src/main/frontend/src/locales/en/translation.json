@@ -125,7 +125,6 @@
   "newPassword": "New password",
   "repeatNewPassword": "Repeat new password",
   "passwordsNotMatch": "Passwords don't match",
-  "oldPasswordEqualsNew": "New password can not be the same as the old one",
   "exception.passwords_dont_match.passwords_dont_match": "Entered data is not correct",
   "error.rest.validation": "Entered data is not correct",
   "exception.app_optimistic_lock.optimistic_lock": "Optimistic lock error",
@@ -223,5 +222,12 @@
   "theme.color.light": "Light mode",
 
   "theme.changed.scheme.light": "Theme changed to light mode",
-  "theme.changed.scheme.dark": "Theme changed to dark mode"
+  "theme.changed.scheme.dark": "Theme changed to dark mode",
+  "email.error.required": "Email is required",
+  "oldPassword.error.required": "Old password is required",
+  "name.error.required": "Firstname is required",
+  "surname.error.required": "Surname is required",
+  "contactNumber.error.required": "Contact number is required",
+  "passwordResetForm.error.oldPasswordEqualsNew": "New password can not be the same as the old one",
+  "table.no.result": "No results to show"
 }

@@ -206,6 +206,7 @@ function UserList(props) {
                     }}>{t("refresh")}</Button>
                 </div>
                 <DataTable
+                    noDataComponent={i18n.t('table.no.result')}
                     columns={columns}
                     data={filteredItems}
                     subHeader

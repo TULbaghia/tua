@@ -22,7 +22,7 @@ import AppUsersPage from "./components/AppUsersPage";
 import EditOtherAccountForm from "./components/EditOtherAccount/EditOtherAccountForm";
 import PasswordResetForm from "./components/PasswordReset/PasswordResetForm";
 import EmailConfirm from "./components/EmailConfirmation/EmailConfirm";
-import EditOwnAccount from './components/EditOwnAccount';
+import EditOwnAccount from './components/EditOwnAccount/EditOwnAccount';
 import AccountActivate from "./components/EmailConfirmation/AccountActivate";
 import {rolesConstant} from "./Constants";
 import { GuardProvider, GuardedRoute } from 'react-router-guards';

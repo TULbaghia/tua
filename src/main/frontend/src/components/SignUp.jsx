@@ -6,31 +6,27 @@ import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {api} from "../Api";
 import ReCAPTCHA from "react-google-recaptcha";
-import {handleRecaptcha} from "./Recaptcha/RecaptchaCallback";
 import {
     useNotificationDangerAndInfinity,
-    useNotificationDangerAndLong,
     useNotificationWarningAndLong,
 } from "./Utils/Notification/NotificationProvider";
+import {handleRecaptcha, recaptchaCheck} from "./Recaptcha/RecaptchaCallback";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import {validatorFactory, ValidatorType} from "./Validation/Validators";
 import {useThemeColor} from "./Utils/ThemeColor/ThemeColorProvider";
 import {v4} from "uuid";
+import { Formik, Form } from "formik";
+import GridItemInput from "./controls/GridInputItem"
 
 function SignUp(props) {
     const {t, i18n} = props
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchNotificationWarning = useNotificationWarningAndLong();
     const history = useHistory();
-    const {token, setToken} = useLocale();
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
-    const [firstname, setFirstname] = useState('');
-    const [lastname, setLastname] = useState('');
-    const [contactNumber, setContactNumber] = useState('');
     const [reCaptchaKey, setReCaptchaKey] = useState(v4());
     const recaptchaRef = React.createRef();
+
+
 
     const colorTheme = useThemeColor();
 
@@ -38,149 +34,97 @@ function SignUp(props) {
         setReCaptchaKey(v4());
     }, [colorTheme])
 
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        handleRecaptcha(handleClick, recaptchaRef, dispatchNotificationWarning);
+    const initialValues = {
+        login: '',
+        email: '',
+        password: '',
+        repeatedPassword: '',
+        firstname: '',
+        lastname: '',
+        contactNumber: ''
     }
 
-    const handleClick = () => {
-        let isError = false;
+    function onSubmit(values, helpers){
+        if(!recaptchaCheck(recaptchaRef, dispatchNotificationWarning)) return
 
-        validatorFactory(login, ValidatorType.LOGIN).forEach(x => {
-            isError = true;
-            dispatchNotificationWarning({title: t('login'), message: x});
-        })
-        validatorFactory(password, ValidatorType.PASSWORD).forEach(x => {
-            isError = true;
-            dispatchNotificationWarning({title: t('password'), message: x});
-        })
-        validatorFactory(email, ValidatorType.USER_EMAIL).forEach(x => {
-            isError = true;
-            dispatchNotificationWarning({title: t('emailAddress'), message: x});
-        })
-        validatorFactory(firstname, ValidatorType.FIRSTNAME).forEach(x => {
-            isError = true;
-            dispatchNotificationWarning({title: t('name'), message: x});
-        })
-        validatorFactory(lastname, ValidatorType.LASTNAME).forEach(x => {
-            isError = true;
-            dispatchNotificationWarning({title: t('surname'), message: x});
-        })
-        validatorFactory(contactNumber, ValidatorType.CONTACT_NUMBER).forEach(x => {
-            isError = true;
-            dispatchNotificationWarning({title: t('phoneNumber'), message: x});
-        })
-        if (!isError) {
-            api.registerAccount({
-                login: login,
-                email: email,
-                password: password,
-                firstname: firstname,
-                lastname: lastname,
-                constactNumber: contactNumber
-            })
-                .then(res => {
-                    console.log("registered")
-                })
-                .catch(err => {
-                    ResponseErrorHandler(err, dispatchNotificationDanger);
-                })
+        const {repeatedPassword, ...dto} = values
+        api.registerAccount(
+            dto
+        )
+        .then(res => console.log(res))
+        .catch(err => ResponseErrorHandler(err, dispatchNotificationDanger))
+    }
+
+    function validate(values){
+        const errors = {}
+        const loginErrors = validatorFactory(values.login, ValidatorType.LOGIN)
+        if(loginErrors.length !== 0)
+            errors.login = loginErrors
+        const passwordErrors = validatorFactory(values.password, ValidatorType.PASSWORD)
+        if(passwordErrors.length !== 0)
+            errors.password = passwordErrors
+        if(values.password !== values.repeatedPassword){
+            errors.repeatedPassword = [t("passwordsNotMatch")]
         }
+        const emailErrors = validatorFactory(values.email, ValidatorType.USER_EMAIL)
+        if(emailErrors.length !== 0)
+            errors.email = emailErrors
+        const firstnameErrors = validatorFactory(values.firstname, ValidatorType.FIRSTNAME)
+        if(firstnameErrors.length !== 0)
+            errors.firstname = firstnameErrors
+        const lastnameErrors = validatorFactory(values.lastname, ValidatorType.LASTNAME)
+        if(lastnameErrors.length !== 0)
+            errors.lastname = lastnameErrors
+        const contactNumberErrors = validatorFactory(values.contactNumber, ValidatorType.CONTACT_NUMBER)
+        if(contactNumberErrors.length !== 0)
+            errors.contactNumber = contactNumberErrors
+        return errors
     }
-
 
     return (
+        <Formik {...{initialValues, validate, onSubmit}}>
+            {({handleSubmit}) => (
         <div className="container">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('signUp')}</li>
             </BreadCrumb>
             <div className="floating-box pt-2 pb-2">
-                <form className="form-signup">
-                    <h1 className="h3">{t('registering')}</h1>
-                    <input
-                        id="inputLogin"
-                        className="form-control mt-3"
-                        placeholder={t('login')}
-                        required
-                        autoFocus={true}
-                        onChange={event => setLogin(event.target.value)}
-                        style={{marginBottom: "1rem", width: "90%", display: "inline-block"}}
-                    />
-                    <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
-                    <input
-                        id="inputEmail"
-                        className="form-control"
-                        placeholder={t('emailAddress')}
-                        required
-                        autoFocus={true}
-                        onChange={event => setEmail(event.target.value)}
-                        style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
-                    />
-                    <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
-                    <input
-                        type="password"
-                        id="inputPassword"
-                        className="form-control"
-                        placeholder={t('password')}
-                        required
-                        onChange={event => setPassword(event.target.value)}
-                        style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
-                    />
-                    <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
-                    <input
-                        type="password"
-                        id="inputRepeatPassword"
-                        className="form-control"
-                        placeholder={t('repeatPassword')}
-                        required
-                        onChange={event => setPassword(event.target.value)}
-                        style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
-                    />
-                    <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
-                    <input
-                        id="inputName"
-                        className="form-control"
-                        placeholder={t('name')}
-                        required
-                        autoFocus={true}
-                        onChange={event => setFirstname(event.target.value)}
-                        style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
-                    />
-                    <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
-                    <input
-                        id="inputSurname"
-                        className="form-control"
-                        placeholder={t('surname')}
-                        required
-                        autoFocus={true}
-                        onChange={event => setLastname(event.target.value)}
-                        style={{marginTop: "1rem", marginBottom: "1rem", width: "90%", display: "inline-block"}}
-                    />
-                    <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
-                    <input
-                        id="inputPhoneNumber"
-                        className="form-control"
-                        placeholder={t('phoneNumber')}
-                        required
-                        autoFocus={true}
-                        onChange={event => setContactNumber(event.target.value)}
-                        style={{marginTop: "1rem", marginBottom: "0rem", width: "90%", display: "inline-block"}}
-                    />
-                    <div style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</div>
-                    <div style={{color: "#7749F8", fontSize: 14, marginBottom: "3rem"}}>
-                        {t('obligatoryFields')}
+            <h1 className="h3">{t('registering')}</h1>
+
+                <Form className="row g-3">
+                    <GridItemInput name="login" placeholder={t("login")} type="text" />
+                    <GridItemInput name="email" placeholder={t("emailAddress")} type="email" />
+                    <GridItemInput name="password" placeholder={t("password")} type="password" />
+                    <GridItemInput name="repeatedPassword" placeholder={t("repeatPassword")} type="password" />
+                    <GridItemInput name="firstname" placeholder={t("name")} type="text" />
+                    <GridItemInput name="lastname" placeholder={t("surname")} type="text" />
+                    <GridItemInput name="contactNumber" placeholder={t("phoneNumber")} type="text" />
+                    <div className="col-md-6">
+                        <div style={{color: "#7749F8", fontSize: 14, marginBottom: "1rem"}}>
+                            {t('obligatoryFields')}
+                        </div>
                     </div>
-                    <button className="btn btn-lg btn-primary btn-block mb-3"
+
+                    <div className="col-12">
+                        <ReCAPTCHA key={reCaptchaKey} theme={colorTheme} style={{display: "inline-block"}} hl={i18n.language} ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
+                    </div>
+
+                    <div className="col-12">
+                        <button
+                            className="btn btn-primary"
                             style={{backgroundColor: "#7749F8"}}
-                            onClick={handleSubmit}>
-                        {t('signUp')}
-                    </button>
-                    <ReCAPTCHA hl={i18n.language} key={reCaptchaKey} theme={colorTheme} ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
-                </form>
+                            type="submit"
+                        >
+                            {t('signUp')}
+                        </button>
+                    </div>
+
+                </Form>
             </div>
         </div>
+        )}
+        </Formik>
 
     );
 

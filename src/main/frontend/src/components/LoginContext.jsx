@@ -16,8 +16,6 @@ export const LoginProvider = ({children}) => {
 
     const dispatch = useNotificationCustom();
 
-    const dispatchThemeChangeAfterLogin = useDispatchThemeColorAfterLogin()
-
     const handleRefreshBox = () => {
         dispatch({
             "type": dialogType.WARNING,
@@ -37,10 +35,7 @@ export const LoginProvider = ({children}) => {
                 "Authorization": `${localStorage.getItem("token")}`
             }
         }).then(res => res.data)
-            .then(token => saveToken("Bearer " + token));
-        setTimeout(() => {
-            schedule();
-        }, 1000)
+            .then(token => {saveToken("Bearer " + token); schedule()});
     }
 
     const schedule = () => {
@@ -78,7 +73,6 @@ export const LoginProvider = ({children}) => {
     const saveToken = (value) => {
         setToken(value)
         localStorage.setItem("token", value)
-        dispatchThemeChangeAfterLogin(value);
     }
 
     const values = {

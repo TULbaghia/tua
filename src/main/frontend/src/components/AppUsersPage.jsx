@@ -5,15 +5,18 @@ import {Link} from "react-router-dom";
 import {useLocale} from "./LoginContext";
 import {rolesConstant} from "../Constants";
 import {getUserLanguage} from "./Partial/Navbar";
+import {useDispatchThemeColorAfterLogin} from "./Utils/ThemeColor/ThemeColorProvider";
 
 function AppUsersPage(props) {
     const {t, i18n} = props
     const {token, setToken} = useLocale();
     const {currentRole, username} = useLocale();
-
-   useEffect(() => {
+    const dispatchThemeChangeAfterLogin = useDispatchThemeColorAfterLogin()
+    
+    useEffect(() => {
        if (token) {
            getUserLanguage(token, i18n);
+           dispatchThemeChangeAfterLogin(token);
        }
     }, []);
 

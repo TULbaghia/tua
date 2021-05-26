@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "../LoginContext";
 import {withNamespaces} from 'react-i18next';
@@ -8,21 +8,24 @@ import {api} from "../../Api";
 import {Form, Formik} from 'formik';
 import "../../css/Login.css"
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
-import {useNotificationWarningAndLong} from "../Utils/Notification/NotificationProvider";
+import {
+    useNotificationCustom,
+    useNotificationDangerAndInfinity,
+} from "../Utils/Notification/NotificationProvider";
 import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import {useNotificationCustom} from "../Utils/Notification/NotificationProvider";
 import LoginFieldComponent from "./LoginFieldComponent";
 import FieldComponent from "../PasswordReset/FieldComponent";
+import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 
 const REFRESH_TIME = 60 * 1000;
 
 function Login(props) {
-    const dispatchWarningNotification = useNotificationWarningAndLong();
-    const {t,i18n} = props
+    const {t, i18n} = props
     const history = useHistory();
     const {token, setToken, saveToken} = useLocale();
+    const dispatchDangerNotification = useNotificationDangerAndInfinity();
 
     const dispatch = useNotificationCustom();
 
@@ -46,13 +49,15 @@ function Login(props) {
                 "Authorization": `${localStorage.getItem("token")}`
             }
         }).then(res => res.data)
-            .then(token => saveToken("Bearer " + token));
+            .then(token => saveToken("Bearer " + token)).catch(
+                e => ResponseErrorHandler(e, dispatchDangerNotification)
+        );
         setTimeout(() => {
             schedule();
         }, 1000)
     }
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async (values, setSubmitting) => {
         try {
             const res = await api.login({
                 login: values.login,
@@ -62,7 +67,8 @@ function Login(props) {
             history.push("/userPage")
             schedule();
         } catch (ex) {
-            console.log(ex);
+            ResponseErrorHandler(ex, dispatchDangerNotification,true, (e)=>{}, true)
+            setSubmitting(false);
         }
     }
 
@@ -102,8 +108,8 @@ function Login(props) {
 
                             return errors;
                         }}
-                        onSubmit={values => {
-                            handleSubmit(values);
+                        onSubmit={(values, {setSubmitting}) => {
+                            handleSubmit(values, setSubmitting);
                         }}>
 
                     {({isSubmitting, handleChange}) => (
@@ -118,7 +124,8 @@ function Login(props) {
                                 {t('signIn')}
                             </button>
                             <button className="btn btn-lg btn-primary btn-block mt-2" type="button"
-                                    onClick={() => history.push("/login/password-reset")} style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
+                                    onClick={() => history.push("/login/password-reset")}
+                                    style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
                                 {t('passwordReset')}
                             </button>
                         </Form>

@@ -2,7 +2,8 @@ import React from 'react';
 import i18n from "../../i18n";
 import {dialogDuration} from "../Utils/Notification/Notification";
 
-export const ResponseErrorHandler = (error, errorNotifier, shouldDispatchViolations = true, callbackAfter = ((x) => {})) => {
+export const ResponseErrorHandler = (error, errorNotifier, shouldDispatchViolations = true, callbackAfter = ((x) => {
+}), isAuthRequest = false) => {
     let errorHandled = false;
     if (error.response.status === 500) {
         errorNotifier({
@@ -16,6 +17,16 @@ export const ResponseErrorHandler = (error, errorNotifier, shouldDispatchViolati
             "message": i18n.t("request.error.4xx")
         });
     }
+    if (isAuthRequest && error.response.status === 401) {
+        errorNotifier({
+            "message": i18n.t("request.error.login401")
+        });
+
+        callbackAfter(error);
+
+        return errorHandled;
+    }
+
     const responseData = error.response.data;
 
     if (responseData) {

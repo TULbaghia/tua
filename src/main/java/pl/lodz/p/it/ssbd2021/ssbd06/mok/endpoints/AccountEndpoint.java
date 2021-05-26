@@ -97,6 +97,7 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     }
 
     @RolesAllowed({"editOwnAccountDetails", "editOtherAccountDetails"})
+    @TransactionAttribute(TransactionAttributeType.MANDATORY)
     private void processEditDetails(String login, AccountPersonalDetailsDto accountPersonalDetailsDto)
             throws AppBaseException {
         Account editAccount = accountManager.findByLogin(login);
@@ -187,6 +188,7 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     }
 
     @RolesAllowed({"editOwnAccountEmail", "editOtherAccountEmail"})
+    @TransactionAttribute(TransactionAttributeType.MANDATORY)
     private void editAccountEmail(EmailDto emailDto, String login) throws AppBaseException {
         Account editAccount = accountManager.findByLogin(login);
         AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(editAccount);

@@ -379,9 +379,9 @@ function EditOtherAccountForm({t, i18n}) {
                                     initialValues={{firstname: '', lastname: '', contactNumber: ''}}
                                     validate={values => {
                                         const errors = {};
-                                        let firstnamePattern = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
-                                        let lastnamePattern = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
-                                        let contactNumberPattern = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/;
+                                        let firstnamePattern = /^[A-ZĆŁÓŚŹŻ\s]{1}[a-ząęćńóśłźż]+$/;
+                                        let lastnamePattern = /^[A-ZĆŁÓŚŹŻ\s]{1}[a-ząęćńóśłźż]+$/;
+                                        let contactNumberPattern = /^[0-9\+][0-9]{8,14}$/;
                                         if (!values.firstname) {
                                             errors.firstname = t('editOtherAccountForm.firstname.error.required');
                                         } else if (values.firstname.length > 31 || values.firstname.length < 3) {

@@ -16,6 +16,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -62,6 +63,7 @@ public class RoleManager {
         }
         role.setModifiedBy(accountFacade.findByLogin(servletRequest.getUserPrincipal().getName()));
         role.setEnabled(false);
+        account.setRoleList(new HashSet<>(account.getRoleList()));
         accountFacade.edit(account);
         emailSender.sendDenyAccessLevelEmail(account, accessLevel.toString());
     }
@@ -115,6 +117,7 @@ public class RoleManager {
             account.getRoleList().add(role);
         }
         role.setEnabled(true);
+        account.setRoleList(new HashSet<>(account.getRoleList()));
         accountFacade.edit(account);
         emailSender.sendGrantAccessLevelEmail(account, accessLevel.toString());
     }

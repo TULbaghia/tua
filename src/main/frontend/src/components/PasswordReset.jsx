@@ -2,41 +2,44 @@ import {withNamespaces} from "react-i18next";
 import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useState} from "react";
-import { api } from "../Api";
-import {useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
+import {api} from "../Api";
+import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
+import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 
 function PasswordReset(props) {
-    const {t,i18n} = props
+    const {t, i18n} = props
 
     const [email, setEmail] = useState('');
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
-
+    const dispatchNotificationDanger = useNotificationDangerAndInfinity();
 
 
     const handleSend = e => {
         e.preventDefault()
         api.sendResetPassword(email)
-        .then(res => {
-            console.log(res);
-            dispatchNotificationSuccess({message: i18n.t('passwordResetRequestSendSuccess')})
-        })
-        .catch(err => console.log(err))
+            .then(res => {
+                console.log(res);
+                dispatchNotificationSuccess({message: i18n.t('passwordResetRequestSendSuccess')})
+                setIsSubmitted(true);
+            })
+            .catch(err => ResponseErrorHandler(err, dispatchNotificationDanger))
     }
 
-    
+
     const handleSendAgain = e => {
         e.preventDefault()
         api.sendResetPasswordAgain(email)
-        .then(res => {
-            console.log(res);
-            dispatchNotificationSuccess({message: i18n.t('passwordResetRequestSendSuccess')})
-        })
-        .catch(err => console.log(err))
+            .then(res => {
+                console.log(res);
+                dispatchNotificationSuccess({message: i18n.t('passwordResetRequestSendSuccess')})
+            })
+            .catch(err => ResponseErrorHandler(err, dispatchNotificationDanger))
     }
 
 
-    return(
+    return (
         <div className="container">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
@@ -53,18 +56,22 @@ function PasswordReset(props) {
                             <span className="input-group-text" id="basic-addon1">@</span>
                         </div>
                         <input type="text" className="form-control" placeholder="E-mail" aria-label="E-mail"
-                                                       onChange={event => setEmail(event.target.value)}
-                                                       aria-describedby="basic-addon1"/>
+                               onChange={event => setEmail(event.target.value)}
+                               aria-describedby="basic-addon1"/>
                         <span style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</span>
                     </div>
 
-                    <button className="btn btn-lg btn-primary btn-block" onClick={handleSend} style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
-                        {t('send')}
-                    </button>
-
-                    <button className="btn btn-lg btn-primary btn-block" onClick={handleSendAgain} style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
-                        {t('sendAgain')}
-                    </button>
+                    {!isSubmitted ?
+                        <button className="btn btn-lg btn-primary btn-block" onClick={handleSend}
+                                style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
+                            {t('send')}
+                        </button>
+                        :
+                        <button className="btn btn-lg btn-primary btn-block" onClick={handleSendAgain}
+                                style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
+                            {t('sendAgain')}
+                        </button>
+                    }
                 </form>
             </div>
         </div>

@@ -170,8 +170,8 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("editOtherPassword")
     public void changeOtherPassword(PasswordChangeOtherDto passwordChangeOtherDto) throws AppBaseException {
-        pendingCodeManager.sendResetPassword(passwordChangeOtherDto.getLogin());
         Account account = accountManager.findByLogin(passwordChangeOtherDto.getLogin());
+        pendingCodeManager.sendResetPassword(account.getEmail());
         accountManager.changePassword(account, passwordChangeOtherDto.getGivenPassword());
     }
 
@@ -227,8 +227,12 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("editOwnLanguage")
     public void editOwnLanguage(String language) throws AppBaseException {
-        Account editAccount = accountManager.findByLogin(getLogin());
-        editAccount.setLanguage(language);
+        Account account = accountManager.findByLogin(getLogin());
+        AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(account);
+        if (!verifyIntegrity(accountIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+        accountManager.changeAccountLanguage(getLogin(), language);
     }
 
     /**

@@ -1,11 +1,15 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.facades;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
+
+import java.util.List;
 
 @Stateless
 public class CityFacade extends AbstractFacade<City> {
@@ -22,4 +26,45 @@ public class CityFacade extends AbstractFacade<City> {
         super(City.class);
     }
 
+    @PermitAll
+    @Override
+    public void create(City entity) throws AppBaseException {
+        super.create(entity);
+    }
+
+    @PermitAll
+    @Override
+    public void edit(City entity) throws AppBaseException {
+        super.edit(entity);
+    }
+
+    @PermitAll
+    @Override
+    public void remove(City entity) throws AppBaseException {
+        super.remove(entity);
+    }
+
+    @PermitAll
+    @Override
+    public City find(Object id) {
+        return super.find(id);
+    }
+
+    @PermitAll
+    @Override
+    public List<City> findAll() throws AppBaseException {
+        return super.findAll();
+    }
+
+    @PermitAll
+    @Override
+    public List<City> findRange(int[] range) throws AppBaseException {
+        return super.findRange(range);
+    }
+
+    @PermitAll
+    @Override
+    public int count() throws AppBaseException {
+        return super.count();
+    }
 }

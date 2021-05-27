@@ -230,5 +230,6 @@
   "validation.pencode.pattern": "Incorrect pending code pattern",
   "validation.pencode.size": "Incorrect pending code length",
   "welcome": "Welcome",
-  "request.error.login401": "Bad authorization data"
+  "request.error.login401": "Bad authorization data",
+  "languageChangeSuccess": "Language changed successfully"
 }

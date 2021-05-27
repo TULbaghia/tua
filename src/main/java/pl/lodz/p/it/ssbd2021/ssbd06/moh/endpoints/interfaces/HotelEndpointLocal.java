@@ -7,6 +7,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public interface HotelEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return dto hotelu
      */
+    @PermitAll
     HotelDto get(Long id) throws AppBaseException;
 
     /**
@@ -30,6 +33,7 @@ public interface HotelEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista hoteli
      */
+    @PermitAll
     List<HotelDto> getAll() throws AppBaseException;
 
     /**
@@ -39,6 +43,7 @@ public interface HotelEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return dto hotelu
      */
+    @PermitAll
     HotelDto lookForHotel(String ...option) throws AppBaseException;
 
     /**
@@ -47,6 +52,7 @@ public interface HotelEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista hoteli
      */
+    @PermitAll
     List<HotelDto> getAllFilter(String ...option) throws AppBaseException;
 
     /**
@@ -55,6 +61,7 @@ public interface HotelEndpointLocal extends CallingClass {
      * @param hotelDto dto z danymi miasta
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("addHotel")
     void addHotel(NewHotelDto hotelDto) throws AppBaseException;
 
     /**
@@ -63,6 +70,7 @@ public interface HotelEndpointLocal extends CallingClass {
      * @param hotelDto dto z danymi hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("updateHotel")
     void updateHotel(UpdateHotelDto hotelDto) throws AppBaseException;
 
     /**
@@ -71,6 +79,7 @@ public interface HotelEndpointLocal extends CallingClass {
      * @param hotelId identyfikator hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("deleteHotel")
     void deleteHotel(Long hotelId) throws AppBaseException;
 
     /**
@@ -80,6 +89,7 @@ public interface HotelEndpointLocal extends CallingClass {
      * @param managerLogin login managera którego przypisać do hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("addManagerToHotel")
     void addManagerToHotel(Long hotelId, String managerLogin) throws AppBaseException;
 
     /**
@@ -88,6 +98,7 @@ public interface HotelEndpointLocal extends CallingClass {
      * @param managerLogin login managera którego przypisać do hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("deleteManagerFromHotel")
     void deleteManagerFromHotel(String managerLogin) throws AppBaseException;
 
     /**
@@ -98,5 +109,6 @@ public interface HotelEndpointLocal extends CallingClass {
      * @param to data do
      * @return Dane potrzebne do wygenerowania raportu
      */
+    @RolesAllowed("generateReport")
     GenerateReportDto generateReport(Long hotelId, String from, String to) throws AppBaseException;
 }

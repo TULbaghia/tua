@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BoxEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -26,21 +27,25 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
     }
 
     @Override
+    @RolesAllowed("getAllBoxes")
     public List<BoxDto> getAll() throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @RolesAllowed("addBox")
     public void addBox(NewBoxDto boxDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @RolesAllowed("updateBox")
     public void updateBox(BoxDto boxDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @RolesAllowed("deleteBox")
     public void deleteBox(Long boxId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }

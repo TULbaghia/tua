@@ -1,23 +1,14 @@
 import React from "react";
 import {useHistory} from "react-router";
 import {Link, useParams} from "react-router-dom";
-import { withNamespaces } from 'react-i18next';
+import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "../Partial/BreadCrumb"
 import {Configuration, DefaultApi} from "api-client";
-import {
-    useNotificationCustom, useNotificationDangerAndInfinity,
-    useNotificationDangerAndLong,
-    useNotificationSuccessAndShort
-} from "../Utils/Notification/NotificationProvider";
+import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "../Utils/Notification/NotificationProvider";
 import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
-import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import i18n from "../../i18n";
-import {HandleThenErrors, validatorFactory, ValidatorType} from "../Validation/Validators";
-import {
-    dispatchErrors,
-    isValidationConstraintException,
-    ResponseErrorHandler
-} from "../Validation/ResponseErrorHandler";
+import {validatorFactory, ValidatorType} from "../Validation/Validators";
+import {dispatchErrors, ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 
 function EmailConfirm() {
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();

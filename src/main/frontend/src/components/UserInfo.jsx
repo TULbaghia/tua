@@ -27,7 +27,7 @@ function UserInfo(props) {
 
     React.useEffect(() => {
         handleDataFetch();
-        getUserLanguage(token, i18n);
+        // getUserLanguage(token, i18n);
     }, []);
 
     const handleDataFetch = () => {

@@ -6,9 +6,12 @@ import {Link, useParams} from "react-router-dom";
 import {Form, Formik} from 'formik';
 import PasswordComponent from "./PasswordComponent";
 import BreadCrumb from "../Partial/BreadCrumb";
-import {useNotificationCustom, useNotificationDangerAndLong, useNotificationSuccessAndShort} from "../Utils/Notification/NotificationProvider";
+import {
+    useNotificationCustom,
+    useNotificationDangerAndInfinity,
+    useNotificationSuccessAndShort
+} from "../Utils/Notification/NotificationProvider";
 import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
-import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import EmailComponent from "./EmailComponent";
 import FirstnameComponent from "./FirstnameComponent";
 import LastnameComponent from "./LastnameComponent";
@@ -18,6 +21,7 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import {Button} from "react-bootstrap";
 import {rolesConstant} from "../../Constants";
+import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 
 function EditOtherAccountForm({t, i18n}) {
     const dispatchNotification = useNotificationCustom();
@@ -32,7 +36,7 @@ function EditOtherAccountForm({t, i18n}) {
     const location = useLocation();
     const [roles, setRoles] = useState("");
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
-    const dispatchNotificationDanger = useNotificationDangerAndLong();
+    const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchDialog = useDialogPermanentChange();
 
     const getRoles = async () => {
@@ -55,10 +59,10 @@ function EditOtherAccountForm({t, i18n}) {
                 console.log(res.data);
                 let data = "";
                 let i;
-                for(i = 0; i < res.data.rolesGranted.length; i++) {
+                for (i = 0; i < res.data.rolesGranted.length; i++) {
                     data += res.data.rolesGranted[i].roleName + ", ";
                 }
-                data = data.slice(0, data.length-2)
+                data = data.slice(0, data.length - 2)
                 setRoles(data);
             }).catch(err => {
                 if (err.response != null) {
@@ -102,7 +106,7 @@ function EditOtherAccountForm({t, i18n}) {
         }).then(res => {
             dispatchNotificationSuccess({message: i18n.t('roleGrant.success')})
         }).catch(err => {
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            ResponseErrorHandler(err, dispatchNotificationDanger);
         })
     )
 
@@ -116,7 +120,7 @@ function EditOtherAccountForm({t, i18n}) {
         }).then((res) => {
             dispatchNotificationSuccess({message: i18n.t('roleRevoke.success')})
         }).catch(err => {
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            ResponseErrorHandler(err, dispatchNotificationDanger);
         })
     )
 
@@ -221,69 +225,43 @@ function EditOtherAccountForm({t, i18n}) {
                 "If-Match": etag
             }
         }).then((res) => {
-            dispatchNotification({
-                dialogType: dialogType.SUCCESS,
-                dialogDuration: dialogDuration.SHORT,
-                message: t('editOtherAccount.success.email'),
-                title: t('operationSuccess')
-            })
+            dispatchNotificationSuccess({message: t('editOtherAccount.success.email')});
         }).catch(err => {
-            dispatchNotification({
-                dialogType: dialogType.DANGER,
-                dialogDuration: dialogDuration.SHORT,
-                message: t(err.response.data.message),
-                title: t('operationError')
-            })
+            ResponseErrorHandler(err, dispatchNotificationDanger);
             setSubmitting(false);
         });
     }
 
     const handlePasswordSubmit = (values, setSubmitting) => {
-        api.changeOtherPassword({login: location.state.login, oldPassword: values.oldPassword, newPassword: values.newPassword}, {
+        api.changeOtherPassword({login: location.state.login, givenPassword: values.newPassword}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
                 "If-Match": etag
             }
         }).then((res) => {
-            dispatchNotification({
-                dialogType: dialogType.SUCCESS,
-                dialogDuration: dialogDuration.SHORT,
-                message: t('editOtherAccount.success.password'),
-                title: t('operationSuccess')
-            })
+            dispatchNotificationSuccess({message: t('editOtherAccount.success.password')});
         }).catch(err => {
-            dispatchNotification({
-                dialogType: dialogType.DANGER,
-                dialogDuration: dialogDuration.SHORT,
-                message: t(err.response.data.message),
-                title: t('operationError')
-            })
+            ResponseErrorHandler(err, dispatchNotificationDanger);
             setSubmitting(false);
         });
     }
 
     const handleDetailsSubmit = (values, setSubmitting) => {
-        api.editOtherAccountDetails(location.state.login, {firstname: values.firstname, lastname: values.lastname, contactNumber: values.contactNumber}, {
+        api.editOtherAccountDetails(location.state.login, {
+            firstname: values.firstname,
+            lastname: values.lastname,
+            contactNumber: values.contactNumber
+        }, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
                 "If-Match": etag
             }
         }).then((res) => {
-            dispatchNotification({
-                dialogType: dialogType.SUCCESS,
-                dialogDuration: dialogDuration.SHORT,
-                message: t('editOtherAccount.success.details'),
-                title: t('operationSuccess')
-            })
+            dispatchNotificationSuccess({message: t('editOtherAccount.success.details')});
         }).catch(err => {
-            dispatchNotification({
-                dialogType: dialogType.DANGER,
-                dialogDuration: dialogDuration.SHORT,
-                message: t(err.response.data.message),
-                title: t('operationError')
-            })
+            ResponseErrorHandler(err, dispatchNotificationDanger);
             setSubmitting(false);
         });
     }
@@ -299,13 +277,18 @@ function EditOtherAccountForm({t, i18n}) {
 
             <div className="floating-box" style={{minWidth: "30rem", minHeight: "30rem"}}>
                 <div>
-                    <h1 className="h3 mb-0.5">{t('userEdit')}</h1>
-                    <Button className="btn btn-secondary" style={{backgroundColor: "#7749F8", width: "20%", margin: "auto"}} onClick={event => {handleDataFetch()}}>{t("refresh")}</Button>
-                    <div style={{color: "#7749F8", fontSize: 14, marginBottom: "0.5rem"}}>
-                        {t('obligatoryFields')}
+                    <div className={"d-flex text-center flex-column"}>
+                        <h3 className="h3 mb-0.5">{t('userEdit')}: {location.state.login}</h3>
+                        <Button className="btn btn-secondary my-2"
+                                style={{backgroundColor: "#7749F8", width: "20%", margin: "auto"}} onClick={event => {
+                            handleDataFetch()
+                        }}>{t("refresh")}</Button>
+                        <div style={{color: "#7749F8", fontSize: 14, marginBottom: "0.5rem"}}>
+                            {t('obligatoryFields')}
+                        </div>
                     </div>
                     <div className="container">
-                        <Tabs defaultActiveKey="tab1" className="categories m-3">
+                        <Tabs defaultActiveKey="tab1" className="categories my-3">
                             <Tab eventKey="tab1" title={t('editEmail')}>
                                 <Formik
                                     initialValues={{email: ''}}
@@ -316,8 +299,7 @@ function EditOtherAccountForm({t, i18n}) {
                                             errors.email = t('editOtherAccountForm.error.email.required');
                                         } else if (values.email.length > 127 || values.email.length < 6) {
                                             errors.email = t('editOtherAccountForm.error.email.length');
-                                        }
-                                          else if (!mailPattern.test(values.email)){
+                                        } else if (!mailPattern.test(values.email)) {
                                             errors.email = t('editOtherAccountForm.error.email.pattern');
                                         }
                                         return errors;
@@ -326,7 +308,7 @@ function EditOtherAccountForm({t, i18n}) {
                                     {({isSubmitting, handleChange}) => (
                                         <Form className={{alignItems: "center"}}>
                                             <EmailComponent name="email" placeholder={t('emailAddress')}
-                                                handleChange={handleChange}/>
+                                                            handleChange={handleChange}/>
                                             <button className="btn btn-lg btn-primary btn-block mt-2"
                                                     type="submit" disabled={isSubmitting}
                                                     style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
@@ -362,9 +344,9 @@ function EditOtherAccountForm({t, i18n}) {
                                     {({isSubmitting, handleChange}) => (
                                         <Form className={{alignItems: "center"}}>
                                             <PasswordComponent name="newPassword" placeholder={t('password')}
-                                                handleChange={handleChange}/>
+                                                               handleChange={handleChange}/>
                                             <PasswordComponent name="repeatedNewPassword" placeholder={t('repeatPassword')}
-                                                handleChange={handleChange}/>
+                                                               handleChange={handleChange}/>
                                             <button className="btn btn-lg btn-primary btn-block mt-2"
                                                     type="submit" disabled={isSubmitting}
                                                     style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
@@ -411,11 +393,11 @@ function EditOtherAccountForm({t, i18n}) {
                                     {({isSubmitting, handleChange}) => (
                                         <Form className={{alignItems: "center"}}>
                                             <FirstnameComponent name="firstname" placeholder={t('name')}
-                                                handleChange={handleChange}/>
+                                                                handleChange={handleChange}/>
                                             <LastnameComponent name="lastname" placeholder={t('surname')}
-                                                handleChange={handleChange}/>
+                                                               handleChange={handleChange}/>
                                             <ContactNumberComponent name="contactNumber" placeholder={t('phoneNumber')}
-                                                handleChange={handleChange}/>
+                                                                    handleChange={handleChange}/>
                                             <button className="btn btn-lg btn-primary btn-block mt-2"
                                                     type="submit" disabled={isSubmitting}
                                                     style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>

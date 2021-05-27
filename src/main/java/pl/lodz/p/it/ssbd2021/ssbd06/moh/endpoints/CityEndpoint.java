@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.CityEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -25,21 +26,25 @@ public class CityEndpoint extends AbstractEndpoint implements CityEndpointLocal 
     }
 
     @Override
+    @RolesAllowed("getAllCities")
     public List<CityDto> getAll() throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @RolesAllowed("addCity")
     public void addCity(CityDto cityDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @RolesAllowed("updateCity")
     public void updateCity(CityDto cityDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    @RolesAllowed("deleteCity")
     public void deleteCity(Long cityId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }

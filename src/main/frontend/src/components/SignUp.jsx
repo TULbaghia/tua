@@ -91,7 +91,12 @@ function SignUp(props) {
                 <li className="breadcrumb-item active" aria-current="page">{t('signUp')}</li>
             </BreadCrumb>
             <div className="floating-box pt-2 pb-2">
-            <h1 className="h3">{t('registering')}</h1>
+            <h3 className="h3 text-center mt-3">{t('registering')}</h3>
+                <div className="col-12 text-center pt-2">
+                    <div style={{color: "#7749F8", fontSize: 14, marginBottom: "1rem"}}>
+                        {t('obligatoryFields')}
+                    </div>
+                </div>
 
                 <Form className="row g-3">
                     <GridItemInput name="login" placeholder={t("login")} type="text" />
@@ -101,17 +106,12 @@ function SignUp(props) {
                     <GridItemInput name="firstname" placeholder={t("name")} type="text" />
                     <GridItemInput name="lastname" placeholder={t("surname")} type="text" />
                     <GridItemInput name="contactNumber" placeholder={t("phoneNumber")} type="text" />
-                    <div className="col-md-6">
-                        <div style={{color: "#7749F8", fontSize: 14, marginBottom: "1rem"}}>
-                            {t('obligatoryFields')}
-                        </div>
-                    </div>
 
-                    <div className="col-12">
+                    <div className="col-12 d-flex justify-content-center mb-2">
                         <ReCAPTCHA key={reCaptchaKey} theme={colorTheme} style={{display: "inline-block"}} hl={i18n.language} ref={recaptchaRef} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                     </div>
 
-                    <div className="col-12">
+                    <div className="col-12 d-flex justify-content-center mb-3">
                         <button
                             className="btn btn-primary"
                             style={{backgroundColor: "#7749F8"}}

@@ -9,7 +9,6 @@ import {api} from "../Api";
 import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
 import {
     useNotificationDangerAndInfinity,
-    useNotificationDangerAndLong,
     useNotificationSuccessAndShort
 } from "./Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
@@ -205,7 +204,7 @@ function UserList(props) {
                         })
                     }}>{t("refresh")}</Button>
                 </div>
-                <DataTable
+                <DataTable className={"rounded-0"}
                     noDataComponent={i18n.t('table.no.result')}
                     columns={columns}
                     data={filteredItems}

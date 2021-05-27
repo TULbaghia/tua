@@ -8,10 +8,7 @@ import {api} from "../../Api";
 import {Form, Formik} from 'formik';
 import "../../css/Login.css"
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
-import {
-    useNotificationCustom,
-    useNotificationDangerAndInfinity,
-} from "../Utils/Notification/NotificationProvider";
+import {useNotificationCustom, useNotificationDangerAndInfinity,} from "../Utils/Notification/NotificationProvider";
 import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
@@ -44,17 +41,16 @@ function Login(props) {
     const refreshToken = (event) => {
         event.target.closest(".alert").querySelector(".close").click();
 
-        axios.post(`${process.env.REACT_APP_API_BASE_URL}resources/auth/refresh-token`, localStorage.getItem("token"), {
+        axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/auth/refresh-token`, localStorage.getItem("token"), {
             headers: {
                 "Authorization": `${localStorage.getItem("token")}`
             }
-        }).then(res => res.data)
-            .then(token => saveToken("Bearer " + token)).catch(
-                e => ResponseErrorHandler(e, dispatchDangerNotification)
+        }).then(response => {
+                saveToken("Bearer " + response.data);
+                schedule()
+            }).catch(
+            e => ResponseErrorHandler(e, dispatchDangerNotification)
         );
-        setTimeout(() => {
-            schedule();
-        }, 1000)
     }
 
     const handleSubmit = async (values, setSubmitting) => {
@@ -73,9 +69,10 @@ function Login(props) {
     }
 
     const schedule = () => {
-        return setTimeout(() => {
+        const id = setTimeout(() => {
             handleRefreshBox();
         }, new Date(jwt_decode(localStorage.getItem("token")).exp * 1000) - new Date() - REFRESH_TIME);
+        localStorage.setItem("timeoutId", id.toString())
     }
 
     return (

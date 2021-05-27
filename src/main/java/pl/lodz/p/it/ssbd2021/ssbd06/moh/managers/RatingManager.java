@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -36,6 +37,7 @@ public class RatingManager {
      * @param ratingDto dto z danymi oceny
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("addHotelRating")
     void addRating(RatingDto ratingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -46,6 +48,7 @@ public class RatingManager {
      * @param ratingDto dto z danymi oceny
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("updateHotelRating")
     void updateRating(RatingDto ratingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -56,6 +59,7 @@ public class RatingManager {
      * @param ratingId identyfikator oceny
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("deleteHotelRating")
     void deleteRating(Long ratingId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -67,6 +71,7 @@ public class RatingManager {
      * @param ratingVisibility poziom widoczności
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("hideHotelRating")
     void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException {
         throw new UnsupportedOperationException();
     }

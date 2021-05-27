@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class CityController extends AbstractController {
      * @return lista dto miast
      */
     @GET
+    @RolesAllowed("getAllCities")
     public List<CityDto> getAll() throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -42,6 +44,7 @@ public class CityController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z dodawaniem miasta
      */
     @POST
+    @RolesAllowed("addCity")
     public void addCity(CityDto cityDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -53,6 +56,7 @@ public class CityController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z aktualizacją miasta
      */
     @PUT
+    @RolesAllowed("updateCity")
     public void updateCity(CityDto cityDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -64,6 +68,7 @@ public class CityController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z usuwaniem miasta
      */
     @DELETE
+    @RolesAllowed("deleteCity")
     @Path("/{id}")
     public void deleteCity(@PathParam("id") Long cityId) throws AppBaseException {
         throw new UnsupportedOperationException();

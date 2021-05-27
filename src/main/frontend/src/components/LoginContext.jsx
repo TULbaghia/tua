@@ -13,8 +13,11 @@ export const LoginProvider = ({children}) => {
     const [token, setToken] = useState('');
     const [currentRole, setCurrentRole] = useState('');
     const [username, setUsername] = useState('');
+    const [renderChildren, setRenderChildren] = useState(false);
 
     const dispatch = useNotificationCustom();
+
+    const dispatchThemeChangeAfterLogin = useDispatchThemeColorAfterLogin();
 
     const handleRefreshBox = () => {
         dispatch({
@@ -31,20 +34,24 @@ export const LoginProvider = ({children}) => {
         event.target.closest(".alert").querySelector(".close").click()
 
         axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/auth/refresh-token`, localStorage.getItem("token"), {
-            headers:{
+            headers: {
                 "Authorization": `${localStorage.getItem("token")}`
             }
         }).then(res => res.data)
-            .then(token => {saveToken("Bearer " + token); schedule()});
+            .then(token => {
+                saveToken("Bearer " + token);
+                schedule()
+            });
     }
 
     const schedule = () => {
-        return setTimeout(() => {
+        const id = setTimeout(() => {
             handleRefreshBox();
         }, new Date(jwt_decode(localStorage.getItem("token")).exp * 1000) - new Date() - REFRESH_TIME);
+        localStorage.setItem("timeoutId", id.toString())
     }
 
-    useEffect(() => {
+    const tokenEffect1 = () => {
         const storedToken = localStorage.getItem("token");
         if (storedToken === undefined || storedToken == null) return
         const decoded = jwt_decode(storedToken);
@@ -62,17 +69,24 @@ export const LoginProvider = ({children}) => {
         }
         setCurrentRole(localStorage.getItem('currentRole'));
         setUsername(localStorage.getItem('username'));
-    }, [])
+    }
 
-    useEffect(() =>{
+    const tokenEffect2 = () => {
         const storedToken = localStorage.getItem("token");
-        if(storedToken === undefined || storedToken == null) return
+        if (storedToken === undefined || storedToken == null) return
         schedule()
+    }
+
+    useEffect(() => {
+        tokenEffect1();
+        tokenEffect2();
+        setRenderChildren(true);
     }, [])
 
     const saveToken = (value) => {
         setToken(value)
         localStorage.setItem("token", value)
+        // dispatchThemeChangeAfterLogin(value);
     }
 
     const values = {
@@ -84,7 +98,7 @@ export const LoginProvider = ({children}) => {
         username,
         setUsername
     }
-    return (<LoginContext.Provider value={values}>{children}</LoginContext.Provider>);
+    return (<LoginContext.Provider value={values}>{renderChildren ? children : ''}</LoginContext.Provider>);
 };
 
 export const useLocale = () => React.useContext(LoginContext);

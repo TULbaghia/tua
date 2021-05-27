@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import java.util.List;
 
@@ -60,6 +61,7 @@ public class BookingController extends AbstractController {
      * @throws AppBaseException podczas problemu z tworzeniem rezerwacji
      */
     @POST
+    @RolesAllowed("bookReservation")
     public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -71,6 +73,7 @@ public class BookingController extends AbstractController {
      * @throws AppBaseException podczas problemu z anulowaniem rezerwacji
      */
     @PATCH
+    @RolesAllowed("cancelReservation")
     @Path("/cancel/{id}")
     public void cancelBooking(@PathParam("id") Long bookingId) throws AppBaseException {
         throw new UnsupportedOperationException();
@@ -83,6 +86,7 @@ public class BookingController extends AbstractController {
      * @throws AppBaseException podczas problemu z zakończeniem rezerwacji
      */
     @PATCH
+    @RolesAllowed("endReservation")
     @Path("/end/{id}")
     public void endBooking(@PathParam("id") Long bookingId) throws AppBaseException {
         throw new UnsupportedOperationException();
@@ -109,6 +113,7 @@ public class BookingController extends AbstractController {
      * @return lista dto aktywnych rezerwacji
      */
     @GET
+    @RolesAllowed("getAllActiveReservations")
     @Path("/active")
     public List<BookingDto> showActiveBooking() throws AppBaseException {
         throw new UnsupportedOperationException();
@@ -123,6 +128,7 @@ public class BookingController extends AbstractController {
      * @return lista dto zakończonych rezerwacji
      */
     @GET
+    @RolesAllowed("getAllArchiveReservations")
     @Path("/ended")
     public List<BookingDto> showEndedBooking() throws AppBaseException {
         throw new UnsupportedOperationException();

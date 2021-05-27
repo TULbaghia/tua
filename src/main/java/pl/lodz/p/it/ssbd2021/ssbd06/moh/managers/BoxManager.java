@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -36,6 +37,7 @@ public class BoxManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista klatek
      */
+    @RolesAllowed("getAllBoxes")
     List<Box> getAll() throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -46,6 +48,7 @@ public class BoxManager {
      * @param boxDto dto z danymi nowej klatki
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("addBox")
     void addBox(NewBoxDto boxDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -56,6 +59,7 @@ public class BoxManager {
      * @param boxDto dto z danymi klatki
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("updateBox")
     void updateBox(BoxDto boxDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -66,6 +70,7 @@ public class BoxManager {
      * @param boxId identyfikator klatki
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("deleteBox")
     void deleteBox(Long boxId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }

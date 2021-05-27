@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class RatingController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z dodawaniem oceny hotelu
      */
     @POST
+    @RolesAllowed("addHotelRating")
     public void addRating(RatingDto ratingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -44,6 +46,7 @@ public class RatingController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z aktualizacją oceny hotelu
      */
     @PUT
+    @RolesAllowed("updateHotelRating")
     public void updateRating(RatingDto ratingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -55,6 +58,7 @@ public class RatingController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z usunięciem oceny hotelu
      */
     @DELETE
+    @RolesAllowed("deleteHotelRating")
     @Path("/{id}")
     public void deleteRating(@PathParam("id") Long ratingId) throws AppBaseException {
         throw new UnsupportedOperationException();
@@ -68,6 +72,7 @@ public class RatingController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego ze zmianą widoczności oceny
      */
     @PATCH
+    @RolesAllowed("hideHotelRating")
     @Path("/{ratingId}/{visibility}")
     public void changeVisibility(@PathParam("ratingId") Long ratingId, @PathParam("visibility") RatingVisibility ratingVisibility) throws AppBaseException {
         throw new UnsupportedOperationException();

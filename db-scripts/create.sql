@@ -423,3 +423,4 @@ from account a
          join role r on a.id = r.account_id
 where a.confirmed = true
   and a.enabled = true
+  and r.enabled = true

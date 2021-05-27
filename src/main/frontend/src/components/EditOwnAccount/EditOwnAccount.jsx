@@ -7,7 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import {Link} from "react-router-dom";
 import {Configuration, DefaultApi} from "api-client";
 import {
-    useNotificationDangerAndLong,
+    useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort,
     useNotificationWarningAndLong,
 } from "../Utils/Notification/NotificationProvider";
@@ -19,6 +19,7 @@ import FieldComponent from "../EditOwnAccount/FieldComponent";
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
+import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 
 function EditOwnAccount() {
     const history = useHistory();
@@ -27,7 +28,7 @@ function EditOwnAccount() {
 
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationWarning = useNotificationWarningAndLong();
-    const dispatchNotificationDanger = useNotificationDangerAndLong();
+    const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchDialog = useDialogPermanentChange();
 
     const conf = new Configuration();
@@ -74,7 +75,7 @@ function EditOwnAccount() {
             history.push("/myAccount");
             dispatchNotificationSuccess({message: i18n.t('emailChangeSuccess')})
         }).catch(err => {
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            ResponseErrorHandler(err, dispatchNotificationDanger);
         });
         setSubmitting(false);
     };
@@ -102,7 +103,7 @@ function EditOwnAccount() {
             history.push("/myAccount");
             dispatchNotificationSuccess({message: i18n.t('passwordChangeSuccess')})
         }).catch(err => {
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            ResponseErrorHandler(err, dispatchNotificationDanger);
         });
         setSubmitting(false)
     };
@@ -129,7 +130,7 @@ function EditOwnAccount() {
             history.push("/myAccount");
             dispatchNotificationSuccess({message: i18n.t('detailsChangeSuccess')})
         }).catch(err => {
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            ResponseErrorHandler(err, dispatchNotificationDanger);
         });
         setSubmitting(false)
     };

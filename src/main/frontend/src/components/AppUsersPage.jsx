@@ -15,8 +15,7 @@ function AppUsersPage(props) {
     
     useEffect(() => {
        if (token) {
-           getUserLanguage(token, i18n);
-           dispatchThemeChangeAfterLogin(token);
+           getUserLanguage(token, i18n, () => dispatchThemeChangeAfterLogin(token));
        }
     }, []);
 

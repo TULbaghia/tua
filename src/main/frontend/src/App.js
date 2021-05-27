@@ -59,29 +59,31 @@ function App() {
         }
     };
 
-    let logged = false
-    if(token) logged = true
-    else logged = false
+    let logged = !!token;
 
     const requireRoles = (to, from, next) => {
+        if(to.meta.logged !== undefined && to.meta.logged !== null && to.meta.logged === true && to.meta.auth === false) {
+            next.redirect('/errors/forbidden');
+            return;
+        }
         if (to.meta.auth) {
             if (to.meta.logged) {
                 if (to.meta.all) {
                     next();
                 } else if (to.meta.client) {
-                     if (to.meta.currentRole === "CLIENT") {
+                     if (to.meta.currentRole === rolesConstant.client) {
                         next();
                     } else {
                         next.redirect('/errors/forbidden');
                     }
                 } else if (to.meta.manager) {
-                    if (to.meta.currentRole === "MANAGER") {
+                    if (to.meta.currentRole === rolesConstant.manager) {
                         next();
                     } else {
                         next.redirect('/errors/forbidden');
                     }
                 } else if (to.meta.admin) {
-                    if (to.meta.currentRole === "ADMIN") {
+                    if (to.meta.currentRole === rolesConstant.admin) {
                         next();
                     } else {
                         next.redirect('/errors/forbidden');
@@ -105,18 +107,18 @@ function App() {
                     <GuardProvider guards={[requireRoles]} error={NotFound}>
                         <Switch>
                             <GuardedRoute exact path="/" component={Home} meta={{ }}/>
-                            <GuardedRoute exact path="/login" component={Login} meta={{ auth: false }}/>
-                            <GuardedRoute exact path="/signUp" component={SignUp} meta={{ }}/>
+                            <GuardedRoute exact path="/login" component={Login} meta={{ auth: false, logged }}/>
+                            <GuardedRoute exact path="/login/password-reset" component={PasswordReset} meta={{ auth: false, logged }}/>
+                            <GuardedRoute exact path="/confirmedAccount" component={ConfirmedAccount} meta={{ auth: false, logged }}/>
+                            <GuardedRoute exact path="/reset/password/:code" component={PasswordResetForm} meta={{ auth: false, logged }}/>
+                            <GuardedRoute exact path="/activate/account/:code" component={AccountActivate} meta={{ auth: false, logged }}/>
+                            <GuardedRoute exact path="/signUp" component={SignUp} meta={{ auth: false, logged }}/>
+                            <GuardedRoute exact path="/confirm/email/:code" component={EmailConfirm} meta={{ auth: false }}/>
                             <GuardedRoute exact path="/errors/forbidden" component={Forbidden}/>
                             <GuardedRoute exact path="/errors/internal" component={InternalError}/>
-                            <GuardedRoute exact path="/login/password-reset" component={PasswordReset} meta={{ auth: false }}/>
-                            <GuardedRoute exact path="/confirmedAccount" component={ConfirmedAccount} meta={{ auth: false }}/>
                             <GuardedRoute exact path="/myAccount" component={UserInfo} meta={{ auth: true, all: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/userPage" component={AppUsersPage} meta={{ auth: true, all: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/editOwnAccount" component={EditOwnAccount} meta={{ auth: true, all: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/reset/password/:code" component={PasswordResetForm} meta={{ auth: false }}/>
-                            <GuardedRoute exact path="/activate/account/:code" component={AccountActivate} meta={{ auth: false }}/>
-                            <GuardedRoute exact path="/confirm/email/:code" component={EmailConfirm} meta={{ auth: false }}/>
                             <GuardedRoute exact path="/accounts" component={UserList} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/editOtherAccount" component={EditOtherAccountForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <Route component={NotFound}/>

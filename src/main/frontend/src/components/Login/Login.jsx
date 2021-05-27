@@ -8,13 +8,17 @@ import {api} from "../../Api";
 import {Form, Formik} from 'formik';
 import "../../css/Login.css"
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
-import {useNotificationWarningAndLong} from "../Utils/Notification/NotificationProvider";
+import {
+    useNotificationSuccessAndShort,
+    useNotificationWarningAndLong
+} from "../Utils/Notification/NotificationProvider";
 import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import {useNotificationCustom} from "../Utils/Notification/NotificationProvider";
 import LoginFieldComponent from "./LoginFieldComponent";
 import FieldComponent from "../PasswordReset/FieldComponent";
+import i18n from "../../i18n";
 
 const REFRESH_TIME = 60 * 1000;
 
@@ -25,6 +29,7 @@ function Login(props) {
     const {token, setToken, saveToken} = useLocale();
 
     const dispatch = useNotificationCustom();
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
 
     const handleRefreshBox = () => {
         dispatch({
@@ -46,7 +51,9 @@ function Login(props) {
                 "Authorization": `${localStorage.getItem("token")}`
             }
         }).then(res => res.data)
-            .then(token => {saveToken("Bearer " + token); schedule()})
+            .then(token => {saveToken("Bearer " + token);
+                schedule();
+                dispatchNotificationSuccess({message: i18n.t('tokenRefreshSuccess')})});
     }
 
     const handleSubmit = async (values) => {

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import jwt_decode from "jwt-decode";
-import {useNotificationCustom} from "./Utils/Notification/NotificationProvider";
+import {useNotificationCustom, useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
 import {dialogDuration, dialogType} from "./Utils/Notification/Notification";
 import i18n from "../i18n";
 import axios from "axios";
@@ -15,8 +15,8 @@ export const LoginProvider = ({children}) => {
     const [username, setUsername] = useState('');
 
     const dispatch = useNotificationCustom();
-
     const dispatchThemeChangeAfterLogin = useDispatchThemeColorAfterLogin()
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
 
     const handleRefreshBox = () => {
         dispatch({
@@ -37,7 +37,9 @@ export const LoginProvider = ({children}) => {
                 "Authorization": `${localStorage.getItem("token")}`
             }
         }).then(res => res.data)
-            .then(token =>{saveToken("Bearer " + token); schedule()});
+            .then(token =>{saveToken("Bearer " + token);
+                schedule();
+                dispatchNotificationSuccess({message: i18n.t('tokenRefreshSuccess')})});
     }
 
     const schedule = () => {

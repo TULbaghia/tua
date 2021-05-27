@@ -230,6 +230,7 @@
 
   "theme.changed.scheme.light": "Zmieniono tryb wyświetlania na jasny",
   "theme.changed.scheme.dark": "Zmieniono tryb wyświetlania na ciemny",
-  "languageChangeSuccess": "Pomyślnie zmieniono język"
+  "languageChangeSuccess": "Pomyślnie zmieniono język",
+  "tokenRefreshSuccess": "Żeton został odnowiony pomyślnie"
 
 }

@@ -230,5 +230,6 @@
   "contactNumber.error.required": "Contact number is required",
   "passwordResetForm.error.oldPasswordEqualsNew": "New password can not be the same as the old one",
   "table.no.result": "No results to show",
-  "languageChangeSuccess": "Language changed successfully"
+  "languageChangeSuccess": "Language changed successfully",
+  "tokenRefreshSuccess": "Token refreshed successfully"
 }

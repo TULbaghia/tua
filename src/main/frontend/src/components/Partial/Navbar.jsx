@@ -128,6 +128,7 @@ function NavigationBar(props) {
                 localStorage.removeItem('token')
                 localStorage.removeItem('currentRole')
                 localStorage.removeItem('username')
+                clearTimeout(localStorage.getItem('timeoutId') ?? 0)
             })
             .catch(err => console.log(err))
     }

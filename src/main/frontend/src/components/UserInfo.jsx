@@ -3,9 +3,9 @@ import {withNamespaces} from "react-i18next";
 import {Button, Container} from "react-bootstrap";
 import "../css/UserInfo.css";
 import {useLocale} from "./LoginContext";
-import {getUserLanguage} from "./Navbar";
+import {getUserLanguage} from "./Partial/Navbar";
 
-import BreadCrumb from "./BreadCrumb";
+import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {api} from "../Api";
 import {useHistory} from "react-router";

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.ThemeColor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
 import pl.lodz.p.it.ssbd2021.ssbd06.validation.*;
 
@@ -191,6 +192,12 @@ public class Account extends AbstractEntity implements Serializable {
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account", fetch = FetchType.LAZY)
     private Set<Booking> bookingList = new HashSet<>();
+
+    @Setter
+    @Column(name = "theme_color", nullable = false)
+    @Basic(optional = false)
+    @Enumerated(EnumType.STRING)
+    private ThemeColor themeColor = ThemeColor.LIGHT;
 
     @Setter
     @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "account")

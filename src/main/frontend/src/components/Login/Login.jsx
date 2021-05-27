@@ -2,17 +2,17 @@ import React, {useState} from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "../LoginContext";
 import {withNamespaces} from 'react-i18next';
-import BreadCrumb from "../BreadCrumb";
+import BreadCrumb from "../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {api} from "../../Api";
 import {Form, Formik} from 'formik';
 import "../../css/Login.css"
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
-import {useNotificationWarningAndLong} from "../Notification/NotificationProvider";
-import {dialogDuration, dialogType} from "../Notification/Notification";
+import {useNotificationWarningAndLong} from "../Utils/Notification/NotificationProvider";
+import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import {useNotificationCustom} from "../Notification/NotificationProvider";
+import {useNotificationCustom} from "../Utils/Notification/NotificationProvider";
 import LoginFieldComponent from "./LoginFieldComponent";
 import FieldComponent from "../PasswordReset/FieldComponent";
 
@@ -60,10 +60,10 @@ function Login(props) {
             })
             saveToken("Bearer " + res.data)
             history.push("/userPage")
+            schedule();
         } catch (ex) {
             console.log(ex);
         }
-        schedule();
     }
 
     const schedule = () => {
@@ -79,6 +79,7 @@ function Login(props) {
                 <li className="breadcrumb-item active" aria-current="page">{t('logging')}</li>
             </BreadCrumb>
             <div className="floating-box">
+                <h1 className="h3">{t('logging')}</h1>
                 <Formik initialValues={{login: '', password: ''}}
                         validate={values => {
                             const errors = {};

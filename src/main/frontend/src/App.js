@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, HashRouter, Route, Switch} from 'react-router-dom';
 import './App.css';
-import NavigationBar from "./components/Navbar";
+import NavigationBar from "./components/Partial/Navbar";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {fab} from "@fortawesome/free-brands-svg-icons";
 import {faSignInAlt, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import Home from "./components/Home";
 import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp";
-import Footer from "./components/Footer";
+import Footer from "./components/Partial/Footer";
 import ConfirmedAccount from "./components/ConfirmedAccount";
 import PasswordReset from "./components/PasswordReset";
 import NotFound from "./components/ErrorPages/NotFound";
@@ -22,9 +22,10 @@ import AppUsersPage from "./components/AppUsersPage";
 import EditOtherAccountForm from "./components/EditOtherAccount/EditOtherAccountForm";
 import PasswordResetForm from "./components/PasswordReset/PasswordResetForm";
 import EmailConfirm from "./components/EmailConfirmation/EmailConfirm";
-import EditOwnAccount from './components/EditOwnAccount';
+import EditOwnAccount from './components/EditOwnAccount/EditOwnAccount';
 import AccountActivate from "./components/EmailConfirmation/AccountActivate";
 import {rolesConstant} from "./Constants";
+import { GuardProvider, GuardedRoute } from 'react-router-guards';
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -32,6 +33,8 @@ function App() {
 
     const {token, currentRole, setCurrentRole, setUsername} = useLocale();
     const [roles, setRoles] = useState();
+    const GuardProvider = require('react-router-guards').GuardProvider;
+    const GuardedRoute = require('react-router-guards').GuardedRoute;
 
     useEffect(() => {
         if (token) {
@@ -48,41 +51,81 @@ function App() {
     const divStyle = () => {
         switch (currentRole) {
             case rolesConstant.admin:
-                return {backgroundColor: "#EF5DA8"};
+                return {backgroundColor: "var(--admin-color)"};
             case rolesConstant.manager:
-                return {backgroundColor: "#F178B6"};
+                return {backgroundColor: "var(--manager-color)"};
             case rolesConstant.client:
-                return {backgroundColor: "#EFADCE"};
+                return {backgroundColor: "var(--client-color)"};
+        }
+    };
+
+    let logged = false
+    if(token) logged = true
+    else logged = false
+
+    const requireRoles = (to, from, next) => {
+        if (to.meta.auth) {
+            if (to.meta.logged) {
+                if (to.meta.all) {
+                    next();
+                } else if (to.meta.client) {
+                     if (to.meta.currentRole === "CLIENT") {
+                        next();
+                    } else {
+                        next.redirect('/errors/forbidden');
+                    }
+                } else if (to.meta.manager) {
+                    if (to.meta.currentRole === "MANAGER") {
+                        next();
+                    } else {
+                        next.redirect('/errors/forbidden');
+                    }
+                } else if (to.meta.admin) {
+                    if (to.meta.currentRole === "ADMIN") {
+                        next();
+                    } else {
+                        next.redirect('/errors/forbidden');
+                    }
+                }
+            } else {
+                next.redirect('/login');
+            }
+        } else if (!to.meta.auth) {
+            next();
+        } else {
+            next.redirect('/errors/internal');
         }
     };
 
     return (
-        <div className="App">
-            <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
+        <HashRouter basename={process.env.REACT_APP_ROUTER_BASE || ''}>
+            <div className="App">
                 <div>
                     <NavigationBar roles={roles} divStyle={divStyle}/>
-                    <Switch>
-                        <Route exact path="/" component={Home}/>
-                        <Route exact path="/login" component={Login}/>
-                        <Route exact path="/signUp" component={SignUp}/>
-                        <Route exact path="/errors/forbidden" component={Forbidden}/>
-                        <Route exact path="/errors/internal" component={InternalError}/>
-                        <Route exact path="/login/password-reset" component={PasswordReset}/>
-                        <Route exact path="/confirmedAccount" component={ConfirmedAccount}/>
-                        <Route exact path="/myAccount" component={UserInfo}/>
-                        <Route exact path="/userPage" component={AppUsersPage}/>
-                        <Route exact path="/accounts" component={UserList}/>
-                        <Route exact path="/editOtherAccount" component={EditOtherAccountForm}/>
-                        <Route exact path="/editOwnAccount" component={EditOwnAccount}/>
-                        <Route exact path="/reset/password/:code" component={PasswordResetForm}/>
-                        <Route exact path="/confirm/email/:code" component={EmailConfirm}/>
-                        <Route exact path="/activate/account/:code" component={AccountActivate}/>
-                        <Route component={NotFound}/>
-                    </Switch>
+                    <GuardProvider guards={[requireRoles]} error={NotFound}>
+                        <Switch>
+                            <GuardedRoute exact path="/" component={Home} meta={{ }}/>
+                            <GuardedRoute exact path="/login" component={Login} meta={{ auth: false }}/>
+                            <GuardedRoute exact path="/signUp" component={SignUp} meta={{ }}/>
+                            <GuardedRoute exact path="/errors/forbidden" component={Forbidden}/>
+                            <GuardedRoute exact path="/errors/internal" component={InternalError}/>
+                            <GuardedRoute exact path="/login/password-reset" component={PasswordReset} meta={{ auth: false }}/>
+                            <GuardedRoute exact path="/confirmedAccount" component={ConfirmedAccount} meta={{ auth: false }}/>
+                            <GuardedRoute exact path="/myAccount" component={UserInfo} meta={{ auth: true, all: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/userPage" component={AppUsersPage} meta={{ auth: true, all: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/editOwnAccount" component={EditOwnAccount} meta={{ auth: true, all: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/reset/password/:code" component={PasswordResetForm} meta={{ auth: false }}/>
+                            <GuardedRoute exact path="/activate/account/:code" component={AccountActivate} meta={{ auth: false }}/>
+                            <GuardedRoute exact path="/confirm/email/:code" component={EmailConfirm} meta={{ auth: false }}/>
+                            <GuardedRoute exact path="/accounts" component={UserList} meta={{ auth: true, admin: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/editOtherAccount" component={EditOtherAccountForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
+                            <Route component={NotFound}/>
+                        </Switch>
+                    </GuardProvider>
                     <Footer roles={roles} divStyle={divStyle}/>
                 </div>
-            </Router>
-        </div>
+            </div>
+        </HashRouter>
     );
 }
 

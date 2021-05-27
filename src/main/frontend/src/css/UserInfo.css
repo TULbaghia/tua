@@ -1,12 +1,11 @@
 .main-wrapper {
-  background: white;
   padding: 20px;
   flex: 1;
   margin: 40px 0 80px 0;
-  background: #ffffff;
+  background: var(--light);
   box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.25);
   border-radius: 13px;
-  color: black;
+  color: var(--dark);
   width: fit-content;
   min-width: 600px;
 }
@@ -16,7 +15,7 @@
 }
 
 .main-wrapper > table,th,td{
-    border: 1px solid #DEE2E6;
+    border: 1px solid var(--gray);
     padding: 10px;
 }
 
@@ -37,8 +36,6 @@
 
 .main-wrapper-actions-container > button{
     color: #fff;
-    background-color: #7749F8;
-    background-color: cutom-color;
-    border-color: #7749F8;
-    border-color: cutom-cor;
+    background-color: var(--purple);
+    border-color: var(--purple);
 }

@@ -374,7 +374,9 @@ public class AccountController extends AbstractController {
      * @param language nowy język, który ma być przypisany do konta
      * @throws AppBaseException proces zmiany języka zakończył się niepowodzeniem
      */
-    @POST
+    @PATCH
+    @EtagValidatorFilterBinding
+    @RolesAllowed("editOwnLanguage")
     @Path("/self/edit/language/{lang}")
     public void editOwnLanguage(@PathParam("lang") @NotNull @Language String language) throws AppBaseException {
         repeat(() -> accountEndpoint.editOwnLanguage(language), accountEndpoint);

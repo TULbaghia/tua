@@ -11,6 +11,11 @@ import DropdownToggle from "react-bootstrap/DropdownToggle";
 import axios from "axios";
 import ThemeColorSwitcher from "../Utils/ThemeColor/ThemeColorSwitcher";
 import {rolesConstant} from "../../Constants";
+import {useEffect, useState} from "react";
+import {
+    useNotificationDangerAndLong,
+    useNotificationSuccessAndShort
+} from "../Utils/Notification/NotificationProvider";
 
 library.add(faUser);
 
@@ -18,8 +23,28 @@ function LanguageSwitcher(props) {
 
     const {t, i18n} = props
     const {token, setToken} = useLocale();
+    const [etag, setETag] = useState();
 
     const langs = ['pl', 'en']
+
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
+    const dispatchNotificationDanger = useNotificationDangerAndLong();
+
+    const getEtag = async () => {
+        const response = await fetch("/resources/accounts/user", {
+            method: "GET",
+            headers: {
+                Authorization: token,
+            },
+        });
+        return response.headers.get("ETag");
+    };
+
+    useEffect(() => {
+        if (token) {
+            getEtag().then(r => setETag(r));
+        }
+    }, [token]);
 
     const handleClickPl = () => {
         setLanguage(i18n, "pl")
@@ -30,22 +55,35 @@ function LanguageSwitcher(props) {
     }
 
     const handleClickLoggedPl = () => {
-        handleClickPl()
-        axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/self/edit/language/pl`, null, {
-            headers: {
-                Authorization: token
-            }
-        })
-    }
+            axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/self/edit/language/pl`, null, {
+                headers: {
+                    Authorization: token,
+                    "If-Match": etag
+                }
+            }).then(() => {
+                handleClickPl();
+                dispatchNotificationSuccess({message: i18n.t('languageChangeSuccess')})
+            })
+                .catch(err => {
+                    console.log(err);
+                    dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+                })
+        }
 
     const handleClickLoggedEn = () => {
-        handleClickEn()
-        axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/self/edit/language/en`, null, {
+        axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/self/edit/language/en`, null, {
             headers: {
-                Authorization: token
+                Authorization: token,
+                "If-Match": etag
             }
+        }).then(() => {
+            handleClickEn();
+            dispatchNotificationSuccess({message: i18n.t('languageChangeSuccess')})
+        }).catch(err => {
+            console.log(err);
+            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
         })
-    }
+    };
 
     return (
         <>

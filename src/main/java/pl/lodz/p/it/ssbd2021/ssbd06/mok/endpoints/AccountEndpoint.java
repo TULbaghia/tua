@@ -227,9 +227,9 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     public void editOwnLanguage(String language) throws AppBaseException {
         Account account = accountManager.findByLogin(getLogin());
         AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(account);
-//        if (!verifyIntegrity(accountIntegrity)) {
-//            throw AppOptimisticLockException.optimisticLockException();
-//        }
+        if (!verifyIntegrity(accountIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
         accountManager.changeAccountLanguage(getLogin(), language);
     }
 

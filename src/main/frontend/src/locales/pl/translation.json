@@ -229,6 +229,7 @@
   "theme.color.light": "Tryb jasny",
 
   "theme.changed.scheme.light": "Zmieniono tryb wyświetlania na jasny",
-  "theme.changed.scheme.dark": "Zmieniono tryb wyświetlania na ciemny"
+  "theme.changed.scheme.dark": "Zmieniono tryb wyświetlania na ciemny",
+  "languageChangeSuccess": "Pomyślnie zmieniono język"
 
 }

@@ -25,11 +25,11 @@ function Home(props) {
                     <div className="row">
                         <div className="bottom">
                             <div className="columnLeft">
-                                <div className="textLeft">{t('landingPageLeft')}</div>
+                                <div className="textLeft text-center">{t('landingPageLeft')}</div>
                                 <img alt="cat" className="cat" src={cat} />
                             </div>
                             <div className="columnRight">
-                                <div className="textRight">{t('landingPageRight')}</div>
+                                <div className="textRight text-center">{t('landingPageRight')}</div>
                                 <img alt="hand" className="hand" src={hand} />
                             </div>
                         </div>

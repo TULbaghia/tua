@@ -2,17 +2,17 @@ import React, {useState} from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "../LoginContext";
 import {withNamespaces} from 'react-i18next';
-import BreadCrumb from "../BreadCrumb";
+import BreadCrumb from "../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {api} from "../../Api";
 import {Form, Formik} from 'formik';
 import "../../css/Login.css"
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
-import {useNotificationWarningAndLong} from "../Notification/NotificationProvider";
-import {dialogDuration, dialogType} from "../Notification/Notification";
+import {useNotificationWarningAndLong} from "../Utils/Notification/NotificationProvider";
+import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import {useNotificationCustom} from "../Notification/NotificationProvider";
+import {useNotificationCustom} from "../Utils/Notification/NotificationProvider";
 import LoginFieldComponent from "./LoginFieldComponent";
 import FieldComponent from "../PasswordReset/FieldComponent";
 
@@ -41,15 +41,12 @@ function Login(props) {
     const refreshToken = (event) => {
         event.target.closest(".alert").querySelector(".close").click();
 
-        axios.post(`${process.env.REACT_APP_API_BASE_URL}resources/auth/refresh-token`, localStorage.getItem("token"), {
+        axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/auth/refresh-token`, localStorage.getItem("token"), {
             headers: {
                 "Authorization": `${localStorage.getItem("token")}`
             }
         }).then(res => res.data)
-            .then(token => saveToken("Bearer " + token));
-        setTimeout(() => {
-            schedule();
-        }, 1000)
+            .then(token => {saveToken("Bearer " + token); schedule()})
     }
 
     const handleSubmit = async (values) => {
@@ -60,16 +57,17 @@ function Login(props) {
             })
             saveToken("Bearer " + res.data)
             history.push("/userPage")
+            schedule();
         } catch (ex) {
             console.log(ex);
         }
-        schedule();
     }
 
     const schedule = () => {
-        return setTimeout(() => {
+        const id = setTimeout(() => {
             handleRefreshBox();
         }, new Date(jwt_decode(localStorage.getItem("token")).exp * 1000) - new Date() - REFRESH_TIME);
+        localStorage.setItem("timeoutId", id.toString())
     }
 
     return (
@@ -79,6 +77,7 @@ function Login(props) {
                 <li className="breadcrumb-item active" aria-current="page">{t('logging')}</li>
             </BreadCrumb>
             <div className="floating-box">
+                <h1 className="h3">{t('logging')}</h1>
                 <Formik initialValues={{login: '', password: ''}}
                         validate={values => {
                             const errors = {};

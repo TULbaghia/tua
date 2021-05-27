@@ -1,6 +1,6 @@
 .floating-box {
-    background: #FFFFFF;
-    color: black;
+    background: var(--light);
+    color: var(--dark);
     box-shadow: 0 0 0.3rem 0.1rem rgba(0, 0, 0, 0.5);
     margin: auto;
     padding: 2.6rem;

@@ -1,10 +1,10 @@
 import {withNamespaces} from "react-i18next";
 import React, {useEffect} from "react";
-import BreadCrumb from "./BreadCrumb";
+import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {useLocale} from "./LoginContext";
-import {getUserLanguage} from "./Navbar";
 import {rolesConstant} from "../Constants";
+import {getUserLanguage} from "./Partial/Navbar";
 
 function AppUsersPage(props) {
     const {t, i18n} = props

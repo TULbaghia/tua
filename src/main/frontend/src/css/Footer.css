@@ -1,6 +1,6 @@
 /**** LANDING PAGE ****/
 .footer {
-  background-color: #7749F8;
+  background-color: var(--purple);
   position: fixed;
   bottom: 0;
   height: 40px;
@@ -9,21 +9,21 @@
 }
 
 .roleMenu{
-  background-color: rgba(0, 0, 0, 0);
-  border: 1px solid rgba(0, 0, 0, 0);
-  color: black;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: var(--dark);
 }
 
 .roleMenu:hover {
-  background-color: rgba(0, 0, 0, 0);
-  border: 1px solid rgba(0, 0, 0, 0);
-  color: black;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: var(--dark);
 }
 
 .show > .roleMenu:focus {
-  background-color: rgba(0, 0, 0, 0);
-  border: 1px solid rgba(0, 0, 0, 0);
-  color: black;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: var(--dark);
 }
 
 .main-footer{

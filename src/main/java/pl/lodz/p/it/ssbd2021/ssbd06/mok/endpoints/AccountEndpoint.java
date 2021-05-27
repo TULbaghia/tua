@@ -4,14 +4,15 @@ import lombok.extern.java.Log;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.ThemeColor;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
-import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.PendingCodeManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -211,7 +212,7 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
      * Wysyła email na konto użytkownika z poziomem administracyjnym po zalogowaniu.
      * Reprezentuje powiadomienie o zalogowaniu na konto administratora.
      *
-     * @param address adres logiczny z jakiego nastąpiło logowanie na konto z administracyjnym poziomem dostępu.
+     * @param address    adres logiczny z jakiego nastąpiło logowanie na konto z administracyjnym poziomem dostępu.
      * @param adminLogin login konta administratora.
      * @throws AppBaseException proces wysyłania powiadomienia zakończył się niepowodzeniem.
      */
@@ -224,7 +225,28 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("editOwnLanguage")
     public void editOwnLanguage(String language) throws AppBaseException {
-        Account editAccount = accountManager.findByLogin(getLogin());
-        editAccount.setLanguage(language);
+        Account account = accountManager.findByLogin(getLogin());
+        AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(account);
+//        if (!verifyIntegrity(accountIntegrity)) {
+//            throw AppOptimisticLockException.optimisticLockException();
+//        }
+        accountManager.changeAccountLanguage(getLogin(), language);
+    }
+
+    /**
+     * Aktualizuje motyw interfejsu dla użytkownika.
+     *
+     * @param themeColor kolor interfejsu preferowany przez użytkownika
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @Override
+    @RolesAllowed("editOwnThemeSettings")
+    public void changeThemeColor(ThemeColor themeColor) throws AppBaseException {
+        Account account = accountManager.findByLogin(getLogin());
+        AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(account);
+        if (!verifyIntegrity(accountIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+        accountManager.changeThemeColor(getLogin(), themeColor);
     }
 }

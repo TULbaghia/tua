@@ -13,6 +13,8 @@ public class AccountException extends AppBaseException {
     private static final String ACCOUNT_NOT_CONFIRMED = "exception.account_not_confirmed.account_not_confirmed";
     private static final String ACCOUNT_EMAIL_EXISTS = "exception.account.email_exists";
     private static final String ACCOUNT_IS_CONFIRMED = "exception.account.account_confirmed";
+    private static final String ACCOUNT_THEME_ALREADY_SET = "exception.account.theme_already_set";
+    private static final String ACCOUNT_LANGUAGE_ALREADY_SET = "exception.account.language_already_set";
 
     private AccountException(String message, Throwable cause) {
         super(message, cause);
@@ -62,7 +64,8 @@ public class AccountException extends AppBaseException {
     }
 
     /**
-     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że konto użytkownika zostało wcześniej już aktywowane.
+     * Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że konto użytkownika zostało wcześniej już aktywowane.
+     *
      * @return wyjątek AccountException
      */
     public static AccountException alreadyActivated() {
@@ -70,7 +73,8 @@ public class AccountException extends AppBaseException {
     }
 
     /**
-     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że podane nowe hasło jest takie samo jak stare hasło.
+     * Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że podane nowe hasło jest takie samo jak stare hasło.
+     *
      * @return wyjątek AccountException
      */
     public static AccountException samePassword() {
@@ -78,7 +82,8 @@ public class AccountException extends AppBaseException {
     }
 
     /**
-     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że podane nowe hasła nie są identyczne.
+     * Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że podane nowe hasła nie są identyczne.
+     *
      * @return wyjątek AccountException
      */
     public static AccountException passwordsDontMatch() {
@@ -86,7 +91,8 @@ public class AccountException extends AppBaseException {
     }
 
     /**
-     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że konto użytkownika nie jest aktywowane.
+     * Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że konto użytkownika nie jest aktywowane.
+     *
      * @return wyjątek AccountException
      */
     public static AccountException notEnabled() {
@@ -94,7 +100,8 @@ public class AccountException extends AppBaseException {
     }
 
     /**
-     *  Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że konto użytkownika nie jest potwierdzone.
+     * Tworzy wyjątek reprezentujący niepowodzenie operacji ze względu na to, że konto użytkownika nie jest potwierdzone.
+     *
      * @return wyjątek AccountException
      */
     public static AccountException notConfirmed() {
@@ -102,10 +109,24 @@ public class AccountException extends AppBaseException {
     }
 
     /**
-     *  Tworzy wyjątek reprezentujący niepowodzenie usunięcia konta ze względu na to, że konto zostało zweryfikowane
-     * @return wyjątek typu  AccountException
+     * Tworzy wyjątek reprezentujący niepowodzenie usunięcia konta ze względu na to, że konto zostało zweryfikowane
+     *
+     * @return wyjątek AccountException
      */
-    public static AccountException confirmed(){
+    public static AccountException confirmed() {
         return new AccountException(ACCOUNT_IS_CONFIRMED);
+    }
+
+    /**
+     * Tworzy wyjątek reprezentujący niepowodzenie zmiany koloru szablonu, ze względu, że zmiana już istnieje.
+     *
+     * @return wyjątek Account Exception
+     */
+    public static AccountException themeAlreadySet() {
+        return new AccountException(ACCOUNT_THEME_ALREADY_SET);
+    }
+
+    public static AccountException languageAlreadySet(){
+        return new AccountException(ACCOUNT_LANGUAGE_ALREADY_SET);
     }
 }

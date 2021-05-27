@@ -6,3 +6,12 @@ const configuration = new Configuration({
 });
 
 export const api = new DefaultApi(configuration);
+
+export const buildApi = lang => new DefaultApi({
+    ...configuration,
+    baseOptions: {
+        headers: {
+            "Accept-Language": lang
+        }
+    }
+})

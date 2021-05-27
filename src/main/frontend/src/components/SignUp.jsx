@@ -4,7 +4,7 @@ import {useLocale} from "./LoginContext";
 import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
-import {api} from "../Api";
+import {buildApi} from "../Api";
 import ReCAPTCHA from "react-google-recaptcha";
 import {
     useNotificationDangerAndInfinity,
@@ -48,6 +48,7 @@ function SignUp(props) {
         if(!recaptchaCheck(recaptchaRef, dispatchNotificationWarning)) return
 
         const {repeatedPassword, ...dto} = values
+        const api = buildApi(i18n.language);
         api.registerAccount(
             dto
         )

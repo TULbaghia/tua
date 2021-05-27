@@ -44,7 +44,11 @@ public class I18n {
      */
     public String getMessage(Locale locale, String key) {
         try {
-            return getBundle(locale).getString(key);
+            Locale currentLocale = Locale.getDefault();
+            Locale.setDefault(locale);
+            String message = getBundle(locale).getString(key);
+            Locale.setDefault(currentLocale);
+            return message;
         } catch (NullPointerException | MissingResourceException | ClassCastException e) {
             log.warning("Exception during translation of '" + key + "' :: " + e.getMessage());
         }

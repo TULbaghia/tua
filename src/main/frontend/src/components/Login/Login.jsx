@@ -41,15 +41,12 @@ function Login(props) {
     const refreshToken = (event) => {
         event.target.closest(".alert").querySelector(".close").click();
 
-        axios.post(`${process.env.REACT_APP_API_BASE_URL}resources/auth/refresh-token`, localStorage.getItem("token"), {
+        axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/auth/refresh-token`, localStorage.getItem("token"), {
             headers: {
                 "Authorization": `${localStorage.getItem("token")}`
             }
         }).then(res => res.data)
-            .then(token => saveToken("Bearer " + token));
-        setTimeout(() => {
-            schedule();
-        }, 1000)
+            .then(token => {saveToken("Bearer " + token); schedule()})
     }
 
     const handleSubmit = async (values) => {
@@ -67,9 +64,10 @@ function Login(props) {
     }
 
     const schedule = () => {
-        return setTimeout(() => {
+        const id = setTimeout(() => {
             handleRefreshBox();
         }, new Date(jwt_decode(localStorage.getItem("token")).exp * 1000) - new Date() - REFRESH_TIME);
+        localStorage.setItem("timeoutId", id.toString())
     }
 
     return (

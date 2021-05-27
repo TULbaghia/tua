@@ -37,16 +37,14 @@ export const LoginProvider = ({children}) => {
                 "Authorization": `${localStorage.getItem("token")}`
             }
         }).then(res => res.data)
-            .then(token => saveToken("Bearer " + token));
-        setTimeout(() => {
-            schedule();
-        }, 1000)
+            .then(token =>{saveToken("Bearer " + token); schedule()});
     }
 
     const schedule = () => {
-        return setTimeout(() => {
+        const id = setTimeout(() => {
             handleRefreshBox();
         }, new Date(jwt_decode(localStorage.getItem("token")).exp * 1000) - new Date() - REFRESH_TIME);
+        localStorage.setItem("timeoutId", id.toString())
     }
 
     useEffect(() => {

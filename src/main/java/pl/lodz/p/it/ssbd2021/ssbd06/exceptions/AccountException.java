@@ -14,6 +14,7 @@ public class AccountException extends AppBaseException {
     private static final String ACCOUNT_EMAIL_EXISTS = "exception.account.email_exists";
     private static final String ACCOUNT_IS_CONFIRMED = "exception.account.account_confirmed";
     private static final String ACCOUNT_THEME_ALREADY_SET = "exception.account.theme_already_set";
+    private static final String ACCOUNT_LANGUAGE_ALREADY_SET = "exception.account.language_already_set";
 
     private AccountException(String message, Throwable cause) {
         super(message, cause);
@@ -123,5 +124,9 @@ public class AccountException extends AppBaseException {
      */
     public static AccountException themeAlreadySet() {
         return new AccountException(ACCOUNT_THEME_ALREADY_SET);
+    }
+
+    public static AccountException languageAlreadySet(){
+        return new AccountException(ACCOUNT_LANGUAGE_ALREADY_SET);
     }
 }

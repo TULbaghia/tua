@@ -225,8 +225,12 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("editOwnLanguage")
     public void editOwnLanguage(String language) throws AppBaseException {
-        Account editAccount = accountManager.findByLogin(getLogin());
-        editAccount.setLanguage(language);
+        Account account = accountManager.findByLogin(getLogin());
+        AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(account);
+//        if (!verifyIntegrity(accountIntegrity)) {
+//            throw AppOptimisticLockException.optimisticLockException();
+//        }
+        accountManager.changeAccountLanguage(getLogin(), language);
     }
 
     /**

@@ -464,12 +464,16 @@ public class AccountManager {
         accountFacade.edit(account);
     }
 
+    /**
+     * Edytuje język przypisany do konta użytkownika
+     *
+     * @param language nowy język, który ma być przypisany do konta
+     * @param login login użytkownika
+     * @throws AppBaseException proces zmiany języka zakończył się niepowodzeniem
+     */
     @RolesAllowed("editOwnLanguage")
     public void changeAccountLanguage(String login, String language) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
-//        if (account.getLanguage().equals(language)) {
-//            throw AccountException.languageAlreadySet();
-//        }
         account.setLanguage(language);
         account.setModifiedBy(account);
         accountFacade.edit(account);

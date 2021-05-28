@@ -239,6 +239,7 @@
   "axios.configuration.error": "Bład konfiguracji axios",
   "logout.success": "Pomyślnie wylogowano",
   "request.error.login401": "Błąd autoryzacji",
-  "request.error.token401": "Żeton wygasł"
+  "request.error.token401": "Żeton wygasł",
 
+  "register.successfulEmailInfo": "Konto zostało zarejestrowane. Aktywuj konto poprzez link aktywacyjny wysłany na pocztę"
 }

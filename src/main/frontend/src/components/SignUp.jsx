@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "./LoginContext";
 import {withNamespaces} from 'react-i18next';
+import {Spinner, Button} from 'react-bootstrap'
 import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {buildApi} from "../Api";
@@ -9,6 +10,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import {
     useNotificationDangerAndInfinity,
     useNotificationWarningAndLong,
+    useNotificationSuccessAndShort
 } from "./Utils/Notification/NotificationProvider";
 import {handleRecaptcha, recaptchaCheck} from "./Recaptcha/RecaptchaCallback";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
@@ -17,11 +19,14 @@ import {useThemeColor} from "./Utils/ThemeColor/ThemeColorProvider";
 import {v4} from "uuid";
 import { Formik, Form } from "formik";
 import GridItemInput from "./controls/GridInputItem"
+import * as bs from 'bootstrap/dist/css/bootstrap.css';
+import  '../css/overlay.css'
 
 function SignUp(props) {
     const {t, i18n} = props
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchNotificationWarning = useNotificationWarningAndLong();
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const history = useHistory();
     const [reCaptchaKey, setReCaptchaKey] = useState(v4());
     const recaptchaRef = React.createRef();
@@ -42,7 +47,7 @@ function SignUp(props) {
         contactNumber: ''
     }
 
-    function onSubmit(values, helpers){
+    function onSubmit(values, {resetForm}){
         if(!recaptchaCheck(recaptchaRef, dispatchNotificationWarning)) return
 
         const {repeatedPassword, ...dto} = values
@@ -50,7 +55,11 @@ function SignUp(props) {
         api.registerAccount(
             dto
         )
-        .then(res => console.log(res))
+        .then(res => {
+            dispatchNotificationSuccess({message: t('register.successfulEmailInfo')})
+            resetForm()
+
+        })
         .catch(err => ResponseErrorHandler(err, dispatchNotificationDanger))
     }
 
@@ -82,13 +91,14 @@ function SignUp(props) {
 
     return (
         <Formik {...{initialValues, validate, onSubmit}}>
-            {({handleSubmit}) => (
+            {({handleSubmit, isSubmitting}) => (
         <div className="container">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('signUp')}</li>
             </BreadCrumb>
             <div className="floating-box pt-2 pb-2">
+
             <h3 className="h3 text-center mt-3">{t('registering')}</h3>
                 <div className="col-12 text-center pt-2">
                     <div style={{color: "#7749F8", fontSize: 14, marginBottom: "1rem"}}>
@@ -97,6 +107,12 @@ function SignUp(props) {
                 </div>
 
                 <Form className="row g-3">
+                    <div className="overlay" style={{display: isSubmitting ? 'inline-flex' : 'none' }}>
+                    <div class="spinner-border" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+                    </div>
+
                     <GridItemInput name="login" placeholder={t("login")} type="text" />
                     <GridItemInput name="email" placeholder={t("emailAddress")} type="email" />
                     <GridItemInput name="password" placeholder={t("password")} type="password" />
@@ -115,7 +131,7 @@ function SignUp(props) {
                             style={{backgroundColor: "#7749F8"}}
                             type="submit"
                         >
-                            {t('signUp')}
+                        {t('signUp')}
                         </button>
                     </div>
 

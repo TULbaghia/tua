@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
 import jwt_decode from "jwt-decode";
-import {useNotificationCustom} from "./Utils/Notification/NotificationProvider";
+import {useNotificationCustom, useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
 import {dialogDuration, dialogType} from "./Utils/Notification/Notification";
 import i18n from "../i18n";
 import axios from "axios";
-import {useDispatchThemeColorAfterLogin} from "./Utils/ThemeColor/ThemeColorProvider";
 
 const REFRESH_TIME = 60 * 1000;
 const LoginContext = React.createContext('');
@@ -17,7 +16,7 @@ export const LoginProvider = ({children}) => {
 
     const dispatch = useNotificationCustom();
 
-    const dispatchThemeChangeAfterLogin = useDispatchThemeColorAfterLogin();
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
 
     const handleRefreshBox = () => {
         dispatch({
@@ -41,6 +40,7 @@ export const LoginProvider = ({children}) => {
             .then(token => {
                 saveToken("Bearer " + token);
                 schedule()
+                dispatchNotificationSuccess({message: i18n.t('tokenRefreshSuccess')})
             });
     }
 
@@ -86,7 +86,6 @@ export const LoginProvider = ({children}) => {
     const saveToken = (value) => {
         setToken(value)
         localStorage.setItem("token", value)
-        // dispatchThemeChangeAfterLogin(value);
     }
 
     const values = {

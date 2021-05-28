@@ -8,7 +8,10 @@ import {api} from "../../Api";
 import {Form, Formik} from 'formik';
 import "../../css/Login.css"
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
-import {useNotificationCustom, useNotificationDangerAndInfinity,} from "../Utils/Notification/NotificationProvider";
+import {
+    useNotificationSuccessAndShort,
+    useNotificationDangerAndInfinity
+} from "../Utils/Notification/NotificationProvider";
 import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
@@ -25,6 +28,7 @@ function Login(props) {
     const dispatchDangerNotification = useNotificationDangerAndInfinity();
 
     const dispatch = useNotificationCustom();
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
 
     const handleRefreshBox = () => {
         dispatch({
@@ -48,6 +52,7 @@ function Login(props) {
         }).then(response => {
                 saveToken("Bearer " + response.data);
                 schedule()
+            dispatchNotificationSuccess({message: i18n.t('tokenRefreshSuccess')})
             }).catch(
             e => ResponseErrorHandler(e, dispatchDangerNotification)
         );

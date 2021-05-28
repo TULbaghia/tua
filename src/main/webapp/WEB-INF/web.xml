@@ -55,6 +55,9 @@
     <security-role>
         <role-name>CLIENT</role-name>
     </security-role>
+    <security-role>
+        <role-name>SYSTEM</role-name>
+    </security-role>
 
     <security-role>
         <role-name>addAccessLevel</role-name>

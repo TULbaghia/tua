@@ -1,15 +1,18 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.auth.endpoints;
 
 import lombok.extern.java.Log;
+import pl.lodz.p.it.ssbd2021.ssbd06.auth.dto.LoginDataDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AuthValidationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.JWTGenerator;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.credential.Password;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
@@ -22,6 +25,7 @@ import java.util.logging.Level;
  */
 @Log
 @Stateful
+@Interceptors({LoggingInterceptor.class})
 public class AuthEndpoint extends AbstractEndpoint implements AuthEndpointLocal {
 
     @Inject
@@ -32,12 +36,12 @@ public class AuthEndpoint extends AbstractEndpoint implements AuthEndpointLocal 
 
     @Override
     @PermitAll
-    public String login(String login, String password) throws AppBaseException {
-        Credential credential = new UsernamePasswordCredential(login, new Password(password));
+    public String login(LoginDataDto loginDataDto) throws AppBaseException {
+        Credential credential = new UsernamePasswordCredential(loginDataDto.getLogin(), new Password(loginDataDto.getPassword()));
         CredentialValidationResult result = identityStoreHandler.validate(credential);
         if(result.getStatus() == CredentialValidationResult.Status.VALID) {
             log.info(String.format("User: %s has logged in. Session started with address: %s",
-                    login, getHttpServletRequest().getRemoteAddr()));
+                    loginDataDto,getLogin(), getHttpServletRequest().getRemoteAddr()));
             return jwtGenerator.generateJWTString(result);
         } else {
             throw AuthValidationException.invalidCredentials();

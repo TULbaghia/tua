@@ -31,6 +31,7 @@ import java.util.logging.Level;
 @Singleton
 @Interceptors({LoggingInterceptor.class})
 @Log
+@RunAs("System")
 public class ScheduledTasksManager {
 
     @Resource
@@ -119,11 +120,11 @@ public class ScheduledTasksManager {
         Instant repeatInstant = Instant.now().minus(emailChangeCodeRepeatTime, ChronoUnit.HOURS);
         Date repeatDate = Date.from(repeatInstant);
         try {
-            List<Account> accountsUnusedCodes = pendingCodeFacade.findAllAccountsWithUnusedCodes(CodeType.EMAIL_CHANGE, repeatDate);
-            for (Account account : accountsUnusedCodes) {
-                PendingCode pc = pendingCodeFacade.findUnusedCodeByAccount(account, CodeType.EMAIL_CHANGE);
-                pc.setSendAttempt(pc.getSendAttempt() + 1);
-                emailSender.sendEmailChange(account, pc.getCode());
+            List<PendingCode> unusedCodes = pendingCodeFacade.findAllUnusedByCodeTypeAndBeforeAndAttemptCount(CodeType.EMAIL_CHANGE, repeatDate, 0);
+            for (PendingCode code : unusedCodes) {
+                code.setSendAttempt(code.getSendAttempt() + 1);
+                pendingCodeFacade.edit(code);
+                emailSender.sendEmailChange(code.getAccount(), code.getCode());
             }
         } catch (AppBaseException e) {
             log.log(Level.WARNING, "Error while resending email for accounts with unused EmailChange code by scheduler");

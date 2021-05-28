@@ -52,7 +52,7 @@ public class AuthController extends AbstractController {
     @Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON})
     public Response login(@NotNull @Valid LoginDataDto loginDataDto) throws AppBaseException {
         try {
-            String token = authEndpoint.login(loginDataDto.getLogin(), loginDataDto.getPassword());
+            String token = authEndpoint.login(loginDataDto);
             repeat(() -> accountEndpoint.updateValidAuth(loginDataDto.getLogin(), httpServletRequest.getRemoteAddr(),
                     Date.from(Instant.now())), accountEndpoint);
 
@@ -96,7 +96,7 @@ public class AuthController extends AbstractController {
      */
     @POST
     @Path("/refresh-token")
-    public Response refreshToken(String token){
+    public Response refreshToken(@NotNull String token){
         String refreshedToken = authEndpoint.refreshToken(token);
         return Response.ok().entity(refreshedToken).build();
     }

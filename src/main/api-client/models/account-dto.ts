@@ -22,25 +22,19 @@ export interface AccountDto {
      * @type {string}
      * @memberof AccountDto
      */
-    login?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof AccountDto
-     */
-    email?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof AccountDto
-     */
     firstname?: any;
     /**
      * 
-     * @type {string}
+     * @type {any}
      * @memberof AccountDto
      */
-    lastname?: any;
+    lastFailedLoginDate?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof AccountDto
+     */
+    lastSuccessfulLoginDate?: any;
     /**
      * 
      * @type {string}
@@ -52,13 +46,19 @@ export interface AccountDto {
      * @type {string}
      * @memberof AccountDto
      */
-    contactNumber?: any;
+    lastSuccessfulLoginIpAddress?: any;
     /**
      * 
-     * @type {boolean}
+     * @type {string}
      * @memberof AccountDto
      */
-    enabled?: any;
+    login?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountDto
+     */
+    lastFailedLoginIpAddress?: any;
     /**
      * 
      * @type {boolean}
@@ -73,26 +73,32 @@ export interface AccountDto {
     version?: any;
     /**
      * 
-     * @type {any}
+     * @type {boolean}
      * @memberof AccountDto
      */
-    lastSuccessfulLoginDate?: any;
+    enabled?: any;
     /**
      * 
      * @type {string}
      * @memberof AccountDto
      */
-    lastSuccessfulLoginIpAddress?: any;
-    /**
-     * 
-     * @type {any}
-     * @memberof AccountDto
-     */
-    lastFailedLoginDate?: any;
+    lastname?: any;
     /**
      * 
      * @type {string}
      * @memberof AccountDto
      */
-    lastFailedLoginIpAddress?: any;
+    themeColor?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountDto
+     */
+    contactNumber?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountDto
+     */
+    email?: any;
 }

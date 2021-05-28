@@ -14,25 +14,25 @@
 /**
  * 
  * @export
- * @interface AccountPersonalDetailsDto
+ * @interface NewHotelDto
  */
-export interface AccountPersonalDetailsDto {
+export interface NewHotelDto {
     /**
      * 
      * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @memberof NewHotelDto
      */
-    firstname?: any;
+    address?: any;
     /**
      * 
      * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @memberof NewHotelDto
      */
-    contactNumber?: any;
+    cityName?: any;
     /**
      * 
      * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @memberof NewHotelDto
      */
-    lastname?: any;
+    name?: any;
 }

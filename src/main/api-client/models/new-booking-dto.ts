@@ -14,25 +14,25 @@
 /**
  * 
  * @export
- * @interface AccountPersonalDetailsDto
+ * @interface NewBookingDto
  */
-export interface AccountPersonalDetailsDto {
+export interface NewBookingDto {
     /**
      * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @type {Array&lt;MicroBoxes&gt;}
+     * @memberof NewBookingDto
      */
-    firstname?: any;
+    boxes?: any;
     /**
      * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @type {any}
+     * @memberof NewBookingDto
      */
-    contactNumber?: any;
+    dateTo?: any;
     /**
      * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @type {any}
+     * @memberof NewBookingDto
      */
-    lastname?: any;
+    dateFrom?: any;
 }

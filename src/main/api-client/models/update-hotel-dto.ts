@@ -14,25 +14,37 @@
 /**
  * 
  * @export
- * @interface AccountPersonalDetailsDto
+ * @interface UpdateHotelDto
  */
-export interface AccountPersonalDetailsDto {
+export interface UpdateHotelDto {
     /**
      * 
      * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @memberof UpdateHotelDto
      */
-    firstname?: any;
+    address?: any;
     /**
      * 
      * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @memberof UpdateHotelDto
      */
-    contactNumber?: any;
+    cityName?: any;
     /**
      * 
      * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @memberof UpdateHotelDto
      */
-    lastname?: any;
+    name?: any;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateHotelDto
+     */
+    id?: any;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateHotelDto
+     */
+    version?: any;
 }

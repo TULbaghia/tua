@@ -14,25 +14,19 @@
 /**
  * 
  * @export
- * @interface AccountPersonalDetailsDto
+ * @interface MicroBoxes
  */
-export interface AccountPersonalDetailsDto {
+export interface MicroBoxes {
     /**
      * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @type {number}
+     * @memberof MicroBoxes
      */
-    firstname?: any;
+    number?: any;
     /**
      * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @type {number}
+     * @memberof MicroBoxes
      */
-    contactNumber?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
-     */
-    lastname?: any;
+    id?: any;
 }

@@ -125,6 +125,22 @@ function UserList(props) {
                 )
             },
         },
+        {
+            name: t('details'),
+            selector: 'details',
+            cell: row => {
+                return(
+                    <Button className="btn-sm" onClick={event => {
+                        history.push({
+                            pathname: '/accounts/userInfo',
+                            state: {
+                                login: row.login,
+                            }
+                        })
+                    }}>{t('details')}</Button>
+                )
+            }
+        },
     ];
 
     useEffect(() => {

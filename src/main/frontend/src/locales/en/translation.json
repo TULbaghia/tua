@@ -238,5 +238,6 @@
   "server.no_response": "No response from server",
   "axios.configuration.error": "Axios configuration error",
   "logout.success": "Logout success",
-  "request.error.token401": "Token expired"
+  "request.error.token401": "Token expired",
+  "otherUserDetailsTitle": "Other account details"
 }

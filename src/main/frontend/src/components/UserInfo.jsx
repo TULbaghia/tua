@@ -3,7 +3,6 @@ import {withNamespaces} from "react-i18next";
 import {Button, Container} from "react-bootstrap";
 import "../css/UserInfo.css";
 import {useLocale} from "./LoginContext";
-import {getUserLanguage} from "./Partial/Navbar";
 
 import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
@@ -27,7 +26,6 @@ function UserInfo(props) {
 
     React.useEffect(() => {
         handleDataFetch();
-        // getUserLanguage(token, i18n);
     }, []);
 
     const handleDataFetch = () => {
@@ -106,7 +104,7 @@ function UserInfo(props) {
                     </tr>
                     <tr>
                         <td>{t("userDetailsRoles")}</td>
-                        <td>{roles}</td>
+                        <td>{roles.split(", ").map(role => t(role)).join(", ")}</td>
                     </tr>
                     <tr>
                         <td>{t("lastSuccessfulLoginAddress")}</td>

@@ -22,6 +22,7 @@ import Tabs from "react-bootstrap/Tabs";
 import {Button} from "react-bootstrap";
 import {rolesConstant} from "../../Constants";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
+import {api} from "../../Api";
 
 function EditOtherAccountForm({t, i18n}) {
     const dispatchNotification = useNotificationCustom();
@@ -77,23 +78,21 @@ function EditOtherAccountForm({t, i18n}) {
     }
 
     const getEtag = async (login) => {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/user/${login}`, {
+        const response = await api.showAccount(login,{
             method: "GET",
             headers: {
                 Authorization: token,
-            },
-        });
-        return response.headers.get("ETag");
+            }})
+        return response.headers.etag;
     };
 
     const getEtagRole = async (login) => {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/${login}/role`, {
+        const response = await api.getUserRole(login,{
             method: "GET",
             headers: {
                 Authorization: token,
-            },
-        });
-        return response.headers.get("ETag");
+            }})
+        return response.headers.etag;
     };
 
     const addRole = (role) => (
@@ -130,9 +129,6 @@ function EditOtherAccountForm({t, i18n}) {
             callbackOnSave: () => {
                 addRole(rolesConstant.client)
             },
-            callbackOnCancel: () => {
-                console.log("Cancel")
-            },
         })
     }
 
@@ -142,9 +138,7 @@ function EditOtherAccountForm({t, i18n}) {
             callbackOnSave: () => {
                 addRole(rolesConstant.manager)
             },
-            callbackOnCancel: () => {
-                console.log("Cancel")
-            },
+
         })
     }
 
@@ -154,9 +148,7 @@ function EditOtherAccountForm({t, i18n}) {
             callbackOnSave: () => {
                 addRole(rolesConstant.admin)
             },
-            callbackOnCancel: () => {
-                console.log("Cancel")
-            },
+
         })
     }
 
@@ -166,9 +158,7 @@ function EditOtherAccountForm({t, i18n}) {
             callbackOnSave: () => {
                 revokeRole(rolesConstant.client)
             },
-            callbackOnCancel: () => {
-                console.log("Cancel")
-            },
+
         })
     }
 
@@ -178,9 +168,7 @@ function EditOtherAccountForm({t, i18n}) {
             callbackOnSave: () => {
                 revokeRole(rolesConstant.manager)
             },
-            callbackOnCancel: () => {
-                console.log("Cancel")
-            },
+
         })
     }
 
@@ -189,9 +177,6 @@ function EditOtherAccountForm({t, i18n}) {
         dispatchDialog({
             callbackOnSave: () => {
                 revokeRole(rolesConstant.admin)
-            },
-            callbackOnCancel: () => {
-                console.log("Cancel")
             },
         })
     }

@@ -39,18 +39,19 @@ function EditOwnAccount() {
 
     React.useEffect(() => {
         if (token) {
-            getEtag().then(r => setETag(r));
+            getEtag()
+                .then(r => setETag(r))
+                .catch((err)=>ResponseErrorHandler(err, dispatchNotificationDanger));
         }
     }, [token]);
 
     const getEtag = async () => {
-        const response = await fetch("/resources/accounts/user", {
+        const response = await api.showAccountInformation({
             method: "GET",
             headers: {
                 Authorization: token,
-            },
-        });
-        return response.headers.get("ETag");
+            }})
+        return response.headers.etag;
     };
 
     const handleEmailSubmit = (values, setSubmitting) => {
@@ -173,18 +174,17 @@ function EditOwnAccount() {
                                         <Form className={{alignItems: "center"}}>
                                             <FieldComponent type="text" name="email" placeholder={i18n.t('emailAddress')}
                                                             handleChange={handleChange}/>
+                                            <div className={"d-flex w-100 justify-content-center py-2"}>
+                                                <ReCAPTCHA key={i18n.language} hl={i18n.language} ref={recaptchaRef1} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
+                                            </div>
                                             <button className="btn btn-lg btn-primary btn-block mb-3"
                                                     type="submit" disabled={isSubmitting}
                                                     style={{backgroundColor: "#7749F8"}}>
                                                 {i18n.t('changeEmail')}
                                             </button>
-
                                         </Form>
                                     )}
                                 </Formik>
-                                <div className={"d-flex w-100 justify-content-center"}>
-                                    <ReCAPTCHA key={i18n.language} hl={i18n.language} ref={recaptchaRef1} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
-                                </div>
                             </Tab>
                             <Tab eventKey="tab2" title={i18n.t('editPassword')}>
                                 <Formik
@@ -243,6 +243,9 @@ function EditOwnAccount() {
                                             <FieldComponent type="password" name="repeatedNewPassword"
                                                             placeholder={i18n.t('repeatPassword')}
                                                             handleChange={handleChange}/>
+                                            <div className={"d-flex w-100 justify-content-center py-2"}>
+                                                <ReCAPTCHA key={i18n.language} hl={i18n.language} ref={recaptchaRef2} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
+                                            </div>
                                             <button className="btn btn-lg btn-primary btn-block mb-3"
                                                     type="submit" disabled={isSubmitting}
                                                     style={{backgroundColor: "#7749F8"}}>
@@ -251,9 +254,6 @@ function EditOwnAccount() {
                                         </Form>
                                     )}
                                 </Formik>
-                                <div className={"d-flex w-100 justify-content-center"}>
-                                    <ReCAPTCHA key={i18n.language} hl={i18n.language} ref={recaptchaRef2} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
-                                </div>
                             </Tab>
                             <Tab eventKey="tab3" title={i18n.t('editDetails')}>
                                 <Formik
@@ -302,6 +302,9 @@ function EditOwnAccount() {
                                                             handleChange={handleChange}/>
                                             <FieldComponent type="text" name="phoneNumber" placeholder={i18n.t('phoneNumber')}
                                                             handleChange={handleChange}/>
+                                            <div className={"d-flex w-100 justify-content-center py-2"}>
+                                                <ReCAPTCHA key={i18n.language} hl={i18n.language} ref={recaptchaRef3} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
+                                            </div>
                                             <button className="btn btn-lg btn-primary btn-block mb-3"
                                                     type="submit" disabled={isSubmitting}
                                                     style={{backgroundColor: "#7749F8"}}>
@@ -310,9 +313,6 @@ function EditOwnAccount() {
                                         </Form>
                                     )}
                                 </Formik>
-                                <div className={"d-flex w-100 justify-content-center"}>
-                                    <ReCAPTCHA key={i18n.language} hl={i18n.language} ref={recaptchaRef3} sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
-                                </div>
                             </Tab>
                         </Tabs>
                     </div>

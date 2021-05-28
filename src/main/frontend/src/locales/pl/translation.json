@@ -138,7 +138,7 @@
   "operationSuccess": "Operacja zakończona sukcesem",
   "operationError": "Operacja zakończona niepowodzeniem",
   "passwordChangeSuccess": "Hasło zostało pomyślnie zmienione",
-  "emailChangeSuccess": "Email został pomyślnie zmieniony",
+  "emailChangeSuccess": "Wiadomość z potwierdzeniem zmiany adresu email została wysłana",
   "detailsChangeSuccess": "Dane osobiste zostały zmienione",
   "invalidEmailSyntax": "Niepoprawny email",
   "nameSize": "Nieprawidłowa długość imienia",
@@ -201,7 +201,7 @@
   "editPassword": "Edytuj hasło",
   "editDetails": "Edytuj szczegóły",
   "editRoles": "Edytuj role",
-  "editOtherAccount.success.email": "Email został pomyślnie zmieniony",
+  "editOtherAccount.success.email": "Wiadomość z potwierdzeniem zmiany adresu email została wysłana",
   "editOtherAccount.success.password": "Hasło zostało pomyślnie zmienione",
   "editOtherAccount.success.details": "Szczegóły zostały pomyślnie zmienione",
   "editOtherAccountForm.error.email.required": "Email jest wymagany",
@@ -233,5 +233,12 @@
   "theme.changed.scheme.light": "Zmieniono tryb wyświetlania na jasny",
   "theme.changed.scheme.dark": "Zmieniono tryb wyświetlania na ciemny",
   "languageChangeSuccess": "Pomyślnie zmieniono język",
-  "tokenRefreshSuccess": "Żeton został odnowiony pomyślnie"
+  "tokenRefreshSuccess": "Żeton został odnowiony pomyślnie",
+
+  "server.no_response": "Brak odpowiedzi z serwera",
+  "axios.configuration.error": "Bład konfiguracji axios",
+  "logout.success": "Pomyślnie wylogowano",
+  "request.error.login401": "Błąd autoryzacji",
+  "request.error.token401": "Żeton wygasł"
+
 }

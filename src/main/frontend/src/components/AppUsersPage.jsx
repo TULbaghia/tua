@@ -6,16 +6,18 @@ import {useLocale} from "./LoginContext";
 import {rolesConstant} from "../Constants";
 import {getUserLanguage} from "./Partial/Navbar";
 import {useDispatchThemeColorAfterLogin} from "./Utils/ThemeColor/ThemeColorProvider";
+import {useNotificationDangerAndInfinity} from "./Utils/Notification/NotificationProvider";
 
 function AppUsersPage(props) {
     const {t, i18n} = props
     const {token, setToken} = useLocale();
     const {currentRole, username} = useLocale();
     const dispatchThemeChangeAfterLogin = useDispatchThemeColorAfterLogin()
+    const dispatchDangerError = useNotificationDangerAndInfinity();
     
     useEffect(() => {
        if (token) {
-           getUserLanguage(token, i18n, () => dispatchThemeChangeAfterLogin(token));
+           getUserLanguage(token, i18n, () => dispatchThemeChangeAfterLogin(token), dispatchDangerError);
        }
     }, []);
 

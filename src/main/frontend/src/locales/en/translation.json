@@ -43,7 +43,7 @@
   "editOtherEmail.success.info": "Email edited successfully",
   "editProfile": "Edit profile",
   "emailAddress": "E-mail address",
-  "emailChangeSuccess": "Email successfully changed",
+  "emailChangeSuccess": "Email change message has been sent",
   "emailConfirm.action": "Verify email address",
   "emailConfirm.info": "Click the button below to verify your email address",
   "emailConfirm.success.info": "Email has been verified",
@@ -90,7 +90,7 @@
   "internal": "INTERNAL SERVER ERROR",
   "invalidEmailSyntax": "Incorrect email syntax",
   "landingPageLeft": "Comfortable rest for your pet ",
-  "landingPageRight": "Do you have a pet hotel? Join us today!",
+  "landingPageRight": "Going on holiday? Leave your pet with us!",
   "landingPageTitle": "Book today!",
   "language": "Language",
   "lastFailedLoginDate": "Data ostatniego niepoprawnego logowania",
@@ -202,7 +202,7 @@
   "editPassword": "Edit password",
   "editDetails": "Edit details",
   "editRoles": "Edit roles",
-  "editOtherAccount.success.email": "Email changed successfully",
+  "editOtherAccount.success.email": "Email change message has been sent",
   "editOtherAccount.success.password": "Password changed successfully",
   "editOtherAccount.success.details": "Details changed successfully",
   "editOtherAccountForm.error.email.required": "Email is required",
@@ -233,5 +233,10 @@
   "contactNumber.error.required": "Contact number is required",
   "passwordResetForm.error.oldPasswordEqualsNew": "New password can not be the same as the old one",
   "table.no.result": "No results to show",
-  "tokenRefreshSuccess": "Token refreshed successfully"
+  "tokenRefreshSuccess": "Token refreshed successfully",
+
+  "server.no_response": "No response from server",
+  "axios.configuration.error": "Axios configuration error",
+  "logout.success": "Logout success",
+  "request.error.token401": "Token expired"
 }

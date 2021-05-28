@@ -7,15 +7,21 @@ import "../../css/Footer.css"
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import i18n from '../../i18n';
-import {useNotificationSuccessAndShort} from "../Utils/Notification/NotificationProvider";
+import {
+    useNotificationDangerAndInfinity,
+    useNotificationSuccessAndShort
+} from "../Utils/Notification/NotificationProvider";
 import {rolesConstant} from "../../Constants";
 import {useHistory} from "react-router-dom";
+import {api} from "../../Api"
+import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 
 function AccessLevelSwitcher(props) {
 
     const {setCurrentRole, token, currentRole} = useLocale();
     const [levels, setLevels] = useState([]);
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
+    const dispatchNotificationDanger = useNotificationDangerAndInfinity()
 
     const history = useHistory();
 
@@ -28,7 +34,6 @@ function AccessLevelSwitcher(props) {
     const handleSelect=(level)=> {
         setCurrentRole(level);
         localStorage.setItem('currentRole', level);
-        dispatchNotificationSuccess({message: i18n.t('roleChanged') + i18n.t(level)});
         if(level !== rolesConstant.client && level!== currentRole) {
             handleChangeLevel(level);
             history.push("/")
@@ -42,10 +47,9 @@ function AccessLevelSwitcher(props) {
                 Authorization: token,
             }
         };
-        fetch('/resources/accounts/changeOwnAccessLevel/' + e, requestOptions)
-            .then((res) => {
-                console.log(e);
-            });
+        api.changeOwnAccessLevel(e, requestOptions)
+            .then(()=>dispatchNotificationSuccess({message: i18n.t('roleChanged') + i18n.t(e)}))
+            .catch((err)=> ResponseErrorHandler(err, dispatchNotificationDanger))
     }
 
     return (

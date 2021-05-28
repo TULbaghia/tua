@@ -8,14 +8,16 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import "../../css/Navbar.css";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
-import axios from "axios";
 import ThemeColorSwitcher from "../Utils/ThemeColor/ThemeColorSwitcher";
 import {rolesConstant} from "../../Constants";
 import {useEffect, useState} from "react";
 import {
-    useNotificationDangerAndLong,
+    useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
 } from "../Utils/Notification/NotificationProvider";
+import {useThemeColor} from "../Utils/ThemeColor/ThemeColorProvider";
+import {api} from "../../Api"
+import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 
 library.add(faUser);
 
@@ -24,27 +26,29 @@ function LanguageSwitcher(props) {
     const {t, i18n} = props
     const {token, setToken} = useLocale();
     const [etag, setETag] = useState();
+    const colorTheme = useThemeColor();
 
     const langs = ['pl', 'en']
 
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
-    const dispatchNotificationDanger = useNotificationDangerAndLong();
+    const dispatchDangerNotification = useNotificationDangerAndInfinity();
+
 
     const getEtag = async () => {
-        const response = await fetch("/resources/accounts/user", {
+        const response = await api.showAccountInformation({
             method: "GET",
             headers: {
                 Authorization: token,
-            },
-        });
-        return response.headers.get("ETag");
+            }
+        })
+        return response.headers.etag;
     };
 
     useEffect(() => {
         if (token) {
             getEtag().then(r => setETag(r));
         }
-    }, [token]);
+    }, [token, i18n.language, colorTheme]);
 
     const handleClickPl = () => {
         setLanguage(i18n, "pl")
@@ -55,23 +59,21 @@ function LanguageSwitcher(props) {
     }
 
     const handleClickLoggedPl = () => {
-            axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/self/edit/language/pl`, null, {
-                headers: {
-                    Authorization: token,
-                    "If-Match": etag
-                }
-            }).then(() => {
-                handleClickPl();
-                dispatchNotificationSuccess({message: i18n.t('languageChangeSuccess')})
-            })
-                .catch(err => {
-                    console.log(err);
-                    dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-                })
-        }
+        api.editOwnLanguage("pl", {
+            headers: {
+                Authorization: token,
+                "If-Match": etag
+            }
+        }).then(() => {
+            handleClickPl();
+            dispatchNotificationSuccess({message: i18n.t('languageChangeSuccess')})
+        }).catch(err => {
+            ResponseErrorHandler(err, dispatchDangerNotification);
+        })
+    }
 
     const handleClickLoggedEn = () => {
-        axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/self/edit/language/en`, null, {
+        api.editOwnLanguage("en", {
             headers: {
                 Authorization: token,
                 "If-Match": etag
@@ -80,10 +82,9 @@ function LanguageSwitcher(props) {
             handleClickEn();
             dispatchNotificationSuccess({message: i18n.t('languageChangeSuccess')})
         }).catch(err => {
-            console.log(err);
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            ResponseErrorHandler(err, dispatchDangerNotification);
         })
-    };
+    }
 
     return (
         <>
@@ -111,26 +112,33 @@ function NavigationBar(props) {
     const {t, divStyle, i18n} = props
     const history = useHistory();
     const {token, username, setToken, currentRole, setCurrentRole, setUsername} = useLocale();
+    const dispatchNotificationDanger = useNotificationDangerAndInfinity();
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
 
     const handleLogout = () => {
-        history.push("/login")
+
         const requestOptions = {
             method: "GET",
             headers: {
                 Authorization: token,
+            },
+            validateStatus: (status) => {
+                return (status >= 200 && status <= 299) || status === 401;
             }
         };
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/resources/auth/logout`, requestOptions)
-            .then((res) => {
-                setToken('');
-                setCurrentRole('');
-                setUsername('');
-                localStorage.removeItem('token')
-                localStorage.removeItem('currentRole')
-                localStorage.removeItem('username')
-                clearTimeout(localStorage.getItem('timeoutId') ?? 0)
-            })
-            .catch(err => console.log(err))
+
+        api.logout(requestOptions)
+            .then((res) => {})
+            .catch((err) =>  {});
+        setToken('');
+        setCurrentRole('');
+        setUsername('');
+        localStorage.removeItem('token')
+        localStorage.removeItem('currentRole')
+        localStorage.removeItem('username')
+        clearTimeout(localStorage.getItem('timeoutId') ?? 0)
+        history.push("/login")
+        dispatchNotificationSuccess({message: t("logout.success")});
     }
 
     // *** LANDING PAGE ***
@@ -263,16 +271,17 @@ export function setLanguage(i18n, lang) {
     i18n.changeLanguage(lang)
 }
 
-export function getUserLanguage(token, i18n, showNotification = (()=>{}) ) {
+export function getUserLanguage(token, i18n, showNotification = (() => {
+}), showDanger = (() => {})) {
     if (token !== null && token !== '') {
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/accounts/user`, {
+        api.showAccountInformation({
             headers: {
                 Authorization: token
             }
-        }).then(res => res.data)
-            .then(data => data.language)
-            .then(result => setLanguage(i18n, result))
-            .then(showNotification)
+        }).then(res => {
+            setLanguage(i18n, res.data.language);
+            showNotification();
+        }).catch(err => ResponseErrorHandler(err, showDanger))
     } else setLanguage(i18n, "en")
 }
 

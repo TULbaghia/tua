@@ -12,6 +12,7 @@ import {
     useNotificationSuccessAndShort
 } from "./Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
+import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -200,7 +201,7 @@ function UserList(props) {
                             setData(res.data);
                             setFilterText('')
                         }).catch(err => {
-                            dispatchNotificationDanger({message: i18n.t(err.response.data.message)});
+                            ResponseErrorHandler(err, dispatchNotificationDanger)
                         })
                     }}>{t("refresh")}</Button>
                 </div>

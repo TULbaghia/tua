@@ -290,12 +290,12 @@ function EditOtherAccountForm({t, i18n}) {
                                         return errors;
                                     }}
                                     onSubmit={(values, {setSubmitting}) => handleEmailConfirmation(values, setSubmitting)}>
-                                    {({isSubmitting, handleChange}) => (
+                                    {({handleChange}) => (
                                         <Form className={{alignItems: "center"}}>
                                             <EmailComponent name="email" placeholder={t('emailAddress')}
                                                             handleChange={handleChange}/>
                                             <button className="btn btn-lg btn-primary btn-block mt-2"
-                                                    type="submit" disabled={isSubmitting}
+                                                    type="submit"
                                                     style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
                                                 {t('changeEmail')}
                                             </button>
@@ -326,14 +326,14 @@ function EditOtherAccountForm({t, i18n}) {
                                         return errors;
                                     }}
                                     onSubmit={(values, {setSubmitting}) => handlePasswordConfirmation(values, setSubmitting)}>
-                                    {({isSubmitting, handleChange}) => (
+                                    {({handleChange}) => (
                                         <Form className={{alignItems: "center"}}>
                                             <PasswordComponent name="newPassword" placeholder={t('password')}
                                                                handleChange={handleChange}/>
                                             <PasswordComponent name="repeatedNewPassword" placeholder={t('repeatPassword')}
                                                                handleChange={handleChange}/>
                                             <button className="btn btn-lg btn-primary btn-block mt-2"
-                                                    type="submit" disabled={isSubmitting}
+                                                    type="submit"
                                                     style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
                                                 {t('changePassword')}
                                             </button>
@@ -375,7 +375,7 @@ function EditOtherAccountForm({t, i18n}) {
                                         return errors;
                                     }}
                                     onSubmit={(values, {setSubmitting}) => handleDetailsConfirmation(values, setSubmitting)}>
-                                    {({isSubmitting, handleChange}) => (
+                                    {({handleChange}) => (
                                         <Form className={{alignItems: "center"}}>
                                             <FirstnameComponent name="firstname" placeholder={t('name')}
                                                                 handleChange={handleChange}/>
@@ -384,7 +384,7 @@ function EditOtherAccountForm({t, i18n}) {
                                             <ContactNumberComponent name="contactNumber" placeholder={t('phoneNumber')}
                                                                     handleChange={handleChange}/>
                                             <button className="btn btn-lg btn-primary btn-block mt-2"
-                                                    type="submit" disabled={isSubmitting}
+                                                    type="submit"
                                                     style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
                                                 {t('changeDetails')}
                                             </button>

@@ -35,12 +35,12 @@ public class BookingFacade extends AbstractFacade<Booking>{
 
     @PermitAll
     public List<Booking> findAllActive(){
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @PermitAll
     public List<Booking> findAllArchived(){
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @PermitAll

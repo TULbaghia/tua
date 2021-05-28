@@ -29,7 +29,7 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
      * @param entity obiekt encji
      * @throws AppBaseException podczas wystąpienia błędu utrwalania w bazie danych
      */
-    public void create(T entity) throws AppBaseException {
+    protected void create(T entity) throws AppBaseException {
         try {
             getEntityManager().persist(entity);
             getEntityManager().flush();
@@ -47,7 +47,7 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
      * @param entity obiekt encji.
      * @throws AppBaseException gdy wystąpił błąd blokady optymistycznej lub błąd związany z bazą danych.
      */
-    public void edit(T entity) throws AppBaseException {
+    protected void edit(T entity) throws AppBaseException {
         try {
             getEntityManager().merge(entity);
             getEntityManager().flush();
@@ -67,7 +67,7 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
      * @param entity obiekt encji.
      * @throws AppBaseException podczas wystąpienia błędu usuwania encji z bazy danych.
      */
-    public void remove(T entity) throws AppBaseException {
+    protected void remove(T entity) throws AppBaseException {
         try {
             getEntityManager().remove(getEntityManager().merge(entity));
             getEntityManager().flush();
@@ -79,7 +79,7 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
         }
     }
 
-    public T find(Object id) {
+    protected T find(Object id) {
         return getEntityManager().find(entityClass, id);
     }
 
@@ -89,7 +89,7 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
      * @return lista encji
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
-    public List<T> findAll() throws AppBaseException {
+    protected List<T> findAll() throws AppBaseException {
         try {
             CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
             cq.select(cq.from(entityClass));
@@ -101,36 +101,38 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
 
     /**
      * Zwraca listę encji odpowiadających zadanym kluczom w liście
+     *
      * @param range lista kluczy głównych encji
      * @return listę encji odpowiadającą kryteriom
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
-    public List<T> findRange(int[] range) throws AppBaseException {
-        try{
+    protected List<T> findRange(int[] range) throws AppBaseException {
+        try {
             CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
             cq.select(cq.from(entityClass));
             TypedQuery<T> q = getEntityManager().createQuery(cq);
             q.setMaxResults(range[1] - range[0] + 1);
             q.setFirstResult(range[0]);
             return q.getResultList();
-        }catch (PersistenceException e){
+        } catch (PersistenceException e) {
             throw DatabaseQueryException.databaseQueryException(e.getCause());
         }
     }
 
     /**
      * Zwraca ilość encji
+     *
      * @return ilość encji
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
-    public int count() throws AppBaseException {
-        try{
+    protected int count() throws AppBaseException {
+        try {
             CriteriaQuery<Long> cq = getEntityManager().getCriteriaBuilder().createQuery(Long.class);
             Root<T> rt = cq.from(entityClass);
             cq.select(getEntityManager().getCriteriaBuilder().count(rt));
             TypedQuery<Long> q = getEntityManager().createQuery(cq);
             return q.getSingleResult().intValue();
-        }catch (PersistenceException e){
+        } catch (PersistenceException e) {
             throw DatabaseQueryException.databaseQueryException(e.getCause());
         }
     }

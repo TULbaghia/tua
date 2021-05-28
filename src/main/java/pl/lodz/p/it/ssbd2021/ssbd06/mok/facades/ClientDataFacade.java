@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.facades;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -33,43 +34,43 @@ public class ClientDataFacade extends AbstractFacade<ClientData> {
         super(ClientData.class);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public void create(ClientData entity) throws AppBaseException {
         super.create(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public void edit(ClientData entity) throws AppBaseException {
         super.edit(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public void remove(ClientData entity) throws AppBaseException {
         super.remove(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public ClientData find(Object id) {
         return super.find(id);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<ClientData> findAll() throws AppBaseException {
         return super.findAll();
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<ClientData> findRange(int[] range) throws AppBaseException {
         return super.findRange(range);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public int count() throws AppBaseException {
         return super.count();

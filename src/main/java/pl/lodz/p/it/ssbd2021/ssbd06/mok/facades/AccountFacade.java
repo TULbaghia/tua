@@ -2,13 +2,12 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.facades;
 
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Role;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -53,6 +52,8 @@ public class AccountFacade extends AbstractFacade<Account> {
                 throw AccountException.contactNumberException(e.getCause());
             } else if (e.getCause().getMessage().contains(Account.EMAIL_CONSTRAINT)) {
                 throw AccountException.emailExists(e.getCause());
+            } else if (e.getCause().getMessage().contains(Role.ROLE_ACCESS_LEVEL_ACCOUNT_ID_CONSTRAINT)) {
+                throw RoleException.alreadyGranted();
             }
             throw DatabaseQueryException.databaseQueryException(e.getCause());
         }
@@ -126,6 +127,8 @@ public class AccountFacade extends AbstractFacade<Account> {
                 throw AccountException.contactNumberException(e.getCause());
             } else if (e.getCause().getMessage().contains(Account.EMAIL_CONSTRAINT)) {
                 throw AccountException.emailExists(e.getCause());
+            } else  if (e.getCause().getMessage().contains(Role.ROLE_ACCESS_LEVEL_ACCOUNT_ID_CONSTRAINT)) {
+                throw RoleException.alreadyGranted();
             }
             throw DatabaseQueryException.databaseQueryException(e.getCause());
         }
@@ -156,19 +159,19 @@ public class AccountFacade extends AbstractFacade<Account> {
         super.remove(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public Account find(Object id) {
         return super.find(id);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<Account> findRange(int[] range) throws AppBaseException {
         return super.findRange(range);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public int count() throws AppBaseException {
         return super.count();

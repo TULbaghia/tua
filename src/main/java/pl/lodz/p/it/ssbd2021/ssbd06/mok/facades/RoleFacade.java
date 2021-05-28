@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.facades;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -35,6 +36,7 @@ public class RoleFacade extends AbstractFacade<Role> {
         super(Role.class);
     }
 
+    @DenyAll
     @Override
     public void create(Role entity) throws AppBaseException {
         try{
@@ -47,6 +49,7 @@ public class RoleFacade extends AbstractFacade<Role> {
         }
     }
 
+    @DenyAll
     @Override
     public void edit(Role entity) throws AppBaseException {
         try{
@@ -59,31 +62,31 @@ public class RoleFacade extends AbstractFacade<Role> {
         }
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public void remove(Role entity) throws AppBaseException {
         super.remove(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public Role find(Object id) {
         return super.find(id);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<Role> findAll() throws AppBaseException {
         return super.findAll();
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<Role> findRange(int[] range) throws AppBaseException {
         return super.findRange(range);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public int count() throws AppBaseException {
         return super.count();

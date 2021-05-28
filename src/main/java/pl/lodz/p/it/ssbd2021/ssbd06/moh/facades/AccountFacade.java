@@ -34,7 +34,7 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     @PermitAll
     public Account findByLogin(String login){
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @PermitAll

@@ -17,6 +17,11 @@
     </security-role-mapping>
 
     <security-role-mapping>
+        <role-name>System</role-name>
+        <group-name>SYSTEM</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
         <role-name>addAccessLevel</role-name>
         <group-name>ADMIN</group-name>
     </security-role-mapping>

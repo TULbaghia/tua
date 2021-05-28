@@ -14,25 +14,25 @@
 /**
  * 
  * @export
- * @interface AccountPersonalDetailsDto
+ * @interface NewBoxDto
  */
-export interface AccountPersonalDetailsDto {
+export interface NewBoxDto {
+    /**
+     * 
+     * @type {any}
+     * @memberof NewBoxDto
+     */
+    price?: any;
     /**
      * 
      * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @memberof NewBoxDto
      */
-    firstname?: any;
+    animalType?: any;
     /**
      * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @type {number}
+     * @memberof NewBoxDto
      */
-    contactNumber?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
-     */
-    lastname?: any;
+    hotelId?: any;
 }

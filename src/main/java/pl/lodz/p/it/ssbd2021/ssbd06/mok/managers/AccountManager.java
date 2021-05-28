@@ -148,7 +148,7 @@ public class AccountManager {
             throw CodeException.codeInvalid();
         }
         if (pendingCode.isUsed()) {
-            throw CodeException.codeExpired();
+            throw CodeException.codeUsed();
         }
         Account account = pendingCode.getAccount();
         if (account.isConfirmed()) {

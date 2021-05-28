@@ -26,13 +26,11 @@ function SignUp(props) {
     const [reCaptchaKey, setReCaptchaKey] = useState(v4());
     const recaptchaRef = React.createRef();
 
-
-
     const colorTheme = useThemeColor();
 
     React.useEffect(() => {
         setReCaptchaKey(v4());
-    }, [colorTheme])
+    }, [colorTheme, i18n.language])
 
     const initialValues = {
         login: '',

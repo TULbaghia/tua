@@ -14,25 +14,37 @@
 /**
  * 
  * @export
- * @interface AccountPersonalDetailsDto
+ * @interface RatingDto
  */
-export interface AccountPersonalDetailsDto {
+export interface RatingDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof RatingDto
+     */
+    rate?: any;
     /**
      * 
      * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @memberof RatingDto
      */
-    firstname?: any;
+    comment?: any;
     /**
      * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @type {number}
+     * @memberof RatingDto
      */
-    contactNumber?: any;
+    id?: any;
     /**
      * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @type {number}
+     * @memberof RatingDto
      */
-    lastname?: any;
+    version?: any;
+    /**
+     * 
+     * @type {number}
+     * @memberof RatingDto
+     */
+    bookingId?: any;
 }

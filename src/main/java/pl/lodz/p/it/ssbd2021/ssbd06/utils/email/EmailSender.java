@@ -21,7 +21,7 @@ import java.util.Properties;
  * Klasa oferująca funkcjonalność wysyłania wiadomości email, w reakcji na zdarzenia zachodzące w aplikacji.
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Interceptors({LoggingInterceptor.class})
 @PermitAll
 public class EmailSender {

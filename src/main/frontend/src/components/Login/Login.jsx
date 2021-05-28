@@ -10,7 +10,8 @@ import "../../css/Login.css"
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
 import {
     useNotificationSuccessAndShort,
-    useNotificationDangerAndInfinity
+    useNotificationDangerAndInfinity,
+    useNotificationCustom
 } from "../Utils/Notification/NotificationProvider";
 import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import axios from "axios";
@@ -24,7 +25,7 @@ const REFRESH_TIME = 60 * 1000;
 function Login(props) {
     const {t, i18n} = props
     const history = useHistory();
-    const {token, setToken, saveToken} = useLocale();
+    const {token, setToken, saveToken, setUsername, setCurrentRole} = useLocale();
     const dispatchDangerNotification = useNotificationDangerAndInfinity();
 
     const dispatch = useNotificationCustom();
@@ -44,16 +45,17 @@ function Login(props) {
 
     const refreshToken = (event) => {
         event.target.closest(".alert").querySelector(".close").click();
-
         axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/auth/refresh-token`, localStorage.getItem("token"), {
             headers: {
                 "Authorization": `${localStorage.getItem("token")}`
             }
         }).then(response => {
-                saveToken("Bearer " + response.data);
-                schedule()
+            saveToken("Bearer " + response.data);
+            clearTimeout(localStorage.getItem("timeoutId2") ?? 0)
+            clearTimeout(localStorage.getItem("timeoutId3") ?? 0)
+            schedule()
             dispatchNotificationSuccess({message: i18n.t('tokenRefreshSuccess')})
-            }).catch(
+        }).catch(
             e => ResponseErrorHandler(e, dispatchDangerNotification)
         );
     }
@@ -78,6 +80,17 @@ function Login(props) {
             handleRefreshBox();
         }, new Date(jwt_decode(localStorage.getItem("token")).exp * 1000) - new Date() - REFRESH_TIME);
         localStorage.setItem("timeoutId", id.toString())
+
+        const id2 = setTimeout(() => {
+            localStorage.removeItem("token")
+            localStorage.removeItem("username")
+            localStorage.removeItem("currentRole")
+            setToken(null)
+            setUsername('')
+            setCurrentRole('')
+            history.push("/")
+        }, new Date(jwt_decode(localStorage.getItem("token")).exp * 1000) - new Date() + 2000);
+        localStorage.setItem("timeoutId2", id2.toString())
     }
 
     return (

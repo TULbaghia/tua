@@ -14,19 +14,7 @@
 /**
  * 
  * @export
- * @interface LoginDataDto
+ * @interface GenerateReportDto
  */
-export interface LoginDataDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof LoginDataDto
-     */
-    password?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof LoginDataDto
-     */
-    login?: any;
+export interface GenerateReportDto {
 }

@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.facades;
 
+import javax.annotation.security.DenyAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -185,31 +186,31 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
         }
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public void remove(PendingCode entity) throws AppBaseException {
         super.remove(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public PendingCode find(Object id) {
         return super.find(id);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<PendingCode> findAll() throws AppBaseException {
         return super.findAll();
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<PendingCode> findRange(int[] range) throws AppBaseException {
         return super.findRange(range);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public int count() throws AppBaseException {
         return super.count();

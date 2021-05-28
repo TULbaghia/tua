@@ -14,43 +14,49 @@
 /**
  * 
  * @export
- * @interface RegisterAccountDto
+ * @interface BookingDto
  */
-export interface RegisterAccountDto {
+export interface BookingDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof BookingDto
+     */
+    accountId?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof BookingDto
+     */
+    price?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof BookingDto
+     */
+    dateTo?: any;
     /**
      * 
      * @type {string}
-     * @memberof RegisterAccountDto
+     * @memberof BookingDto
      */
-    password?: any;
+    bookingStatus?: any;
     /**
      * 
-     * @type {string}
-     * @memberof RegisterAccountDto
+     * @type {number}
+     * @memberof BookingDto
      */
-    firstname?: any;
+    id?: any;
     /**
      * 
-     * @type {string}
-     * @memberof RegisterAccountDto
+     * @type {any}
+     * @memberof BookingDto
      */
-    contactNumber?: any;
+    dateFrom?: any;
     /**
      * 
-     * @type {string}
-     * @memberof RegisterAccountDto
+     * @type {number}
+     * @memberof BookingDto
      */
-    login?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterAccountDto
-     */
-    email?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterAccountDto
-     */
-    lastname?: any;
+    version?: any;
 }

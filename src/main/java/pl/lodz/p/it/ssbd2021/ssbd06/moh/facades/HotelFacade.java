@@ -35,12 +35,12 @@ public class HotelFacade extends AbstractFacade<Hotel> {
 
     @PermitAll
     public Hotel findByName(String name){
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @PermitAll
     public List<Hotel> findByFilter(String... filter){
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @PermitAll

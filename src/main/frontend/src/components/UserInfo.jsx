@@ -70,13 +70,6 @@ function UserInfo(props) {
         }
     }
 
-    const setLanguage = (res) => {
-        setData({
-            ...res.data,
-            lastSuccessfulLoginDate: dateConverter(res.data.lastSuccessfulLoginDate, 'en')
-        });
-    }
-
     const getUser = async () => {
         return await api.showAccountInformation({headers: {Authorization: token}});
     }

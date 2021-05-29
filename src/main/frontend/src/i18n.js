@@ -31,6 +31,7 @@ i18n
   });
 
 export const dateConverter = (date) =>{
+    debugger
     const parsedDate = new Date(date)
     const day = parsedDate.getDate()
     const year = parsedDate.getFullYear()

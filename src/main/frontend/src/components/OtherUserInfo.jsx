@@ -3,11 +3,11 @@ import {withNamespaces} from "react-i18next";
 import {Button, Container} from "react-bootstrap";
 import "../css/UserInfo.css";
 import {useLocale} from "./LoginContext";
-
 import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {api} from "../Api";
 import {useHistory, useLocation} from "react-router";
+import {dateConverter} from "../i18n";
 
 function OtherUserInfo(props) {
     const {t, i18n} = props;
@@ -21,6 +21,8 @@ function OtherUserInfo(props) {
         lastname: "",
         contactNumber: "",
         lastSuccessfulLoginIpAddress: "",
+        lastSuccessfulLoginDate: "",
+        lastFailedLoginDate: ""
     });
 
     const [roles, setRoles] = useState("");
@@ -33,7 +35,13 @@ function OtherUserInfo(props) {
         if (token) {
             getUser().then(res => {
                 console.log(res.data);
-                setData(res.data);
+                let failedDate = res.data.lastFailedLoginDate ? dateConverter(res.data.lastSuccessfulLoginDate.slice(0, -5)) : "";
+                let successDate = res.data.lastSuccessfulLoginDate ? dateConverter(res.data.lastFailedLoginDate.slice(0, -5)) : "";
+                setData({
+                    ...res.data,
+                    lastSuccessfulLoginDate: successDate,
+                    lastFailedLoginDate: failedDate,
+                });
             }).catch(err => {
                 console.log(err);
                 if (err.response != null) {
@@ -78,7 +86,8 @@ function OtherUserInfo(props) {
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/">{t('adminDashboard')}</Link></li>
-                <li className="breadcrumb-item active" aria-current="page"><Link to="/accounts">{t('accountList')}</Link></li>
+                <li className="breadcrumb-item active" aria-current="page"><Link
+                    to="/accounts">{t('accountList')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('otherUserDetailsTitle')}</li>
             </BreadCrumb>
             <Container className="main-wrapper floating-box">

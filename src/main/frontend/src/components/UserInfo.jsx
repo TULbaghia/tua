@@ -8,6 +8,7 @@ import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {api} from "../Api";
 import {useHistory} from "react-router";
+import {dateConverter} from "../i18n";
 
 function UserInfo(props) {
     const {t, i18n} = props;
@@ -20,6 +21,8 @@ function UserInfo(props) {
         lastname: "",
         contactNumber: "",
         lastSuccessfulLoginIpAddress: "",
+        lastSuccessfulLoginDate: "",
+        lastFailedLoginDate: ""
     });
 
     const [roles, setRoles] = useState("");
@@ -32,7 +35,11 @@ function UserInfo(props) {
         if (token) {
             getUser().then(res => {
                 console.log(res.data);
-                setData(res.data);
+                setData({
+                    ...res.data,
+                    lastSuccessfulLoginDate: dateConverter(res.data.lastSuccessfulLoginDate.slice(0, -5)),
+                    lastFailedLoginDate: dateConverter(res.data.lastFailedLoginDate.slice(0, -5))
+                });
             }).catch(err => {
                 if (err.response != null) {
                     if (err.response.status === 403) {
@@ -61,6 +68,13 @@ function UserInfo(props) {
                 }
             });
         }
+    }
+
+    const setLanguage = (res) => {
+        setData({
+            ...res.data,
+            lastSuccessfulLoginDate: dateConverter(res.data.lastSuccessfulLoginDate, 'en')
+        });
     }
 
     const getUser = async () => {

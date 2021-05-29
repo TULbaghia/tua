@@ -35,11 +35,24 @@ function UserInfo(props) {
         if (token) {
             getUser().then(res => {
                 console.log(res.data);
-                setData({
-                    ...res.data,
-                    lastSuccessfulLoginDate: dateConverter(res.data.lastSuccessfulLoginDate.slice(0, -5)),
-                    lastFailedLoginDate: dateConverter(res.data.lastFailedLoginDate.slice(0, -5))
-                });
+                if (res.data.lastFailedLoginDate !== undefined && res.data.lastSuccessfulLoginDate !== undefined) {
+                    setData({
+                        ...res.data,
+                        lastSuccessfulLoginDate: dateConverter(res.data.lastSuccessfulLoginDate.slice(0, -5)),
+                        lastFailedLoginDate: dateConverter(res.data.lastFailedLoginDate.slice(0, -5))
+                    });
+                }
+                else if (res.data.lastSuccessfulLoginDate !== undefined){
+                    setData({
+                        ...res.data,
+                        lastSuccessfulLoginDate: dateConverter(res.data.lastSuccessfulLoginDate.slice(0, -5))
+                    });
+                }
+                else {
+                    setData(
+                        res.data
+                    );
+                }
             }).catch(err => {
                 if (err.response != null) {
                     if (err.response.status === 403) {

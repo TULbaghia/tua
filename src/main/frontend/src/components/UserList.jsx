@@ -114,14 +114,8 @@ function UserList(props) {
             cell: row => {
                 return (
                     <Button className="btn-sm" onClick={event => {
-                        history.push({
-                            pathname: '/editOtherAccount',
-                            state: {
-                                login: row.login,
-                            }
-                        })
-                    }
-                    }>{t("edit")}</Button>
+                        history.push('/editOtherAccount?login=' + row.login);
+                    }}>{t("edit")}</Button>
                 )
             },
         },
@@ -131,12 +125,7 @@ function UserList(props) {
             cell: row => {
                 return(
                     <Button className="btn-sm" onClick={event => {
-                        history.push({
-                            pathname: '/accounts/userInfo',
-                            state: {
-                                login: row.login,
-                            }
-                        })
+                        history.push('/accounts/userInfo?login=' + row.login);
                     }}>{t('details')}</Button>
                 )
             }

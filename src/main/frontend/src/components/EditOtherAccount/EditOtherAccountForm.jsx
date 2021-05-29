@@ -23,6 +23,7 @@ import {Button} from "react-bootstrap";
 import {rolesConstant} from "../../Constants";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import {api} from "../../Api";
+import queryString from "query-string";
 
 function EditOtherAccountForm({t, i18n}) {
     const dispatchNotification = useNotificationCustom();
@@ -35,13 +36,14 @@ function EditOtherAccountForm({t, i18n}) {
     const [etag, setETag] = useState();
     const [etagRole, setETagRole] = useState();
     const location = useLocation();
+    const parsedQuery = queryString.parse(location.search);
     const [roles, setRoles] = useState("");
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchDialog = useDialogPermanentChange();
 
     const getRoles = async () => {
-        return await api.getUserRole(location.state.login, {headers: {Authorization: token}});
+        return await api.getUserRole(parsedQuery.login, {headers: {Authorization: token}});
     }
 
     const isRole = (role) => {
@@ -54,8 +56,8 @@ function EditOtherAccountForm({t, i18n}) {
 
     const handleDataFetch = () => {
         if (token) {
-            getEtag(location.state.login).then(r => setETag(r));
-            getEtagRole(location.state.login).then(r => setETagRole(r));
+            getEtag(parsedQuery.login).then(r => setETag(r));
+            getEtagRole(parsedQuery.login).then(r => setETagRole(r));
             getRoles().then(res => {
                 console.log(res.data);
                 let data = "";
@@ -96,7 +98,7 @@ function EditOtherAccountForm({t, i18n}) {
     };
 
     const addRole = (role) => (
-        api.grantAccessLevel(location.state.login, role, {
+        api.grantAccessLevel(parsedQuery.login, role, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -110,7 +112,7 @@ function EditOtherAccountForm({t, i18n}) {
     )
 
     const revokeRole = (role) => (
-        api.revokeAccessLevel(location.state.login, role, {
+        api.revokeAccessLevel(parsedQuery.login, role, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -203,7 +205,7 @@ function EditOtherAccountForm({t, i18n}) {
     )
 
     const handleEmailSubmit = (values, setSubmitting) => {
-        api.editOtherAccountEmail(location.state.login, {newEmail: values.email}, {
+        api.editOtherAccountEmail(parsedQuery.login, {newEmail: values.email}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -218,7 +220,7 @@ function EditOtherAccountForm({t, i18n}) {
     }
 
     const handlePasswordSubmit = (values, setSubmitting) => {
-        api.changeOtherPassword({login: location.state.login, givenPassword: values.newPassword}, {
+        api.changeOtherPassword({login: parsedQuery.login, givenPassword: values.newPassword}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
@@ -233,7 +235,7 @@ function EditOtherAccountForm({t, i18n}) {
     }
 
     const handleDetailsSubmit = (values, setSubmitting) => {
-        api.editOtherAccountDetails(location.state.login, {
+        api.editOtherAccountDetails(parsedQuery.login, {
             firstname: values.firstname,
             lastname: values.lastname,
             contactNumber: values.contactNumber
@@ -263,7 +265,7 @@ function EditOtherAccountForm({t, i18n}) {
             <div className="floating-box" style={{minWidth: "30rem", minHeight: "30rem"}}>
                 <div>
                     <div className={"d-flex text-center flex-column"}>
-                        <h3 className="h3 mb-0.5">{t('userEdit')}: {location.state.login}</h3>
+                        <h3 className="h3 mb-0.5">{t('userEdit')}: {parsedQuery.login}</h3>
                         <Button className="btn btn-secondary my-2"
                                 style={{backgroundColor: "#7749F8", width: "20%", margin: "auto"}} onClick={event => {
                             handleDataFetch()

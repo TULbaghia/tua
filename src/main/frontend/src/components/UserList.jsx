@@ -38,6 +38,7 @@ function UserList(props) {
             active: false,
         }
     ]);
+    const [etag, setEtag] = useState();
     const dispatchDialog = useDialogPermanentChange();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
@@ -133,6 +134,10 @@ function UserList(props) {
     ];
 
     useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
         if (token) {
             getAllAccounts().then(r => {
                 console.log(r);
@@ -148,40 +153,53 @@ function UserList(props) {
                 console.log(r)
             });
         }
-    }, []);
+    }
 
     const getAllAccounts = async () => {
         return await api.getAllAccountsList({headers: {Authorization: token}})
     }
 
+    const getEtag = async (login) => {
+        const response = await api.showAccount(login, {
+            method: "GET",
+            headers: {
+                Authorization: token,
+            }})
+        return response.headers.etag;
+    };
+
     const blockAccount = (login) => {
-        api.blockAccount(login, {headers: {Authorization: token}}).then(res => {
-            dispatchNotificationSuccess({message: i18n.t('accountBlockSuccess')})
-        }).catch(err => {
-            if (err.response != null) {
-                if (err.response.status === 403) {
-                    history.push("/errors/forbidden")
-                } else if (err.response.status === 500) {
-                    history.push("/errors/internal")
+        getEtag(login).then(etag => {
+            api.blockAccount(login, {headers: {Authorization: token, "If-Match": etag}}).then(res => {
+                dispatchNotificationSuccess({message: i18n.t('accountBlockSuccess')})
+            }).catch(err => {
+                if (err.response != null) {
+                    if (err.response.status === 403) {
+                        history.push("/errors/forbidden")
+                    } else if (err.response.status === 500) {
+                        history.push("/errors/internal")
+                    }
                 }
-            }
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+                dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            })
         })
     }
 
     const unblockAccount = (login) => {
-        api.unblockAccount(login, {headers: {Authorization: token}}).then(res => {
-            dispatchNotificationSuccess({message: i18n.t('accountUnblockSuccess')})
-        }).catch(err => {
-            if (err.response != null) {
-                if (err.response.status === 403) {
-                    history.push("/errors/forbidden")
-                } else if (err.response.status === 500) {
-                    history.push("/errors/internal")
+        getEtag(login).then(etag => {
+            api.unblockAccount(login, {headers: {Authorization: token, "If-Match": etag}}).then(res => {
+                dispatchNotificationSuccess({message: i18n.t('accountUnblockSuccess')})
+            }).catch(err => {
+                if (err.response != null) {
+                    if (err.response.status === 403) {
+                        history.push("/errors/forbidden")
+                    } else if (err.response.status === 500) {
+                        history.push("/errors/internal")
+                    }
                 }
-            }
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-        })
+                dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            })
+        });
     }
 
     const subHeaderComponentMemo = React.useMemo(() => {

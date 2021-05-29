@@ -48,6 +48,12 @@ function UserInfo(props) {
                         lastSuccessfulLoginDate: dateConverter(res.data.lastSuccessfulLoginDate.slice(0, -5))
                     });
                 }
+                else if (res.data.lastFailedLoginDate !== undefined){
+                    setData({
+                        ...res.data,
+                        lastFailedLoginDate: dateConverter(res.data.lastFailedLoginDate.slice(0, -5))
+                    });
+                }
                 else {
                     setData(
                         res.data

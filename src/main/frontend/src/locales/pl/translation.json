@@ -240,6 +240,7 @@
   "logout.success": "Pomyślnie wylogowano",
   "request.error.login401": "Błąd autoryzacji",
   "request.error.token401": "Żeton wygasł",
-  "otherUserDetailsTitle": "Dane konta innego użytkownika"
+  "otherUserDetailsTitle": "Dane konta innego użytkownika",
 
+  "register.successfulEmailInfo": "Konto zostało zarejestrowane. Aktywuj konto poprzez link aktywacyjny wysłany na pocztę"
 }

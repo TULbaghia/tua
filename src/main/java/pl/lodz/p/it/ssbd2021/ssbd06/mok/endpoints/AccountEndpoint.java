@@ -170,9 +170,13 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("editOtherPassword")
     public void changeOtherPassword(PasswordChangeOtherDto passwordChangeOtherDto) throws AppBaseException {
-        Account account = accountManager.findByLogin(passwordChangeOtherDto.getLogin());
-        pendingCodeManager.sendResetPassword(account.getEmail());
-        accountManager.changePassword(account, passwordChangeOtherDto.getGivenPassword());
+        Account editAccount = accountManager.findByLogin(passwordChangeOtherDto.getLogin());
+        AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(editAccount);
+        if (!verifyIntegrity(accountIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+        pendingCodeManager.sendResetPassword(editAccount.getEmail());
+        accountManager.changePassword(editAccount, passwordChangeOtherDto.getGivenPassword());
     }
 
     @Override

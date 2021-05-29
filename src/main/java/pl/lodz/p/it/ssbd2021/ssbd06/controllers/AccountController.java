@@ -306,6 +306,7 @@ public class AccountController extends AbstractController {
      */
     @PUT
     @RolesAllowed("editOtherPassword")
+    @EtagValidatorFilterBinding
     @Path("/user/password")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changeOtherPassword(@NotNull @Valid PasswordChangeOtherDto passwordChangeOtherDto) throws AppBaseException {

@@ -8,6 +8,7 @@ import {Link} from "react-router-dom";
 import {api} from "../Api";
 import {useHistory, useLocation} from "react-router";
 import {dateConverter} from "../i18n";
+import {useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
 
 function OtherUserInfo(props) {
     const {t, i18n} = props;
@@ -26,6 +27,7 @@ function OtherUserInfo(props) {
     });
 
     const [roles, setRoles] = useState("");
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
 
     React.useEffect(() => {
         handleDataFetch();
@@ -147,6 +149,7 @@ function OtherUserInfo(props) {
                     }}>{t("userDetailsEditBtn")}</Button>
                     <Button className="btn-primary" onClick={event => {
                         handleDataFetch()
+                        dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
                     }}>{t("refresh")}</Button>
                 </div>
             </Container>

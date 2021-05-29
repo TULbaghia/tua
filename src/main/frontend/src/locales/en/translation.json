@@ -240,5 +240,6 @@
   "logout.success": "Logout success",
   "request.error.token401": "Token expired",
   "otherUserDetailsTitle": "Other account details",
-  "register.successfulEmailInfo": "Account registered. Email has been sent to confirm your account"
+  "register.successfulEmailInfo": "Account registered. Email has been sent to confirm your account",
+  "dataRefresh": "Data has been refreshed"
 }

@@ -23,6 +23,7 @@ import {Button} from "react-bootstrap";
 import {rolesConstant} from "../../Constants";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import {api} from "../../Api";
+import i18n from "../../i18n";
 
 function EditOtherAccountForm({t, i18n}) {
     const dispatchNotification = useNotificationCustom();
@@ -267,6 +268,7 @@ function EditOtherAccountForm({t, i18n}) {
                         <Button className="btn btn-secondary my-2"
                                 style={{backgroundColor: "#7749F8", width: "20%", margin: "auto"}} onClick={event => {
                             handleDataFetch()
+                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
                         }}>{t("refresh")}</Button>
                         <div style={{color: "#7749F8", fontSize: 14, marginBottom: "0.5rem"}}>
                             {t('obligatoryFields')}

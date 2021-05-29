@@ -219,6 +219,7 @@ function UserList(props) {
                         }).catch(err => {
                             ResponseErrorHandler(err, dispatchNotificationDanger)
                         })
+                        dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
                     }}>{t("refresh")}</Button>
                 </div>
                 <DataTable className={"rounded-0"}

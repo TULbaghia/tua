@@ -47,12 +47,22 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("blockAccount")
     public void blockAccount(String login) throws AppBaseException {
+        Account account = accountManager.findByLogin(login);
+        AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(account);
+        if (!verifyIntegrity(accountIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
         accountManager.blockAccount(login);
     }
 
     @Override
     @RolesAllowed("unblockAccount")
     public void unblockAccount(String login) throws AppBaseException {
+        Account account = accountManager.findByLogin(login);
+        AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(account);
+        if (!verifyIntegrity(accountIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
         accountManager.unblockAccount(login);
     }
 

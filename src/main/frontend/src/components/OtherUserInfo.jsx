@@ -3,17 +3,17 @@ import {withNamespaces} from "react-i18next";
 import {Button, Container} from "react-bootstrap";
 import "../css/UserInfo.css";
 import {useLocale} from "./LoginContext";
-
 import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {api} from "../Api";
-import {useHistory} from "react-router";
+import {useHistory, useLocation} from "react-router";
 import {dateConverter} from "../i18n";
 
-function UserInfo(props) {
+function OtherUserInfo(props) {
     const {t, i18n} = props;
     const history = useHistory();
     const {token, setToken} = useLocale();
+    const location = useLocation();
     const [data, setData] = useState({
         login: "",
         email: "",
@@ -35,31 +35,15 @@ function UserInfo(props) {
         if (token) {
             getUser().then(res => {
                 console.log(res.data);
-                if (res.data.lastFailedLoginDate !== undefined && res.data.lastSuccessfulLoginDate !== undefined) {
-                    setData({
-                        ...res.data,
-                        lastSuccessfulLoginDate: dateConverter(res.data.lastSuccessfulLoginDate.slice(0, -5)),
-                        lastFailedLoginDate: dateConverter(res.data.lastFailedLoginDate.slice(0, -5))
-                    });
-                }
-                else if (res.data.lastSuccessfulLoginDate !== undefined){
-                    setData({
-                        ...res.data,
-                        lastSuccessfulLoginDate: dateConverter(res.data.lastSuccessfulLoginDate.slice(0, -5))
-                    });
-                }
-                else if (res.data.lastFailedLoginDate !== undefined){
-                    setData({
-                        ...res.data,
-                        lastFailedLoginDate: dateConverter(res.data.lastFailedLoginDate.slice(0, -5))
-                    });
-                }
-                else {
-                    setData(
-                        res.data
-                    );
-                }
+                let failedDate = res.data.lastFailedLoginDate ? dateConverter(res.data.lastSuccessfulLoginDate.slice(0, -5)) : "";
+                let successDate = res.data.lastSuccessfulLoginDate ? dateConverter(res.data.lastFailedLoginDate.slice(0, -5)) : "";
+                setData({
+                    ...res.data,
+                    lastSuccessfulLoginDate: successDate,
+                    lastFailedLoginDate: failedDate,
+                });
             }).catch(err => {
+                console.log(err);
                 if (err.response != null) {
                     if (err.response.status === 403) {
                         history.push("/errors/forbidden");
@@ -90,21 +74,24 @@ function UserInfo(props) {
     }
 
     const getUser = async () => {
-        return await api.showAccountInformation({headers: {Authorization: token}});
+        return await api.showAccount(location.state.login, {headers: {Authorization: token}});
     }
 
     const getRoles = async () => {
-        return await api.getSelfRole({headers: {Authorization: token}});
+        return await api.getUserRole(location.state.login, {headers: {Authorization: token}});
     }
 
     return (
         <div className="container">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
-                <li className="breadcrumb-item active" aria-current="page">{t('accountInfo')}</li>
+                <li className="breadcrumb-item"><Link to="/">{t('adminDashboard')}</Link></li>
+                <li className="breadcrumb-item active" aria-current="page"><Link
+                    to="/accounts">{t('accountList')}</Link></li>
+                <li className="breadcrumb-item active" aria-current="page">{t('otherUserDetailsTitle')}</li>
             </BreadCrumb>
             <Container className="main-wrapper floating-box">
-                <h1>{t("userDetailsTitle")}</h1>
+                <h1>{t("otherUserDetailsTitle")}</h1>
                 <table>
                     <thead/>
                     <tbody>
@@ -167,4 +154,4 @@ function UserInfo(props) {
     );
 }
 
-export default withNamespaces()(UserInfo);
+export default withNamespaces()(OtherUserInfo);

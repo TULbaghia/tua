@@ -93,10 +93,10 @@
   "landingPageRight": "Going on holiday? Leave your pet with us!",
   "landingPageTitle": "Book today!",
   "language": "Language",
-  "lastFailedLoginDate": "Data ostatniego niepoprawnego logowania",
-  "lastFailedLoginIpAddress": "Adres ostatniego niepoprawnego logowania",
-  "lastSuccessfulLoginAddress": "Adres ostatniego poprawnego logowania",
-  "lastSuccessfulLoginDate": "Data ostatniego poprawnego logowania",
+  "lastFailedLoginDate": "Last failed login date",
+  "lastFailedLoginIpAddress": "Last failed login IP address",
+  "lastSuccessfulLoginAddress": "Last successful login IP address",
+  "lastSuccessfulLoginDate": "Last successful login date",
   "logging": "Logging",
   "login": "Login",
   "mainPage": "Main page",
@@ -238,5 +238,6 @@
   "server.no_response": "No response from server",
   "axios.configuration.error": "Axios configuration error",
   "logout.success": "Logout success",
-  "request.error.token401": "Token expired"
+  "request.error.token401": "Token expired",
+  "otherUserDetailsTitle": "Other account details"
 }

@@ -74,7 +74,8 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @PermitAll
     public void updateValidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
-        accountManager.updateValidAuth(login, ipAddress, authDate);
+        String lang = servletRequest.getLocale().toString();
+        accountManager.updateValidAuth(login, ipAddress, authDate, lang);
     }
 
     @Override

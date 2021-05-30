@@ -98,7 +98,7 @@
   "edit": "Edytuj",
   "details": "Szczegóły",
   "add": "Dodaj",
-  "accountBlockSuccess": "Pomyślnie zablkowano konto użytkownika",
+  "accountBlockSuccess": "Pomyślnie zablokowano konto użytkownika",
   "accountUnblockSuccess": "Pomyślnie odblokowano konto użytkownika",
   "unlocked": "Odblokowane",
   "active": "Aktywne",
@@ -245,5 +245,7 @@
   "register.successfulEmailInfo": "Konto zostało zarejestrowane. Aktywuj konto poprzez link aktywacyjny wysłany na pocztę",
 
   "exception.role_exception.account_not_confirmed": "Próba edycji roli niepotwierdzonego użytkownika",
-  "dataRefresh": "Dane zostały odświeżone"
+  "dataRefresh": "Dane zostały odświeżone",
+
+  "concurrent_operation": "Napotkano konflikt podczas wykonywania operacji"
 }

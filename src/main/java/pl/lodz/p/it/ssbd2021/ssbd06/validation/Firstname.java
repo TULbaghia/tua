@@ -15,10 +15,10 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {})
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Size(min = 3, max = 31, message = "{validation.firstname.size}")
-@Pattern(regexp = RegularExpression.FIRSTNAME, message = "{validation.firstname.pattern}")
+@Size(min = 3, max = 31, message = "validation.firstname.size")
+@Pattern(regexp = RegularExpression.FIRSTNAME, message = "validation.firstname.pattern")
 public @interface Firstname {
-    String message() default "{validation.firstname.pattern}";
+    String message() default "validation.firstname.pattern";
 
     Class<?>[] groups() default {};
 

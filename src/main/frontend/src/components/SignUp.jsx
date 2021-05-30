@@ -18,7 +18,6 @@ import {v4} from "uuid";
 import {Form, Formik} from "formik";
 import GridItemInput from "./controls/GridInputItem"
 import '../css/overlay.css'
-import 'bootstrap/dist/css/bootstrap.css';
 
 function SignUp(props) {
     const {t, i18n} = props

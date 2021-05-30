@@ -9,6 +9,7 @@ import {api} from "../Api";
 import {useHistory, useLocation} from "react-router";
 import {dateConverter} from "../i18n";
 import queryString from 'query-string';
+import {useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
 
 function OtherUserInfo(props) {
     const {t, i18n} = props;
@@ -28,12 +29,14 @@ function OtherUserInfo(props) {
     });
 
     const [roles, setRoles] = useState("");
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
 
     React.useEffect(() => {
         handleDataFetch();
     }, []);
 
-    const handleDataFetch = () => {
+    const handleDataFetch = (firstTime = true) => {
+        let firstGet = false
         if (token) {
             getUser().then(res => {
                 console.log(res.data);
@@ -44,6 +47,7 @@ function OtherUserInfo(props) {
                     lastSuccessfulLoginDate: successDate,
                     lastFailedLoginDate: failedDate,
                 });
+                firstGet = true;
             }).catch(err => {
                 console.log(err);
                 if (err.response != null) {
@@ -63,6 +67,9 @@ function OtherUserInfo(props) {
                 }
                 data = data.slice(0, data.length - 2)
                 setRoles(data);
+                if (firstGet && !firstTime) {
+                    dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                }
             }).catch(err => {
                 if (err.response != null) {
                     if (err.response.status === 403) {
@@ -148,7 +155,7 @@ function OtherUserInfo(props) {
                         history.push('/editOtherAccount?login=' + parsedQuery.login)
                     }}>{t("userDetailsEditBtn")}</Button>
                     <Button className="btn-primary" onClick={event => {
-                        handleDataFetch()
+                        handleDataFetch(false)
                     }}>{t("refresh")}</Button>
                 </div>
             </Container>

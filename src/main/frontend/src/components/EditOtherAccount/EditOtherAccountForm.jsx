@@ -22,7 +22,6 @@ import Tabs from "react-bootstrap/Tabs";
 import {Button} from "react-bootstrap";
 import {rolesConstant} from "../../Constants";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
-import {api} from "../../Api";
 import queryString from "query-string";
 
 function EditOtherAccountForm({t, i18n}) {
@@ -54,10 +53,11 @@ function EditOtherAccountForm({t, i18n}) {
         handleDataFetch();
     }, []);
 
-    const handleDataFetch = () => {
+    const handleDataFetch = (firstTime = true) => {
+        let etagsGet = false
         if (token) {
-            getEtag(parsedQuery.login).then(r => setETag(r));
-            getEtagRole(parsedQuery.login).then(r => setETagRole(r));
+            getEtag(parsedQuery.login).then(r => {setETag(r); etagsGet = true;});
+            getEtagRole(parsedQuery.login).then(r => {setETagRole(r); if (etagsGet) {etagsGet = true;}});
             getRoles().then(res => {
                 console.log(res.data);
                 let data = "";
@@ -67,6 +67,9 @@ function EditOtherAccountForm({t, i18n}) {
                 }
                 data = data.slice(0, data.length - 2)
                 setRoles(data);
+                if (etagsGet && !firstTime) {
+                    dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                }
             }).catch(err => {
                 if (err.response != null) {
                     if (err.response.status === 403) {
@@ -268,7 +271,7 @@ function EditOtherAccountForm({t, i18n}) {
                         <h3 className="h3 mb-0.5">{t('userEdit')}: {parsedQuery.login}</h3>
                         <Button className="btn btn-secondary my-2"
                                 style={{backgroundColor: "#7749F8", width: "20%", margin: "auto"}} onClick={event => {
-                            handleDataFetch()
+                            handleDataFetch(false)
                         }}>{t("refresh")}</Button>
                         <div style={{color: "#7749F8", fontSize: 14, marginBottom: "0.5rem"}}>
                             {t('obligatoryFields')}

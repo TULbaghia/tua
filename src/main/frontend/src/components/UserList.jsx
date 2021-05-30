@@ -232,6 +232,7 @@ function UserList(props) {
                         getAllAccounts().then(res => {
                             setData(res.data);
                             setFilterText('')
+                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
                         }).catch(err => {
                             ResponseErrorHandler(err, dispatchNotificationDanger)
                         })

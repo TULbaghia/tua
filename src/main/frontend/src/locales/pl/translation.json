@@ -244,5 +244,6 @@
 
   "register.successfulEmailInfo": "Konto zostało zarejestrowane. Aktywuj konto poprzez link aktywacyjny wysłany na pocztę",
 
-  "exception.role_exception.account_not_confirmed": "Próba edycja roli niepotwierdzonego użytkownika"
+  "exception.role_exception.account_not_confirmed": "Próba edycji roli niepotwierdzonego użytkownika",
+  "dataRefresh": "Dane zostały odświeżone"
 }

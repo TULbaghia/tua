@@ -184,7 +184,7 @@ function UserList(props) {
                         }
                     }
                     dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-                });
+                }).finally(() => fetchData());
             }
         })
     }
@@ -206,7 +206,7 @@ function UserList(props) {
                         }
                     }
                     dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-                })
+                }).finally(() => fetchData());
             }
         });
     }

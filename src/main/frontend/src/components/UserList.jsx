@@ -171,7 +171,7 @@ function UserList(props) {
         getUserData(login).then(res => {
             let userData = data.filter(x => x.login === login)[0];
             if(res.data.enabled !== userData.enabled) {
-                dispatchNotificationDanger({message: i18n.t("exception.database_query_exception.database_query_exception")})
+                dispatchNotificationDanger({message: i18n.t("exception.database_query_exception.concurrent_operation")})
             } else {
                 api.blockAccount(login, {headers: {Authorization: token, "If-Match": res.headers.etag}}).then(res => {
                     dispatchNotificationSuccess({message: i18n.t('accountBlockSuccess')})
@@ -193,7 +193,7 @@ function UserList(props) {
         getUserData(login).then(res => {
             let userData = data.filter(x => x.login === login)[0];
             if(res.data.enabled !== userData.enabled) {
-                dispatchNotificationDanger({message: i18n.t("exception.database_query_exception.database_query_exception")})
+                dispatchNotificationDanger({message: i18n.t("exception.database_query_exception.concurrent_operation")})
             } else {
                 api.unblockAccount(login, {headers: {Authorization: token, "If-Match": res.headers.etag}}).then(res => {
                     dispatchNotificationSuccess({message: i18n.t('accountUnblockSuccess')})

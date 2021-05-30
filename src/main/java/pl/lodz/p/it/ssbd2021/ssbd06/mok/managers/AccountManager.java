@@ -205,11 +205,12 @@ public class AccountManager {
      * @throws AppBaseException gdy nie udało się zaktualizować danych
      */
     @PermitAll
-    public void updateValidAuth(String login, String ipAddress, Date authDate) throws AppBaseException {
+    public void updateValidAuth(String login, String ipAddress, Date authDate, String lang) throws AppBaseException {
         Account account = accountFacade.findByLogin(login);
         account.setLastSuccessfulLoginIpAddress(ipAddress);
         account.setLastSuccessfulLoginDate(authDate);
         account.setFailedLoginAttemptsCounter(0);
+        account.setLanguage(lang.substring(0, 2));
 
         accountFacade.edit(account);
     }

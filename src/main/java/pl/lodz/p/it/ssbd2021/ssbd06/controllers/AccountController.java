@@ -46,6 +46,7 @@ public class AccountController extends AbstractController {
      */
     @PUT
     @RolesAllowed("blockAccount")
+    @EtagValidatorFilterBinding
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
     public void blockAccount(@NotNull @Login @PathParam("login") @Valid String login)
@@ -61,6 +62,7 @@ public class AccountController extends AbstractController {
      */
     @PUT
     @RolesAllowed("unblockAccount")
+    @EtagValidatorFilterBinding
     @Path("/{login}/unblock")
     @Consumes(MediaType.APPLICATION_JSON)
     public void unblockAccount(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {

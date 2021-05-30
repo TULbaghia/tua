@@ -43,7 +43,9 @@ function App() {
             const roles = decodeJwt['roles'].split(',');
             const login = decodeJwt['sub'];
             setRoles(roles);
-            setCurrentRole(roles[0])
+            if(localStorage.getItem('currentRole') === null) {
+                setCurrentRole(roles[0])
+            }
             setUsername(login)
             localStorage.setItem('username', login)
         }

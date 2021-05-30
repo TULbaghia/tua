@@ -4,7 +4,7 @@ import {useLocale} from "../LoginContext";
 import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
-import {api} from "../../Api";
+import {api, buildApi} from "../../Api";
 import {Form, Formik} from 'formik';
 import "../../css/Login.css"
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
@@ -62,6 +62,7 @@ function Login(props) {
 
     const handleSubmit = async (values, setSubmitting) => {
         try {
+            const api = buildApi(i18n.language);
             const res = await api.login({
                 login: values.login,
                 password: values.password

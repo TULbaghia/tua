@@ -53,6 +53,10 @@ public class RoleManager {
             throw NotFoundException.accountNotFound();
         }
 
+        if (!account.isConfirmed()) {
+            throw RoleException.accountNotConfirmed();
+        }
+
         Role role = account.getRoleList().stream()
                 .filter(x -> accessLevel.equals(x.getAccessLevel()))
                 .findFirst()
@@ -81,6 +85,10 @@ public class RoleManager {
 
         if (account == null) {
             throw NotFoundException.accountNotFound();
+        }
+
+        if (!account.isConfirmed()) {
+            throw RoleException.accountNotConfirmed();
         }
 
         Set<AccessLevel> grantedRoles = account.getRoleList()

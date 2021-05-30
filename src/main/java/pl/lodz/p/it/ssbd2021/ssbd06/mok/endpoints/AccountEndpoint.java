@@ -86,26 +86,24 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("editOwnAccountDetails")
     public void editOwnAccountDetails(AccountPersonalDetailsDto accountPersonalDetailsDto) throws AppBaseException {
-        processEditDetails(getLogin(), accountPersonalDetailsDto);
+        Account editAccount = accountManager.findByLogin(getLogin());
+        AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(editAccount);
+        if (!verifyIntegrity(accountIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+        Mappers.getMapper(IAccountMapper.class).toAccount(accountPersonalDetailsDto, editAccount);
+        accountManager.editAccountDetails(editAccount);
     }
 
     @Override
     @RolesAllowed("editOtherAccountDetails")
     public void editOtherAccountDetails(String login, AccountPersonalDetailsDto accountPersonalDetailsDto)
             throws AppBaseException {
-        processEditDetails(login, accountPersonalDetailsDto);
-    }
-
-    @RolesAllowed({"editOwnAccountDetails", "editOtherAccountDetails"})
-    @TransactionAttribute(TransactionAttributeType.MANDATORY)
-    private void processEditDetails(String login, AccountPersonalDetailsDto accountPersonalDetailsDto)
-            throws AppBaseException {
         Account editAccount = accountManager.findByLogin(login);
         AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(editAccount);
         if (!verifyIntegrity(accountIntegrity)) {
             throw AppOptimisticLockException.optimisticLockException();
         }
-
         Mappers.getMapper(IAccountMapper.class).toAccount(accountPersonalDetailsDto, editAccount);
         accountManager.editAccountDetails(editAccount);
     }

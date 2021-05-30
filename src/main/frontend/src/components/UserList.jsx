@@ -13,6 +13,7 @@ import {
 } from "./Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
+import { useThemeColor } from './Utils/ThemeColor/ThemeColorProvider';
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -28,6 +29,7 @@ function UserList(props) {
     const history = useHistory()
     const {token, setToken} = useLocale();
     const [filterText, setFilterText] = React.useState('');
+    const themeColor = useThemeColor()
     const [data, setData] = useState([
         {
             login: "",
@@ -243,6 +245,7 @@ function UserList(props) {
                     columns={columns}
                     data={filteredItems}
                     subHeader
+                    theme={themeColor}
                     subHeaderComponent={subHeaderComponentMemo}
                 />
             </div>

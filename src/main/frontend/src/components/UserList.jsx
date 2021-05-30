@@ -34,11 +34,10 @@ function UserList(props) {
             email: "",
             firstname: "",
             lastname: "",
-            unlocked: false,
+            enabled: true,
             active: false,
         }
     ]);
-    const [etag, setEtag] = useState();
     const dispatchDialog = useDialogPermanentChange();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
@@ -159,46 +158,56 @@ function UserList(props) {
         return await api.getAllAccountsList({headers: {Authorization: token}})
     }
 
-    const getEtag = async (login) => {
+    const getUserData = async (login) => {
         const response = await api.showAccount(login, {
             method: "GET",
             headers: {
                 Authorization: token,
             }})
-        return response.headers.etag;
+        return response;
     };
 
     const blockAccount = (login) => {
-        getEtag(login).then(etag => {
-            api.blockAccount(login, {headers: {Authorization: token, "If-Match": etag}}).then(res => {
-                dispatchNotificationSuccess({message: i18n.t('accountBlockSuccess')})
-            }).catch(err => {
-                if (err.response != null) {
-                    if (err.response.status === 403) {
-                        history.push("/errors/forbidden")
-                    } else if (err.response.status === 500) {
-                        history.push("/errors/internal")
+        getUserData(login).then(res => {
+            let dataEnabled = data.filter(x => x.login === login)[0];
+            if(res.data.enabled !== dataEnabled.enabled) {
+                dispatchNotificationDanger({message: i18n.t("exception.database_query_exception.database_query_exception")})
+            } else {
+                api.blockAccount(login, {headers: {Authorization: token, "If-Match": res.headers.etag}}).then(res => {
+                    dispatchNotificationSuccess({message: i18n.t('accountBlockSuccess')})
+                }).catch(err => {
+                    if (err.response != null) {
+                        if (err.response.status === 403) {
+                            history.push("/errors/forbidden")
+                        } else if (err.response.status === 500) {
+                            history.push("/errors/internal")
+                        }
                     }
-                }
-                dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-            })
+                    dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+                });
+            }
         })
     }
 
     const unblockAccount = (login) => {
-        getEtag(login).then(etag => {
-            api.unblockAccount(login, {headers: {Authorization: token, "If-Match": etag}}).then(res => {
-                dispatchNotificationSuccess({message: i18n.t('accountUnblockSuccess')})
-            }).catch(err => {
-                if (err.response != null) {
-                    if (err.response.status === 403) {
-                        history.push("/errors/forbidden")
-                    } else if (err.response.status === 500) {
-                        history.push("/errors/internal")
+        getUserData(login).then(res => {
+            let dataEnabled = data.filter(x => x.login === login)[0];
+            if(res.data.enabled !== dataEnabled.enabled) {
+                dispatchNotificationDanger({message: i18n.t("exception.database_query_exception.database_query_exception")})
+            } else {
+                api.unblockAccount(login, {headers: {Authorization: token, "If-Match": res.headers.etag}}).then(res => {
+                    dispatchNotificationSuccess({message: i18n.t('accountUnblockSuccess')})
+                }).catch(err => {
+                    if (err.response != null) {
+                        if (err.response.status === 403) {
+                            history.push("/errors/forbidden")
+                        } else if (err.response.status === 500) {
+                            history.push("/errors/internal")
+                        }
                     }
-                }
-                dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-            })
+                    dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+                })
+            }
         });
     }
 

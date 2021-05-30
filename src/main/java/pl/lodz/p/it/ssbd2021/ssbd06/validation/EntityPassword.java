@@ -16,6 +16,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Size(min=8, max=64, message = "validation.password.size")
+@Pattern(regexp = RegularExpression.PASSWORD_HEX, message = "validation.password.hex_pattern")
 public @interface EntityPassword {
     String message() default "validation.password.size";
 

@@ -115,7 +115,7 @@ public class AccountManager {
      */
     @PermitAll
     public void register(Account account) throws AppBaseException {
-        account.setPassword(new PasswordHasher().generate(account.getPassword().toCharArray()));
+        account.setPassword(PasswordHasher.generate(account.getPassword()));
         account.setEnabled(true);
         account.setConfirmed(false);
         account.setCreatedBy(account);

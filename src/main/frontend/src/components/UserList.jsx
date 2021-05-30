@@ -216,10 +216,10 @@ function UserList(props) {
                         getAllAccounts().then(res => {
                             setData(res.data);
                             setFilterText('')
+                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
                         }).catch(err => {
                             ResponseErrorHandler(err, dispatchNotificationDanger)
                         })
-                        dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
                     }}>{t("refresh")}</Button>
                 </div>
                 <DataTable className={"rounded-0"}

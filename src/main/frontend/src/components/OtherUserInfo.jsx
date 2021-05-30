@@ -33,7 +33,8 @@ function OtherUserInfo(props) {
         handleDataFetch();
     }, []);
 
-    const handleDataFetch = () => {
+    const handleDataFetch = (firstTime = true) => {
+        let firstGet = false
         if (token) {
             getUser().then(res => {
                 console.log(res.data);
@@ -44,6 +45,7 @@ function OtherUserInfo(props) {
                     lastSuccessfulLoginDate: successDate,
                     lastFailedLoginDate: failedDate,
                 });
+                firstGet = true;
             }).catch(err => {
                 console.log(err);
                 if (err.response != null) {
@@ -63,6 +65,9 @@ function OtherUserInfo(props) {
                 }
                 data = data.slice(0, data.length - 2)
                 setRoles(data);
+                if (firstGet == true && firstTime != true) {
+                    dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                }
             }).catch(err => {
                 if (err.response != null) {
                     if (err.response.status === 403) {
@@ -148,8 +153,7 @@ function OtherUserInfo(props) {
                         history.push("/editOwnAccount")
                     }}>{t("userDetailsEditBtn")}</Button>
                     <Button className="btn-primary" onClick={event => {
-                        handleDataFetch()
-                        dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                        handleDataFetch(false)
                     }}>{t("refresh")}</Button>
                 </div>
             </Container>

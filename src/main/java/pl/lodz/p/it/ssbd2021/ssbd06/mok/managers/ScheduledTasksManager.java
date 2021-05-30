@@ -12,6 +12,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
@@ -45,9 +46,10 @@ public class ScheduledTasksManager extends AbstractEndpoint {
     /**
      * Usuwa konta użytkowników nie potwierdzonych
      *
-     * @param time
+     * @param time czas z zegara stworzonego przez EJB
      * @throws AppBaseException w przypadku gdy operacja zakończy się niepowodzeniem
      */
+    @PermitAll
     public void deleteUnverifiedAccounts(Timer time) throws AppBaseException{
         int confirmationCodeExpirationTime = Integer
                 .parseInt(context.getInitParameter("accountConfirmationCodeExpirationTime"));
@@ -91,8 +93,10 @@ public class ScheduledTasksManager extends AbstractEndpoint {
      * W przypadku, gdy żeton zmiany email nie został użyty przez ponad 2 godziny od momentu utworzenia,
      * następuje usunięcie żetonu.
      *
-     * @param time
+     * @param time czas z zegara stworzonego przez EJB
+     * @throws AppBaseException w przypadku gdy operacja zakończy się niepowodzeniem
      */
+    @PermitAll
     public void sendRepeatedEmailChange(Timer time) throws AppBaseException {
         int emailChangeCodeExpirationTime = Integer
                 .parseInt(context.getInitParameter("emailChangeCodeExpirationTime"));

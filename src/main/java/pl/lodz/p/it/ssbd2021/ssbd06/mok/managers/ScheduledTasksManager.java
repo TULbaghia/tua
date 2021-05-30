@@ -7,18 +7,16 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.CodeType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.PendingCodeFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.Resource;
-import javax.annotation.security.RunAs;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.ServletContext;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
@@ -27,12 +25,11 @@ import java.util.logging.Level;
 /**
  * Odpowiada za przetwarzanie logiki biznesowej dotyczącej działań wykonywanych w konkretnym momencie czasu przez system.
  */
-@Startup
-@Singleton
+@Stateful
 @Interceptors({LoggingInterceptor.class})
 @Log
-@RunAs("System")
-public class ScheduledTasksManager {
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+public class ScheduledTasksManager extends AbstractEndpoint {
 
     @Resource
     TimerService timerService;
@@ -51,9 +48,7 @@ public class ScheduledTasksManager {
      * @param time
      * @throws AppBaseException w przypadku gdy operacja zakończy się niepowodzeniem
      */
-    @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    private void deleteUnverifiedAccounts(Timer time) {
+    public void deleteUnverifiedAccounts(Timer time) throws AppBaseException{
         int confirmationCodeExpirationTime = Integer
                 .parseInt(context.getInitParameter("accountConfirmationCodeExpirationTime"));
         int confirmationCodeHalfOfExpirationTime = confirmationCodeExpirationTime / 2;
@@ -98,9 +93,7 @@ public class ScheduledTasksManager {
      *
      * @param time
      */
-    @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny")
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    private void sendRepeatedEmailChange(Timer time) {
+    public void sendRepeatedEmailChange(Timer time) throws AppBaseException {
         int emailChangeCodeExpirationTime = Integer
                 .parseInt(context.getInitParameter("emailChangeCodeExpirationTime"));
         Instant expirationInstant = Instant.now().minus(emailChangeCodeExpirationTime, ChronoUnit.HOURS);

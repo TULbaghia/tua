@@ -54,13 +54,13 @@
   "reservation": "Rezerwacja",
   "cities": "Miasta",
   "userDetailsTitle": "Moje konto",
-  "userDetailsFirstname": "Imie",
+  "userDetailsFirstname": "Imię",
   "userDetailsLastname": "Nazwisko",
   "userDetailsEmail": "Adres email",
   "userDetailsLogin": "Login",
   "userDetailsContactNumber": "Numer telefonu",
   "userDetailsRoles": "Role",
-  "userDetailsEditBtn": "Edytuj Dane",
+  "userDetailsEditBtn": "Edytuj dane",
   "userDetailsPasswordChangeBtn": "Zmień hasło",
   "dialog.permanent_change.title": "Trwała zmiana danych",
   "dialog.permanent_change.message": "Zmiana, którą próbujesz dokonać trwale modyfikuje dane. \n Czy jesteś tego pewny?",
@@ -242,5 +242,8 @@
   "request.error.token401": "Żeton wygasł",
   "otherUserDetailsTitle": "Dane konta innego użytkownika",
 
-  "register.successfulEmailInfo": "Konto zostało zarejestrowane. Aktywuj konto poprzez link aktywacyjny wysłany na pocztę"
+  "register.successfulEmailInfo": "Konto zostało zarejestrowane. Aktywuj konto poprzez link aktywacyjny wysłany na pocztę",
+
+  "exception.role_exception.account_not_confirmed": "Próba edycji roli niepotwierdzonego użytkownika",
+  "dataRefresh": "Dane zostały odświeżone"
 }

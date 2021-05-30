@@ -90,7 +90,7 @@ function LanguageSwitcher(props) {
         <>
             <Dropdown>
                 <DropdownToggle id="dropdown-basic" className="dropButton" variant="Info">
-                    <span style={{marginRight: "10px"}}>{i18n.t("language")} [{i18n.language.toUpperCase()}]</span>
+                    <span style={{marginRight: "10px"}}>{i18n.t("language")} [{i18n.language.substring(0, 2).toUpperCase()}]</span>
                 </DropdownToggle>
 
                 <Dropdown.Menu>

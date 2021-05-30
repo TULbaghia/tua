@@ -8,12 +8,15 @@ import {Link} from "react-router-dom";
 import {api} from "../Api";
 import {useHistory, useLocation} from "react-router";
 import {dateConverter} from "../i18n";
+import queryString from 'query-string';
+import {useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
 
 function OtherUserInfo(props) {
     const {t, i18n} = props;
     const history = useHistory();
     const {token, setToken} = useLocale();
     const location = useLocation();
+    const parsedQuery = queryString.parse(location.search);
     const [data, setData] = useState({
         login: "",
         email: "",
@@ -26,22 +29,25 @@ function OtherUserInfo(props) {
     });
 
     const [roles, setRoles] = useState("");
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
 
     React.useEffect(() => {
         handleDataFetch();
     }, []);
 
-    const handleDataFetch = () => {
+    const handleDataFetch = (firstTime = true) => {
+        let firstGet = false
         if (token) {
             getUser().then(res => {
                 console.log(res.data);
-                let failedDate = res.data.lastFailedLoginDate ? dateConverter(res.data.lastSuccessfulLoginDate.slice(0, -5)) : "";
-                let successDate = res.data.lastSuccessfulLoginDate ? dateConverter(res.data.lastFailedLoginDate.slice(0, -5)) : "";
+                let failedDate = res.data.lastFailedLoginDate ? dateConverter(res.data.lastFailedLoginDate.slice(0, -5)) : "";
+                let successDate = res.data.lastSuccessfulLoginDate ? dateConverter(res.data.lastSuccessfulLoginDate.slice(0, -5)) : "";
                 setData({
                     ...res.data,
                     lastSuccessfulLoginDate: successDate,
                     lastFailedLoginDate: failedDate,
                 });
+                firstGet = true;
             }).catch(err => {
                 console.log(err);
                 if (err.response != null) {
@@ -61,6 +67,9 @@ function OtherUserInfo(props) {
                 }
                 data = data.slice(0, data.length - 2)
                 setRoles(data);
+                if (firstGet && !firstTime) {
+                    dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                }
             }).catch(err => {
                 if (err.response != null) {
                     if (err.response.status === 403) {
@@ -74,11 +83,11 @@ function OtherUserInfo(props) {
     }
 
     const getUser = async () => {
-        return await api.showAccount(location.state.login, {headers: {Authorization: token}});
+        return await api.showAccount(parsedQuery.login, {headers: {Authorization: token}});
     }
 
     const getRoles = async () => {
-        return await api.getUserRole(location.state.login, {headers: {Authorization: token}});
+        return await api.getUserRole(parsedQuery.login, {headers: {Authorization: token}});
     }
 
     return (
@@ -143,10 +152,10 @@ function OtherUserInfo(props) {
                 </table>
                 <div className="main-wrapper-actions-container">
                     <Button className="btn-primary" onClick={event => {
-                        history.push("/editOwnAccount")
+                        history.push('/editOtherAccount?login=' + parsedQuery.login)
                     }}>{t("userDetailsEditBtn")}</Button>
                     <Button className="btn-primary" onClick={event => {
-                        handleDataFetch()
+                        handleDataFetch(false)
                     }}>{t("refresh")}</Button>
                 </div>
             </Container>

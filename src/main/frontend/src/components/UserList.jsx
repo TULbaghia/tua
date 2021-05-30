@@ -34,7 +34,7 @@ function UserList(props) {
             email: "",
             firstname: "",
             lastname: "",
-            unlocked: false,
+            enabled: true,
             active: false,
         }
     ]);
@@ -114,14 +114,8 @@ function UserList(props) {
             cell: row => {
                 return (
                     <Button className="btn-sm" onClick={event => {
-                        history.push({
-                            pathname: '/editOtherAccount',
-                            state: {
-                                login: row.login,
-                            }
-                        })
-                    }
-                    }>{t("edit")}</Button>
+                        history.push('/editOtherAccount?login=' + row.login);
+                    }}>{t("edit")}</Button>
                 )
             },
         },
@@ -131,12 +125,7 @@ function UserList(props) {
             cell: row => {
                 return(
                     <Button className="btn-sm" onClick={event => {
-                        history.push({
-                            pathname: '/accounts/userInfo',
-                            state: {
-                                login: row.login,
-                            }
-                        })
+                        history.push('/accounts/userInfo?login=' + row.login);
                     }}>{t('details')}</Button>
                 )
             }
@@ -144,6 +133,10 @@ function UserList(props) {
     ];
 
     useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
         if (token) {
             getAllAccounts().then(r => {
                 console.log(r);
@@ -159,40 +152,63 @@ function UserList(props) {
                 console.log(r)
             });
         }
-    }, []);
+    }
 
     const getAllAccounts = async () => {
         return await api.getAllAccountsList({headers: {Authorization: token}})
     }
 
+    const getUserData = async (login) => {
+        const response = await api.showAccount(login, {
+            method: "GET",
+            headers: {
+                Authorization: token,
+            }})
+        return response;
+    };
+
     const blockAccount = (login) => {
-        api.blockAccount(login, {headers: {Authorization: token}}).then(res => {
-            dispatchNotificationSuccess({message: i18n.t('accountBlockSuccess')})
-        }).catch(err => {
-            if (err.response != null) {
-                if (err.response.status === 403) {
-                    history.push("/errors/forbidden")
-                } else if (err.response.status === 500) {
-                    history.push("/errors/internal")
-                }
+        getUserData(login).then(res => {
+            let userData = data.filter(x => x.login === login)[0];
+            if(res.data.enabled !== userData.enabled) {
+                dispatchNotificationDanger({message: i18n.t("exception.database_query_exception.database_query_exception")})
+            } else {
+                api.blockAccount(login, {headers: {Authorization: token, "If-Match": res.headers.etag}}).then(res => {
+                    dispatchNotificationSuccess({message: i18n.t('accountBlockSuccess')})
+                }).catch(err => {
+                    if (err.response != null) {
+                        if (err.response.status === 403) {
+                            history.push("/errors/forbidden")
+                        } else if (err.response.status === 500) {
+                            history.push("/errors/internal")
+                        }
+                    }
+                    dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+                }).finally(() => fetchData());
             }
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
         })
     }
 
     const unblockAccount = (login) => {
-        api.unblockAccount(login, {headers: {Authorization: token}}).then(res => {
-            dispatchNotificationSuccess({message: i18n.t('accountUnblockSuccess')})
-        }).catch(err => {
-            if (err.response != null) {
-                if (err.response.status === 403) {
-                    history.push("/errors/forbidden")
-                } else if (err.response.status === 500) {
-                    history.push("/errors/internal")
-                }
+        getUserData(login).then(res => {
+            let userData = data.filter(x => x.login === login)[0];
+            if(res.data.enabled !== userData.enabled) {
+                dispatchNotificationDanger({message: i18n.t("exception.database_query_exception.database_query_exception")})
+            } else {
+                api.unblockAccount(login, {headers: {Authorization: token, "If-Match": res.headers.etag}}).then(res => {
+                    dispatchNotificationSuccess({message: i18n.t('accountUnblockSuccess')})
+                }).catch(err => {
+                    if (err.response != null) {
+                        if (err.response.status === 403) {
+                            history.push("/errors/forbidden")
+                        } else if (err.response.status === 500) {
+                            history.push("/errors/internal")
+                        }
+                    }
+                    dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+                }).finally(() => fetchData());
             }
-            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-        })
+        });
     }
 
     const subHeaderComponentMemo = React.useMemo(() => {
@@ -216,6 +232,7 @@ function UserList(props) {
                         getAllAccounts().then(res => {
                             setData(res.data);
                             setFilterText('')
+                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
                         }).catch(err => {
                             ResponseErrorHandler(err, dispatchNotificationDanger)
                         })

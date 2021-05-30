@@ -15,10 +15,10 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {})
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Size(min = 1, max = 128, message = "{validation.pencode.size}")
-@Pattern(regexp = RegularExpression.PENDING_CODE, message = "{validation.pencode.pattern}")
+@Size(min = 1, max = 128, message = "validation.pencode.size")
+@Pattern(regexp = RegularExpression.PENDING_CODE, message = "validation.pencode.pattern")
 public @interface PenCode {
-    String message() default "{validation.pencode.size}";
+    String message() default "validation.pencode.size";
 
     Class<?>[] groups() default {};
 

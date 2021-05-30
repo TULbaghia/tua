@@ -89,7 +89,7 @@ public class Account extends AbstractEntity implements Serializable {
 
     @Setter
     @NotNull
-    @Password
+    @EntityPassword
     @Column(name = "password", nullable = false, length = 64)
     private String password;
 

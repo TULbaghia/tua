@@ -15,10 +15,10 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {})
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Size(min = 6, max = 127, message = "{validation.email.size}")
-@Email(message = "{validation.email.pattern}")
+@Size(min = 6, max = 127, message = "validation.email.size")
+@Email(message = "validation.email.pattern")
 public @interface UserEmail {
-    String message() default "{validation.email.pattern}";
+    String message() default "validation.email.pattern";
 
     Class<?>[] groups() default {};
 

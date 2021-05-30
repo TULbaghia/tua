@@ -61,7 +61,7 @@ export const validateLogin = (data) => {
 export const validatePassword = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 8, 64));
-    // errors.push(patternValidator(data, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$/));
+    errors.push(patternValidator(data, /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,64}$/));
     return errors.filter(err => err !== undefined);
 }
 

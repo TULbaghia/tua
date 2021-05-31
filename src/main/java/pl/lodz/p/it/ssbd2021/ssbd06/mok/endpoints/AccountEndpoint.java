@@ -180,18 +180,17 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     @Override
     @RolesAllowed("editOwnAccountEmail")
     public void editOwnAccountEmail(EmailDto emailDto) throws AppBaseException {
-        editAccountEmail(emailDto, getLogin());
+        Account editAccount = accountManager.findByLogin(getLogin());
+        AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(editAccount);
+        if (!verifyIntegrity(accountIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+        accountManager.editAccountEmail(getLogin(), emailDto.getNewEmail());
     }
 
     @Override
     @RolesAllowed("editOtherAccountEmail")
     public void editOtherAccountEmail(EmailDto emailDto, String login) throws AppBaseException {
-        editAccountEmail(emailDto, login);
-    }
-
-    @RolesAllowed({"editOwnAccountEmail", "editOtherAccountEmail"})
-    @TransactionAttribute(TransactionAttributeType.MANDATORY)
-    private void editAccountEmail(EmailDto emailDto, String login) throws AppBaseException {
         Account editAccount = accountManager.findByLogin(login);
         AccountDto accountIntegrity = Mappers.getMapper(IAccountMapper.class).toAccountDto(editAccount);
         if (!verifyIntegrity(accountIntegrity)) {

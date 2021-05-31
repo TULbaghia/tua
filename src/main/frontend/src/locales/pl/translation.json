@@ -247,5 +247,5 @@
   "exception.role_exception.account_not_confirmed": "Próba edycji roli niepotwierdzonego użytkownika",
   "dataRefresh": "Dane zostały odświeżone",
 
-  "concurrent_operation": "Napotkano konflikt podczas wykonywania operacji"
+  "exception.database_query_exception.concurrent_operation": "Napotkano konflikt podczas wykonywania operacji"
 }

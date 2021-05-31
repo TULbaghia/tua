@@ -209,7 +209,7 @@
   "editOtherAccountForm.error.email.length": "Email should contains 6 to 127 digits",
   "editOtherAccountForm.error.email.pattern": "Entered data are not email",
   "editOtherAccountForm.password.error.length": "Password should contains 8 to 64 digits",
-  "editOtherAccountForm.password.match": "Passwords do not match",
+  "editOtherAccountForm.password.error.match": "Passwords do not match",
   "editOtherAccountForm.password.required": "New password is required",
   "editOtherAccountForm.password.repeated.required": "Repeated new password is required",
   "editOtherAccountForm.firstname.error.required": "First name is required",

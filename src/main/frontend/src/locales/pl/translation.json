@@ -165,7 +165,7 @@
   "exception.runtime.config": "Wystąpił problem z configiem",
   "exception.runtime.jwt": "Wystąpił błąd powiązany z żetonem JWT",
   "exception.convert.ip": "Błąd podczas konwersji adresu IP",
-  "exception.database_query_exception.database_query_exception": "Wystąpił problem z wykonaniem kwerendy",
+  "exception.database_query_exception.database_query_exception": "Encja została zmieniona",
   "exception.not_found_exception.account_not_found": "Nie znaleziono konta",
   "exception.not_found_exception.pending_code_not_found": "Nie znaleziono kodu",
   "exception.auth_validation.invalid_credentials": "Nieprawidłowe dane logowania",

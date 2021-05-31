@@ -120,12 +120,17 @@ public class AccountException extends AppBaseException {
     /**
      * Tworzy wyjątek reprezentujący niepowodzenie zmiany koloru szablonu, ze względu, że zmiana już istnieje.
      *
-     * @return wyjątek Account Exception
+     * @return wyjątek AccountException
      */
     public static AccountException themeAlreadySet() {
         return new AccountException(ACCOUNT_THEME_ALREADY_SET);
     }
 
+    /**
+     * Tworzy wyjątek reprezentujący niepowodzenie zmiany języka przypisanego do konta użytkownika, ze względu na to, że żądany język jest już ustawiony.
+     *
+     * @return wyjątek AccountException
+     */
     public static AccountException languageAlreadySet(){
         return new AccountException(ACCOUNT_LANGUAGE_ALREADY_SET);
     }

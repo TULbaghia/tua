@@ -38,19 +38,21 @@ export const LoginProvider = ({children}) => {
 
     const refreshToken = (event) => {
         event.target.closest(".alert").querySelector(".close").click();
-        axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/auth/refresh-token`, localStorage.getItem("token"), {
-            headers: {
-                "Authorization": `${localStorage.getItem("token")}`
-            }
-        }).then(response => {
-            saveToken("Bearer " + response.data);
-            clearTimeout(localStorage.getItem("timeoutId2") ?? 0)
-            clearTimeout(localStorage.getItem("timeoutId3") ?? 0)
-            schedule()
-            dispatchNotificationSuccess({message: i18n.t('tokenRefreshSuccess')})
-        }).catch(
-            e => ResponseErrorHandler(e, dispatchDangerNotification)
-        );
+        if (localStorage.getItem("token")) {
+            axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/auth/refresh-token`, localStorage.getItem("token"), {
+                headers: {
+                    "Authorization": `${localStorage.getItem("token")}`
+                }
+            }).then(response => {
+                saveToken("Bearer " + response.data);
+                clearTimeout(localStorage.getItem("timeoutId2") ?? 0)
+                clearTimeout(localStorage.getItem("timeoutId3") ?? 0)
+                schedule()
+                dispatchNotificationSuccess({message: i18n.t('tokenRefreshSuccess')})
+            }).catch(
+                e => ResponseErrorHandler(e, dispatchDangerNotification)
+            );
+        }
     }
 
     const schedule = () => {

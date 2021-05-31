@@ -244,5 +244,5 @@
   "exception.role_exception.account_not_confirmed": "Cannot edit role of unconfirmed account",
   "dataRefresh": "Data has been refreshed",
 
-  "concurrent_operation": "Error encountered during operation execution"
+  "exception.database_query_exception.concurrent_operation": "Error encountered during operation execution"
 }

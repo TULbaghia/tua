@@ -228,7 +228,6 @@ public interface AccountEndpointLocal extends CallingClass {
      */
     void changeThemeColor(ThemeColor themeColor) throws AppBaseException;
 
-
     /**
      * Zwraca listę wszystkich nieprzypisanych managerów systemu.
      *

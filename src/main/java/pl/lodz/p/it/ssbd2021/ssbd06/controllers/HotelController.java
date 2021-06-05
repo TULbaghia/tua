@@ -31,8 +31,9 @@ public class HotelController extends AbstractController {
      */
     @GET
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public HotelDto get(@PathParam("id") Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return repeat(() -> hotelEndpoint.get(id), hotelEndpoint);
     }
 
     /**
@@ -119,7 +120,7 @@ public class HotelController extends AbstractController {
     @RolesAllowed("addManagerToHotel")
     @Path("/add/{managerLogin}/{hotelId}")
     public void addManagerToHotel(@PathParam("hotelId") Long hotelId, @PathParam("managerLogin") String managerLogin) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> hotelEndpoint.addManagerToHotel(hotelId, managerLogin), hotelEndpoint);
     }
 
     /**

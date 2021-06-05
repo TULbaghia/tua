@@ -227,4 +227,14 @@ public interface AccountEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     void changeThemeColor(ThemeColor themeColor) throws AppBaseException;
+
+
+    /**
+     * Zwraca listę wszystkich nieprzypisanych managerów systemu.
+     *
+     * @return lista użytkowników w formie DTO
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getAllManagers")
+    List<AccountManagerDto> getAllManagers() throws AppBaseException;
 }

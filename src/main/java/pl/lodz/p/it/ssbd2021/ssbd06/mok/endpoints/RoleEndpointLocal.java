@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.ManagerDataDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.RolesDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
@@ -52,4 +53,14 @@ public interface RoleEndpointLocal extends CallingClass {
      */
     @RolesAllowed("getOwnAccountInfo")
     RolesDto getUserRole() throws AppBaseException;
+
+    /**
+     * Zwraca informacje o hotelu przypisanym do managera
+     *
+     * @param login identyfikator użytkownika
+     * @return dto zawierające nazwę hotelu
+     * @throws AppBaseException gdy nie udało się pobrać danych
+     */
+    @RolesAllowed("getManagerData")
+    ManagerDataDto getManagerData(String login) throws AppBaseException;
 }

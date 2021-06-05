@@ -37,7 +37,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @Override
     @PermitAll
     public HotelDto get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return Mappers.getMapper(IHotelMapper.class).toHotelDto(hotelManager.get(id));
     }
 
     @Override
@@ -86,7 +86,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @Override
     @RolesAllowed("addManagerToHotel")
     public void addManagerToHotel(Long hotelId, String managerLogin) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        hotelManager.addManagerToHotel(hotelId, managerLogin);
     }
 
     @Override

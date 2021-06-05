@@ -59,8 +59,18 @@ function HotelList(props) {
 
     const deleteHotel = (id) => (
         getHotelData(id).then(res => {
-
-        }
+                api.deleteHotel(id, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: token,
+                        "If-Match": etag
+                    }
+                }).then((res) => {
+                    dispatchNotificationSuccess({message: i18n.t('hotelDelete.success')})
+                }).catch(err => {
+                    ResponseErrorHandler(err, dispatchNotificationDanger);
+                }).finally(() => fetchData());
+            }
         )
     )
 

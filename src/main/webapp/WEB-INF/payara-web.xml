@@ -121,6 +121,16 @@
     </security-role-mapping>
 
     <security-role-mapping>
+        <role-name>getManagerData</role-name>
+        <group-name>ADMIN</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>getAllManagers</role-name>
+        <group-name>ADMIN</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
         <role-name>addHotel</role-name>
         <group-name>ADMIN</group-name>
     </security-role-mapping>

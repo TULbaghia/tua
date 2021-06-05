@@ -5,9 +5,12 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.HotelEndpointLocal;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
@@ -15,6 +18,10 @@ import java.util.List;
  */
 @Path("/hotels")
 public class HotelController extends AbstractController {
+
+    @Inject
+    private HotelEndpointLocal hotelEndpoint;
+
     /**
      * Zwraca hotel o podanym identyfikatorze
      *
@@ -35,8 +42,9 @@ public class HotelController extends AbstractController {
      * @return lista dto hoteli
      */
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public List<HotelDto> getAll() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return repeat(() -> hotelEndpoint.get(id), hotelEndpoint);
     }
 
     /**

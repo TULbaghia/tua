@@ -44,7 +44,7 @@ public class HotelController extends AbstractController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<HotelDto> getAll() throws AppBaseException {
-        return repeat(() -> hotelEndpoint.get(id), hotelEndpoint);
+        return repeat(() -> hotelEndpoint.getAll(), hotelEndpoint);
     }
 
     /**

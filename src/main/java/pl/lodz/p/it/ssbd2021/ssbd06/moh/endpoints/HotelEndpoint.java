@@ -80,7 +80,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @Override
     @RolesAllowed("deleteHotel")
     public void deleteHotel(Long hotelId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        hotelManager.deleteHotel(hotelId);
     }
 
     @Override

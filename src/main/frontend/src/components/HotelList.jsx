@@ -77,7 +77,7 @@ function HotelList(props) {
     const handleDeleteHotel = id => {
         dispatchDialog({
             callbackOnSave: () => {
-               deleteHotel(id)
+                deleteHotel(id)
             },
         })
     }
@@ -257,20 +257,20 @@ function HotelList(props) {
     return (
         <div className="container">
             {token !== null && token !== '' ? (
-            <BreadCrumb>
-                <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
-                {currentRole === rolesConstant.admin && (
-                    <li className="breadcrumb-item"><Link to="/">{t('adminDashboard')}</Link></li>
-                )}
-                {currentRole === rolesConstant.manager && (
-                    <li className="breadcrumb-item"><Link to="/">{t('managerDashboard')}</Link></li>
-                )}
-                {currentRole === rolesConstant.client && (
-                    <li className="breadcrumb-item"><Link to="/">{t('userDashboard')}</Link></li>
-                )}
-                <li className="breadcrumb-item active" aria-current="page">{t('hotelList')}</li>
-            </BreadCrumb>
-                ) : (
+                <BreadCrumb>
+                    <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
+                    {currentRole === rolesConstant.admin && (
+                        <li className="breadcrumb-item"><Link to="/">{t('adminDashboard')}</Link></li>
+                    )}
+                    {currentRole === rolesConstant.manager && (
+                        <li className="breadcrumb-item"><Link to="/">{t('managerDashboard')}</Link></li>
+                    )}
+                    {currentRole === rolesConstant.client && (
+                        <li className="breadcrumb-item"><Link to="/">{t('userDashboard')}</Link></li>
+                    )}
+                    <li className="breadcrumb-item active" aria-current="page">{t('hotelList')}</li>
+                </BreadCrumb>
+            ) : (
                 <BreadCrumb>
                     <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                     <li className="breadcrumb-item active" aria-current="page">{t('hotelList')}</li>
@@ -289,9 +289,9 @@ function HotelList(props) {
                         })
                     }}>{t("refresh")}</Button>
                     {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
-                    <Button className="btn-primary float-right m-2" onClick={event => {
-                        history.push('/addHotel');
-                    }}>{t("addHotel")}</Button>
+                        <Button className="btn-primary float-right m-2" onClick={event => {
+                            history.push('/addHotel');
+                        }}>{t("addHotel")}</Button>
                     ) : ( null )}
                 </div>
                 {token === null || token === '' ? (
@@ -305,11 +305,11 @@ function HotelList(props) {
                 ) : ( null )}
                 {token !== null && token !== '' && currentRole === rolesConstant.client ? (
                     <DataTable className={"rounded-0"}
-                                noDataComponent={i18n.t('table.no.result')}
-                                columns={guestColumns}
-                                data={filteredItems}
-                                subHeader
-                                theme={themeColor}
+                               noDataComponent={i18n.t('table.no.result')}
+                               columns={guestColumns}
+                               data={filteredItems}
+                               subHeader
+                               theme={themeColor}
                     />
                 ) : ( null )}
                 {token !== null && token !== '' && currentRole === rolesConstant.manager ? (

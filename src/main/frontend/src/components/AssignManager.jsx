@@ -168,14 +168,16 @@ function AssignManager(props) {
                         })
                     }}>{t("refresh")}</Button>
                 </div>
-                <DataTable className={"rounded-0"}
-                           noDataComponent={i18n.t('table.no.result')}
-                           columns={columns}
-                           data={filteredItems}
-                           subHeader
-                           theme={themeColor}
-                           subHeaderComponent={subHeaderComponentMemo}
-                />
+                {data.length == 0 ?
+                    <div className="float-left">{t("emptyListManager")}</div>
+                : <DataTable className={"rounded-0"}
+                             noDataComponent={i18n.t('table.no.result')}
+                             columns={columns}
+                             data={filteredItems}
+                             subHeader
+                             theme={themeColor}
+                             subHeaderComponent={subHeaderComponentMemo}
+                    /> }
             </Container>
         </div>
     );

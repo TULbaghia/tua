@@ -39,9 +39,9 @@ VALUES (-1, now(), null, 1, 'Super perspektywy', 'Łódź', -1, null),
 -- Inicjalizacja hoteli
 INSERT INTO hotel (id, creation_date, modification_date, version, address, name, rating, created_by, modified_by, city_id)
 VALUES (-1, now(), null, 1, 'Papieska 21/37', 'Klatkowo', 4.0, -1, null, -1),
-       (-2, now(), null, 1, 'Zbrodniarzy 3', 'Zwierzogród', 1.0, -1, null, -1),
-       (-3, now(), null, 1, 'Kredytowa 69', 'Pet-Land', 1.0, -1, null, -2),
-       (-4, now(), null, 1, 'Mickiewicza 1', 'Zwierzex', 1.0, -1, null, -2);
+       (-2, now(), null, 1, 'Zbrodniarzy 3', 'Zwierzogród', null, -1, null, -1),
+       (-3, now(), null, 1, 'Kredytowa 69', 'Pet-Land', null, -1, null, -2),
+       (-4, now(), null, 1, 'Mickiewicza 1', 'Zwierzex', null, -1, null, -2);
 
 -- Inicjalizacja tabel szczegółowych rozszerzających role
 INSERT INTO admin_data (id)

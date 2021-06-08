@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 
 /**
- * Reprezentuje błąd dotyczący encji Account
+ * Reprezentuje błąd dotyczący encji Hotel
  */
 public class HotelException extends AppBaseException {
     private static final String DELETE_HOTEL_HAS_MANAGER = "exception.delete.hotel.has_manager";

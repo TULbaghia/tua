@@ -56,22 +56,7 @@ function HotelList(props) {
             }})
         setETag(response.headers.etag);
     };
-
-    const deleteHotel = (id) => (
-        getHotelData(id).then(res => {
-
-        }
-        )
-    )
-
-    const handleDeleteHotel = id => {
-        dispatchDialog({
-            callbackOnSave: () => {
-               deleteHotel(id)
-            },
-        })
-    }
-
+    
     const guestColumns = [
         {
             name: t('hotelName'),
@@ -188,15 +173,6 @@ function HotelList(props) {
                     <Button className="btn-sm" onClick={event => {
                         history.push('/hotels/assignManager?id=' + row.id);
                     }}>{t("assign")}</Button>
-                )
-            },
-        },
-        {
-            name: t('delete'),
-            selector: 'delete',
-            cell: row => {
-                return (
-                    <Button className="btn-sm" onClick={() => handleDeleteHotel(row.id)}>{t("delete")}</Button>
                 )
             },
         },

@@ -28,7 +28,8 @@ import java.util.Set;
 @NamedQueries({
     @NamedQuery(name = "Box.findAll", query = "SELECT b FROM Box b"),
     @NamedQuery(name = "Box.findById", query = "SELECT b FROM Box b WHERE b.id = :id"),
-    @NamedQuery(name = "Box.findByPricePerDay", query = "SELECT b FROM Box b WHERE b.pricePerDay = :pricePerDay")})
+    @NamedQuery(name = "Box.findByPricePerDay", query = "SELECT b FROM Box b WHERE b.pricePerDay = :pricePerDay"),
+    @NamedQuery(name = "Box.getCountsOfFreeBoxesInHotel", query = "SELECT b FROM Box b WHERE b.hotel.id = :hotel_id AND b NOT IN (SELECT r.bookingLineList FROM Booking r WHERE r.dateFrom < :dateTo AND :dateFrom < r.dateTo )")})
 @NoArgsConstructor
 public class Box extends AbstractEntity implements Serializable {
 

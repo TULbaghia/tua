@@ -18,6 +18,7 @@ public class NewBookingDto {
 
     private Date dateFrom;
     private Date dateTo;
+    private Long hotelId;
 
     @Data
     static class MicroBoxes {

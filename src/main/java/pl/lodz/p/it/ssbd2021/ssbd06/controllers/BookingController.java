@@ -3,8 +3,11 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BookingEndpointLocal;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import java.util.List;
 
@@ -13,6 +16,10 @@ import java.util.List;
  */
 @Path("/bookings")
 public class BookingController extends AbstractController {
+
+    @Inject
+    private BookingEndpointLocal bookingEndpoint;
+
     /**
      * Zwraca wskazaną rezerwację:
      * - Dla managera dozwolone rezerwacja w jego hotelu,
@@ -61,9 +68,10 @@ public class BookingController extends AbstractController {
      * @throws AppBaseException podczas problemu z tworzeniem rezerwacji
      */
     @POST
-    @RolesAllowed("bookReservation")
+//    @RolesAllowed("bookReservation")
+    @PermitAll
     public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> bookingEndpoint.addBooking(bookingDto), bookingEndpoint);
     }
 
     /**

@@ -3,12 +3,17 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingLineFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.List;
 
@@ -19,6 +24,13 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class BookingManager {
+
+    @Inject
+    private BookingFacade bookingFacade;
+    @Inject
+    private BoxFacade boxFacade;
+    @Inject
+    private BookingLineFacade bookingLineFacade;
 
     /**
      * Zwraca wskazaną rezerwację:
@@ -62,9 +74,12 @@ public class BookingManager {
      *
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed("bookReservation")
-    void addBooking(NewBookingDto bookingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+//    @RolesAllowed("bookReservation")
+    @PermitAll
+    public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
+        // get counts for all types
+        // select box ids
+        // save booking and booking lines
     }
 
     /**

@@ -17,6 +17,7 @@ import java.util.List;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Interceptors({LoggingInterceptor.class})
+
 public class BoxFacade extends AbstractFacade<Box> {
 
     @PersistenceContext(unitName = "ssbd06mohPU")
@@ -71,5 +72,10 @@ public class BoxFacade extends AbstractFacade<Box> {
     @Override
     public int count() throws AppBaseException {
         return super.count();
+    }
+
+    @PermitAll
+    public void getCountsOfFreeBoxesInHotel(long hotelId){
+        em.createNamedQuery("Box.getCountsOfFreeBoxesInHotel");
     }
 }

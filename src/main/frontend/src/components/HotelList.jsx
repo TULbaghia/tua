@@ -54,7 +54,7 @@ function HotelList(props) {
             headers: {
                 Authorization: token,
             }})
-        setETag(response.headers.etag);
+        return response;
     };
 
     const deleteHotel = (id) => (
@@ -63,7 +63,7 @@ function HotelList(props) {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: token,
-                        "If-Match": etag
+                        "If-Match": res.headers.etag
                     }
                 }).then((res) => {
                     dispatchNotificationSuccess({message: i18n.t('hotelDelete.success')})

@@ -3,13 +3,16 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.CityFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +22,10 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class CityManager {
+
+    @Inject
+    private CityFacade cityFacade;
+
     /**
      * Zwraca miasto o podanym identyfikatorze
      *
@@ -37,8 +44,8 @@ public class CityManager {
      * @return lista miast
      */
     @RolesAllowed("getAllCities")
-    List<City> getAll() throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<City> getAll() throws AppBaseException {
+        return new ArrayList<>(cityFacade.findAll());
     }
 
     /**

@@ -46,8 +46,8 @@ public class HotelManager {
      * @return encja hotelu
      */
     @PermitAll
-    Hotel get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public Hotel get(Long id) throws AppBaseException {
+        return hotelFacade.find(id);
     }
 
     /**

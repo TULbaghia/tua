@@ -136,17 +136,6 @@ function HotelList(props) {
             selector: 'rating'
         },
         {
-            name: t('edit'),
-            selector: 'edit',
-            cell: row => {
-                return (
-                    <Button className="btn-sm" onClick={event => {
-                        history.push('/editHotel?id=' + row.id);
-                    }}>{t("edit")}</Button>
-                )
-            },
-        },
-        {
             name: t('details'),
             selector: 'details',
             cell: row => {

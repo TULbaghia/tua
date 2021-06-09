@@ -54,7 +54,7 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
 
     @DenyAll
     @Override
-    public ManagerData find(Object id) {
+    public ManagerData find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

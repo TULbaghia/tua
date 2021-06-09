@@ -118,7 +118,10 @@
         <role-name>deleteHotel</role-name>
     </security-role>
     <security-role>
-        <role-name>updateHotel</role-name>
+        <role-name>updateOwnHotel</role-name>
+    </security-role>
+    <security-role>
+        <role-name>updateOtherHotel</role-name>
     </security-role>
     <security-role>
         <role-name>addManagerToHotel</role-name>

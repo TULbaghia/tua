@@ -131,8 +131,12 @@
     </security-role-mapping>
 
     <security-role-mapping>
-        <role-name>updateHotel</role-name>
+        <role-name>updateOwnHotel</role-name>
         <group-name>MANAGER</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>updateOtherHotel</role-name>
         <group-name>ADMIN</group-name>
     </security-role-mapping>
 

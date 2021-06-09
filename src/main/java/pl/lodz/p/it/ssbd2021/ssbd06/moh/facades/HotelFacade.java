@@ -5,12 +5,15 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.HotelException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -33,9 +36,24 @@ public class HotelFacade extends AbstractFacade<Hotel> {
         super(Hotel.class);
     }
 
+    /**
+     * Wyszukuje Hotel o podanej nazwie.
+     *
+     * @param name nazwa hotelu.
+     * @return wyszukiwany Hotel.
+     * @throws AppBaseException gdy nie udało się pobrać danych.
+     */
     @PermitAll
-    public Hotel findByName(String name){
-        throw new UnsupportedOperationException();
+    public Hotel findByName(String name) throws AppBaseException {
+        try {
+            TypedQuery<Hotel> hotelQuery = em.createNamedQuery("Hotel.findByName", Hotel.class);
+            hotelQuery.setParameter("name", name);
+            return hotelQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw NotFoundException.hotelNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
     }
 
     @PermitAll
@@ -52,7 +70,14 @@ public class HotelFacade extends AbstractFacade<Hotel> {
     @PermitAll
     @Override
     public void edit(Hotel entity) throws AppBaseException {
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (ConstraintViolationException e) {
+            if (e.getCause().getMessage().contains(Hotel.HOTEL_NAME_CONSTRAINT)) {
+                throw HotelException.hotelNameExists(e.getCause());
+            }
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
     @PermitAll
@@ -63,7 +88,7 @@ public class HotelFacade extends AbstractFacade<Hotel> {
 
     @PermitAll
     @Override
-    public Hotel find(Object id) {
+    public Hotel find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

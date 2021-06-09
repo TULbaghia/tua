@@ -1,11 +1,13 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.ManagerDataFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
@@ -13,7 +15,9 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -23,17 +27,18 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class HotelManager {
-    /**
-     * Zwraca hotel o podanym identyfikatorze
-     *
-     * @param id identyfikator hotelu
-     * @throws AppBaseException podczas błędu związanego z bazą danych
-     * @return encja hotelu
-     */
-    @PermitAll
-    Hotel get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
-    }
+
+    @Inject
+    private HotelFacade hotelFacade;
+
+    @Inject
+    private AccountFacade accountFacade;
+
+    @Inject
+    private ManagerDataFacade managerDataFacade;
+
+    @Inject
+    private HttpServletRequest servletRequest;
 
     /**
      * Zwraca listę hoteli
@@ -83,12 +88,14 @@ public class HotelManager {
     /**
      * Modyfikuje hotel
      *
-     * @param hotelDto dto z danymi hotelu
+     * @param hotel obiekt hotelu ze zmodyfikowanymi danymi.
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed("updateHotel")
-    void updateHotel(UpdateHotelDto hotelDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @RolesAllowed({"updateOwnHotel", "updateOtherHotel"})
+    public void updateHotel(Hotel hotel) throws AppBaseException {
+        Account modifier = accountFacade.findByLogin(servletRequest.getUserPrincipal().getName());
+        hotel.setModifiedBy(modifier);
+        hotelFacade.edit(hotel);
     }
 
     /**
@@ -136,5 +143,29 @@ public class HotelManager {
     @RolesAllowed("generateReport")
     GenerateReportDto generateReport(Long hotelId, String from, String to) throws AppBaseException {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Zwraca hotel o podanym identyfikatorze
+     *
+     * @param id identyfikator hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     * @return encja hotelu
+     */
+    @PermitAll
+    public Hotel findHotelById(Long id) throws AppBaseException {
+        return hotelFacade.find(id);
+    }
+
+    /**
+     * Wyszukuje Hotel przypisany do Managera o podanym id.
+     *
+     * @param login Managera.
+     * @return wyszukiwany Hotel.
+     * @throws AppBaseException gdy nie udało się pobrać danych.
+     */
+    @PermitAll
+    public Hotel findHotelByManagerLogin(String login) throws AppBaseException {
+        return managerDataFacade.findHotelByManagerId(login);
     }
 }

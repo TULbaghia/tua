@@ -65,15 +65,6 @@ public interface HotelEndpointLocal extends CallingClass {
     void addHotel(NewHotelDto hotelDto) throws AppBaseException;
 
     /**
-     * Modyfikuje hotel
-     *
-     * @param hotelDto dto z danymi hotelu
-     * @throws AppBaseException podczas błędu związanego z bazą danych
-     */
-    @RolesAllowed("updateHotel")
-    void updateHotel(UpdateHotelDto hotelDto) throws AppBaseException;
-
-    /**
      * Usuwa hotel
      *
      * @param hotelId identyfikator hotelu
@@ -111,4 +102,23 @@ public interface HotelEndpointLocal extends CallingClass {
      */
     @RolesAllowed("generateReport")
     GenerateReportDto generateReport(Long hotelId, String from, String to) throws AppBaseException;
+
+    /**
+     * Modyfikuje hotel managera.
+     *
+     * @param hotelDto dto z danymi hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @RolesAllowed("updateOwnHotel")
+    void updateOwnHotel(UpdateHotelDto hotelDto) throws AppBaseException;
+
+    /**
+     * Modyfikuje dowolny hotel.
+     *
+     * @param id identyfikator hotelu.
+     * @param hotelDto dto z danymi hotelu.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @RolesAllowed("updateOtherHotel")
+    void updateOtherHotel(Long id, UpdateHotelDto hotelDto) throws AppBaseException;
 }

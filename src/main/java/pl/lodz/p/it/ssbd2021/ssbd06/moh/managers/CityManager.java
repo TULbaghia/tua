@@ -3,12 +3,16 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.CityFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.List;
 
@@ -19,6 +23,10 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class CityManager {
+
+    @Inject
+    private CityFacade cityFacade;
+
     /**
      * Zwraca miasto o podanym identyfikatorze
      *
@@ -72,5 +80,17 @@ public class CityManager {
     @RolesAllowed("deleteCity")
     void deleteCity(Long cityId) throws AppBaseException {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Wyszukuje obiekt City o podanej nazwie.
+     *
+     * @param name nazwa miasta.
+     * @return wyszukiwane miasto.
+     * @throws AppBaseException gdy nie udało się pobrać danych
+     */
+    @PermitAll
+    public City findByName(String name) throws AppBaseException {
+        return cityFacade.findByName(name);
     }
 }

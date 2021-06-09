@@ -5,9 +5,14 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.HotelEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
@@ -15,6 +20,10 @@ import java.util.List;
  */
 @Path("/hotels")
 public class HotelController extends AbstractController {
+
+    @Inject
+    private HotelEndpointLocal hotelEndpointLocal;
+
     /**
      * Zwraca hotel o podanym identyfikatorze
      *
@@ -77,18 +86,6 @@ public class HotelController extends AbstractController {
     }
 
     /**
-     * Modyfikuje hotel
-     *
-     * @param hotelDto dto z danymi hotelu
-     * @throws AppBaseException podczas błędu związanego z aktualizacją hotelu
-     */
-    @PUT
-    @RolesAllowed("updateHotel")
-    public void updateHotel(UpdateHotelDto hotelDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
      * Usuwa hotel
      *
      * @param hotelId identyfikator hotelu
@@ -140,5 +137,37 @@ public class HotelController extends AbstractController {
     @Path("/raport/{hotelId}/{from}/{to}")
     public GenerateReportDto generateReport(@PathParam("hotelId") Long hotelId, @PathParam("from") String from, @PathParam("to") String to) throws AppBaseException {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Modyfikuje hotel managera.
+     *
+     * @param hotelDto dto z danymi hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @PUT
+    @Path("/edit")
+    @RolesAllowed("updateOwnHotel")
+    @EtagValidatorFilterBinding
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateOwnHotel(@Valid UpdateHotelDto hotelDto) throws AppBaseException {
+        repeat(() -> hotelEndpointLocal.updateOwnHotel(hotelDto), hotelEndpointLocal);
+    }
+
+
+    /**
+     * Modyfikuje dowolny hotel.
+     *
+     * @param id identyfikator hotelu.
+     * @param hotelDto dto z danymi hotelu.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @PUT
+    @Path("/edit/{id}")
+    @RolesAllowed("updateOtherHotel")
+    @EtagValidatorFilterBinding
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateOtherHotel(@PathParam("id") Long id, @Valid UpdateHotelDto hotelDto) throws AppBaseException {
+        repeat(() -> hotelEndpointLocal.updateOtherHotel(id, hotelDto), hotelEndpointLocal);
     }
 }

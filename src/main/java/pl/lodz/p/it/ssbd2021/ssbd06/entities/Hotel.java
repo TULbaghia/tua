@@ -53,7 +53,6 @@ public class Hotel extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @NotNull
     @Min(value = 1)
     @Max(value = 5)
     @Digits(integer = 1, fraction = 1)

@@ -13,7 +13,7 @@ VALUES (-1, now(), null, 1, true, '999888777', true, 0, 'Admin', 'pl', null, nul
         null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
        (-5, now(), null, 1, true, '543095437', true, 0, 'Dominik', 'pl', null, null, 'DARK', null, null, 'Dąbrowski', 'domino', 'domino@edu.pl',
         null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
-       (-6, now(), null, 1, true, '356897453', true, 0, 'Zbycholud', 'pl', null, null, 'DARK', null, null, 'Pakleza', 'byniolus', 'byniolus@edu.pl',
+       (-6, now(), null, 1, true, '356897453', true, 0, 'Zbigniew', 'pl', null, null, 'DARK', null, null, 'Adamczyk', 'zbadam', 'zbadam@edu.pl',
         null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
        (-7, now(), null, 1, true, '356892223', true, 0, 'Filp', 'pl', null, null, 'LIGHT', null, null, 'Bąk', 'filipino', 'filipino@edu.pl',
         null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
@@ -37,14 +37,14 @@ VALUES ('ADMIN', -1, now(), null, 1, true, -1, null, -1),
 -- Inicjalizacja miast
 INSERT INTO city (id, creation_date, modification_date, version, description, name, created_by, modified_by)
 VALUES (-1, now(), null, 1, 'Super perspektywy', 'Łódź', -1, null),
-       (-2, now(), null, 1, 'Stolica', 'Warszawa', -1, null);
+       (-2, now(), null, 1, 'Stolica Polski', 'Warszawa', -1, null);
 
 -- Inicjalizacja hoteli
 INSERT INTO hotel (id, creation_date, modification_date, version, address, name, rating, created_by, modified_by, city_id)
-VALUES (-1, now(), null, 1, 'Papieska 21/37', 'Klatkowo', 4.0, -1, null, -1),
-       (-2, now(), null, 1, 'Zbrodniarzy 3', 'Zwierzogród', null, -1, null, -1),
-       (-3, now(), null, 1, 'Kredytowa 69', 'Pet-Land', null, -1, null, -2),
-       (-4, now(), null, 1, 'Mickiewicza 1', 'Zwierzex', null, -1, null, -2);
+VALUES (-1, now(), null, 1, 'Krakowska 21', 'Pet-Land', 4.0, -1, null, -1),
+       (-2, now(), null, 1, 'Paderewskiego 3', 'Zwierzogród', null, -1, null, -1),
+       (-3, now(), null, 1, 'Kredytowa 69', 'Psy i My', null, -1, null, -2),
+       (-4, now(), null, 1, 'Mickiewicza 1', 'Jet Pet', null, -1, null, -2);
 
 -- Inicjalizacja tabel szczegółowych rozszerzających role
 INSERT INTO admin_data (id)

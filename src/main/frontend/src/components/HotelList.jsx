@@ -15,6 +15,8 @@ import {useHistory, useLocation} from "react-router";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import { useThemeColor } from './Utils/ThemeColor/ThemeColorProvider';
 import {rolesConstant} from "../Constants";
+import Input from "./EditOwnAccount/Input";
+import axios from "axios";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -32,6 +34,7 @@ function HotelList(props) {
     const [filterText, setFilterText] = React.useState('');
     const themeColor = useThemeColor()
     const [etag, setETag] = useState();
+    const [searchTerm, setSearchTerm] = React.useState('')
     const [data, setData] = useState([
         {
             id: "",
@@ -56,6 +59,31 @@ function HotelList(props) {
             }})
         setETag(response.headers.etag);
     };
+
+    const handleSearchTermChange = (event) => {
+        setSearchTerm(event.target.value)
+        if (event.target.value !== '') {
+            fetchSearchedData(event.target.value)
+        }
+        else {
+            fetchData()
+        }
+    }
+
+    const fetchSearchedData = (query) => {
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/hotels/look/${query}`)
+            .then(res => {
+                setData(res.data)
+            }).catch(res => {
+            if (res.response != null) {
+                if (res.response.status === 403) {
+                    history.push("/errors/forbidden")
+                } else if (res.response.status === 500) {
+                    history.push("/errors/internal")
+                }
+            }
+        });
+    }
     
     const guestColumns = [
         {
@@ -248,6 +276,13 @@ function HotelList(props) {
                         history.push('/addHotel');
                     }}>{t("addHotel")}</Button>
                     ) : ( null )}
+                    <input
+                        className="input float-right m-2"
+                        type="text"
+                        placeholder={t("search.hotel")}
+                        value={searchTerm}
+                        onChange={handleSearchTermChange}
+                    />
                 </div>
                 {token === null || token === '' ? (
                     <DataTable className={"rounded-0"}

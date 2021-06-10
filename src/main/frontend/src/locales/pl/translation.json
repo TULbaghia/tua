@@ -263,5 +263,6 @@
   "exception.role_exception.account_not_manager": "Wybrane konto nie posiada roli Manager",
   "assignTitle": "Przypisz managera do hotelu",
   "assignManager.success": "Manager przypisany pomyślnie",
-  "exception.hotel.has_manager": "Hotel ma już przypisanego managera"
+  "exception.hotel.has_manager": "Hotel ma już przypisanego managera",
+  "search.hotel": "Wyszukaj hotel..."
 }

@@ -39,7 +39,7 @@ public interface HotelEndpointLocal extends CallingClass {
     /**
      * MOH.6 Wyszukaj hotel
      *
-     * @param name identyfikator hotelu
+     * @param searchQuery identyfikator hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return dto hotelu
      */

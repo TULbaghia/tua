@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Endpoint odpowiadający za zarządzanie hotelami.
@@ -55,8 +56,19 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
 
     @Override
     @PermitAll
-    public HotelDto lookForHotel(String... option) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<HotelDto> lookForHotel(String searchQuery) throws AppBaseException {
+        List<Hotel> hotels = hotelManager.getAll()
+                .stream()
+                .filter(hotel -> hotel.getName().toLowerCase().contains(searchQuery.toLowerCase())
+                || hotel.getAddress().toLowerCase().contains(searchQuery.toLowerCase()))
+                .collect(Collectors.toList());
+        List<HotelDto> result = new ArrayList<>();
+        for (Hotel hotel: hotels) {
+            HotelDto hotelDto = Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
+            hotelDto.setCityName(hotel.getCity().getName());
+            result.add(hotelDto);
+        }
+        return result;
     }
 
     @Override

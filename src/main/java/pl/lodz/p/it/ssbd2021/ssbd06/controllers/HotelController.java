@@ -56,8 +56,8 @@ public class HotelController extends AbstractController {
      */
     @GET
     @Path("/look/{option}")
-    public HotelDto lookForHotel(@PathParam("option") String option) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<HotelDto> lookForHotel(@PathParam("option") String option) throws AppBaseException {
+        return repeat(() -> hotelEndpoint.lookForHotel(option), hotelEndpoint);
     }
 
     /**

@@ -185,7 +185,7 @@ create table hotel
     version           bigint        not null,
     address           varchar(63)   not null,
     name              varchar(63)   not null,
-    rating            numeric(2, 1) not null,
+    rating            numeric(2, 1),
     created_by        bigint        not null,
     modified_by       bigint,
     city_id           bigint        not null,

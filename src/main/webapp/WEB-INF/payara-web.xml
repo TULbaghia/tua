@@ -252,4 +252,14 @@
         <group-name>MANAGER</group-name>
         <group-name>ADMIN</group-name>
     </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>getOtherHotelInfo</role-name>
+        <group-name>ADMIN</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>getOwnHotelInfo</role-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
 </payara-web-app>

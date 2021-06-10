@@ -1,8 +1,12 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
+import org.mapstruct.factory.Mappers;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.ICityMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.CityEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.CityManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -10,8 +14,10 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Endpoint odpowiadający za zarządzanie miastami.
@@ -20,6 +26,10 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class CityEndpoint extends AbstractEndpoint implements CityEndpointLocal {
+
+    @Inject
+    private CityManager cityManager;
+
     @Override
     public CityDto get(Long id) throws AppBaseException {
         throw new UnsupportedOperationException();
@@ -27,8 +37,10 @@ public class CityEndpoint extends AbstractEndpoint implements CityEndpointLocal 
 
     @Override
     @RolesAllowed("getAllCities")
-    public List<CityDto> getAll() throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<CityDto> getAllCities() throws AppBaseException {
+        ICityMapper cityMapper = Mappers.getMapper(ICityMapper.class);
+        List<City> allCities = cityManager.getAll();
+        return allCities.stream().map(cityMapper::toCityDto).collect(Collectors.toList());
     }
 
     @Override

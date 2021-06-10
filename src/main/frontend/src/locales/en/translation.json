@@ -244,5 +244,22 @@
   "exception.role_exception.account_not_confirmed": "Cannot edit role of unconfirmed account",
   "dataRefresh": "Data has been refreshed",
 
-  "exception.database_query_exception.concurrent_operation": "Error encountered during operation execution"
+  "exception.database_query_exception.concurrent_operation": "Error encountered during operation execution",
+
+  "editOwnHotel.navbar.title" : "Modify hotel",
+  "generateReport.navbar.title" : "Generate report",
+
+  "modifyHotel.title" : "Hotel data modification",
+  "modifyHotel.action" : "Modify hotel",
+  "modifyHotel.modify.name" : "Hotel name",
+  "modifyHotel.modify.address" : "Hotel address",
+  "modifyHotel.modify.city" : "City",
+  "modifyHotel.error.address_required": "Address is required",
+  "modifyHotel.error.name_required": "Name is required",
+  "modifyHotel.error.city_required": "City is required",
+  "modifyHotel.modify.chooseCity": "Choose city",
+  "modifyHotel.success": "Hotel data has been successfully modified",
+  "modifyHotel.modify.info": "You are currently modifying hotel named: ",
+  "exception.hotel.name_invalid": "Hotel name exists",
+  "modifyHotel.error.id_invalid": "Hotel id is invalid"
 }

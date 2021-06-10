@@ -152,7 +152,7 @@ public class HotelManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return encja hotelu
      */
-    @PermitAll
+    @RolesAllowed({"getOtherHotelInfo", "updateOtherHotel"})
     public Hotel findHotelById(Long id) throws AppBaseException {
         return hotelFacade.find(id);
     }
@@ -164,7 +164,7 @@ public class HotelManager {
      * @return wyszukiwany Hotel.
      * @throws AppBaseException gdy nie udało się pobrać danych.
      */
-    @PermitAll
+    @RolesAllowed({"getOwnHotelInfo", "updateOwnHotel"})
     public Hotel findHotelByManagerLogin(String login) throws AppBaseException {
         return managerDataFacade.findHotelByManagerId(login);
     }

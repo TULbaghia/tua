@@ -45,8 +45,8 @@ public class CityManager {
      * @return lista miast
      */
     @RolesAllowed("getAllCities")
-    List<City> getAll() throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<City> getAll() throws AppBaseException {
+        return cityFacade.findAll();
     }
 
     /**

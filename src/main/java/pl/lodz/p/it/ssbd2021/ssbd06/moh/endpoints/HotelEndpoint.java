@@ -13,6 +13,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.HotelEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.CityManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.HotelManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -24,6 +25,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -128,5 +130,20 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
         City city = cityManager.findByName(hotelDto.getCityName());
         hotel.setCity(city);
         hotelManager.updateHotel(hotel);
+    }
+
+    @Override
+    @RolesAllowed("getOwnHotelInfo")
+    public HotelDto getOwnHotelInfo() throws AppBaseException {
+        String managerLogin = securityContext.getCallerPrincipal().getName();
+        Hotel hotel = hotelManager.findHotelByManagerLogin(managerLogin);
+        return Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
+    }
+
+    @Override
+    @RolesAllowed("getOtherHotelInfo")
+    public HotelDto getOtherHotelInfo(Long id) throws AppBaseException {
+        Hotel hotel = hotelManager.findHotelById(id);
+        return Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
     }
 }

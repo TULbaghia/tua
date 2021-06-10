@@ -247,5 +247,22 @@
   "exception.role_exception.account_not_confirmed": "Próba edycji roli niepotwierdzonego użytkownika",
   "dataRefresh": "Dane zostały odświeżone",
 
-  "exception.database_query_exception.concurrent_operation": "Napotkano konflikt podczas wykonywania operacji"
+  "exception.database_query_exception.concurrent_operation": "Napotkano konflikt podczas wykonywania operacji",
+
+  "editOwnHotel.navbar.title" : "Edytuj hotel",
+  "generateReport.navbar.title" : "Generuj raport z działalności",
+
+  "modifyHotel.title" : "Modyfikacja danych hotelu",
+  "modifyHotel.action" : "Modyfikuj hotel",
+  "modifyHotel.modify.name" : "Nazwa hotelu",
+  "modifyHotel.modify.address" : "Adres hotelu",
+  "modifyHotel.modify.city" : "Miasto",
+  "modifyHotel.error.address_required": "Adres jest wymagany",
+  "modifyHotel.error.name_required": "Nazwa jest wymagana",
+  "modifyHotel.error.city_required": "Miasto jest wymagane",
+  "modifyHotel.modify.chooseCity": "Wybierz miasto",
+  "modifyHotel.success": "Pomyślne zmodyfikowano dane hotelu",
+  "modifyHotel.modify.info": "Obecnie modyfikujesz hotel o nazwie: ",
+  "exception.hotel.name_invalid": "Podana nazwa hotelu już istnieje",
+  "modifyHotel.error.id_invalid": "Nieprawidłowe id hotelu"
 }

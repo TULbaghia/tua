@@ -6,13 +6,18 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.HotelEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -23,6 +28,9 @@ public class HotelController extends AbstractController {
 
     @Inject
     private HotelEndpointLocal hotelEndpointLocal;
+
+    @Inject
+    private MessageSigner messageSigner;
 
     /**
      * Zwraca hotel o podanym identyfikatorze
@@ -169,5 +177,42 @@ public class HotelController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateOtherHotel(@PathParam("id") Long id, @Valid UpdateHotelDto hotelDto) throws AppBaseException {
         repeat(() -> hotelEndpointLocal.updateOtherHotel(id, hotelDto), hotelEndpointLocal);
+    }
+
+    /**
+     * Zwraca dane konkretnego użytkownika.
+     *
+     * @return odpowiedź z danymi hotelu i wartością Etag.
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
+     */
+    @GET
+    @RolesAllowed("getOwnHotelInfo")
+    @Path("/info")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOwnHotelInfo() throws AppBaseException {
+        HotelDto hotelDto = repeat(() -> hotelEndpointLocal.getOwnHotelInfo(), hotelEndpointLocal);
+        return Response.ok()
+                .entity(hotelDto)
+                .header("ETag", messageSigner.sign(hotelDto))
+                .build();
+    }
+
+    /**
+     * Zwraca dane konkretnego użytkownika.
+     *
+     * @param id identyfikator hotelu.
+     * @return odpowiedź z danymi hotelu i wartością Etag.
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
+     */
+    @GET
+    @RolesAllowed("getOtherHotelInfo")
+    @Path("/info/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOtherHotelInfo(@PathParam("id") Long id) throws AppBaseException {
+        HotelDto hotelDto = repeat(() -> hotelEndpointLocal.getOtherHotelInfo(id), hotelEndpointLocal);
+        return Response.ok()
+                .entity(hotelDto)
+                .header("ETag", messageSigner.sign(hotelDto))
+                .build();
     }
 }

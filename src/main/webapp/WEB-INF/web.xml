@@ -110,6 +110,12 @@
     <security-role>
         <role-name>refreshToken</role-name>
     </security-role>
+    <security-role>
+        <role-name>getOwnHotelInfo</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getOtherHotelInfo</role-name>
+    </security-role>
 
     <security-role>
         <role-name>addHotel</role-name>
@@ -196,9 +202,6 @@
             <web-resource-name>Common</web-resource-name>
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
-        <user-data-constraint>
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
     </security-constraint>
 
 </web-app>

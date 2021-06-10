@@ -5,11 +5,21 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.Login;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -121,4 +131,23 @@ public interface HotelEndpointLocal extends CallingClass {
      */
     @RolesAllowed("updateOtherHotel")
     void updateOtherHotel(Long id, UpdateHotelDto hotelDto) throws AppBaseException;
+
+    /**
+     * Zwraca dane hotelu przypisanego do managera.
+     *
+     * @return obiekt transferowy z danymi hotelu
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getOwnHotelInfo")
+    HotelDto getOwnHotelInfo() throws AppBaseException;
+
+    /**
+     * Zwraca dane hotelu o podanym id.
+     *
+     * @param id identyfikator hotelu
+     * @return obiekt transferowy z danymi hotelu
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getOtherHotelInfo")
+    HotelDto getOtherHotelInfo(Long id) throws AppBaseException;
 }

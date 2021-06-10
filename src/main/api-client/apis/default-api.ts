@@ -155,6 +155,78 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
+         *
+         * @param {number} id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOtherHotelInfo: async (id: number, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling getOtherHotelInfo.');
+            }
+            const localVarPath = `/resources/hotels/info/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         *
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOwnHotelInfo: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/resources/hotels/info`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @param {NewHotelDto} [body] 
          * @param {*} [options] Override http request option.
@@ -2312,13 +2384,19 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * 
-         * @param {UpdateHotelDto} [body] 
+         *
+         * @param {number} id
+         * @param {UpdateHotelDto} [body]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateHotel: async (body?: UpdateHotelDto, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/resources/hotels`;
+        updateOtherHotel: async (id: number, body?: UpdateHotelDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling updateOtherHotel.');
+            }
+            const localVarPath = `/resources/hotels/edit/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -2329,7 +2407,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = '*/*';
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         *
+         * @param {UpdateHotelDto} [body]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateOwnHotel: async (body?: UpdateHotelDto, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/resources/hotels/edit`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -2443,6 +2559,31 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          */
         async addHotel(body?: NewHotelDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
             const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).addHotel(body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         *
+         * @param {number} id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOtherHotelInfo(id: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getOtherHotelInfo(id, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         *
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOwnHotelInfo(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getOwnHotelInfo(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -3162,13 +3303,27 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @param {UpdateHotelDto} [body] 
+         *
+         * @param {number} id
+         * @param {UpdateHotelDto} [body]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateHotel(body?: UpdateHotelDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).updateHotel(body, options);
+        async updateOtherHotel(id: number, body?: UpdateHotelDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).updateOtherHotel(id, body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         *
+         * @param {UpdateHotelDto} [body]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateOwnHotel(body?: UpdateHotelDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).updateOwnHotel(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -3231,6 +3386,23 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         addHotel(body?: NewHotelDto, options?: any): AxiosPromise<any> {
             return DefaultApiFp(configuration).addHotel(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @param {number} id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOtherHotelInfo(id: number, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).getOtherHotelInfo(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOwnHotelInfo(options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).getOwnHotelInfo(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3726,13 +3898,23 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return DefaultApiFp(configuration).updateCity(body, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @param {UpdateHotelDto} [body] 
+         *
+         * @param {number} id
+         * @param {UpdateHotelDto} [body]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateHotel(body?: UpdateHotelDto, options?: any): AxiosPromise<any> {
-            return DefaultApiFp(configuration).updateHotel(body, options).then((request) => request(axios, basePath));
+        updateOtherHotel(id: number, body?: UpdateHotelDto, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).updateOtherHotel(id, body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @param {UpdateHotelDto} [body]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateOwnHotel(body?: UpdateHotelDto, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).updateOwnHotel(body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3792,6 +3974,25 @@ export class DefaultApi extends BaseAPI {
      */
     public addHotel(body?: NewHotelDto, options?: any) {
         return DefaultApiFp(this.configuration).addHotel(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getOtherHotelInfo(id: number, options?: any) {
+        return DefaultApiFp(this.configuration).getOtherHotelInfo(id, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getOwnHotelInfo(options?: any) {
+        return DefaultApiFp(this.configuration).getOwnHotelInfo(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -4342,14 +4543,25 @@ export class DefaultApi extends BaseAPI {
         return DefaultApiFp(this.configuration).updateCity(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
-     * 
-     * @param {UpdateHotelDto} [body] 
+     *
+     * @param {number} id
+     * @param {UpdateHotelDto} [body]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public updateHotel(body?: UpdateHotelDto, options?: any) {
-        return DefaultApiFp(this.configuration).updateHotel(body, options).then((request) => request(this.axios, this.basePath));
+    public updateOtherHotel(id: number, body?: UpdateHotelDto, options?: any) {
+        return DefaultApiFp(this.configuration).updateOtherHotel(id, body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @param {UpdateHotelDto} [body]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public updateOwnHotel(body?: UpdateHotelDto, options?: any) {
+        return DefaultApiFp(this.configuration).updateOwnHotel(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

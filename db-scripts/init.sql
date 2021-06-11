@@ -68,27 +68,27 @@ VALUES (-8);
 
 -- Inicjalizacja boxów
 INSERT INTO box (id, creation_date, modification_date, version, animal_type, price_per_day, created_by, modified_by, hotel_id)
-VALUES (-1, now(), null, 1, 1, 55.55, -2, null, -1),
-       (-2, now(), null, 1, 1, 55.55, -2, null, -1),
-       (-3, now(), null, 1, 2, 39.99, -2, null, -1),
-       (-4, now(), null, 1, 3, 43.90, -2, null, -1),
-       (-5, now(), null, 1, 4, 29.99, -3, null, -2),
-       (-6, now(), null, 1, 5, 35.22, -3, null, -2),
-       (-7, now(), null, 1, 6, 49.90, -3, null, -2),
-       (-8, now(), null, 1, 1, 39.90, -5, null, -3),
-       (-9, now(), null, 1, 1, 29.99, -5, null, -3),
-       (-10, now(), null, 1, 1, 34.90, -5, null, -3),
-       (-11, now(), null, 1, 2, 43.44, -6, null, -4),
-       (-12, now(), null, 1, 4, 32.14, -6, null, -4),
-       (-13, now(), null, 1, 5, 48.49, -6, null, -4),
-       (-14, now(), null, 1, 7, 29.44, -6, null, -4);
+VALUES (-1, now(), null, 1, 0, 55.55, -2, null, -1),
+       (-2, now(), null, 1, 0, 55.55, -2, null, -1),
+       (-3, now(), null, 1, 1, 39.99, -2, null, -1),
+       (-4, now(), null, 1, 2, 43.90, -2, null, -1),
+       (-5, now(), null, 1, 3, 29.99, -3, null, -2),
+       (-6, now(), null, 1, 4, 35.22, -3, null, -2),
+       (-7, now(), null, 1, 5, 49.90, -3, null, -2),
+       (-8, now(), null, 1, 0, 39.90, -5, null, -3),
+       (-9, now(), null, 1, 0, 29.99, -5, null, -3),
+       (-10, now(), null, 1, 0, 34.90, -5, null, -3),
+       (-11, now(), null, 1, 1, 43.44, -6, null, -4),
+       (-12, now(), null, 1, 3, 32.14, -6, null, -4),
+       (-13, now(), null, 1, 4, 48.49, -6, null, -4),
+       (-14, now(), null, 1, 6, 29.44, -6, null, -4);
 
 -- Inicjalizacja rezerwacji
 INSERT INTO booking (id, creation_date, modification_date, version, date_from, date_to, price, status, created_by, modified_by, account_id)
-VALUES (-1, now(), null ,1 , current_timestamp, current_timestamp + INTERVAL '1 week', 388.85, 3, -4, null, -4),
-       (-2, now() - INTERVAL '1 week', null ,1 ,now() - INTERVAL '1 week', current_timestamp - INTERVAL '5 day', 191.08, 4, -4, null, -4),
-       (-3, now(), null, 1, current_timestamp + INTERVAL '1 week', current_timestamp + INTERVAL '2 week', 209.93, 2, -7, null, -7),
-       (-4, now() - INTERVAL '1 week', null, 1, now() - INTERVAL '1 week', current_timestamp - INTERVAL '3 day', 175.60, 4, -7, null, -7);
+VALUES (-1, now(), null ,1 , current_timestamp, current_timestamp + INTERVAL '1 week', 388.85, 2, -4, null, -4),
+       (-2, now() - INTERVAL '1 week', null ,1 ,now() - INTERVAL '1 week', current_timestamp - INTERVAL '5 day', 191.08, 3, -4, null, -4),
+       (-3, now(), null, 1, current_timestamp + INTERVAL '1 week', current_timestamp + INTERVAL '2 week', 209.93, 1, -7, null, -7),
+       (-4, now() - INTERVAL '1 week', null, 1, now() - INTERVAL '1 week', current_timestamp - INTERVAL '3 day', 175.60, 3, -7, null, -7);
 
 -- Inicjalizacja booking line
 INSERT INTO booking_line(id, creation_date, modification_date, version, price_per_day, created_by, modified_by,

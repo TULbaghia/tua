@@ -1,16 +1,22 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.security.enterprise.SecurityContext;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Manager odpowiadający za zarządzanie rezerwacjami.
@@ -19,6 +25,15 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class BookingManager {
+
+    @Inject
+    private BookingFacade bookingFacade;
+
+    @Inject
+    private AccountFacade accountFacade;
+
+    @Inject
+    private SecurityContext securityContext;
 
     /**
      * Zwraca wskazaną rezerwację:
@@ -108,8 +123,20 @@ public class BookingManager {
      * @return lista rezerwacji
      */
     @RolesAllowed("getAllActiveReservations")
-    List<Booking> showActiveBooking() throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<Booking> showActiveBooking() throws AppBaseException {
+        String callerName = securityContext.getCallerPrincipal().getName();
+        var callerRoles = accountFacade.findByLogin(callerName).getRoleList();
+        if (callerRoles.stream().anyMatch(r -> r.getAccessLevel().equals(AccessLevel.CLIENT))) {
+            return bookingFacade.findAllActive().stream()
+                    .filter(b -> b.getAccount().getLogin().equals(callerName))
+                    .collect(Collectors.toList());
+        } else {
+            return bookingFacade.findAllActive().stream()
+                    .filter(b -> b.getBookingLineList().stream().anyMatch(
+                            bl -> bl.getBox().getHotel().getManagerDataList().stream().anyMatch(
+                                    md -> md.getAccount().getLogin().equals(callerName))))
+                    .collect(Collectors.toList());
+        }
     }
 
     /**

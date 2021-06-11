@@ -3,9 +3,11 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.ManagerDataFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
@@ -13,7 +15,9 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +27,16 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class HotelManager {
+
+    @Inject
+    private HotelFacade hotelFacade;
+
+    @Inject
+    private ManagerDataFacade managerDataFacade;
+
+    @Inject
+    private AccountFacade accountFacade;
+
     /**
      * Zwraca hotel o podanym identyfikatorze
      *
@@ -42,8 +56,8 @@ public class HotelManager {
      * @return lista hoteli
      */
     @PermitAll
-    List<Hotel> getAll() throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<Hotel> getAll() throws AppBaseException {
+        return new ArrayList<>(hotelFacade.findAll());
     }
 
     /**

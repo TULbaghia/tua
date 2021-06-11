@@ -247,5 +247,21 @@
   "exception.role_exception.account_not_confirmed": "Próba edycji roli niepotwierdzonego użytkownika",
   "dataRefresh": "Dane zostały odświeżone",
 
-  "exception.database_query_exception.concurrent_operation": "Napotkano konflikt podczas wykonywania operacji"
+  "exception.database_query_exception.concurrent_operation": "Napotkano konflikt podczas wykonywania operacji",
+  "hotelName": "Nazwa",
+  "address": "Adres",
+  "city": "Miasto",
+  "rating": "Ocena",
+  "delete": "Usuń",
+  "hotelList": "Lista hoteli",
+  "hotelDelete.success": "Pomyślnie usunięto hotel",
+  "exception.delete.hotel.has_manager": "Nie można usunąć hotelu z przypisanym managerem",
+  "exception.hotel.not_exist": "Hotel nie istnieje",
+  "addHotel": "Dodaj hotel",
+  "assignManager": "Przypisz managera",
+  "assign": "Przypisz",
+  "exception.role_exception.account_not_manager": "Wybrane konto nie posiada roli Manager",
+  "assignTitle": "Przypisz managera do hotelu",
+  "assignManager.success": "Manager przypisany pomyślnie",
+  "exception.hotel.has_manager": "Hotel ma już przypisanego managera"
 }

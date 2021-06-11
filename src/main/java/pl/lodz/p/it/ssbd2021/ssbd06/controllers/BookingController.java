@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
@@ -69,6 +70,7 @@ public class BookingController extends AbstractController {
      */
     @POST
     @RolesAllowed("bookReservation")
+    @Operation(operationId = "addBooking", summary = "addBooking")
     @Consumes({MediaType.APPLICATION_JSON})
     public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
         repeat(() -> bookingEndpoint.addBooking(bookingDto), bookingEndpoint);

@@ -7,7 +7,10 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
@@ -75,7 +78,11 @@ public class BoxFacade extends AbstractFacade<Box> {
     }
 
     @PermitAll
-    public void getCountsOfFreeBoxesInHotel(long hotelId){
-        em.createNamedQuery("Box.getCountsOfFreeBoxesInHotel");
+    // todo specific access role ?
+    public List<Box> getAvailableBoxesByTypesAndHotelId(long hotelId, List<AnimalType> types){
+        TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByTypesAndHotelId", Box.class);
+        query.setParameter("hotel_id", hotelId);
+        query.setParameter("types", types);
+        return query.getResultList();
     }
 }

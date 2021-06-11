@@ -14,15 +14,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewBookingDto {
-    List<MicroBoxes> boxes;
+    List<BookedBoxes> boxes;
 
     private Date dateFrom;
     private Date dateTo;
     private Long hotelId;
 
     @Data
-    static class MicroBoxes {
-        private Long id;
-        private Long number;
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class BookedBoxes {
+        private int type;
+        private long quantity;
     }
 }

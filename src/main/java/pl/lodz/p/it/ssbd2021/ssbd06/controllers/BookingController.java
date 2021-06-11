@@ -5,10 +5,10 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BookingEndpointLocal;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
@@ -68,8 +68,8 @@ public class BookingController extends AbstractController {
      * @throws AppBaseException podczas problemu z tworzeniem rezerwacji
      */
     @POST
-//    @RolesAllowed("bookReservation")
-    @PermitAll
+    @RolesAllowed("bookReservation")
+    @Consumes({MediaType.APPLICATION_JSON})
     public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
         repeat(() -> bookingEndpoint.addBooking(bookingDto), bookingEndpoint);
     }

@@ -1,10 +1,16 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BookingException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingLineFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -15,7 +21,10 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Manager odpowiadający za zarządzanie rezerwacjami.
@@ -30,7 +39,7 @@ public class BookingManager {
     @Inject
     private BoxFacade boxFacade;
     @Inject
-    private BookingLineFacade bookingLineFacade;
+    private AccountFacade accountFacade;
 
     /**
      * Zwraca wskazaną rezerwację:
@@ -38,8 +47,8 @@ public class BookingManager {
      * - Dla klienta rezerwacja złożona przez tego klienta.
      *
      * @param id identyfikator rezerwacji
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return rezerwacja
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     Booking get(Long id) throws AppBaseException {
         throw new UnsupportedOperationException();
@@ -50,8 +59,8 @@ public class BookingManager {
      * - Dla managera rezerwacje dotyczące jego hotelu,
      * - Dla klienta rezerwacje dotyczące tego klienta.
      *
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     List<Booking> getAll() throws AppBaseException {
         throw new UnsupportedOperationException();
@@ -62,10 +71,10 @@ public class BookingManager {
      * - Dla managera rezerwacje dotyczące jego hotelu,
      * - Dla klienta rezerwacje dotyczące tego klienta.
      *
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    List<Booking> getAll(String ...option) throws AppBaseException {
+    List<Booking> getAll(String... option) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
@@ -74,12 +83,41 @@ public class BookingManager {
      *
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-//    @RolesAllowed("bookReservation")
+    @RolesAllowed("bookReservation")
     @PermitAll
-    public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
-        // get counts for all types
-        // select box ids
-        // save booking and booking lines
+    public void addBooking(NewBookingDto bookingDto, String username) throws AppBaseException {
+        Account account = accountFacade.findByLogin(username);
+
+        List<AnimalType> types = bookingDto.getBoxes().stream()
+                .map(NewBookingDto.BookedBoxes::getType)
+                .map(AnimalType::valueOf)
+                .collect(Collectors.toList());
+        List<Box> availableBoxes = boxFacade.getAvailableBoxesByTypesAndHotelId(bookingDto.getHotelId(), types);
+
+        Booking booking = new Booking(bookingDto.getDateFrom(), bookingDto.getDateTo(), BigDecimal.valueOf(0), account, BookingStatus.PENDING);
+
+        BigDecimal price = BigDecimal.ZERO;
+        // todo should days between include the first day of booking ?
+        long bookingDurationDays = Duration.between(booking.getDateFrom().toInstant(), booking.getDateTo().toInstant()).toDays();
+
+        for (NewBookingDto.BookedBoxes typedBoxes : bookingDto.getBoxes()) {
+            List<Box> boxes = availableBoxes.stream()
+                    .filter(x -> x.getAnimalType().equals(AnimalType.valueOf(typedBoxes.getType())))
+                    .limit(typedBoxes.getQuantity())
+                    .collect(Collectors.toList());
+            if (boxes.size() < typedBoxes.getQuantity()) {
+                throw BookingException.notEnoughBoxesOfSpecifiedType();
+            }
+            for (Box box : boxes) {
+                BookingLine bookingLine = new BookingLine(box.getPricePerDay(), booking, box);
+                bookingLine.setCreatedBy(account);
+                booking.getBookingLineList().add(bookingLine);
+                price = price.add(box.getPricePerDay().multiply(BigDecimal.valueOf(bookingDurationDays)));
+            }
+        }
+        booking.setPrice(price);
+        booking.setCreatedBy(account);
+        bookingFacade.create(booking);
     }
 
     /**
@@ -119,8 +157,8 @@ public class BookingManager {
      * - Dla managera rezerwacje dotyczące jego hotelu,
      * - Dla klienta rezerwacje dotyczące tego klienta.
      *
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("getAllActiveReservations")
     List<Booking> showActiveBooking() throws AppBaseException {
@@ -132,8 +170,8 @@ public class BookingManager {
      * - Dla managera archiwalne rezerwacje dotyczące jego hotelu,
      * - Dla klienta archiwalne rezerwacje dotyczące tego klienta.
      *
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("getAllArchiveReservations")
     List<Booking> showEndedBooking() throws AppBaseException {

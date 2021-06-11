@@ -88,11 +88,12 @@ public class Booking extends AbstractEntity implements Serializable {
     @Column(name = "status", nullable = false)
     private BookingStatus status;
 
-    public Booking(Date dateFrom, Date dateTo, BigDecimal price, Account account) {
+    public Booking(Date dateFrom, Date dateTo, BigDecimal price, Account account, BookingStatus status) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.price = price;
         this.account = account;
+        this.status = status;
     }
 
     public Long getId() {

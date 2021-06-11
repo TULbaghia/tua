@@ -44,10 +44,10 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     }
 
     @Override
-//    @RolesAllowed("bookReservation")
+    @RolesAllowed("bookReservation")
     @PermitAll
     public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
-        bookingManager.addBooking(bookingDto);
+        bookingManager.addBooking(bookingDto, getLogin());
     }
 
     @Override

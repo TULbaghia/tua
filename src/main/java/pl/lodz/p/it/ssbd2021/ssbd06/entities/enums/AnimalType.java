@@ -7,5 +7,9 @@ public enum AnimalType{
     BIRD,
     RABBIT,
     LIZARD,
-    TURTLE
+    TURTLE;
+
+    public static AnimalType valueOf(long value){
+        return values()[Math.toIntExact(value)];
+    }
 }

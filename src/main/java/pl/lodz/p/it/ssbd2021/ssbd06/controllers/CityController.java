@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.CityEndpointLocal;
@@ -39,6 +40,7 @@ public class CityController extends AbstractController {
      */
     @GET
     @RolesAllowed("getAllCities")
+    @Operation(operationId = "getAllHotels", summary = "getAllHotels")
     public List<CityDto> getAll() throws AppBaseException {
         return repeat(() -> cityEndpoint.getAll(), cityEndpoint);
     }

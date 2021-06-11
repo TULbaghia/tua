@@ -1,6 +1,6 @@
 import {Configuration, DefaultApi} from "ssbd06-api"
 
-const url = process.env.REACT_APP_API_BASE_URL;
+const url = `${process.env.REACT_APP_API_BASE_URL}/resources`;
 const configuration = new Configuration({
     basePath: url,
 });

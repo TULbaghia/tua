@@ -264,5 +264,17 @@
   "modifyHotel.success": "Pomyślne zmodyfikowano dane hotelu",
   "modifyHotel.modify.info": "Obecnie modyfikujesz hotel o nazwie: ",
   "exception.hotel.name_invalid": "Podana nazwa hotelu już istnieje",
-  "modifyHotel.error.id_invalid": "Nieprawidłowe id hotelu"
+  "modifyHotel.error.id_invalid": "Nieprawidłowe id hotelu",
+
+  "reportGenerator.time_label" : "Czas",
+  "reportGenerator.title" : "Raport działalności hotelu",
+  "reportGenerator.action" : "Generuj raport",
+  "reportGenerator.table.title" : "Rezerwacje z danego okresu",
+  "reportGenerator.from" : "Od dnia",
+  "reportGenerator.to" : "Do dnia",
+  "reportGenerator.table.price" : "Cena",
+  "reportGenerator.table.rating" : "Ocena",
+  "reportGenerator.table.owner_login" : "Login właściciela",
+  "reportGenerator.success" : "Pomyślnie wygenerowano raport",
+  "reportGenerator.no_results" : "Brak rezultatów dla podanego okresu"
 }

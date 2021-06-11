@@ -25,7 +25,7 @@ import java.util.List;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-//@Interceptors({LoggingInterceptor.class})
+@Interceptors({LoggingInterceptor.class})
 public class HotelFacade extends AbstractFacade<Hotel> {
 
     @PersistenceContext(unitName = "ssbd06mohPU")

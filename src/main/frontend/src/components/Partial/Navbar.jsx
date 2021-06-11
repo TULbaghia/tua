@@ -181,6 +181,9 @@ function NavigationBar(props) {
                                             <Dropdown.Item as={Link} to="/hotels/editOwnHotel">
                                                 {t('editOwnHotel.navbar.title')}
                                             </Dropdown.Item>
+                                            <Dropdown.Item as={Link} to="/hotels/generateReport">
+                                                {t('generateReport.navbar.title')}
+                                            </Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                     <LinkContainer to="/activeReservations">

@@ -5,15 +5,12 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IBookingMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IHotelMapper;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.HotelEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.CityManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.HotelManager;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -25,7 +22,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
-import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -94,12 +92,6 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     }
 
     @Override
-    @RolesAllowed("generateReport")
-    public GenerateReportDto generateReport(Long hotelId, String from, String to) throws AppBaseException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     @RolesAllowed("updateOwnHotel")
     public void updateOwnHotel(UpdateHotelDto hotelDto) throws AppBaseException {
         String managerLogin = securityContext.getCallerPrincipal().getName();
@@ -145,5 +137,23 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     public HotelDto getOtherHotelInfo(Long id) throws AppBaseException {
         Hotel hotel = hotelManager.findHotelById(id);
         return Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
+    }
+
+    @Override
+    @RolesAllowed("generateReport")
+    public GenerateReportDto generateReport(Long from, Long to) throws AppBaseException {
+        IBookingMapper im = Mappers.getMapper(IBookingMapper.class);
+        String managerLogin = securityContext.getCallerPrincipal().getName();
+        Hotel hotel = hotelManager.findHotelByManagerLogin(managerLogin);
+
+        List<ReportRowDto> reportContent = new ArrayList<>();
+        hotelManager.generateReport(hotel, new Date(from * 1000), new Date(to * 1000))
+                .forEach(x -> reportContent.add(im.toReportRowDto(x)));
+
+        return GenerateReportDto
+                .builder()
+                .bookings(reportContent)
+                .count(reportContent.size())
+                .build();
     }
 }

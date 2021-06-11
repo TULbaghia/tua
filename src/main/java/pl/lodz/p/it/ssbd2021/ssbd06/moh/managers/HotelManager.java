@@ -1,13 +1,10 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.ManagerDataFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
@@ -18,6 +15,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,7 +25,6 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class HotelManager {
-
     @Inject
     private HotelFacade hotelFacade;
 
@@ -164,8 +161,20 @@ public class HotelManager {
      * @return wyszukiwany Hotel.
      * @throws AppBaseException gdy nie udało się pobrać danych.
      */
-    @RolesAllowed({"getOwnHotelInfo", "updateOwnHotel"})
+    @RolesAllowed({"getOwnHotelInfo", "updateOwnHotel", "generateReport"})
     public Hotel findHotelByManagerLogin(String login) throws AppBaseException {
         return managerDataFacade.findHotelByManagerId(login);
+    }
+
+    /**
+     * Generuje raport nt. działalności hotelu
+     *
+     * @param from data od (dla generowanego raportu)
+     * @param to data do (dla generowanego raportu)
+     * @return lista rezerwacji z danego okresu.
+     */
+    @RolesAllowed("generateReport")
+    public List<Booking> generateReport(Hotel hotel, Date from, Date to) throws AppBaseException {
+        return hotelFacade.findAllHotelBookingsInTimeRange(hotel.getId(), from, to);
     }
 }

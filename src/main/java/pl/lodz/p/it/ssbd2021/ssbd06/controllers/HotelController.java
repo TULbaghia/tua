@@ -133,21 +133,6 @@ public class HotelController extends AbstractController {
     }
 
     /**
-     * Generuje raport nt. działalności hotelu
-     *
-     * @param hotelId identyfikator hotelu
-     * @param from data od
-     * @param to data do
-     * @return dane potrzebne do wygenerowania raportu
-     */
-    @GET
-    @RolesAllowed("generateReport")
-    @Path("/raport/{hotelId}/{from}/{to}")
-    public GenerateReportDto generateReport(@PathParam("hotelId") Long hotelId, @PathParam("from") String from, @PathParam("to") String to) throws AppBaseException {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
      * Modyfikuje hotel managera.
      *
      * @param hotelDto dto z danymi hotelu
@@ -214,5 +199,19 @@ public class HotelController extends AbstractController {
                 .entity(hotelDto)
                 .header("ETag", messageSigner.sign(hotelDto))
                 .build();
+    }
+
+    /**
+     * Generuje raport nt. działalności hotelu z zadanego okresu.
+     *
+     * @param from data od (dla generowanego raportu)
+     * @param to data do (dla generowanego raportu)
+     * @return dane potrzebne do wygenerowania raportu
+     */
+    @GET
+    @RolesAllowed("generateReport")
+    @Path("/raport/{from}/{to}")
+    public GenerateReportDto generateReport(@PathParam("from") Long from, @PathParam("to") Long to) throws AppBaseException {
+        return hotelEndpointLocal.generateReport(from, to);
     }
 }

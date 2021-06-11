@@ -103,15 +103,14 @@ public interface HotelEndpointLocal extends CallingClass {
     void deleteManagerFromHotel(String managerLogin) throws AppBaseException;
 
     /**
-     * Generuje raport nt. działalności hotelu
+     * Generuje raport nt. działalności hotelu z zadanego okresu.
      *
-     * @param hotelId identyfikator hotelu
-     * @param from data od
-     * @param to data do
-     * @return Dane potrzebne do wygenerowania raportu
+     * @param from data od (dla generowanego raportu)
+     * @param to data do (dla generowanego raportu)
+     * @return dane potrzebne do wygenerowania raportu
      */
     @RolesAllowed("generateReport")
-    GenerateReportDto generateReport(Long hotelId, String from, String to) throws AppBaseException;
+    GenerateReportDto generateReport(Long from, Long to) throws AppBaseException;
 
     /**
      * Modyfikuje hotel managera.

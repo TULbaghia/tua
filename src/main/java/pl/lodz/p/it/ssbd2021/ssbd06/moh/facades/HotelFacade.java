@@ -9,6 +9,9 @@ import javax.persistence.*;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.exception.ConstraintViolationException;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
@@ -17,11 +20,12 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import java.util.Date;
 import java.util.List;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@Interceptors({LoggingInterceptor.class})
+//@Interceptors({LoggingInterceptor.class})
 public class HotelFacade extends AbstractFacade<Hotel> {
 
     @PersistenceContext(unitName = "ssbd06mohPU")
@@ -108,5 +112,29 @@ public class HotelFacade extends AbstractFacade<Hotel> {
     @Override
     public int count() throws AppBaseException {
         return super.count();
+    }
+
+    /**
+     * Wyszukuje rezerwacje dotyczące hotelu o podanym id, których ramy czasowe zgadzają się z podanymi.
+     *
+     * @param hotelId identyfikator hotelu.
+     * @param from data od.
+     * @param to data do.
+     * @return wyszukiwany Hotel.
+     * @throws AppBaseException gdy nie udało się pobrać danych.
+     */
+    @PermitAll
+    public List<Booking> findAllHotelBookingsInTimeRange(Long hotelId, Date from, Date to) throws AppBaseException {
+        try {
+            TypedQuery<Booking> hotelQuery = em.createNamedQuery("BookingLine.findAllByHotelId", Booking.class);
+            hotelQuery.setParameter("hotelId", hotelId);
+            hotelQuery.setParameter("from", from);
+            hotelQuery.setParameter("to", to);
+            return hotelQuery.getResultList();
+        } catch (NoResultException e) {
+            throw NotFoundException.hotelNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
     }
 }

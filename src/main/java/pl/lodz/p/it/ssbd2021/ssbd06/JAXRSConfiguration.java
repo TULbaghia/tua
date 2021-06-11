@@ -14,11 +14,7 @@ import javax.ws.rs.core.Application;
 @OpenAPIDefinition(info = @Info(
         title = "ssbd06 application",
         version = "1.0.0"
-),
-        servers = {
-                @Server(url = "/", description = "localhost")
-        }
-)
+))
 public class JAXRSConfiguration extends Application {
 
 }

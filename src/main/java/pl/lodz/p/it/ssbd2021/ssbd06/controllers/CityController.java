@@ -40,7 +40,7 @@ public class CityController extends AbstractController {
      */
     @GET
     @RolesAllowed("getAllCities")
-    @Operation(operationId = "getAllHotels", summary = "getAllHotels")
+    @Operation(operationId = "getAllCities", summary = "getAllCities")
     public List<CityDto> getAll() throws AppBaseException {
         return repeat(() -> cityEndpoint.getAll(), cityEndpoint);
     }

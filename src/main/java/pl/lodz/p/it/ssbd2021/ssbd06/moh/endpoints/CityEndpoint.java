@@ -43,8 +43,9 @@ public class CityEndpoint extends AbstractEndpoint implements CityEndpointLocal 
     public List<CityDto> getAll() throws AppBaseException {
         List<City> cities = cityManager.getAll();
         List<CityDto> result = new ArrayList<>();
+        ICityMapper mapper = Mappers.getMapper(ICityMapper.class);
         for (City city: cities){
-            result.add(Mappers.getMapper(ICityMapper.class).toCityDto(city));
+            result.add(mapper.toCityDto(city));
         }
         return result;
     }

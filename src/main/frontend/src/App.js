@@ -27,6 +27,7 @@ import AccountActivate from "./components/EmailConfirmation/AccountActivate";
 import {rolesConstant} from "./Constants";
 import { GuardProvider, GuardedRoute } from 'react-router-guards';
 import OtherUserInfo from "./components/OtherUserInfo";
+import CityList from "./components/city/CitiesList";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -125,6 +126,7 @@ function App() {
                             <GuardedRoute exact path="/accounts" component={UserList} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/editOtherAccount" component={EditOtherAccountForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo} meta={{auth: true, admin: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/cities" component={CityList} meta={{auth: true, admin: true, manager: true, logged, currentRole }}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

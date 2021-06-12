@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IHotelMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
@@ -80,7 +81,12 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @Override
     @RolesAllowed("deleteHotel")
     public void deleteHotel(Long hotelId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        Hotel hotel = hotelManager.get(hotelId);
+        HotelDto hotelIntegrity = Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
+        if (!verifyIntegrity(hotelIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+        hotelManager.deleteHotel(hotelId);
     }
 
     @Override

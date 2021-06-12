@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.HotelException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
@@ -45,8 +46,8 @@ public class HotelManager {
      * @return encja hotelu
      */
     @PermitAll
-    Hotel get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public Hotel get(Long id) throws AppBaseException {
+        return hotelFacade.find(id);
     }
 
     /**
@@ -112,8 +113,12 @@ public class HotelManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("deleteHotel")
-    void deleteHotel(Long hotelId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void deleteHotel(Long hotelId) throws AppBaseException {
+        Hotel hotel = hotelFacade.find(hotelId);
+        if (hotel == null) {
+            throw HotelException.notExists();
+        }
+        hotelFacade.remove(hotelFacade.find(hotelId));
     }
 
     /**

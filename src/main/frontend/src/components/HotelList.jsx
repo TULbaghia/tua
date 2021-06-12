@@ -56,7 +56,7 @@ function HotelList(props) {
             }})
         setETag(response.headers.etag);
     };
-    
+
     const guestColumns = [
         {
             name: t('hotelName'),

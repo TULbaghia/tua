@@ -105,7 +105,7 @@ public class HotelController extends AbstractController {
     @DELETE
     @RolesAllowed("deleteHotel")
     public void deleteHotel(Long hotelId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> hotelEndpoint.deleteHotel(hotelId), hotelEndpoint);
     }
 
     /**

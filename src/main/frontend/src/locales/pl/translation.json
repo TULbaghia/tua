@@ -247,5 +247,17 @@
   "exception.role_exception.account_not_confirmed": "Próba edycji roli niepotwierdzonego użytkownika",
   "dataRefresh": "Dane zostały odświeżone",
 
-  "exception.database_query_exception.concurrent_operation": "Napotkano konflikt podczas wykonywania operacji"
+  "exception.database_query_exception.concurrent_operation": "Napotkano konflikt podczas wykonywania operacji",
+  "reservationStart": "Początek rezerwacji",
+  "reservationEnd": "Koniec rezerwacji",
+  "price": "Cena",
+  "bookingStatus": "Stan rezerwacji",
+  "pendingBookingStatus": "Oczekujący",
+  "cancelledBookingStatus": "Anulowany",
+  "in_progressBookingStatus": "W trakcie",
+  "finishedBookingStatus": "Zakończony",
+  "cancelReservation": "Anuluj rezerwację",
+  "endReservation": "Zakończ rezerwację",
+  "button.end": "Zakończ"
+
 }

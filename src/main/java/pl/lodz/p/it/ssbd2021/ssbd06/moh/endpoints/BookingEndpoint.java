@@ -76,6 +76,7 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
         List<BookingDto> result = new ArrayList<>(activeBookings.size());
         for (Booking booking : activeBookings) {
             BookingDto bookingDto = Mappers.getMapper(IBookingMapper.class).toBookingDto(booking);
+            bookingDto.setBookingStatus(booking.getStatus().toString());
             result.add(bookingDto);
         }
         return result;

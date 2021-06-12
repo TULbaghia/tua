@@ -30,7 +30,8 @@ import java.util.Set;
 @XmlRootElement
 @NamedQueries({
         @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
-        @NamedQuery(name = "Booking.findById", query = "SELECT b FROM Booking b WHERE b.id = :id")})
+        @NamedQuery(name = "Booking.findById", query = "SELECT b FROM Booking b WHERE b.id = :id"),
+        @NamedQuery(name = "Booking.findAllArchived", query = "SELECT b FROM Booking b WHERE b.status = 0 OR b.status = 3")})
 @NoArgsConstructor
 public class Booking extends AbstractEntity implements Serializable {
 

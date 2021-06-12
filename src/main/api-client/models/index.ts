@@ -1,4 +1,5 @@
 export * from './account-dto';
+export * from './account-manager-dto';
 export * from './account-personal-details-dto';
 export * from './booking-dto';
 export * from './box-dto';

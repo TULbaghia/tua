@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2021.ssbd06.mok.facades;
+package pl.lodz.p.it.ssbd2021.ssbd06.moh.facades;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
@@ -20,7 +20,7 @@ import java.util.List;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ManagerDataFacade extends AbstractFacade<ManagerData> {
 
-    @PersistenceContext(unitName = "ssbd06mokPU")
+    @PersistenceContext(unitName = "ssbd06mohPU")
     private EntityManager em;
 
     @PermitAll
@@ -33,13 +33,13 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
         super(ManagerData.class);
     }
 
-    @DenyAll
+    @PermitAll
     @Override
     public void create(ManagerData entity) throws AppBaseException {
         super.create(entity);
     }
 
-    @DenyAll
+    @PermitAll
     @Override
     public void edit(ManagerData entity) throws AppBaseException {
         super.edit(entity);

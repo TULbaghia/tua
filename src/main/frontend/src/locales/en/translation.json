@@ -260,5 +260,6 @@
   "exception.role_exception.account_not_manager": "Chosen account doesn't have role Manager",
   "assignTitle": "Assign manager to hotel",
   "assignManager.success": "Manager assigned successfully",
-  "exception.hotel.has_manager": "Hotel already have assigned manager"
+  "exception.hotel.has_manager": "Hotel already have assigned manager",
+  "emptyListManager": "No unassigned managers"
 }

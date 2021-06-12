@@ -66,4 +66,13 @@ public class NotFoundException extends AppBaseException {
     public static NotFoundException cityNotFound(Throwable cause) {
         return new NotFoundException(CITY_NOT_FOUND, cause);
     }
+
+    /**
+     * Tworzy wyjątek reprezentujący nieznalezienie encji City.
+     *
+     * @return wyjątek NotFoundException
+     */
+    public static NotFoundException cityNotFound() {
+        return new NotFoundException(CITY_NOT_FOUND);
+    }
 }

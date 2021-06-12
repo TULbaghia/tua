@@ -107,7 +107,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @Override
     @RolesAllowed("addHotel")
     public void addHotel(NewHotelDto hotelDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        hotelManager.addHotel(hotelDto);
     }
 
     @Override

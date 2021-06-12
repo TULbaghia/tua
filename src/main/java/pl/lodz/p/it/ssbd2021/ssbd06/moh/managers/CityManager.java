@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.CityFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
@@ -15,6 +16,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Manager odpowiadający za zarządzanie miastami.
@@ -34,8 +36,8 @@ public class CityManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return encja miasta
      */
-    City get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public City get(Long id) throws AppBaseException {
+        return Optional.ofNullable(cityFacade.find(id)).orElseThrow(NotFoundException::cityNotFound);
     }
 
     /**

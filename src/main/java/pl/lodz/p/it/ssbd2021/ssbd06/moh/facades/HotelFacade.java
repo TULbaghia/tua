@@ -71,9 +71,7 @@ public class HotelFacade extends AbstractFacade<Hotel> {
 
     @PermitAll
     @Override
-    public Hotel find(Object id) {
-        return super.find(id);
-    }
+    public Hotel find(Object id) { return super.find(id); }
 
     @PermitAll
     @Override

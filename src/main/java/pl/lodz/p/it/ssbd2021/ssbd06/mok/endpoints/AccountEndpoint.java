@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mok.endpoints;
 import lombok.extern.java.Log;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Role;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.ThemeColor;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AccountException;
@@ -12,6 +13,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.PendingCodeManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.RoleManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.PasswordHasher;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
@@ -27,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 @Log
@@ -40,6 +43,9 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
 
     @Inject
     private PendingCodeManager pendingCodeManager;
+
+    @Inject
+    private RoleManager roleManager;
 
     @Inject
     private HttpServletRequest servletRequest;
@@ -262,5 +268,25 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
             throw AppOptimisticLockException.optimisticLockException();
         }
         accountManager.changeThemeColor(getLogin(), themeColor);
+    }
+
+    @Override
+    @RolesAllowed("getAllManagers")
+    public List<AccountManagerDto> getAllManagers() throws AppBaseException {
+        List<Account> accounts = accountManager.getAllAccounts();
+        List<AccountManagerDto> result = new ArrayList<>();
+        Set<Role> roleList;
+        for (Account account: accounts) {
+            roleList = account.getRoleList();
+            for (Role role: roleList) {
+                if (role.getAccessLevel() == AccessLevel.MANAGER && role.isEnabled()) {
+                    if (roleManager.find(role.getId()).getHotel() == null) {
+                        AccountManagerDto accountManagerDto = new AccountManagerDto(account.getLogin(), account.getFirstname(), account.getLastname());
+                        result.add(accountManagerDto);
+                    }
+                }
+            }
+        }
+        return result;
     }
 }

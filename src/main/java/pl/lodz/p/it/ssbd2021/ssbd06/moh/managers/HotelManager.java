@@ -1,8 +1,13 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Role;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.HotelException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.RoleException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
@@ -20,6 +25,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Manager odpowiadający za zarządzanie hotelami.
@@ -129,8 +135,33 @@ public class HotelManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("addManagerToHotel")
-    void addManagerToHotel(Long hotelId, String managerLogin) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addManagerToHotel(Long hotelId, String managerLogin) throws AppBaseException {
+        Account account = accountFacade.findByLogin(managerLogin);
+        Set<Role> roleList = account.getRoleList();
+        Role managerRole = null;
+        for (Role role: roleList) {
+            if (role.getAccessLevel() == AccessLevel.MANAGER && role.isEnabled()) {
+                managerRole = role;
+            }
+        }
+        if (managerRole == null) {
+            throw RoleException.accountNotManager();
+        }
+        ManagerData managerData = managerDataFacade.find(managerRole.getId());
+        if (managerData.getHotel() != null) {
+            throw HotelException.hasManager();
+        }
+
+        Hotel hotel = hotelFacade.find(hotelId);
+        if (hotel == null) {
+            throw HotelException.notExists();
+        }
+
+        managerData.setHotel(hotel);
+        hotel.getManagerDataList().add(managerData);
+
+        managerDataFacade.create(managerData);
+        hotelFacade.edit(hotel);
     }
 
     /**

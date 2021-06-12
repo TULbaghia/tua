@@ -5,11 +5,13 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.HotelEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.HotelEndpoint;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
@@ -17,6 +19,10 @@ import java.util.List;
  */
 @Path("/hotels")
 public class HotelController extends AbstractController {
+
+    @Inject
+    private HotelEndpointLocal hotelEndpoint;
+
     /**
      * Zwraca hotel o podanym identyfikatorze
      *
@@ -26,8 +32,9 @@ public class HotelController extends AbstractController {
      */
     @GET
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public HotelDto get(@PathParam("id") Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return repeat(() -> hotelEndpoint.get(id), hotelEndpoint);
     }
 
     /**
@@ -37,8 +44,9 @@ public class HotelController extends AbstractController {
      * @return lista dto hoteli
      */
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public List<HotelDto> getAll() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return repeat(() -> hotelEndpoint.getAll(), hotelEndpoint);
     }
 
     /**
@@ -50,8 +58,8 @@ public class HotelController extends AbstractController {
      */
     @GET
     @Path("/look/{option}")
-    public HotelDto lookForHotel(@PathParam("option") String option) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<HotelDto> lookForHotel(@PathParam("option") String option) throws AppBaseException {
+        return repeat(() -> hotelEndpoint.lookForHotel(option), hotelEndpoint);
     }
 
     /**
@@ -99,7 +107,7 @@ public class HotelController extends AbstractController {
     @DELETE
     @RolesAllowed("deleteHotel")
     public void deleteHotel(Long hotelId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> hotelEndpoint.deleteHotel(hotelId), hotelEndpoint);
     }
 
     /**
@@ -113,7 +121,7 @@ public class HotelController extends AbstractController {
     @RolesAllowed("addManagerToHotel")
     @Path("/add/{managerLogin}/{hotelId}")
     public void addManagerToHotel(@PathParam("hotelId") Long hotelId, @PathParam("managerLogin") String managerLogin) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> hotelEndpoint.addManagerToHotel(hotelId, managerLogin), hotelEndpoint);
     }
 
     /**

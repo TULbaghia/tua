@@ -110,6 +110,12 @@
     <security-role>
         <role-name>refreshToken</role-name>
     </security-role>
+    <security-role>
+        <role-name>getManagerData</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getAllManagers</role-name>
+    </security-role>
 
     <security-role>
         <role-name>addHotel</role-name>

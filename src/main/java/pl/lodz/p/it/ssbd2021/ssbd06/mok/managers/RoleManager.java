@@ -6,9 +6,11 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.RoleException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.facades.ManagerDataFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -33,6 +35,9 @@ public class RoleManager {
 
     @Inject
     private AccountFacade accountFacade;
+
+    @Inject
+    private ManagerDataFacade managerDataFacade;
 
     @Inject
     private EmailSender emailSender;
@@ -149,4 +154,8 @@ public class RoleManager {
         throw RoleException.unsupportedAccessLevel();
     }
 
+    @PermitAll
+    public ManagerData find(Long id) throws AppBaseException {
+        return managerDataFacade.find(id);
+    }
 }

@@ -39,12 +39,12 @@ public interface HotelEndpointLocal extends CallingClass {
     /**
      * MOH.6 Wyszukaj hotel
      *
-     * @param option identyfikator hotelu
+     * @param searchQuery identyfikator hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return dto hotelu
      */
     @PermitAll
-    HotelDto lookForHotel(String ...option) throws AppBaseException;
+    List<HotelDto> lookForHotel(String searchQuery) throws AppBaseException;
 
     /**
      * MOH.7, MOH.28 Zwraca listę hoteli po przefiltrowaniu

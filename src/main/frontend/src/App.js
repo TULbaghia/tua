@@ -28,6 +28,8 @@ import {rolesConstant} from "./Constants";
 import { GuardProvider, GuardedRoute } from 'react-router-guards';
 import OtherUserInfo from "./components/OtherUserInfo";
 import CityList from "./components/city/CitiesList";
+import HotelList from "./components/HotelList";
+import AssignManager from "./components/AssignManager";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -75,7 +77,7 @@ function App() {
                 if (to.meta.all) {
                     next();
                 } else if (to.meta.client) {
-                     if (to.meta.currentRole === rolesConstant.client) {
+                    if (to.meta.currentRole === rolesConstant.client) {
                         next();
                     } else {
                         next.redirect('/errors/forbidden');
@@ -127,6 +129,8 @@ function App() {
                             <GuardedRoute exact path="/editOtherAccount" component={EditOtherAccountForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo} meta={{auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/cities" component={CityList} meta={{auth: true, admin: true, manager: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/hotels" component={HotelList} meta={{ }}/>
+                            <GuardedRoute exact path="/hotels/assignManager" component={AssignManager} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

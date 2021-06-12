@@ -10,6 +10,7 @@ public class RoleException extends AppBaseException {
     private static final String UNSUPPORTED_ACCESS_LEVEL = "exception.role_exception.unsupported_access_level";
     private static final String UNSUPPORTED_ROLE_COMBINATION = "exception.role_exception.unsupported_role_combination";
     private static final String ACCOUNT_NOT_CONFIRMED = "exception.role_exception.account_not_confirmed";
+    private static final String ACCOUNT_NOT_MANAGER = "exception.role_exception.account_not_manager";
 
     private RoleException(String message, Throwable cause) {
         super(message, cause);
@@ -62,5 +63,14 @@ public class RoleException extends AppBaseException {
      */
     public static RoleException accountNotConfirmed() {
         return new RoleException(ACCOUNT_NOT_CONFIRMED);
+    }
+
+    /**
+     * Tworzy wyjątek, gdy podczas przypisywania hotelu do użytkownika nie posiada on roli managera.
+     *
+     * @return wyjątek RoleException
+     */
+    public static RoleException accountNotManager() {
+        return new RoleException(ACCOUNT_NOT_MANAGER);
     }
 }

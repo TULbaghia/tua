@@ -1,16 +1,23 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.RatingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,15 +27,34 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class RatingManager {
+
+    @Inject
+    private RatingFacade ratingFacade;
+
     /**
      * Zwraca listę ocen hotelu
      *
      * @param hotelId identyfikator hotelu
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista ocen hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    List<Rating> getAll(Long hotelId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @PermitAll
+    public List<Rating> getAll(Long hotelId) throws AppBaseException {
+        List<Rating> allRatings = new ArrayList<>(ratingFacade.findAll());
+        List<Rating> ratingsFromGivenHotel = new ArrayList<>();
+        for (Rating rating : allRatings) {
+            Box firstBox = rating.getBooking()
+                    .getBookingLineList()
+                    .stream()
+                    .map(BookingLine::getBox)
+                    .distinct()
+                    .findFirst()
+                    .orElseThrow(NotFoundException::boxNotFound);
+            if (firstBox.getHotel().getId().equals(hotelId)) {
+                ratingsFromGivenHotel.add(rating);
+            }
+        }
+        return ratingsFromGivenHotel;
     }
 
     /**
@@ -38,7 +64,7 @@ public class RatingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("addHotelRating")
-    void addRating(RatingDto ratingDto) throws AppBaseException {
+    public void addRating(RatingDto ratingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
@@ -49,7 +75,7 @@ public class RatingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("updateHotelRating")
-    void updateRating(RatingDto ratingDto) throws AppBaseException {
+    public void updateRating(RatingDto ratingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
@@ -60,19 +86,19 @@ public class RatingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("deleteHotelRating")
-    void deleteRating(Long ratingId) throws AppBaseException {
+    public void deleteRating(Long ratingId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
     /**
      * Zmień widoczność oceny
      *
-     * @param ratingId dto z danymi hotelu
+     * @param ratingId         dto z danymi hotelu
      * @param ratingVisibility poziom widoczności
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("hideHotelRating")
-    void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException {
+    public void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 }

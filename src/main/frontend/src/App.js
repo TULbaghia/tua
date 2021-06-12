@@ -75,7 +75,7 @@ function App() {
                 if (to.meta.all) {
                     next();
                 } else if (to.meta.client) {
-                     if (to.meta.currentRole === rolesConstant.client) {
+                    if (to.meta.currentRole === rolesConstant.client) {
                         next();
                     } else {
                         next.redirect('/errors/forbidden');
@@ -88,6 +88,14 @@ function App() {
                     }
                 } else if (to.meta.admin) {
                     if (to.meta.currentRole === rolesConstant.admin) {
+                        next();
+                    } else {
+                        next.redirect('/errors/forbidden');
+                    }
+                } else if (to.meta.clientManager) {
+                    if (to.meta.currentRole === rolesConstant.client) {
+                        next();
+                    } else if (to.meta.currentRole === rolesConstant.manager) {
                         next();
                     } else {
                         next.redirect('/errors/forbidden');
@@ -126,7 +134,7 @@ function App() {
                             <GuardedRoute exact path="/accounts" component={UserList} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/editOtherAccount" component={EditOtherAccountForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo} meta={{auth: true, admin: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/activeReservations" component={ActiveBookings} meta={{auth: true, all: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/activeReservations" component={ActiveBookings} meta={{auth: true, clientManager: true, logged, currentRole }}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

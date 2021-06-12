@@ -236,7 +236,7 @@
   "tokenRefreshSuccess": "Żeton został odnowiony pomyślnie",
 
   "server.no_response": "Brak odpowiedzi z serwera",
-  "axios.configuration.error": "Bład konfiguracji axios",
+  "axios.configuration.error": "Błąd konfiguracji axios",
   "logout.success": "Pomyślnie wylogowano",
   "request.error.login401": "Błąd autoryzacji",
   "request.error.token401": "Żeton wygasł",
@@ -263,5 +263,6 @@
   "exception.role_exception.account_not_manager": "Wybrane konto nie posiada roli Manager",
   "assignTitle": "Przypisz managera do hotelu",
   "assignManager.success": "Manager przypisany pomyślnie",
-  "exception.hotel.has_manager": "Hotel ma już przypisanego managera"
+  "exception.hotel.has_manager": "Hotel ma już przypisanego managera",
+  "emptyListManager": "Brak nieprzypisanych managerów"
 }

@@ -84,7 +84,6 @@ public class BookingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("bookReservation")
-    @PermitAll
     public void addBooking(NewBookingDto bookingDto, String username) throws AppBaseException {
         Account account = accountFacade.findByLogin(username);
 

@@ -137,6 +137,6 @@ public class BookingController extends AbstractController {
     @RolesAllowed("getAllArchiveReservations")
     @Path("/ended")
     public List<BookingDto> showEndedBooking() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return repeat(() -> bookingEndpoint.showEndedBooking(), bookingEndpoint);
     }
 }

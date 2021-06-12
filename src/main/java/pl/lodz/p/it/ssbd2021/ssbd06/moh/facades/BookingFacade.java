@@ -51,9 +51,21 @@ public class BookingFacade extends AbstractFacade<Booking>{
         }
     }
 
+    /**
+     * Zwraca listę archiwalnych rezerwacji
+     * @return lista archiwalnych rezerwacji
+     * @throws AppBaseException gdy nie udało się przeprowadzić operacji pobrania archiwalnych rezerwaacji
+     */
     @PermitAll
-    public List<Booking> findAllArchived(){
-        throw new UnsupportedOperationException();
+    public List<Booking> findAllArchived() throws AppBaseException {
+        try {
+            TypedQuery<Booking> bookingTypedQuery = em.createNamedQuery("Booking.findAllArchived", Booking.class);
+            return bookingTypedQuery.getResultList();
+        } catch (NoResultException e) {
+            throw NotFoundException.accountNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
     }
 
     @PermitAll

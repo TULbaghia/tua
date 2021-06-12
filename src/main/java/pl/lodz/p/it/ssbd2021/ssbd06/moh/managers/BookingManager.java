@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
@@ -122,11 +121,10 @@ public class BookingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
      */
-    @RolesAllowed("getAllActiveReservations")
+    @RolesAllowed({"getAllActiveReservations", "Client"})
     public List<Booking> showActiveBooking() throws AppBaseException {
         String callerName = securityContext.getCallerPrincipal().getName();
-        var callerRoles = accountFacade.findByLogin(callerName).getRoleList();
-        if (callerRoles.stream().anyMatch(r -> r.getAccessLevel().equals(AccessLevel.CLIENT))) {
+        if (securityContext.isCallerInRole("Client")) {
             return bookingFacade.findAllActive().stream()
                     .filter(b -> b.getAccount().getLogin().equals(callerName))
                     .collect(Collectors.toList());

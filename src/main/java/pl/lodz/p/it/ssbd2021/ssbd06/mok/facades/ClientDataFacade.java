@@ -54,7 +54,7 @@ public class ClientDataFacade extends AbstractFacade<ClientData> {
 
     @DenyAll
     @Override
-    public ClientData find(Object id) {
+    public ClientData find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

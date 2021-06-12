@@ -5,11 +5,12 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -52,7 +53,7 @@ public class CityFacade extends AbstractFacade<City> {
 
     @PermitAll
     @Override
-    public City find(Object id) {
+    public City find(Object id) throws AppBaseException {
         return super.find(id);
     }
 
@@ -72,5 +73,25 @@ public class CityFacade extends AbstractFacade<City> {
     @Override
     public int count() throws AppBaseException {
         return super.count();
+    }
+
+    /**
+     * Wyszukuje obiekt City o podanej nazwie.
+     *
+     * @param name nazwa miasta.
+     * @return wyszukiwane miasto.
+     * @throws AppBaseException gdy nie udało się pobrać danych
+     */
+    @PermitAll
+    public City findByName(String name) throws AppBaseException {
+        try {
+            TypedQuery<City> cityQuery = em.createNamedQuery("City.findByName", City.class);
+            cityQuery.setParameter("name", name);
+            return cityQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw NotFoundException.cityNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
     }
 }

@@ -28,6 +28,8 @@ import {rolesConstant} from "./Constants";
 import { GuardProvider, GuardedRoute } from 'react-router-guards';
 import OtherUserInfo from "./components/OtherUserInfo";
 import CityList from "./components/city/CitiesList";
+import ModifyHotelForm from "./components/ModifyHotel/ModifyHotelForm";
+import ReportGeneratorForm from "./components/RaportGenerating/ReportGeneratorForm";
 import HotelList from "./components/HotelList";
 import AssignManager from "./components/AssignManager";
 
@@ -127,10 +129,13 @@ function App() {
                             <GuardedRoute exact path="/editOwnAccount" component={EditOwnAccount} meta={{ auth: true, all: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/accounts" component={UserList} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/editOtherAccount" component={EditOtherAccountForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo} meta={{auth: true, admin: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/cities" component={CityList} meta={{auth: true, admin: true, manager: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels" component={HotelList} meta={{ }}/>
                             <GuardedRoute exact path="/hotels/assignManager" component={AssignManager} meta={{ auth: true, admin: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/hotels/editOwnHotel" component={ModifyHotelForm} meta={{ auth: true, manager: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/hotels/editOtherHotel" component={ModifyHotelForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/hotels/generateReport" component={ReportGeneratorForm} meta={{ auth: true, manager: true, logged, currentRole }}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

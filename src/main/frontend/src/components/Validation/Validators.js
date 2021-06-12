@@ -79,6 +79,20 @@ export const validateUserEmail = (data) => {
     return errors.filter(err => err !== undefined);
 }
 
+export const validateHotelName = (data) => {
+    let errors = [];
+    errors.push(sizeValidator(data, 2, 63));
+    errors.push(patternValidator(data, /^[A-ZĆŁÓŚŹŻa-ząęćńóśłźża-zA-Z0-9,\s\\-]+$/));
+    return errors.filter(err => err !== undefined);
+}
+
+export const validateAddress = (data) => {
+    let errors = [];
+    errors.push(sizeValidator(data, 2, 63));
+    errors.push(patternValidator(data, /^[A-ZĆŁÓŚŹŻa-ząęćńóśłźża-zA-Z0-9,.\s\\-]+$/));
+    return errors.filter(err => err !== undefined);
+}
+
 export const ValidatorType = {
     CONTACT_NUMBER: "CONTACT_NUMBER",
     FIRSTNAME: "FIRSTNAME",
@@ -88,6 +102,8 @@ export const ValidatorType = {
     PASSWORD: "PASSWORD",
     PEN_CODE: "PEN_CODE",
     USER_EMAIL: "USER_EMAIL",
+    HOTEL_NAME: "HOTEL_NAME",
+    ADDRESS: "ADDRESS",
 };
 
 export const validatorFactory = (data, validatorType) => {
@@ -108,6 +124,10 @@ export const validatorFactory = (data, validatorType) => {
             return validatePenCode(data);
         case ValidatorType.USER_EMAIL:
             return validateUserEmail(data);
+        case ValidatorType.HOTEL_NAME:
+            return validateHotelName(data);
+        case ValidatorType.ADDRESS:
+            return validateAddress(data);
         default:
             return [];
     }

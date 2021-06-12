@@ -51,7 +51,6 @@ public class AccountFacade extends AbstractFacade<Account> {
             throw DatabaseQueryException.databaseQueryException(e);
         }
     }
-
     @PermitAll
     @Override
     public void create(Account entity) throws AppBaseException {

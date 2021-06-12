@@ -5,12 +5,13 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 
 import org.apache.commons.lang3.NotImplementedException;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -33,9 +34,21 @@ public class BookingFacade extends AbstractFacade<Booking>{
         super(Booking.class);
     }
 
+    /**
+     * Zwraca listę aktywnych rezerwacji
+     * @return lista aktywnych rezerwacji
+     * @throws AppBaseException gdy nie udało się przeprowadzić operacji pobrania aktywnych rezerwaacji
+     */
     @PermitAll
-    public List<Booking> findAllActive(){
-        throw new UnsupportedOperationException();
+    public List<Booking> findAllActive() throws AppBaseException {
+        try {
+            TypedQuery<Booking> bookingTypedQuery = em.createNamedQuery("Booking.findAllActive", Booking.class);
+            return bookingTypedQuery.getResultList();
+        } catch (NoResultException e) {
+            throw NotFoundException.accountNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
     }
 
     @PermitAll

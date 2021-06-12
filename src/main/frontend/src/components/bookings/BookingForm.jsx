@@ -37,11 +37,11 @@ function SignUp(props) {
   const hotels = [
     {
       label: "hotel_1", // name
-      value: 1, // id
+      value: -1, // id
     },
     {
       label: "hotel_2",
-      value: 2,
+      value: -2,
     },
   ];
 
@@ -110,35 +110,16 @@ function SignUp(props) {
   }
 
   function validate(values) {
-    console.log(values);
     const errors = {};
-    // const loginErrors = validatorFactory(values.login, ValidatorType.LOGIN)
-    // if (loginErrors.length !== 0)
-    //     errors.login = loginErrors
-    // const passwordErrors = validatorFactory(values.password, ValidatorType.PASSWORD)
-    // if (passwordErrors.length !== 0)
-    //     errors.password = passwordErrors
-    // if (values.password !== values.repeatedPassword) {
-    //     errors.repeatedPassword = [t("passwordsNotMatch")]
-    // }
-    // const emailErrors = validatorFactory(values.email, ValidatorType.USER_EMAIL)
-    // if (emailErrors.length !== 0)
-    //     errors.email = emailErrors
-    // const firstnameErrors = validatorFactory(values.firstname, ValidatorType.FIRSTNAME)
-    // if (firstnameErrors.length !== 0)
-    //     errors.firstname = firstnameErrors
-    // const lastnameErrors = validatorFactory(values.lastname, ValidatorType.LASTNAME)
-    // if (lastnameErrors.length !== 0)
-    //     errors.lastname = lastnameErrors
-    // const contactNumberErrors = validatorFactory(values.contactNumber, ValidatorType.CONTACT_NUMBER)
-    // if (contactNumberErrors.length !== 0)
-    //     errors.contactNumber = contactNumberErrors
+    if(values.dateFrom >= values.dateTo){
+      errors.dateFrom = t('booking.form.error.date_not_earlier')
+    }
     return errors;
   }
 
   return (
     <Formik {...{ initialValues, validate, onSubmit, submitting }}>
-      {({ values, handleSubmit, isSubmitting }) => (
+      {({ values, errors, touched }) => (
         <div className="container">
           <BreadCrumb>
             <li className="breadcrumb-item">
@@ -173,6 +154,9 @@ function SignUp(props) {
 
               <div className="col-md-12">
                 <label htmlFor="dateFrom">Date from</label>
+                {errors && touched && errors.dateFrom &&
+                  <div style={{color: "red"}}>{errors.dateFrom}</div>
+                }
                 <DatePickerField name="dateFrom" />
               </div>
 
@@ -202,6 +186,7 @@ function SignUp(props) {
                             className="col-md-5"
                             name={`boxes.${index}.quantity`}
                             type="number"
+                            min="1"
                           />
                           {len === index + 1 && (
                             <div className="col-md-2">

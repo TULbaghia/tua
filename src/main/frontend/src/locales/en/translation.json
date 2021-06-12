@@ -251,5 +251,7 @@
 
   "booking.form.bread_crumb": "Add booking",
   "booking.form.title": "Add booking",
-  "booking.create.success": "Reservation successfully created"
+  "booking.create.success": "Reservation successfully created",
+  "booking.form.error.date_not_earlier": "Date from should be ealier then date to",
+  "exception.boxes.not_enough": "Not enough boxes to fulfill the booking"
 }

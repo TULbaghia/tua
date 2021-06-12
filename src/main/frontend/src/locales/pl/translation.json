@@ -254,5 +254,7 @@
 
   "booking.form.bread_crumb": "Dokonaj rezerwacji",
   "booking.form.title": "Nowa rezerwacja",
-  "booking.create.success": "Pomyślnie dokonano rezerwacji"
+  "booking.create.success": "Pomyślnie dokonano rezerwacji",
+  "booking.form.error.date_not_earlier": "Data rozpoczęcia rezerwacji powinna być wcześniejsza od daty zakończenia",
+  "exception.boxes.not_enough": "Nie wystarczająca liczba boxów aby zreazliować rezerwacje w wybranym okresie"
 }

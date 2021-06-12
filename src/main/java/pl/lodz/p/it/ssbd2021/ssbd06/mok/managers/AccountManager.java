@@ -221,7 +221,7 @@ public class AccountManager {
      * @return lista kont
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
-    @RolesAllowed("getAllAccounts")
+    @RolesAllowed({"getAllAccounts", "getAllManagers"})
     public List<Account> getAllAccounts() throws AppBaseException {
         return new ArrayList<>(accountFacade.findAll());
     }

@@ -398,4 +398,37 @@ public class AccountController extends AbstractController {
     public void changeThemeColor(@NotNull @PathParam("themeColor") ThemeColor themeColor) throws AppBaseException {
         repeat(() -> accountEndpoint.changeThemeColor(themeColor), accountEndpoint);
     }
+
+    /**
+     * Zwraca listę wszystkich nieprzypisanych do hotelu managerów w systemie.
+     *
+     * @return lista użytkowników
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @GET
+    @RolesAllowed("getAllManagers")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/managers")
+    public List<AccountManagerDto> getAllManagersList() throws AppBaseException {
+        return repeat(() -> accountEndpoint.getAllManagers(), accountEndpoint);
+    }
+
+    /**
+     * Zwraca przypisany do managera hotel.
+     *
+     * @param login login użytkownika
+     * @return lista ról przypisana do użytkownika
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @GET
+    @RolesAllowed("getManagerData")
+    @Path("/{login}/manager")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getManagerData(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {
+        ManagerDataDto managerDataDto = repeat(() -> roleEndpoint.getManagerData(login), roleEndpoint);
+        return Response.ok()
+                .entity(managerDataDto)
+                .header("ETag", messageSigner.sign(managerDataDto))
+                .build();
+    }
 }

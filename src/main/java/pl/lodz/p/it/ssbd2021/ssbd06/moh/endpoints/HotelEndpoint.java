@@ -111,7 +111,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
         }
 
         Mappers.getMapper(IHotelMapper.class).toHotel(hotelDto, hotel);
-        City city = cityManager.findByName(hotelDto.getCityName());
+        City city = cityManager.get(hotelDto.getCityId());
         hotel.setCity(city);
         hotelManager.updateHotel(hotel);
     }
@@ -127,7 +127,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
         }
 
         Mappers.getMapper(IHotelMapper.class).toHotel(hotelDto, hotel);
-        City city = cityManager.findByName(hotelDto.getCityName());
+        City city = cityManager.get(hotelDto.getCityId());
         hotel.setCity(city);
         hotelManager.updateHotel(hotel);
     }

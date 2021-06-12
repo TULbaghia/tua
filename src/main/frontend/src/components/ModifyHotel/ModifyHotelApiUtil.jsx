@@ -31,7 +31,7 @@ export const getCities = (token) => {
 };
 
 export const modifyHotel = ({values, token, etag}) => {
-    return api.updateOwnHotel({name: values.name, address: values.address, cityName: values.city}, {
+    return api.updateOwnHotel({name: values.name, address: values.address, cityId: values.city}, {
         headers: {
             "Content-Type": "application/json",
             Authorization: token,
@@ -41,7 +41,7 @@ export const modifyHotel = ({values, token, etag}) => {
 };
 
 export const modifyOtherHotel = ({id, values, token, etag}) => {
-    return api.updateOtherHotel(id, {name: values.name, address: values.address, cityName: values.city}, {
+    return api.updateOtherHotel(id, {name: values.name, address: values.address, cityId: values.city}, {
         headers: {
             "Content-Type": "application/json",
             Authorization: token,

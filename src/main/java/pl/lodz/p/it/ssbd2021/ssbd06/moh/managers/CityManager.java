@@ -28,14 +28,15 @@ public class CityManager {
     private CityFacade cityFacade;
 
     /**
-     * Zwraca miasto o podanym identyfikatorze
+     * Wyszukuje obiekt City o podanym id.
      *
-     * @param id identyfikator miasta
-     * @throws AppBaseException podczas błędu związanego z bazą danych
-     * @return encja miasta
+     * @param id identyfikator miasta.
+     * @return wyszukiwane miasto.
+     * @throws AppBaseException gdy nie udało się pobrać danych
      */
-    City get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @PermitAll
+    public City get(Long id) throws AppBaseException {
+        return cityFacade.find(id);
     }
 
     /**

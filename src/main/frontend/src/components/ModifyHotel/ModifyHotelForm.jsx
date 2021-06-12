@@ -28,7 +28,7 @@ function ModifyHotelForm() {
     const {token, currentRole} = useLocale();
     const [etag, setETag] = useState()
     const [cities, setCities] = useState([]);
-    const [hotel, setHotel] = useState({id: "", name: ""});
+    const [hotel, setHotel] = useState({id: "", name: "", address: "", cityName: ""});
 
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
@@ -120,19 +120,25 @@ function ModifyHotelForm() {
                     <p className="obligatory-fields">{i18n.t('obligatoryFields')}</p>
                 </div>
                 <Formik
-                    initialValues={{name: '', address: '', city: ''}}
+                    initialValues={{
+                        name: hotel.name,
+                        address: hotel.address,
+                        city: cities.filter(x => x.name === hotel.cityName).map(x => x.id)[0]
+                    }}
+                    enableReinitialize
                     validate={ModifyHotelValidationSchema}
                     onSubmit={(values, {setSubmitting}) => handleHotelModify(values, setSubmitting)}>
                     {({isSubmitting, handleChange}) => (
                         <Form className="container">
                             <FieldComponent name="name"
-                                            placeholder={i18n.t('modifyHotel.modify.name')}
+                                            label={i18n.t('modifyHotel.modify.name')}
                                             handleChange={handleChange}/>
                             <FieldComponent name="address"
-                                            placeholder={i18n.t('modifyHotel.modify.address')}
+                                            label={i18n.t('modifyHotel.modify.address')}
                                             handleChange={handleChange}/>
                             <SelectComponent name="city"
-                                             placeholder={i18n.t('modifyHotel.modify.chooseCity')}
+                                             entryValue={hotel.cityName}
+                                             label={i18n.t('modifyHotel.modify.city')}
                                              values={cities}
                                              handleChange={handleChange}/>
                             <div className="d-flex w-100 justify-content-center">

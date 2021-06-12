@@ -54,7 +54,7 @@ function HotelList(props) {
             headers: {
                 Authorization: token,
             }})
-        setETag(response.headers.etag);
+        return response;
     };
 
     const guestColumns = [

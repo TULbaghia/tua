@@ -4,13 +4,16 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +23,10 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class BoxManager {
+
+    @Inject
+    private BoxFacade boxFacade;
+
     /**
      * Zwraca klatke o podanym identyfikatorze
      *
@@ -38,8 +45,8 @@ public class BoxManager {
      * @return lista klatek
      */
     @RolesAllowed("getAllBoxes")
-    List<Box> getAll() throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<Box> getAll() throws AppBaseException {
+        return new ArrayList<>(boxFacade.findAll());
     }
 
     /**

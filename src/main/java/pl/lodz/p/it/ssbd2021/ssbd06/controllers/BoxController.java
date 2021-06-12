@@ -3,9 +3,12 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BoxEndpointLocal;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
@@ -13,6 +16,10 @@ import java.util.List;
  */
 @Path("/boxes")
 public class BoxController extends AbstractController {
+
+    @Inject
+    private BoxEndpointLocal boxEndpoint;
+
     /**
      * Zwraca klatkę o podanym identyfikatorze
      *
@@ -34,8 +41,9 @@ public class BoxController extends AbstractController {
      */
     @GET
     @RolesAllowed("getAllBoxes")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<BoxDto> getAll() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return repeat(() -> boxEndpoint.getAll(), boxEndpoint);
     }
 
     /**

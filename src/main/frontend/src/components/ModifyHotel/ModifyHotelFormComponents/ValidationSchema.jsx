@@ -26,5 +26,20 @@ export const ModifyHotelValidationSchema = values => {
     if (!values.city) {
         errors.city = i18n.t('modifyHotel.error.city_required');
     }
+
+    if (values.image) {
+        validatorFactory(values.image, ValidatorType.HOTEL_IMAGE).forEach(x => {
+            errors.image = x;
+        })
+    }
+
+    if (!values.description) {
+        errors.description = i18n.t('modifyHotel.error.description_required');
+    } else {
+        validatorFactory(values.description, ValidatorType.HOTEL_DESCRIPTION).forEach(x => {
+            errors.description = x;
+        })
+    }
+
     return errors;
 }

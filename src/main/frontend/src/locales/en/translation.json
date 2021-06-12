@@ -279,5 +279,8 @@
   "modifyHotel.success": "Hotel data has been successfully modified",
   "modifyHotel.modify.info": "You are currently modifying hotel named: ",
   "exception.hotel.name_invalid": "Hotel name exists",
-  "modifyHotel.error.id_invalid": "Hotel id is invalid"
+  "modifyHotel.error.id_invalid": "Hotel id is invalid",
+  "modifyHotel.error.description_required": "Hotel description is required",
+  "modifyHotel.modify.description" : "Hotel description",
+  "modifyHotel.modify.image" : "Graphics"
 }

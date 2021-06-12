@@ -282,5 +282,8 @@
   "modifyHotel.success": "Pomyślne zmodyfikowano dane hotelu",
   "modifyHotel.modify.info": "Obecnie modyfikujesz hotel o nazwie: ",
   "exception.hotel.name_invalid": "Podana nazwa hotelu już istnieje",
-  "modifyHotel.error.id_invalid": "Nieprawidłowe id hotelu"
+  "modifyHotel.error.id_invalid": "Nieprawidłowe id hotelu",
+  "modifyHotel.error.description_required": "Opis jest wymagany",
+  "modifyHotel.modify.description" : "Opis hotelu",
+  "modifyHotel.modify.image" : "Grafika"
 }

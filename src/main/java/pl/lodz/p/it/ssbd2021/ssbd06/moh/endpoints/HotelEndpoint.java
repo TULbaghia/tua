@@ -21,7 +21,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.ManagerDataDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.RoleManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.CityManager;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -33,7 +32,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

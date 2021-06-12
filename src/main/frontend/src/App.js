@@ -94,6 +94,14 @@ function App() {
                     } else {
                         next.redirect('/errors/forbidden');
                     }
+                } else if (to.meta.clientManager) {
+                    if (to.meta.currentRole === rolesConstant.client) {
+                        next();
+                    } else if (to.meta.currentRole === rolesConstant.manager) {
+                        next();
+                    } else {
+                        next.redirect('/errors/forbidden');
+                    }
                 }
             } else {
                 next.redirect('/login');
@@ -130,7 +138,7 @@ function App() {
                             <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels" component={HotelList} meta={{ }}/>
                             <GuardedRoute exact path="/hotels/assignManager" component={AssignManager} meta={{ auth: true, admin: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/archiveReservations" component={ArchiveBookings} meta={{ auth: true, all: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/archiveReservations" component={ArchiveBookings} meta={{ auth: true, clientManager: true, logged, currentRole}}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

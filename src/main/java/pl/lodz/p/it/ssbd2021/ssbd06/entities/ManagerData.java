@@ -15,7 +15,9 @@ import java.io.Serializable;
 @DiscriminatorValue("MANAGER")
 @NamedQueries({
         @NamedQuery(name = "ManagerData.findAll", query = "SELECT m FROM ManagerData m"),
-        @NamedQuery(name = "ManagerData.findById", query = "SELECT m FROM ManagerData m WHERE m.id = :id")})
+        @NamedQuery(name = "ManagerData.findById", query = "SELECT m FROM ManagerData m WHERE m.id = :id"),
+        @NamedQuery(name = "ManagerData.findHotelByManagerLogin",
+                query = "SELECT m.hotel FROM ManagerData m WHERE m.account.login = :login")})
 @NoArgsConstructor
 public class ManagerData extends Role implements Serializable {
 

@@ -72,7 +72,7 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     @PermitAll
     @Override
-    public Account find(Object id) {
+    public Account find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

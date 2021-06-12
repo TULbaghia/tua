@@ -70,7 +70,7 @@ public class RoleFacade extends AbstractFacade<Role> {
 
     @DenyAll
     @Override
-    public Role find(Object id) {
+    public Role find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

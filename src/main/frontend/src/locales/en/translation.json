@@ -247,5 +247,9 @@
   "exception.database_query_exception.concurrent_operation": "Error encountered during operation execution",
 
   "cities.list.bread_crumb": "List of cities",
-  "cities.list.header": "Cities list"
+  "cities.list.header": "Cities list",
+
+  "booking.form.bread_crumb": "Add booking",
+  "booking.form.title": "Add booking",
+  "booking.create.success": "Reservation successfully created"
 }

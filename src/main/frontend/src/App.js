@@ -28,6 +28,7 @@ import {rolesConstant} from "./Constants";
 import { GuardProvider, GuardedRoute } from 'react-router-guards';
 import OtherUserInfo from "./components/OtherUserInfo";
 import CityList from "./components/city/CitiesList";
+import BookingForm from './components/bookings/BookingForm';
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -127,6 +128,7 @@ function App() {
                             <GuardedRoute exact path="/editOtherAccount" component={EditOtherAccountForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo} meta={{auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/cities" component={CityList} meta={{auth: true, admin: true, manager: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/booking/add" component={BookingForm} meta={{auth: true, client: true, logged, currentRole }}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

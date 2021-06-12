@@ -24,6 +24,7 @@
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-data-table-component": "^6.11.7",
+    "react-datepicker": "^4.1.1",
     "react-dom": "^17.0.2",
     "react-google-recaptcha": "^2.1.0",
     "react-i18next": "^9.0.10",
@@ -32,7 +33,8 @@
     "react-router-dom": "^5.1.2",
     "react-router-guards": "^1.0.2",
     "react-scripts": "4.0.3",
-    "ssbd06-api": "0.0.4",
+    "react-select": "^4.3.1",
+    "ssbd06-api": "0.0.5",
     "styled-components": "^5.3.0",
     "uuid": "^8.3.2",
     "web-vitals": "^1.0.1"

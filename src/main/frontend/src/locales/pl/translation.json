@@ -250,5 +250,9 @@
   "exception.database_query_exception.concurrent_operation": "Napotkano konflikt podczas wykonywania operacji",
 
   "cities.list.bread_crumb": "Lista miast",
-  "cities.list.header": "Lista miast"
+  "cities.list.header": "Lista miast",
+
+  "booking.form.bread_crumb": "Dokonaj rezerwacji",
+  "booking.form.title": "Nowa rezerwacja",
+  "booking.create.success": "Pomyślnie dokonano rezerwacji"
 }

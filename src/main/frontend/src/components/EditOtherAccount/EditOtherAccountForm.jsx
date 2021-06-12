@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useHistory, useLocation} from "react-router";
 import {withNamespaces} from "react-i18next";
-import {Configuration, DefaultApi} from "api-client";
+import {Configuration, DefaultApi} from "ssbd06-api";
 import {Link, useParams} from "react-router-dom";
 import {Form, Formik} from 'formik';
 import PasswordComponent from "./PasswordComponent";
@@ -24,7 +24,7 @@ import {rolesConstant} from "../../Constants";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import queryString from "query-string";
 
-function EditOtherAccountForm({t, i18n}) {
+function BookingForm({t, i18n}) {
     const dispatchNotification = useNotificationCustom();
     const dispatchCriticalDialog = useDialogPermanentChange();
     const history = useHistory();
@@ -449,4 +449,4 @@ function EditOtherAccountForm({t, i18n}) {
     )
 }
 
-export default withNamespaces()(EditOtherAccountForm);
+export default withNamespaces()(BookingForm);

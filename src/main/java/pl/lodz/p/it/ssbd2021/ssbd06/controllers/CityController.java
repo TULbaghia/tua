@@ -2,8 +2,10 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.CityEndpointLocal;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import java.util.List;
 
@@ -12,6 +14,10 @@ import java.util.List;
  */
 @Path("/cities/")
 public class CityController extends AbstractController {
+
+    @Inject
+    private CityEndpointLocal cityEndpointLocal;
+
     /**
      * Zwraca miasto o podanym identyfikatorze
      *
@@ -33,8 +39,8 @@ public class CityController extends AbstractController {
      */
     @GET
     @RolesAllowed("getAllCities")
-    public List<CityDto> getAll() throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<CityDto> getAllCities() throws AppBaseException {
+        return cityEndpointLocal.getAllCities();
     }
 
     /**

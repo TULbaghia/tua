@@ -2,6 +2,11 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.facades;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -13,6 +18,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import java.util.List;
 
 @Stateless
@@ -33,12 +39,14 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
         super(ManagerData.class);
     }
 
+    @DenyAll
     @PermitAll
     @Override
     public void create(ManagerData entity) throws AppBaseException {
         super.create(entity);
     }
 
+    @DenyAll
     @PermitAll
     @Override
     public void edit(ManagerData entity) throws AppBaseException {
@@ -53,7 +61,7 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
 
     @PermitAll
     @Override
-    public ManagerData find(Object id) {
+    public ManagerData find(Object id) throws AppBaseException {
         return super.find(id);
     }
 
@@ -73,5 +81,25 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
     @Override
     public int count() throws AppBaseException {
         return super.count();
+    }
+
+    /**
+     * Wyszukuje Hotel przypisany do Managera o podanym id.
+     *
+     * @param login login Managera.
+     * @return wyszukiwany Hotel.
+     * @throws AppBaseException gdy nie udało się pobrać danych.
+     */
+    @PermitAll
+    public Hotel findHotelByManagerId(String login) throws AppBaseException {
+        try {
+            TypedQuery<Hotel> managerHotelQuery = em.createNamedQuery("ManagerData.findHotelByManagerLogin", Hotel.class);
+            managerHotelQuery.setParameter("login", login);
+            return managerHotelQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw NotFoundException.hotelNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
     }
 }

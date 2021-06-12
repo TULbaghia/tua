@@ -29,6 +29,7 @@ import { GuardProvider, GuardedRoute } from 'react-router-guards';
 import OtherUserInfo from "./components/OtherUserInfo";
 import HotelList from "./components/HotelList";
 import AssignManager from "./components/AssignManager";
+import ModifyHotelForm from "./components/ModifyHotel/ModifyHotelForm";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -127,6 +128,8 @@ function App() {
                             <GuardedRoute exact path="/accounts" component={UserList} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/editOtherAccount" component={EditOtherAccountForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo} meta={{ auth: true, admin: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/hotels/editOwnHotel" component={ModifyHotelForm} meta={{ auth: true, manager: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/hotels/editOtherHotel" component={ModifyHotelForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels" component={HotelList} meta={{ }}/>
                             <GuardedRoute exact path="/hotels/assignManager" component={AssignManager} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <Route component={NotFound}/>

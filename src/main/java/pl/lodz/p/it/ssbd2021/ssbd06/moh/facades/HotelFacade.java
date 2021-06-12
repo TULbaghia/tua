@@ -13,6 +13,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
+import javax.persistence.*;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -34,9 +36,24 @@ public class HotelFacade extends AbstractFacade<Hotel> {
         super(Hotel.class);
     }
 
+    /**
+     * Wyszukuje Hotel o podanej nazwie.
+     *
+     * @param name nazwa hotelu.
+     * @return wyszukiwany Hotel.
+     * @throws AppBaseException gdy nie udało się pobrać danych.
+     */
     @PermitAll
-    public Hotel findByName(String name){
-        throw new UnsupportedOperationException();
+    public Hotel findByName(String name) throws AppBaseException {
+        try {
+            TypedQuery<Hotel> hotelQuery = em.createNamedQuery("Hotel.findByName", Hotel.class);
+            hotelQuery.setParameter("name", name);
+            return hotelQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw NotFoundException.hotelNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
     }
 
     @PermitAll
@@ -53,7 +70,14 @@ public class HotelFacade extends AbstractFacade<Hotel> {
     @PermitAll
     @Override
     public void edit(Hotel entity) throws AppBaseException {
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (ConstraintViolationException e) {
+            if (e.getCause().getMessage().contains(Hotel.HOTEL_NAME_CONSTRAINT)) {
+                throw HotelException.hotelNameExists(e.getCause());
+            }
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
     @PermitAll
@@ -71,7 +95,7 @@ public class HotelFacade extends AbstractFacade<Hotel> {
 
     @PermitAll
     @Override
-    public Hotel find(Object id) { return super.find(id); }
+    public Hotel find(Object id) throws AppBaseException { return super.find(id); }
 
     @PermitAll
     @Override

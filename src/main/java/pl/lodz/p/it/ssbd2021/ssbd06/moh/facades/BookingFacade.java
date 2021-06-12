@@ -63,7 +63,7 @@ public class BookingFacade extends AbstractFacade<Booking>{
 
     @PermitAll
     @Override
-    public Booking find(Object id) {
+    public Booking find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

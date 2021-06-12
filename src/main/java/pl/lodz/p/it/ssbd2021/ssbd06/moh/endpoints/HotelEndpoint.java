@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Role;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IHotelMapper;
@@ -19,6 +20,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.HotelManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.ManagerDataDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.RoleManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.CityManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -29,6 +32,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.security.enterprise.SecurityContext;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +49,12 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
 
     @Inject
     private HotelManager hotelManager;
+
+    @Inject
+    private CityManager cityManager;
+
+    @Inject
+    private SecurityContext securityContext;
 
     @Inject
     private AccountManager accountManager;
@@ -100,12 +111,6 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     }
 
     @Override
-    @RolesAllowed("updateHotel")
-    public void updateHotel(UpdateHotelDto hotelDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     @RolesAllowed("deleteHotel")
     public void deleteHotel(Long hotelId) throws AppBaseException {
         Hotel hotel = hotelManager.get(hotelId);
@@ -145,5 +150,53 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @RolesAllowed("generateReport")
     public GenerateReportDto generateReport(Long hotelId, String from, String to) throws AppBaseException {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @RolesAllowed("updateOwnHotel")
+    public void updateOwnHotel(UpdateHotelDto hotelDto) throws AppBaseException {
+        String managerLogin = securityContext.getCallerPrincipal().getName();
+        Hotel hotel = hotelManager.findHotelByManagerLogin(managerLogin);
+
+        HotelDto hotelIntegrity = Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
+        if (!verifyIntegrity(hotelIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        Mappers.getMapper(IHotelMapper.class).toHotel(hotelDto, hotel);
+        City city = cityManager.findByName(hotelDto.getCityName());
+        hotel.setCity(city);
+        hotelManager.updateHotel(hotel);
+    }
+
+    @Override
+    @RolesAllowed("updateOtherHotel")
+    public void updateOtherHotel(Long id, UpdateHotelDto hotelDto) throws AppBaseException {
+        Hotel hotel = hotelManager.findHotelById(id);
+
+        HotelDto hotelIntegrity = Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
+        if (!verifyIntegrity(hotelIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        Mappers.getMapper(IHotelMapper.class).toHotel(hotelDto, hotel);
+        City city = cityManager.findByName(hotelDto.getCityName());
+        hotel.setCity(city);
+        hotelManager.updateHotel(hotel);
+    }
+
+    @Override
+    @RolesAllowed("getOwnHotelInfo")
+    public HotelDto getOwnHotelInfo() throws AppBaseException {
+        String managerLogin = securityContext.getCallerPrincipal().getName();
+        Hotel hotel = hotelManager.findHotelByManagerLogin(managerLogin);
+        return Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
+    }
+
+    @Override
+    @RolesAllowed("getOtherHotelInfo")
+    public HotelDto getOtherHotelInfo(Long id) throws AppBaseException {
+        Hotel hotel = hotelManager.findHotelById(id);
+        return Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
     }
 }

@@ -261,5 +261,6 @@
   "assignTitle": "Assign manager to hotel",
   "assignManager.success": "Manager assigned successfully",
   "exception.hotel.has_manager": "Hotel already have assigned manager",
-  "emptyListManager": "No unassigned managers"
+  "emptyListManager": "No unassigned managers",
+  "search.hotel": "Search hotel..."
 }

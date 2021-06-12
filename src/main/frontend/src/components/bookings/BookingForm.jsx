@@ -18,8 +18,8 @@ import "../../css/overlay.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { Field } from "formik";
 import DatePickerField from "../controls/DatePickerField";
-import "../../css/booking-form.css"
-import {useLocale} from "../LoginContext";
+import "../../css/booking-form.css";
+import { useLocale } from "../LoginContext";
 
 function SignUp(props) {
   const { t, i18n } = props;
@@ -28,8 +28,7 @@ function SignUp(props) {
   const dispatchNotificationSuccess = useNotificationSuccessAndShort();
   const history = useHistory();
   const [submitting, setSubmitting] = useState(false);
-  const {token, setToken} = useLocale();
-
+  const { token, setToken } = useLocale();
 
   const colorTheme = useThemeColor();
 
@@ -90,11 +89,11 @@ function SignUp(props) {
 
   function onSubmit(values, { resetForm }) {
     setSubmitting(true);
-    console.log(values)
+    console.log(values);
 
     const { ...dto } = values;
     api
-      .addBooking(dto, {headers: {Authorization: token}})
+      .addBooking(dto, { headers: { Authorization: token } })
       .then((res) => {
         dispatchNotificationSuccess({
           message: t("booking.create.success"),
@@ -111,8 +110,8 @@ function SignUp(props) {
 
   function validate(values) {
     const errors = {};
-    if(values.dateFrom >= values.dateTo){
-      errors.dateFrom = t('booking.form.error.date_not_earlier')
+    if (values.dateFrom >= values.dateTo) {
+      errors.dateFrom = t("booking.form.error.date_not_earlier");
     }
     return errors;
   }
@@ -143,7 +142,7 @@ function SignUp(props) {
               </div>
 
               <div className="col-md-12 mb-2">
-                <label htmlFor="hotelId">Hotel</label>
+                <label htmlFor="hotelId">{t('hotel')}</label>
                 <Field
                   className="col-md-5"
                   name="hotelId"
@@ -153,62 +152,61 @@ function SignUp(props) {
               </div>
 
               <div className="col-md-12">
-                <label htmlFor="dateFrom">Date from</label>
-                {errors && touched && errors.dateFrom &&
-                  <div style={{color: "red"}}>{errors.dateFrom}</div>
-                }
+                <label htmlFor="dateFrom">{t('booking.form.date_from')}</label>
+                {errors && touched && errors.dateFrom && (
+                  <div style={{ color: "red" }}>{errors.dateFrom}</div>
+                )}
                 <DatePickerField name="dateFrom" />
               </div>
 
               <div className="col-md-12">
-                <label htmlFor="dateTo">Date to</label>
+                <label htmlFor="dateTo">{t('booking.form.date_to')}</label>
                 <DatePickerField name="dateTo" />
               </div>
 
               <div className="col-md-12">
-              <label htmlFor="boxes">Boxes</label>
-              <FieldArray name="boxes">
-                {({ push }) => {
-                  const len = values.boxes.length;
-                  return (
-                    <div className="col-md-12">
-                      {values.boxes.map((box, index) => (
-                        <div key={index} className="row my-2">
-                          <div className="col-md-5">
+                <label htmlFor="boxes">{t('booking.form.boxes')}</label>
+                <FieldArray name="boxes">
+                  {({ push }) => {
+                    const len = values.boxes.length;
+                    return (
+                      <div className="col-md-12">
+                        {values.boxes.map((box, index) => (
+                          <div key={index} className="row my-2">
+                            <div className="col-md-5">
+                              <Field
+                                className="col-md-5"
+                                name={`boxes.${index}.type`}
+                                component={SelectField}
+                                options={animalTypes}
+                              />
+                            </div>
                             <Field
                               className="col-md-5"
-                              name={`boxes.${index}.type`}
-                              component={SelectField}
-                              options={animalTypes}
+                              name={`boxes.${index}.quantity`}
+                              type="number"
+                              min="1"
                             />
+                            {len === index + 1 && (
+                              <div className="col-md-2">
+                                <button
+                                  type="button"
+                                  className="btn btn-primary"
+                                  style={{ backgroundColor: "#7749F8" }}
+                                  onClick={() =>
+                                    push({ type: "", quantity: "" })
+                                  }
+                                >
+                                  +
+                                </button>
+                              </div>
+                            )}
                           </div>
-                          <Field
-                            className="col-md-5"
-                            name={`boxes.${index}.quantity`}
-                            type="number"
-                            min="1"
-                          />
-                          {len === index + 1 && (
-                            <div className="col-md-2">
-                              <button
-                                type="button"
-                                className="btn btn-primary"
-                                style={{ backgroundColor: "#7749F8" }}
-                                onClick={() => {
-                                  console.log("ELO");
-                                  push({ type: "", quantity: "" });
-                                }}
-                              >
-                                +
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  );
-                }}
-              </FieldArray>
+                        ))}
+                      </div>
+                    );
+                  }}
+                </FieldArray>
               </div>
 
               <div className="col-12 d-flex justify-content-center mb-3">

@@ -271,7 +271,7 @@
   "modifyHotel.action" : "Modify hotel",
   "modifyHotel.modify.name" : "Hotel name",
   "modifyHotel.modify.address" : "Hotel address",
-  "modifyHotel.modify.city" : "City",
+  "modifyHotel.modify.city" : "Hotel city",
   "modifyHotel.error.address_required": "Address is required",
   "modifyHotel.error.name_required": "Name is required",
   "modifyHotel.error.city_required": "City is required",

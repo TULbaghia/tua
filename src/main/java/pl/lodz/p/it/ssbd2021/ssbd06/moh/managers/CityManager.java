@@ -32,10 +32,11 @@ public class CityManager {
     /**
      * Zwraca miasto o podanym identyfikatorze
      *
-     * @param id identyfikator miasta
-     * @throws AppBaseException podczas błędu związanego z bazą danych
-     * @return encja miasta
+     * @param id identyfikator miasta.
+     * @throws AppBaseException gdy nie udało się pobrać danych lub podczas błędu z bazą danych
+     * @return wyszukiwane miasto.
      */
+    @PermitAll
     public City get(Long id) throws AppBaseException {
         return Optional.ofNullable(cityFacade.find(id)).orElseThrow(NotFoundException::cityNotFound);
     }

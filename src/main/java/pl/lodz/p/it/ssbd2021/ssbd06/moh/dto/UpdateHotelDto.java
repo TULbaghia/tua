@@ -15,7 +15,7 @@ public class UpdateHotelDto implements Signable {
     private Long id;
     private String name;
     private String address;
-    private String cityName;
+    private Long cityId;
 
     private Long version;
 

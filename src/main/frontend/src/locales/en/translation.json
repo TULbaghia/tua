@@ -262,5 +262,17 @@
   "assignManager.success": "Manager assigned successfully",
   "exception.hotel.has_manager": "Hotel already have assigned manager",
   "emptyListManager": "No unassigned managers",
-  "search.hotel": "Search hotel..."
+  "search.hotel": "Search hotel...",
+  "reservationStart": "Reservation start",
+  "reservationEnd": "Reservation end",
+  "price": "Price",
+  "bookingStatus": "Booking Status",
+  "pendingBookingStatus": "Pending",
+  "cancelledBookingStatus": "Cancelled",
+  "in_progressBookingStatus": "In progress",
+  "finishedBookingStatus": "Finished",
+  "cancelReservation": "Cancel reservation",
+  "endReservation": "End reservation",
+  "button.end": "End",
+  "addRating": "Add rating"
 }

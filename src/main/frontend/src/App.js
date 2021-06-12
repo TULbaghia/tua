@@ -29,6 +29,7 @@ import { GuardProvider, GuardedRoute } from 'react-router-guards';
 import OtherUserInfo from "./components/OtherUserInfo";
 import HotelList from "./components/HotelList";
 import AssignManager from "./components/AssignManager";
+import ArchiveBookings from "./components/ArchiveBookings";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -129,6 +130,7 @@ function App() {
                             <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels" component={HotelList} meta={{ }}/>
                             <GuardedRoute exact path="/hotels/assignManager" component={AssignManager} meta={{ auth: true, admin: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/archiveReservations" component={ArchiveBookings} meta={{ auth: true, all: true, logged, currentRole}}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

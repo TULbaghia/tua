@@ -265,5 +265,18 @@
   "assignManager.success": "Manager przypisany pomyślnie",
   "exception.hotel.has_manager": "Hotel ma już przypisanego managera",
   "search.hotel": "Wyszukaj hotel...",
-  "emptyListManager": "Brak nieprzypisanych managerów"
+  "emptyListManager": "Brak nieprzypisanych managerów",
+  "reservationStart": "Początek rezerwacji",
+  "reservationEnd": "Koniec rezerwacji",
+  "price": "Cena",
+  "bookingStatus": "Stan rezerwacji",
+  "pendingBookingStatus": "Oczekujący",
+  "cancelledBookingStatus": "Anulowany",
+  "in_progressBookingStatus": "W trakcie",
+  "finishedBookingStatus": "Zakończony",
+  "cancelReservation": "Anuluj rezerwację",
+  "endReservation": "Zakończ rezerwację",
+  "button.end": "Zakończ",
+  "addRating": "Dodaj ocenę"
+
 }

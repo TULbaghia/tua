@@ -273,7 +273,7 @@ function HotelList(props) {
                     }}>{t("refresh")}</Button>
                     {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
                         <Button className="btn-primary float-right m-2" onClick={event => {
-                            history.push('/addHotel');
+                            history.push('/hotels/addHotel');
                         }}>{t("addHotel")}</Button>
                     ) : ( null )}
                     <input

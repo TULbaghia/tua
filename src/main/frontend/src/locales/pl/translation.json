@@ -285,5 +285,17 @@
   "modifyHotel.error.id_invalid": "Nieprawidłowe id hotelu",
   "modifyHotel.error.description_required": "Opis jest wymagany",
   "modifyHotel.modify.description" : "Opis hotelu",
-  "modifyHotel.modify.image" : "Grafika"
+  "modifyHotel.modify.image" : "Grafika",
+
+  "addHotel.title": "Dodaj nowy hotel",
+  "addHotel.add.name": "Nazwa hotelu",
+  "addHotel.add.address": "Adres hotelu",
+  "addHotel.add.image": "Odnośnik do zdjęcia hotelu",
+  "addHotel.add.description": "Opis",
+  "addHotel.add.city": "Miasto",
+  "addHotel.success": "Pomyślnie dodano hotel",
+  "addHotel.error.address_required": "Adres jest wymagany",
+  "addHotel.error.name_required": "Nazwa jest wymagana",
+  "addHotel.error.city_required": "Miasto jest wymagane",
+  "addHotel.error.description_required": "Opis jest wymagany"
 }

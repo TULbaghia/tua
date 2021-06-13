@@ -282,5 +282,17 @@
   "modifyHotel.error.id_invalid": "Hotel id is invalid",
   "modifyHotel.error.description_required": "Hotel description is required",
   "modifyHotel.modify.description" : "Hotel description",
-  "modifyHotel.modify.image" : "Graphics"
+  "modifyHotel.modify.image" : "Graphics",
+
+  "addHotel.title": "Create new Hotel",
+  "addHotel.add.name": "Hotel name",
+  "addHotel.add.address": "Hotel address",
+  "addHotel.add.image": "Hotel image URL",
+  "addHotel.add.description": "Description",
+  "addHotel.add.city": "Hotel city",
+  "addHotel.success": "Hotel has been added",
+  "addHotel.error.address_required": "Address is required",
+  "addHotel.error.name_required": "Name is required",
+  "addHotel.error.city_required": "City is required",
+  "addHotel.error.description_required": "Hotel description is required"
 }

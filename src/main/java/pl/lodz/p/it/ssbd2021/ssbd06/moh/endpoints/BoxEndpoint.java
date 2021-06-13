@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IBoxMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
@@ -46,6 +47,33 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
         }
         return result;
     }
+
+    @Override
+    @RolesAllowed("getAllBoxes")
+    public List<BoxDto> getAllBoxesInHotel(Long hotelId) throws AppBaseException {
+        List<Box> boxes = boxManager.getAll();
+        List<BoxDto> result = new ArrayList<>();
+        for(Box box : boxes) {
+            if(box.getHotel().getId().equals(hotelId)) {
+                result.add(Mappers.getMapper(IBoxMapper.class).toBoxDto(box));
+            }
+        }
+        return result;
+    }
+
+    @Override
+    @RolesAllowed("getAllBoxes")
+    public List<BoxDto> getSomeTypeBoxesFromHotel(Long hotelId, AnimalType animalType) throws AppBaseException {
+        List<Box> boxes = boxManager.getAll();
+        List<BoxDto> result = new ArrayList<>();
+        for(Box box : boxes) {
+            if(box.getHotel().getId().equals(hotelId) && box.getAnimalType().equals(animalType)) {
+                result.add(Mappers.getMapper(IBoxMapper.class).toBoxDto(box));
+            }
+        }
+        return result;
+    }
+
 
     @Override
     @RolesAllowed("addBox")

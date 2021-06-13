@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;

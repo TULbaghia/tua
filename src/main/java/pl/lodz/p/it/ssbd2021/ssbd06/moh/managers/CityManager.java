@@ -7,7 +7,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.CityFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
@@ -17,7 +16,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import javax.security.enterprise.SecurityContext;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;

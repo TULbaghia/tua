@@ -291,5 +291,16 @@
   "reportGenerator.table.rating" : "Rating",
   "reportGenerator.table.owner_login" : "Owner login",
   "reportGenerator.success" : "Report has been successfully generated",
-  "reportGenerator.no_results" : "No results for given period"
+  "reportGenerator.no_results" : "No results for given period",
+  "reservationStart": "Reservation start",
+  "reservationEnd": "Reservation end",
+  "price": "Price",
+  "bookingStatus": "Stan rezerwacji",
+  "pendingBookingStatus": "Pending",
+  "cancelledBookingStatus": "Cancelled",
+  "in_progressBookingStatus": "In progress",
+  "finishedBookingStatus": "Finished",
+  "cancelReservation": "Cancel reservation",
+  "endReservation": "End reservation",
+  "button.end": "End"
 }

@@ -13,8 +13,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.HotelEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.CityManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.HotelManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.ManagerDataDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.RoleManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.AccountManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.RoleManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -130,7 +130,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
         if (!verifyIntegrity(managerDataDto)) {
             throw AppOptimisticLockException.optimisticLockException();
         }
-        hotelManager.addManagerToHotel(hotelId, managerLogin);
+        hotelManager.addManagerToHotel(hotelId, managerData);
     }
 
     @Override

@@ -1,16 +1,26 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.RatingException;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.RatingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.security.enterprise.SecurityContext;
 import java.util.List;
 
 /**
@@ -20,6 +30,19 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class RatingManager {
+
+    @Inject
+    private RatingFacade ratingFacade;
+
+    @Inject
+    private BookingFacade bookingFacade;
+
+    @Inject
+    private AccountFacade accountFacade;
+
+    @Inject
+    private SecurityContext securityContext;
+
     /**
      * Zwraca listę ocen hotelu
      *
@@ -38,8 +61,31 @@ public class RatingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("addHotelRating")
-    void addRating(RatingDto ratingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addRating(NewRatingDto ratingDto) throws AppBaseException {
+        Booking ratedBooking = bookingFacade.find(ratingDto.getBookingId());
+        if(ratedBooking == null) {
+            throw RatingException.bookingNotExists();
+        }
+        if(ratedBooking.getStatus() != BookingStatus.FINISHED) {
+            throw RatingException.bookingNotFinished();
+        }
+        if (ratedBooking.getRating() != null) {
+            throw RatingException.ratingAlreadyExists();
+        }
+
+        Account clientAccount = accountFacade.findByLogin(securityContext.getCallerPrincipal().getName());
+        if (!ratedBooking.getAccount().getId().equals(clientAccount.getId())) {
+            throw RatingException.bookingNotOwned();
+        }
+
+        Rating rating = new Rating(ratingDto.getRate(), false);
+        if(ratingDto.getComment() != null) {
+            rating.setComment(ratingDto.getComment());
+        }
+
+        rating.setBooking(ratedBooking);
+        rating.setCreatedBy(clientAccount);
+        ratingFacade.create(rating);
     }
 
     /**

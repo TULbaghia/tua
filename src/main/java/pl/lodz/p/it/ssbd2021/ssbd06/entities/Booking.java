@@ -16,9 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "booking", indexes = {
@@ -69,7 +67,7 @@ public class Booking extends AbstractEntity implements Serializable {
 
     @Setter
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "booking")
-    private Set<BookingLine> bookingLineList = new HashSet<>();
+    private List<BookingLine> bookingLineList = new ArrayList<>();
 
     @Getter
     @Setter
@@ -109,7 +107,7 @@ public class Booking extends AbstractEntity implements Serializable {
     }
 
     @XmlTransient
-    public Set<BookingLine> getBookingLineList() {
+    public List<BookingLine> getBookingLineList() {
         return bookingLineList;
     }
 }

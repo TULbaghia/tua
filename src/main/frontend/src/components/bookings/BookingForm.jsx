@@ -42,6 +42,14 @@ function SignUp(props) {
       label: "hotel_2",
       value: -2,
     },
+    {
+      label: "hotel_3",
+      value: -3,
+    },
+    {
+      label: "hotel_4",
+      value: -4,
+    },
   ];
 
   const animalTypes = [
@@ -76,7 +84,7 @@ function SignUp(props) {
   ];
 
   const initialValues = {
-    hotelId: 1,
+    hotelId: -1,
     dateFrom: new Date(),
     dateTo: new Date(),
     boxes: [

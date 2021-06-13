@@ -23,7 +23,10 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -91,12 +94,16 @@ public class BookingManager {
                 .map(NewBookingDto.BookedBoxes::getType)
                 .map(AnimalType::valueOf)
                 .collect(Collectors.toList());
-        List<Box> availableBoxes = boxFacade.getAvailableBoxesByTypesAndHotelId(bookingDto.getHotelId(), types);
+        List<Box> availableBoxes = boxFacade.getAvailableBoxesByTypesAndHotelId(bookingDto.getHotelId(), types, bookingDto.getDateFrom(), bookingDto.getDateTo());
+
+        // not enough boxes to fulfill the booking or booking has been sent without any boxes
+        if(availableBoxes.size() == 0){
+            throw BookingException.notEnoughBoxesOfSpecifiedType();
+        }
 
         Booking booking = new Booking(bookingDto.getDateFrom(), bookingDto.getDateTo(), BigDecimal.valueOf(0), account, BookingStatus.PENDING);
 
         BigDecimal price = BigDecimal.ZERO;
-        // todo should days between include the first day of booking ?
         long bookingDurationDays = Duration.between(booking.getDateFrom().toInstant(), booking.getDateTo().toInstant()).toDays();
 
         for (NewBookingDto.BookedBoxes typedBoxes : bookingDto.getBoxes()) {

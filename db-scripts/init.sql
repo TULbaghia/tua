@@ -40,11 +40,11 @@ VALUES (-1, now(), null, 1, 'Super perspektywy', 'Łódź', -1, null),
        (-2, now(), null, 1, 'Stolica Polski', 'Warszawa', -1, null);
 
 -- Inicjalizacja hoteli
-INSERT INTO hotel (id, creation_date, modification_date, version, address, name, rating, created_by, modified_by, city_id)
-VALUES (-1, now(), null, 1, 'Krakowska 21', 'Pet-Land', 4.0, -1, null, -1),
-       (-2, now(), null, 1, 'Paderewskiego 3', 'Zwierzogród', null, -1, null, -1),
-       (-3, now(), null, 1, 'Kredytowa 69', 'Psy i My', null, -1, null, -2),
-       (-4, now(), null, 1, 'Mickiewicza 1', 'Jet Pet', null, -1, null, -2);
+INSERT INTO hotel (id, creation_date, modification_date, version, address, name, rating, created_by, modified_by, city_id, image, description)
+VALUES (-1, now(), null, 1, 'Krakowska 21', 'Pet-Land', 4.0, -1, null, -1, null, 'Hotel Pet-Landia znajduje się na obrzeżach miasta Łódź. Jest przystosowany do obsługi różnych gatunków zwierząt.'),
+       (-2, now(), null, 1, 'Paderewskiego 3', 'Zwierzogród', null, -1, null, -1, null, 'Zwierzogród jest hotelem znajdującym się w dzielnicy Łódź-Górna. Na terenie hotelu znajduje się park do zabaw ze zwierzętami, gdzie nasza obsługa codziennie wyprowadza zwierzęta.'),
+       (-3, now(), null, 1, 'Kredytowa 69', 'Psy i My', null, -1, null, -2, '/static/media/hand.4e599302.jpg', 'Warszawski hotel przeznaczony głównie dla psów. Przy hotelu znajduje się duży ogrodzony las, gdzie nasi współpracownicy wyprowadzają przechowywane zwierzęta.'),
+       (-4, now(), null, 1, 'Mickiewicza 1', 'Jet Pet', null, -1, null, -2, '/static/media/hand.4e599302.jpg', 'Jet Pet to hotel znajdujący się na przedmieściach Warszawy. Na terenie hotelu znajduje się tor przeszkód oraz plac zabaw na terenie, którego nasi współpracownicy bawią się z przechowywanymi pupilami.');
 
 -- Inicjalizacja tabel szczegółowych rozszerzających role
 INSERT INTO admin_data (id)

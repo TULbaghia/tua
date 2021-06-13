@@ -3,14 +3,19 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.security.enterprise.SecurityContext;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Manager odpowiadający za zarządzanie rezerwacjami.
@@ -20,14 +25,23 @@ import java.util.List;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class BookingManager {
 
+    @Inject
+    private BookingFacade bookingFacade;
+
+    @Inject
+    private AccountFacade accountFacade;
+
+    @Inject
+    private SecurityContext securityContext;
+
     /**
      * Zwraca wskazaną rezerwację:
      * - Dla managera dozwolone rezerwacja w jego hotelu,
      * - Dla klienta rezerwacja złożona przez tego klienta.
      *
      * @param id identyfikator rezerwacji
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return rezerwacja
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     Booking get(Long id) throws AppBaseException {
         throw new UnsupportedOperationException();
@@ -38,8 +52,8 @@ public class BookingManager {
      * - Dla managera rezerwacje dotyczące jego hotelu,
      * - Dla klienta rezerwacje dotyczące tego klienta.
      *
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     List<Booking> getAll() throws AppBaseException {
         throw new UnsupportedOperationException();
@@ -50,10 +64,10 @@ public class BookingManager {
      * - Dla managera rezerwacje dotyczące jego hotelu,
      * - Dla klienta rezerwacje dotyczące tego klienta.
      *
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    List<Booking> getAll(String ...option) throws AppBaseException {
+    List<Booking> getAll(String... option) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
@@ -104,12 +118,23 @@ public class BookingManager {
      * - Dla managera rezerwacje dotyczące jego hotelu,
      * - Dla klienta rezerwacje dotyczące tego klienta.
      *
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed("getAllActiveReservations")
-    List<Booking> showActiveBooking() throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @RolesAllowed({"getAllActiveReservations", "Client"})
+    public List<Booking> showActiveBooking() throws AppBaseException {
+        String callerName = securityContext.getCallerPrincipal().getName();
+        if (securityContext.isCallerInRole("Client")) {
+            return bookingFacade.findAllActive().stream()
+                    .filter(b -> b.getAccount().getLogin().equals(callerName))
+                    .collect(Collectors.toList());
+        } else {
+            return bookingFacade.findAllActive().stream()
+                    .filter(b -> b.getBookingLineList().stream().anyMatch(
+                            bl -> bl.getBox().getHotel().getManagerDataList().stream().anyMatch(
+                                    md -> md.getAccount().getLogin().equals(callerName))))
+                    .collect(Collectors.toList());
+        }
     }
 
     /**
@@ -117,11 +142,22 @@ public class BookingManager {
      * - Dla managera archiwalne rezerwacje dotyczące jego hotelu,
      * - Dla klienta archiwalne rezerwacje dotyczące tego klienta.
      *
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista rezerwacji
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed("getAllArchiveReservations")
-    List<Booking> showEndedBooking() throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @RolesAllowed({"getAllArchiveReservations", "Client"})
+    public List<Booking> showEndedBooking() throws AppBaseException {
+        String callerName = securityContext.getCallerPrincipal().getName();
+        if (securityContext.isCallerInRole("Client")) {
+            return bookingFacade.findAllArchived().stream()
+                    .filter(b -> b.getAccount().getLogin().equals(callerName))
+                    .collect(Collectors.toList());
+        } else {
+            return bookingFacade.findAllArchived().stream()
+                    .filter(b -> b.getBookingLineList().stream().anyMatch(
+                            bl -> bl.getBox().getHotel().getManagerDataList().stream().anyMatch(
+                                    md -> md.getAccount().getLogin().equals(callerName))))
+                    .collect(Collectors.toList());
+        }
     }
 }

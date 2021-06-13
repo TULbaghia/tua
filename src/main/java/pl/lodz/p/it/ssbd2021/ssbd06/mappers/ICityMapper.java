@@ -12,6 +12,7 @@ public interface ICityMapper {
 
     /**
      * Dokonuje mapowania z obiektu City na obiekt CityDto
+     *
      * @param city obiekt klasy City
      * @return zmapowany obiekt klasy CityDto
      */

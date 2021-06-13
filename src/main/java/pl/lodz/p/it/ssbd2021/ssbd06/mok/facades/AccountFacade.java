@@ -161,7 +161,7 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     @DenyAll
     @Override
-    public Account find(Object id) {
+    public Account find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

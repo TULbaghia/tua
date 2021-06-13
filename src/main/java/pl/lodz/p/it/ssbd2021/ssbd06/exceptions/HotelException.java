@@ -7,6 +7,7 @@ public class HotelException extends AppBaseException {
     private static final String DELETE_HOTEL_HAS_MANAGER = "exception.delete.hotel.has_manager";
     private static final String HOTEL_NOT_EXIST = "exception.hotel.not_exist";
     private static final String HOTEL_HAS_MANAGER = "exception.hotel.has_manager";
+    private static final String HOTEL_NAME_INVALID = "exception.hotel.name_invalid";
 
     private HotelException(String message, Throwable cause) {
         super(message, cause);
@@ -14,6 +15,16 @@ public class HotelException extends AppBaseException {
 
     private HotelException(String message) {
         super(message);
+    }
+
+    /**
+     * Tworzy wyjątek związany z duplikacją nazwy obiektu typu Hotel.
+     *
+     * @param cause wyjątek, który zostanie opakowany.
+     * @return wyjątek NotFoundException.
+     */
+    public static HotelException hotelNameExists(Throwable cause) {
+        return new HotelException(HOTEL_NAME_INVALID, cause);
     }
 
     /**
@@ -43,3 +54,4 @@ public class HotelException extends AppBaseException {
         return new HotelException(HOTEL_HAS_MANAGER);
     }
 }
+

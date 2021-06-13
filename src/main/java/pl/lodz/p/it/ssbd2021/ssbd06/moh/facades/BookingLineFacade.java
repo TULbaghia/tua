@@ -51,7 +51,7 @@ public class BookingLineFacade extends AbstractFacade<BookingLine> {
 
     @PermitAll
     @Override
-    public BookingLine find(Object id) {
+    public BookingLine find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

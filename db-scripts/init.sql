@@ -13,7 +13,7 @@ VALUES (-1, now(), null, 1, true, '999888777', true, 0, 'Admin', 'pl', null, nul
         null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
        (-5, now(), null, 1, true, '543095437', true, 0, 'Dominik', 'pl', null, null, 'DARK', null, null, 'Dąbrowski', 'domino', 'domino@edu.pl',
         null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
-       (-6, now(), null, 1, true, '356897453', true, 0, 'Zbycholud', 'pl', null, null, 'DARK', null, null, 'Pakleza', 'byniolus', 'byniolus@edu.pl',
+       (-6, now(), null, 1, true, '356897453', true, 0, 'Zbigniew', 'pl', null, null, 'DARK', null, null, 'Adamczyk', 'zbadam', 'zbadam@edu.pl',
         null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
        (-7, now(), null, 1, true, '356892223', true, 0, 'Filp', 'pl', null, null, 'LIGHT', null, null, 'Bąk', 'filipino', 'filipino@edu.pl',
         null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
@@ -37,14 +37,14 @@ VALUES ('ADMIN', -1, now(), null, 1, true, -1, null, -1),
 -- Inicjalizacja miast
 INSERT INTO city (id, creation_date, modification_date, version, description, name, created_by, modified_by)
 VALUES (-1, now(), null, 1, 'Super perspektywy', 'Łódź', -1, null),
-       (-2, now(), null, 1, 'Stolica', 'Warszawa', -1, null);
+       (-2, now(), null, 1, 'Stolica Polski', 'Warszawa', -1, null);
 
 -- Inicjalizacja hoteli
-INSERT INTO hotel (id, creation_date, modification_date, version, address, name, rating, created_by, modified_by, city_id)
-VALUES (-1, now(), null, 1, 'Papieska 21/37', 'Klatkowo', 4.0, -1, null, -1),
-       (-2, now(), null, 1, 'Zbrodniarzy 3', 'Zwierzogród', null, -1, null, -1),
-       (-3, now(), null, 1, 'Kredytowa 69', 'Pet-Land', null, -1, null, -2),
-       (-4, now(), null, 1, 'Mickiewicza 1', 'Zwierzex', null, -1, null, -2);
+INSERT INTO hotel (id, creation_date, modification_date, version, address, name, rating, created_by, modified_by, city_id, image, description)
+VALUES (-1, now(), null, 1, 'Krakowska 21', 'Pet-Land', 4.0, -1, null, -1, null, 'Hotel Pet-Landia znajduje się na obrzeżach miasta Łódź. Jest przystosowany do obsługi różnych gatunków zwierząt.'),
+       (-2, now(), null, 1, 'Paderewskiego 3', 'Zwierzogród', null, -1, null, -1, null, 'Zwierzogród jest hotelem znajdującym się w dzielnicy Łódź-Górna. Na terenie hotelu znajduje się park do zabaw ze zwierzętami, gdzie nasza obsługa codziennie wyprowadza zwierzęta.'),
+       (-3, now(), null, 1, 'Kredytowa 69', 'Psy i My', null, -1, null, -2, '/static/media/hand.4e599302.jpg', 'Warszawski hotel przeznaczony głównie dla psów. Przy hotelu znajduje się duży ogrodzony las, gdzie nasi współpracownicy wyprowadzają przechowywane zwierzęta.'),
+       (-4, now(), null, 1, 'Mickiewicza 1', 'Jet Pet', null, -1, null, -2, '/static/media/hand.4e599302.jpg', 'Jet Pet to hotel znajdujący się na przedmieściach Warszawy. Na terenie hotelu znajduje się tor przeszkód oraz plac zabaw na terenie, którego nasi współpracownicy bawią się z przechowywanymi pupilami.');
 
 -- Inicjalizacja tabel szczegółowych rozszerzających role
 INSERT INTO admin_data (id)
@@ -68,27 +68,27 @@ VALUES (-8);
 
 -- Inicjalizacja boxów
 INSERT INTO box (id, creation_date, modification_date, version, animal_type, price_per_day, created_by, modified_by, hotel_id)
-VALUES (-1, now(), null, 1, 1, 55.55, -2, null, -1),
-       (-2, now(), null, 1, 1, 55.55, -2, null, -1),
-       (-3, now(), null, 1, 2, 39.99, -2, null, -1),
-       (-4, now(), null, 1, 3, 43.90, -2, null, -1),
-       (-5, now(), null, 1, 4, 29.99, -3, null, -2),
-       (-6, now(), null, 1, 5, 35.22, -3, null, -2),
-       (-7, now(), null, 1, 6, 49.90, -3, null, -2),
-       (-8, now(), null, 1, 1, 39.90, -5, null, -3),
-       (-9, now(), null, 1, 1, 29.99, -5, null, -3),
-       (-10, now(), null, 1, 1, 34.90, -5, null, -3),
-       (-11, now(), null, 1, 2, 43.44, -6, null, -4),
-       (-12, now(), null, 1, 4, 32.14, -6, null, -4),
-       (-13, now(), null, 1, 5, 48.49, -6, null, -4),
-       (-14, now(), null, 1, 7, 29.44, -6, null, -4);
+VALUES (-1, now(), null, 1, 0, 55.55, -2, null, -1),
+       (-2, now(), null, 1, 0, 55.55, -2, null, -1),
+       (-3, now(), null, 1, 1, 39.99, -2, null, -1),
+       (-4, now(), null, 1, 2, 43.90, -2, null, -1),
+       (-5, now(), null, 1, 3, 29.99, -3, null, -2),
+       (-6, now(), null, 1, 4, 35.22, -3, null, -2),
+       (-7, now(), null, 1, 5, 49.90, -3, null, -2),
+       (-8, now(), null, 1, 0, 39.90, -5, null, -3),
+       (-9, now(), null, 1, 0, 29.99, -5, null, -3),
+       (-10, now(), null, 1, 0, 34.90, -5, null, -3),
+       (-11, now(), null, 1, 1, 43.44, -6, null, -4),
+       (-12, now(), null, 1, 3, 32.14, -6, null, -4),
+       (-13, now(), null, 1, 4, 48.49, -6, null, -4),
+       (-14, now(), null, 1, 6, 29.44, -6, null, -4);
 
 -- Inicjalizacja rezerwacji
 INSERT INTO booking (id, creation_date, modification_date, version, date_from, date_to, price, status, created_by, modified_by, account_id)
-VALUES (-1, now(), null ,1 , current_timestamp, current_timestamp + INTERVAL '1 week', 388.85, 3, -4, null, -4),
-       (-2, now() - INTERVAL '1 week', null ,1 ,now() - INTERVAL '1 week', current_timestamp - INTERVAL '5 day', 191.08, 4, -4, null, -4),
-       (-3, now(), null, 1, current_timestamp + INTERVAL '1 week', current_timestamp + INTERVAL '2 week', 209.93, 2, -7, null, -7),
-       (-4, now() - INTERVAL '1 week', null, 1, now() - INTERVAL '1 week', current_timestamp - INTERVAL '3 day', 175.60, 4, -7, null, -7);
+VALUES (-1, now(), null ,1 , current_timestamp, current_timestamp + INTERVAL '1 week', 388.85, 2, -4, null, -4),
+       (-2, now() - INTERVAL '1 week', null ,1 ,now() - INTERVAL '1 week', current_timestamp - INTERVAL '5 day', 191.08, 3, -4, null, -4),
+       (-3, now(), null, 1, current_timestamp + INTERVAL '1 week', current_timestamp + INTERVAL '2 week', 209.93, 1, -7, null, -7),
+       (-4, now() - INTERVAL '1 week', null, 1, now() - INTERVAL '1 week', current_timestamp - INTERVAL '3 day', 175.60, 3, -7, null, -7);
 
 -- Inicjalizacja booking line
 INSERT INTO booking_line(id, creation_date, modification_date, version, price_per_day, created_by, modified_by,

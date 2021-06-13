@@ -110,6 +110,18 @@
     <security-role>
         <role-name>refreshToken</role-name>
     </security-role>
+    <security-role>
+        <role-name>getManagerData</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getAllManagers</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getOwnHotelInfo</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getOtherHotelInfo</role-name>
+    </security-role>
 
     <security-role>
         <role-name>addHotel</role-name>
@@ -118,7 +130,10 @@
         <role-name>deleteHotel</role-name>
     </security-role>
     <security-role>
-        <role-name>updateHotel</role-name>
+        <role-name>updateOwnHotel</role-name>
+    </security-role>
+    <security-role>
+        <role-name>updateOtherHotel</role-name>
     </security-role>
     <security-role>
         <role-name>addManagerToHotel</role-name>

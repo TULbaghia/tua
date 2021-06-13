@@ -51,7 +51,7 @@ public class RatingFacade extends AbstractFacade<Rating> {
 
     @PermitAll
     @Override
-    public Rating find(Object id) {
+    public Rating find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

@@ -1,10 +1,12 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.moh.HotelAddress;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.moh.HotelDescription;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.moh.HotelImage;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.moh.HotelName;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -31,6 +33,7 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel.HOTEL_NAME_CONSTRAINT;
         @NamedQuery(name = "Hotel.findById", query = "SELECT h FROM Hotel h WHERE h.id = :id"),
         @NamedQuery(name = "Hotel.findByName", query = "SELECT h FROM Hotel h WHERE h.name = :name")})
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class Hotel extends AbstractEntity implements Serializable {
 
     public static final String HOTEL_NAME_CONSTRAINT = "uk_hotel_name";
@@ -46,14 +49,15 @@ public class Hotel extends AbstractEntity implements Serializable {
     @Getter
     @Setter
     @NotNull
+    @NonNull
     @Basic(optional = false)
     @Size(min = 1, max = 63)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
+    @HotelName
     private String name;
 
     @Getter
     @Setter
-    @NotNull
     @Min(value = 1)
     @Max(value = 5)
     @Digits(integer = 1, fraction = 1)
@@ -63,10 +67,28 @@ public class Hotel extends AbstractEntity implements Serializable {
     @Getter
     @Setter
     @NotNull
+    @NonNull
     @Basic(optional = false)
     @Size(min = 1, max = 63)
-    @Column(name = "address")
+    @Column(name = "address", nullable = false)
+    @HotelAddress
     private String address;
+
+    @Getter
+    @Setter
+    @Size(min = 1, max = 127)
+    @Column(name = "image")
+    @HotelImage
+    private String image;
+
+    @Getter
+    @Setter
+    @NotNull
+    @NonNull
+    @Size(min = 1, max = 511)
+    @Column(name = "description", length = 511, nullable = false)
+    @HotelDescription
+    private String description;
 
     @Setter
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE},
@@ -82,11 +104,6 @@ public class Hotel extends AbstractEntity implements Serializable {
     @JoinColumn(name = "city_id", referencedColumnName = "id")
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     private City city;
-
-    public Hotel(String name, String address) {
-        this.name = name;
-        this.address = address;
-    }
 
     public Long getId() {
         return id;

@@ -1,5 +1,10 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mok.facades;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
+
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
@@ -8,12 +13,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
-
 import java.util.List;
 
 @Stateless
@@ -52,9 +51,9 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
         super.remove(entity);
     }
 
-    @DenyAll
+    @PermitAll
     @Override
-    public ManagerData find(Object id) {
+    public ManagerData find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

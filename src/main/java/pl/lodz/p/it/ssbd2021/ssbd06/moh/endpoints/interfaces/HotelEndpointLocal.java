@@ -21,8 +21,8 @@ public interface HotelEndpointLocal extends CallingClass {
      * MOH.5 Zwraca hotel o podanym identyfikatorze
      *
      * @param id identyfikator hotelu
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return dto hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PermitAll
     HotelDto get(Long id) throws AppBaseException;
@@ -30,8 +30,8 @@ public interface HotelEndpointLocal extends CallingClass {
     /**
      * MOH.4 Zwraca listę hoteli
      *
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista hoteli
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PermitAll
     List<HotelDto> getAll() throws AppBaseException;
@@ -39,21 +39,21 @@ public interface HotelEndpointLocal extends CallingClass {
     /**
      * MOH.6 Wyszukaj hotel
      *
-     * @param option identyfikator hotelu
-     * @throws AppBaseException podczas błędu związanego z bazą danych
+     * @param searchQuery identyfikator hotelu
      * @return dto hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PermitAll
-    HotelDto lookForHotel(String ...option) throws AppBaseException;
+    List<HotelDto> lookForHotel(String searchQuery) throws AppBaseException;
 
     /**
      * MOH.7, MOH.28 Zwraca listę hoteli po przefiltrowaniu
      *
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista hoteli
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PermitAll
-    List<HotelDto> getAllFilter(String ...option) throws AppBaseException;
+    List<HotelDto> getAllFilter(String... option) throws AppBaseException;
 
     /**
      * Dodaje hotel
@@ -63,15 +63,6 @@ public interface HotelEndpointLocal extends CallingClass {
      */
     @RolesAllowed("addHotel")
     void addHotel(NewHotelDto hotelDto) throws AppBaseException;
-
-    /**
-     * Modyfikuje hotel
-     *
-     * @param hotelDto dto z danymi hotelu
-     * @throws AppBaseException podczas błędu związanego z bazą danych
-     */
-    @RolesAllowed("updateHotel")
-    void updateHotel(UpdateHotelDto hotelDto) throws AppBaseException;
 
     /**
      * Usuwa hotel
@@ -85,7 +76,7 @@ public interface HotelEndpointLocal extends CallingClass {
     /**
      * Przypisuje managera (po loginie) do hotelu
      *
-     * @param hotelId identyfikator hotelu
+     * @param hotelId      identyfikator hotelu
      * @param managerLogin login managera którego przypisać do hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
@@ -102,13 +93,50 @@ public interface HotelEndpointLocal extends CallingClass {
     void deleteManagerFromHotel(String managerLogin) throws AppBaseException;
 
     /**
-     * Generuje raport nt. działalności hotelu
+     * Generuje raport nt. działalności hotelu z zadanego okresu.
      *
-     * @param hotelId identyfikator hotelu
-     * @param from data od
-     * @param to data do
-     * @return Dane potrzebne do wygenerowania raportu
+     * @param from data od (dla generowanego raportu)
+     * @param to   data do (dla generowanego raportu)
+     * @return dane potrzebne do wygenerowania raportu
      */
     @RolesAllowed("generateReport")
-    GenerateReportDto generateReport(Long hotelId, String from, String to) throws AppBaseException;
+    GenerateReportDto generateReport(Long from, Long to) throws AppBaseException;
+
+    /**
+     * Modyfikuje hotel managera.
+     *
+     * @param hotelDto dto z danymi hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @RolesAllowed("updateOwnHotel")
+    void updateOwnHotel(UpdateHotelDto hotelDto) throws AppBaseException;
+
+    /**
+     * Modyfikuje dowolny hotel.
+     *
+     * @param id       identyfikator hotelu.
+     * @param hotelDto dto z danymi hotelu.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
+     */
+    @RolesAllowed("updateOtherHotel")
+    void updateOtherHotel(Long id, UpdateHotelDto hotelDto) throws AppBaseException;
+
+    /**
+     * Zwraca dane hotelu przypisanego do managera.
+     *
+     * @return obiekt transferowy z danymi hotelu
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getOwnHotelInfo")
+    HotelDto getOwnHotelInfo() throws AppBaseException;
+
+    /**
+     * Zwraca dane hotelu o podanym id.
+     *
+     * @param id identyfikator hotelu
+     * @return obiekt transferowy z danymi hotelu
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getOtherHotelInfo")
+    HotelDto getOtherHotelInfo(Long id) throws AppBaseException;
 }

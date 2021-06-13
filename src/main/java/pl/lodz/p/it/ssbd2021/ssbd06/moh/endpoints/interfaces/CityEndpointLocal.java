@@ -29,7 +29,7 @@ public interface CityEndpointLocal extends CallingClass {
      * @return lista miast
      */
     @RolesAllowed("getAllCities")
-    List<CityDto> getAll() throws AppBaseException;
+    List<CityDto> getAllCities() throws AppBaseException;
 
     /**
      * Dodaje miasto

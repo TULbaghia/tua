@@ -82,8 +82,18 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
         }
     }
 
-    protected T find(Object id) {
-        return getEntityManager().find(entityClass, id);
+    /**
+     * Zwraca encje o podanym identyfikatorze.
+     *
+     * @return lista encji
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    protected T find(Object id) throws AppBaseException {
+        try {
+            return getEntityManager().find(entityClass, id);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
     /**

@@ -45,6 +45,9 @@ public class HotelManager {
     @Inject
     private HttpServletRequest servletRequest;
 
+    @Inject
+    private CityManager cityManager;
+
     /**
      * Zwraca hotel o podanym identyfikatorze
      *
@@ -98,8 +101,18 @@ public class HotelManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("addHotel")
-    void addHotel(NewHotelDto hotelDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addHotel(NewHotelDto hotelDto) throws AppBaseException {
+        Hotel hotel = new Hotel(hotelDto.getName(), hotelDto.getAddress(), hotelDto.getDescription());
+        if (hotelDto.getImage() != null) {
+            hotel.setImage(hotelDto.getImage());
+        }
+
+        City city = cityManager.get(hotelDto.getCityId());
+        hotel.setCity(city);
+
+        hotel.setCreatedBy(accountFacade.findByLogin(getLogin()));
+
+        hotelFacade.create(hotel);
     }
 
     /**
@@ -110,7 +123,7 @@ public class HotelManager {
      */
     @RolesAllowed({"updateOwnHotel", "updateOtherHotel"})
     public void updateHotel(Hotel hotel) throws AppBaseException {
-        Account modifier = accountFacade.findByLogin(servletRequest.getUserPrincipal().getName());
+        Account modifier = accountFacade.findByLogin(getLogin());
         hotel.setModifiedBy(modifier);
         hotelFacade.edit(hotel);
     }
@@ -213,6 +226,10 @@ public class HotelManager {
     @RolesAllowed({"getOwnHotelInfo", "updateOwnHotel", "generateReport"})
     public Hotel findHotelByManagerLogin(String login) throws AppBaseException {
         return managerDataFacade.findHotelByManagerId(login);
+    }
+
+    protected String getLogin() {
+        return servletRequest.getUserPrincipal().getName();
     }
 
     /**

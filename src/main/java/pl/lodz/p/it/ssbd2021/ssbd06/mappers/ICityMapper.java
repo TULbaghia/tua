@@ -5,7 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 
 /**
- * Odpowiada za przeprowadzenie mapowania z obiektów klasy Hotel na klasy DTO, oraz z obiektów klas DTO na obiekty klasy Hotel
+ * Odpowiada za przeprowadzenie mapowania z obiektów klasy City na klasy DTO, oraz z obiektów klas DTO na obiekty klasy City
  */
 @Mapper
 public interface ICityMapper {

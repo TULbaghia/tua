@@ -32,7 +32,7 @@ public class RoleMapperTest {
         managerData = new ManagerData();
         managerData.setAccount(account);
         managerData.setEnabled(true);
-        managerData.setHotel(new Hotel("Qubus", "Mickiewicza 42"));
+        managerData.setHotel(new Hotel("Qubus", "Mickiewicza 42", "Brak"));
     }
 
     @Test

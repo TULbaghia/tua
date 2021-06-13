@@ -44,16 +44,16 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     private HotelManager hotelManager;
 
     @Inject
-    private AccountManager accountManager;
-
-    @Inject
-    private RoleManager roleManager;
-
-    @Inject
     private CityManager cityManager;
 
     @Inject
     private SecurityContext securityContext;
+
+    @Inject
+    private AccountManager accountManager;
+
+    @Inject
+    private RoleManager roleManager;
 
     @Override
     @PermitAll
@@ -100,7 +100,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @Override
     @RolesAllowed("addHotel")
     public void addHotel(NewHotelDto hotelDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        hotelManager.addHotel(hotelDto);
     }
 
     @Override
@@ -151,7 +151,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
         }
 
         Mappers.getMapper(IHotelMapper.class).toHotel(hotelDto, hotel);
-        City city = cityManager.findByName(hotelDto.getCityName());
+        City city = cityManager.get(hotelDto.getCityId());
         hotel.setCity(city);
         hotelManager.updateHotel(hotel);
     }
@@ -167,7 +167,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
         }
 
         Mappers.getMapper(IHotelMapper.class).toHotel(hotelDto, hotel);
-        City city = cityManager.findByName(hotelDto.getCityName());
+        City city = cityManager.get(hotelDto.getCityId());
         hotel.setCity(city);
         hotelManager.updateHotel(hotel);
     }

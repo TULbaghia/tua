@@ -265,10 +265,6 @@
   "assignManager.success": "Manager przypisany pomyślnie",
   "exception.hotel.has_manager": "Hotel ma już przypisanego managera",
   "search.hotel": "Wyszukaj hotel...",
-  "emptyListManager": "Brak nieprzypisanych managerów",
-
-  "editOwnHotel.navbar.title" : "Edytuj hotel",
-  "generateReport.navbar.title" : "Generuj raport z działalności",
 
   "modifyHotel.title" : "Modyfikacja danych hotelu",
   "modifyHotel.action" : "Modyfikuj hotel",
@@ -294,5 +290,9 @@
   "reportGenerator.table.rating" : "Ocena",
   "reportGenerator.table.owner_login" : "Login właściciela",
   "reportGenerator.success" : "Pomyślnie wygenerowano raport",
-  "reportGenerator.no_results" : "Brak rezultatów dla podanego okresu"
+  "reportGenerator.no_results" : "Brak rezultatów dla podanego okresu",
+  "emptyListManager": "Brak nieprzypisanych managerów",
+
+  "editOwnHotel.navbar.title" : "Edytuj hotel",
+  "generateReport.navbar.title" : "Generuj raport z działalności"
 }

@@ -88,8 +88,8 @@ public class HotelController extends AbstractController {
      */
     @POST
     @RolesAllowed("addHotel")
-    public void addHotel(NewHotelDto hotelDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addHotel(@Valid NewHotelDto hotelDto) throws AppBaseException {
+        repeat(() -> hotelEndpoint.addHotel(hotelDto), hotelEndpoint);
     }
 
     /**

@@ -3478,7 +3478,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         addHotel(body?: NewHotelDto, options?: any): AxiosPromise<any> {
             return DefaultApiFp(configuration).addHotel(body, options).then((request) => request(axios, basePath));
         },
-        /**
+         /**
          *
          * @param {number} id
          * @param {*} [options] Override http request option.

@@ -60,7 +60,7 @@ VALUES (-6, -3);
 INSERT INTO manager_data (id)
 VALUES (-7);
 INSERT INTO manager_data (id)
-VALUES (-8);
+VALUES (-9);
 INSERT INTO client_data (id)
 VALUES (-5);
 INSERT INTO client_data (id)

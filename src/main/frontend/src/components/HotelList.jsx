@@ -177,7 +177,7 @@ function HotelList(props) {
             cell: row => {
                 return (
                     <Button className="btn-sm" onClick={event => {
-                        history.push('/editHotel?id=' + row.id);
+                        history.push('/hotels/editOtherHotel?id=' + row.id);
                     }}>{t("edit")}</Button>
                 )
             },

@@ -51,7 +51,6 @@ public class AccountFacade extends AbstractFacade<Account> {
             throw DatabaseQueryException.databaseQueryException(e);
         }
     }
-
     @PermitAll
     @Override
     public void create(Account entity) throws AppBaseException {
@@ -72,7 +71,7 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     @PermitAll
     @Override
-    public Account find(Object id) {
+    public Account find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

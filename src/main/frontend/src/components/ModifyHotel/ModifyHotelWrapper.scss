@@ -1,0 +1,28 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins/breakpoints";
+
+#modify-hotel-container {
+  .btn-background-custom {
+    background-color: #7749F8;
+    width: 70%;
+    margin: auto;
+  }
+
+  .custom-asterisk {
+    color: #7749F8;
+    display: inline-block;
+    margin: 0.2rem;
+  }
+
+  .err-msg {
+    color: red;
+  }
+
+  .obligatory-fields {
+    margin-top: 2rem;
+    margin-bottom: 0;
+    color: #7749F8;
+    font-size: 0.7rem;
+  }
+}

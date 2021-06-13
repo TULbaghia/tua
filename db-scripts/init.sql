@@ -100,5 +100,7 @@ VALUES (-1, now(), null, 1, 55.55, -4, null, -1, -1),
        (-5, now() - INTERVAL '1 week', null, 1, 43.90, -7, null, -4, -4);
 
 -- Inicjalizacja ratingów
-INSERT INTO  rating(id, creation_date, modification_date, version, comment, hidden, rate, created_by, modified_by, booking_id)
-VALUES (-1, now(), null, 1, 'Bardzo fajny hotel, ale się nie wyspałem', false, 4, -4, null, -2);
+INSERT INTO rating(id, creation_date, modification_date, version, comment, hidden, rate, created_by, modified_by, booking_id)
+VALUES (-1, now(), null, 1, 'Całkiem przystępny hotel', false, 4, -4, null, -2),
+       (-2, now(), null, 1, 'Czadowy hotel! Czadowa obsługa!', false, 5, -7, null, -1),
+       (-3, now(), null, 1, 'Mogłoby być lepiej za te pieniądze. Drogo, że hej!', false, 3, -7, null, -3);

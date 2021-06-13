@@ -16,11 +16,13 @@ public class RatingDto implements Signable {
     private short rate;
     private String comment;
     private Long bookingId;
+    private boolean hidden;
+    private String createdBy;
 
     private Long version;
 
     @Override
     public String getMessageToSign() {
-        return String.format("%d;%d", id, version);
+        return String.format("%d;%s;%d", id, createdBy, version);
     }
 }

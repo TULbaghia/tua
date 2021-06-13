@@ -21,6 +21,7 @@
 
   &.global-theme-dark {
     --light: #424242;
+    --lightList: #424242;
     --dark: #f8f9fa;
     --hover-gray: #EBE5FC;
 
@@ -32,7 +33,9 @@
 
   &.global-theme-light {
     --light: #f8f9fa;
+    --lightList: #e9ecef;
     --dark: #343a40;
+    --darkList: #e0e0e0;
     --hover-gray: #EBE5FC;
 
     --admin-color: #bf293e;

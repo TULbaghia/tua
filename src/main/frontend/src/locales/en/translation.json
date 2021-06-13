@@ -302,5 +302,7 @@
   "finishedBookingStatus": "Finished",
   "cancelReservation": "Cancel reservation",
   "endReservation": "End reservation",
-  "button.end": "End"
+  "button.end": "End",
+  "location": "Location",
+  "description": "About"
 }

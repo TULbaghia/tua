@@ -305,6 +305,7 @@
   "finishedBookingStatus": "Zakończony",
   "cancelReservation": "Anuluj rezerwację",
   "endReservation": "Zakończ rezerwację",
-  "button.end": "Zakończ"
-
+  "button.end": "Zakończ",
+  "location": "Lokalizacja",
+  "description": "O nas"
 }

@@ -2,10 +2,12 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewCityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.CityEndpointLocal;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import java.util.List;
 
@@ -44,15 +46,15 @@ public class CityController extends AbstractController {
     }
 
     /**
-     * Dodaje miasto
+     * Dodaje nowe miasto.
      *
-     * @param cityDto dto z danymi miasta
-     * @throws AppBaseException podczas błędu związanego z dodawaniem miasta
+     * @param newCityDto dto z danymi miasta.
+     * @throws AppBaseException podczas błędu związanego z dodawaniem miasta.
      */
     @POST
     @RolesAllowed("addCity")
-    public void addCity(CityDto cityDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addCity(@Valid NewCityDto newCityDto) throws AppBaseException {
+        repeat(() -> cityEndpointLocal.addCity(newCityDto), cityEndpointLocal);
     }
 
     /**

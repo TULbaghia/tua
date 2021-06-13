@@ -17,4 +17,7 @@ public class RegularExpression {
     public static final String HOTEL_ADDRESS = "^[A-Za-z0-9ĆŁÓŚŹŻąęćńóśłźż\\s/]+$";
     public static final String HOTEL_IMAGE = "^(\\b(https?|ftp|file)://)?[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]$";
     public static final String HOTEL_DESCRIPTION = "^[A-Za-z0-9ĄĘĆŃÓŚŁŹŻąęćńóśłźż.,:\\s\\-]+$";
+
+    public static final String CITY_NAME = "^[A-ZĆŁÓŚŹŻ\\s]{1}[A-Za-ząęćńóśłźż \\-]+$";
+    public static final String CITY_DESCRIPTION = "^[A-Za-z0-9ĄĘĆŃÓŚŁŹŻąęćńóśłźż.,:\\s\\-]+$";
 }

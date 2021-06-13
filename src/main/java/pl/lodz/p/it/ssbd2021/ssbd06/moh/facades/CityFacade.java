@@ -7,10 +7,10 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
 
+import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -42,7 +42,14 @@ public class CityFacade extends AbstractFacade<City> {
     @PermitAll
     @Override
     public void edit(City entity) throws AppBaseException {
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (ConstraintViolationException e) {
+            if (e.getCause().getMessage().contains(City.CITY_CONSTRAINT)) {
+                throw CityException.cityNameExists(e.getCause());
+            }
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
     @PermitAll

@@ -228,6 +228,11 @@ public class HotelManager {
         return managerDataFacade.findHotelByManagerId(login);
     }
 
+    /**
+     * Zwraca nazwę użytkownika pobraną z kontenera
+     *
+     * @return nazwa zalogowanego użytkownika
+     */
     protected String getLogin() {
         return servletRequest.getUserPrincipal().getName();
     }

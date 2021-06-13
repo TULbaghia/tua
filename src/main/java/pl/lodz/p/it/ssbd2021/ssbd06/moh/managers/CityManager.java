@@ -1,9 +1,11 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.CityFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
@@ -15,6 +17,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.security.enterprise.SecurityContext;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +32,12 @@ public class CityManager {
 
     @Inject
     private CityFacade cityFacade;
+
+    @Inject
+    private AccountFacade accountFacade;
+
+    @Inject
+    private HttpServletRequest servletRequest;
 
     /**
      * Zwraca miasto o podanym identyfikatorze
@@ -66,12 +76,14 @@ public class CityManager {
     /**
      * Modyfikuje miasto
      *
-     * @param cityDto dto z danymi miasta
+     * @param city encja z danymi miasta
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("updateCity")
-    void updateCity(CityDto cityDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void updateCity(City city) throws AppBaseException {
+        Account modifier = accountFacade.findByLogin(getLogin());
+        city.setModifiedBy(modifier);
+        cityFacade.edit(city);
     }
 
     /**
@@ -95,5 +107,14 @@ public class CityManager {
     @PermitAll
     public City findByName(String name) throws AppBaseException {
         return cityFacade.findByName(name);
+    }
+
+    /**
+     * Zwraca nazwę użytkownika pobraną z kontenera
+     *
+     * @return nazwa zalogowanego użytkownika
+     */
+    protected String getLogin() {
+        return servletRequest.getUserPrincipal().getName();
     }
 }

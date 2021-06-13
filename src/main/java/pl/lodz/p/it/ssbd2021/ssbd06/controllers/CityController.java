@@ -3,10 +3,16 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.CityEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -18,6 +24,9 @@ public class CityController extends AbstractController {
     @Inject
     private CityEndpointLocal cityEndpointLocal;
 
+    @Inject
+    private MessageSigner messageSigner;
+
     /**
      * Zwraca miasto o podanym identyfikatorze
      *
@@ -27,8 +36,12 @@ public class CityController extends AbstractController {
      */
     @GET
     @Path("/{id}")
-    public CityDto get(@PathParam("id") Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public Response get(@PathParam("id") Long id) throws AppBaseException {
+        CityDto cityDto = cityEndpointLocal.get(id);
+        return Response.ok()
+                .entity(cityDto)
+                .header("ETag", messageSigner.sign(cityDto))
+                .build();
     }
 
     /**
@@ -63,8 +76,10 @@ public class CityController extends AbstractController {
      */
     @PUT
     @RolesAllowed("updateCity")
-    public void updateCity(CityDto cityDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @EtagValidatorFilterBinding
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateCity(@NotNull @Valid CityDto cityDto) throws AppBaseException {
+        repeat(() -> cityEndpointLocal.updateCity(cityDto), cityEndpointLocal);
     }
 
     /**

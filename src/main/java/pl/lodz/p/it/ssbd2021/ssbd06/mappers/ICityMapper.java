@@ -1,6 +1,9 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.mappers;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 
@@ -16,4 +19,6 @@ public interface ICityMapper {
      * @return zmapowany obiekt klasy CityDto
      */
     CityDto toCityDto(City city);
+
+    void toCity(CityDto cityDto, @MappingTarget City city);
 }

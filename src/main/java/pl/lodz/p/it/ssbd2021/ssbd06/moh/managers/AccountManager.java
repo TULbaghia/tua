@@ -5,15 +5,12 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import javax.servlet.ServletContext;
-import javax.ws.rs.core.Context;
 
 /**
  * Odpowiada za odnajdywanie kont w systemie.
@@ -25,14 +22,6 @@ public class AccountManager {
 
     @Inject
     private AccountFacade accountFacade;
-
-    @Context
-    ServletContext servletContext;
-
-    @PostConstruct
-    private void init() {
-
-    }
 
     /**
      * Wyszukuje obiekt Acccount o podanym loginie.

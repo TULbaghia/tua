@@ -265,10 +265,6 @@
   "assignManager.success": "Manager przypisany pomyślnie",
   "exception.hotel.has_manager": "Hotel ma już przypisanego managera",
   "search.hotel": "Wyszukaj hotel...",
-  "emptyListManager": "Brak nieprzypisanych managerów",
-
-  "editOwnHotel.navbar.title" : "Edytuj hotel",
-  "generateReport.navbar.title" : "Generuj raport z działalności",
 
   "modifyHotel.title" : "Modyfikacja danych hotelu",
   "modifyHotel.action" : "Modyfikuj hotel",
@@ -297,5 +293,33 @@
   "addHotel.error.address_required": "Adres jest wymagany",
   "addHotel.error.name_required": "Nazwa jest wymagana",
   "addHotel.error.city_required": "Miasto jest wymagane",
-  "addHotel.error.description_required": "Opis jest wymagany"
+  "addHotel.error.description_required": "Opis jest wymagany",
+
+  "reportGenerator.time_label" : "Czas",
+  "reportGenerator.title" : "Raport działalności hotelu",
+  "reportGenerator.action" : "Generuj raport",
+  "reportGenerator.table.title" : "Rezerwacje z danego okresu",
+  "reportGenerator.from" : "Od dnia",
+  "reportGenerator.to" : "Do dnia",
+  "reportGenerator.table.price" : "Cena",
+  "reportGenerator.table.rating" : "Ocena",
+  "reportGenerator.table.owner_login" : "Login właściciela",
+  "reportGenerator.success" : "Pomyślnie wygenerowano raport",
+  "reportGenerator.no_results" : "Brak rezultatów dla podanego okresu",
+  "emptyListManager": "Brak nieprzypisanych managerów",
+
+  "editOwnHotel.navbar.title" : "Edytuj hotel",
+  "generateReport.navbar.title" : "Generuj raport z działalności",
+  "reservationStart": "Początek rezerwacji",
+  "reservationEnd": "Koniec rezerwacji",
+  "price": "Cena",
+  "bookingStatus": "Stan rezerwacji",
+  "pendingBookingStatus": "Oczekujący",
+  "cancelledBookingStatus": "Anulowany",
+  "in_progressBookingStatus": "W trakcie",
+  "finishedBookingStatus": "Zakończony",
+  "cancelReservation": "Anuluj rezerwację",
+  "endReservation": "Zakończ rezerwację",
+  "button.end": "Zakończ"
+
 }

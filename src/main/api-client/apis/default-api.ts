@@ -1141,17 +1141,12 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          *
-         * @param {number} hotelId
-         * @param {string} from
-         * @param {string} to
+         * @param {number} from
+         * @param {number} to
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        generateReport: async (hotelId: number, from: string, to: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'hotelId' is not null or undefined
-            if (hotelId === null || hotelId === undefined) {
-                throw new RequiredError('hotelId','Required parameter hotelId was null or undefined when calling generateReport.');
-            }
+        generateReport: async (from: number, to: number, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'from' is not null or undefined
             if (from === null || from === undefined) {
                 throw new RequiredError('from','Required parameter from was null or undefined when calling generateReport.');
@@ -1160,8 +1155,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             if (to === null || to === undefined) {
                 throw new RequiredError('to','Required parameter to was null or undefined when calling generateReport.');
             }
-            const localVarPath = `/resources/hotels/raport/{hotelId}/{from}/{to}`
-                .replace(`{${"hotelId"}}`, encodeURIComponent(String(hotelId)))
+            const localVarPath = `/resources/hotels/raport/{from}/{to}`
                 .replace(`{${"from"}}`, encodeURIComponent(String(from)))
                 .replace(`{${"to"}}`, encodeURIComponent(String(to)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2954,14 +2948,13 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          *
-         * @param {number} hotelId
-         * @param {string} from
-         * @param {string} to
+         * @param {number} from
+         * @param {number} to
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async generateReport(hotelId: number, from: string, to: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateReportDto>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).generateReport(hotelId, from, to, options);
+        async generateReport(from: number, to: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateReportDto>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).generateReport(from, to, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -3487,9 +3480,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
          /**
          *
-         * @param {number} hotelId
-         * @param {string} managerLogin
-         *
          * @param {number} id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3709,14 +3699,13 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          *
-         * @param {number} hotelId
-         * @param {string} from
-         * @param {string} to
+         * @param {number} from
+         * @param {number} to
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        generateReport(hotelId: number, from: string, to: string, options?: any): AxiosPromise<GenerateReportDto> {
-            return DefaultApiFp(configuration).generateReport(hotelId, from, to, options).then((request) => request(axios, basePath));
+        generateReport(from: number, to: number, options?: any): AxiosPromise<GenerateReportDto> {
+            return DefaultApiFp(configuration).generateReport(from, to, options).then((request) => request(axios, basePath));
         },
         /**
          *
@@ -4095,9 +4084,6 @@ export class DefaultApi extends BaseAPI {
     }
     /**
      *
-     * @param {number} hotelId
-     * @param {string} managerLogin
-     *
      * @param {number} id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4350,15 +4336,14 @@ export class DefaultApi extends BaseAPI {
     }
     /**
      *
-     * @param {number} hotelId
-     * @param {string} from
-     * @param {string} to
+     * @param {number} from
+     * @param {number} to
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public generateReport(hotelId: number, from: string, to: string, options?: any) {
-        return DefaultApiFp(this.configuration).generateReport(hotelId, from, to, options).then((request) => request(this.axios, this.basePath));
+    public generateReport(from: number, to: number, options?: any) {
+        return DefaultApiFp(this.configuration).generateReport(from, to, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *

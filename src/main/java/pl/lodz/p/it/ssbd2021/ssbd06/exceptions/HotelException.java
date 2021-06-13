@@ -54,3 +54,4 @@ public class HotelException extends AppBaseException {
         return new HotelException(HOTEL_HAS_MANAGER);
     }
 }
+

@@ -25,7 +25,9 @@ import java.math.BigDecimal;
 @NamedQueries({
     @NamedQuery(name = "BookingLine.findAll", query = "SELECT b FROM BookingLine b"),
     @NamedQuery(name = "BookingLine.findById", query = "SELECT b FROM BookingLine b WHERE b.id = :id"),
-    @NamedQuery(name = "BookingLine.findByPricePerDay", query = "SELECT b FROM BookingLine b WHERE b.pricePerDay = :pricePerDay")})
+    @NamedQuery(name = "BookingLine.findByPricePerDay", query = "SELECT b FROM BookingLine b WHERE b.pricePerDay = :pricePerDay"),
+    @NamedQuery(name = "BookingLine.findAllByHotelId", query = "SELECT DISTINCT b.booking FROM BookingLine b " +
+            "WHERE b.box.hotel.id = :hotelId AND b.booking.dateFrom >= :from AND b.booking.dateTo <= :to")})
 @NoArgsConstructor
 public class BookingLine extends AbstractEntity implements Serializable {
 

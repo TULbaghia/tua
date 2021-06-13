@@ -1,7 +1,5 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.facades;
 
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
@@ -16,8 +14,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.*;
 import java.util.List;
 
@@ -59,6 +55,7 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
         super.remove(entity);
     }
 
+    @DenyAll
     @PermitAll
     @Override
     public ManagerData find(Object id) throws AppBaseException {
@@ -71,18 +68,6 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
         return super.findAll();
     }
 
-    @DenyAll
-    @Override
-    public List<ManagerData> findRange(int[] range) throws AppBaseException {
-        return super.findRange(range);
-    }
-
-    @DenyAll
-    @Override
-    public int count() throws AppBaseException {
-        return super.count();
-    }
-
     /**
      * Wyszukuje Hotel przypisany do Managera o podanym id.
      *
@@ -93,7 +78,8 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
     @PermitAll
     public Hotel findHotelByManagerId(String login) throws AppBaseException {
         try {
-            TypedQuery<Hotel> managerHotelQuery = em.createNamedQuery("ManagerData.findHotelByManagerLogin", Hotel.class);
+            TypedQuery<Hotel> managerHotelQuery =
+                    em.createNamedQuery("ManagerData.findHotelByManagerLogin", Hotel.class);
             managerHotelQuery.setParameter("login", login);
             return managerHotelQuery.getSingleResult();
         } catch (NoResultException e) {
@@ -101,5 +87,17 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
         } catch (PersistenceException e) {
             throw DatabaseQueryException.databaseQueryException(e);
         }
+    }
+
+    @DenyAll
+    @Override
+    public List<ManagerData> findRange(int[] range) throws AppBaseException {
+        return super.findRange(range);
+    }
+
+    @DenyAll
+    @Override
+    public int count() throws AppBaseException {
+        return super.count();
     }
 }

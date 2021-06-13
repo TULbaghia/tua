@@ -149,8 +149,6 @@ function App() {
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
-                            <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo}
-                                          meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/activeReservations" component={ActiveBookings}
                                           meta={{auth: true, clientManager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels" component={HotelList} meta={{}}/>
@@ -162,15 +160,9 @@ function App() {
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/generateReport" component={ReportGeneratorForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
-                            <GuardedRoute exact path="/myAccount" component={UserInfo} meta={{ auth: true, all: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/userPage" component={AppUsersPage} meta={{ auth: true, all: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/editOwnAccount" component={EditOwnAccount} meta={{ auth: true, all: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/accounts" component={UserList} meta={{ auth: true, admin: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/editOtherAccount" component={EditOtherAccountForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo} meta={{auth: true, admin: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/cities" component={CityList} meta={{auth: true, admin: true, manager: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/cities" component={CityList} 
+                                          meta={{auth: true, admin: true, manager: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels" component={HotelList} meta={{ }}/>
-                            <GuardedRoute exact path="/hotels/assignManager" component={AssignManager} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

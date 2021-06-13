@@ -161,7 +161,7 @@ function App() {
                             <GuardedRoute exact path="/hotels/generateReport" component={ReportGeneratorForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/cities" component={CityList} 
-                                          meta={{auth: true, admin: true, manager: true, logged, currentRole }}/>
+                                          meta={{auth: true, all: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels" component={HotelList} meta={{ }}/>
                             <Route component={NotFound}/>
                         </Switch>

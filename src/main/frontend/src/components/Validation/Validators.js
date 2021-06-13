@@ -93,6 +93,20 @@ export const validateAddress = (data) => {
     return errors.filter(err => err !== undefined);
 }
 
+export const validateCityName = (data) => {
+    let errors = [];
+    errors.push(sizeValidator(data, 2, 31));
+    errors.push(patternValidator(data, /^[A-ZĆŁÓŚŹŻ\s]{1}[A-Za-ząęćńóśłźż \-]+$/));
+    return errors.filter(err => err !== undefined);
+}
+
+export const validateCityDescription = (data) => {
+    let errors = [];
+    errors.push(sizeValidator(data, 8, 511));
+    errors.push(patternValidator(data, /^[A-Za-z0-9ĄĘĆŃÓŚŁŹŻąęćńóśłźż.,:\s\-]+$/));
+    return errors.filter(err => err !== undefined);
+}
+
 export const ValidatorType = {
     CONTACT_NUMBER: "CONTACT_NUMBER",
     FIRSTNAME: "FIRSTNAME",
@@ -104,6 +118,8 @@ export const ValidatorType = {
     USER_EMAIL: "USER_EMAIL",
     HOTEL_NAME: "HOTEL_NAME",
     ADDRESS: "ADDRESS",
+    CITY_NAME: "CITY_NAME",
+    CITY_DESCRIPTION: "CITY_DESCRIPTION"
 };
 
 export const validatorFactory = (data, validatorType) => {
@@ -128,6 +144,10 @@ export const validatorFactory = (data, validatorType) => {
             return validateHotelName(data);
         case ValidatorType.ADDRESS:
             return validateAddress(data);
+        case ValidatorType.CITY_NAME:
+            return validateCityName(data);
+        case ValidatorType.CITY_DESCRIPTION:
+            return validateCityDescription(data);
         default:
             return [];
     }

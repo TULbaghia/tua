@@ -305,6 +305,14 @@
   "finishedBookingStatus": "Zakończony",
   "cancelReservation": "Anuluj rezerwację",
   "endReservation": "Zakończ rezerwację",
-  "button.end": "Zakończ"
+  "button.end": "Zakończ",
 
+  "addCity.title" : "Dodawanie nowego miasta",
+  "addCity.action" : "Dodaj miasto",
+  "addCity.name" : "Nazwa miasta",
+  "addCity.description" : "Opis miasta",
+  "addCity.error.name_required": "Nazwa jest wymagana",
+  "addCity.error.description_required": "Opis jest wymagany",
+  "addCity.success": "Miasto zostało pomyślnie dodane",
+  "exception.city.name_invalid": "Nazwa miasta jest już w użyciu"
 }

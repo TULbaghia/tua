@@ -296,4 +296,16 @@
   "reportGenerator.table.owner_login" : "Owner login",
   "reportGenerator.success" : "Report has been successfully generated",
   "reportGenerator.no_results" : "No results for given period"
+  "search.hotel": "Search hotel...",
+
+  "booking.form.bread_crumb": "Add booking",
+  "booking.form.title": "Add booking",
+  "booking.form.date_from": "Date from",
+  "booking.form.date_to": "Date to",
+  "booking.form.boxes": "Boxes",
+  "booking.create.success": "Reservation successfully created",
+  "booking.form.error.date_not_earlier": "Date from should be ealier then date to",
+  "exception.boxes.not_enough": "Not enough boxes to fulfill the booking",
+
+  "hotel": "Hotel"
 }

@@ -32,6 +32,7 @@ import ModifyHotelForm from "./components/ModifyHotel/ModifyHotelForm";
 import ReportGeneratorForm from "./components/RaportGenerating/ReportGeneratorForm";
 import HotelList from "./components/HotelList";
 import AssignManager from "./components/AssignManager";
+import BookingForm from './components/bookings/BookingForm';
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -136,6 +137,7 @@ function App() {
                             <GuardedRoute exact path="/hotels/editOwnHotel" component={ModifyHotelForm} meta={{ auth: true, manager: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels/editOtherHotel" component={ModifyHotelForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels/generateReport" component={ReportGeneratorForm} meta={{ auth: true, manager: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/booking/add" component={BookingForm} meta={{auth: true, client: true, logged, currentRole }}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

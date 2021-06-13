@@ -299,4 +299,16 @@
   "reportGenerator.table.owner_login" : "Login właściciela",
   "reportGenerator.success" : "Pomyślnie wygenerowano raport",
   "reportGenerator.no_results" : "Brak rezultatów dla podanego okresu"
+  "emptyListManager": "Brak nieprzypisanych managerów",
+
+  "booking.form.bread_crumb": "Dokonaj rezerwacji",
+  "booking.form.title": "Nowa rezerwacja",
+  "booking.form.date_from": "Data rozpoczęcia",
+  "booking.form.date_to": "Data zakończenia",
+  "booking.form.boxes": "Boxy",
+  "booking.create.success": "Pomyślnie dokonano rezerwacji",
+  "booking.form.error.date_not_earlier": "Data rozpoczęcia rezerwacji powinna być wcześniejsza od daty zakończenia",
+  "exception.boxes.not_enough": "Nie wystarczająca liczba boxów aby zreazliować rezerwacje w wybranym okresie",
+
+  "hotel": "Hotel"
 }

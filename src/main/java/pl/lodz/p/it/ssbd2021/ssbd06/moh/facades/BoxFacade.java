@@ -15,6 +15,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -79,10 +80,12 @@ public class BoxFacade extends AbstractFacade<Box> {
 
     @PermitAll
     // todo specific access role ?
-    public List<Box> getAvailableBoxesByTypesAndHotelId(long hotelId, List<AnimalType> types){
+    public List<Box> getAvailableBoxesByTypesAndHotelId(long hotelId, List<AnimalType> types, Date dateFrom, Date dateTo){
         TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByTypesAndHotelId", Box.class);
         query.setParameter("hotel_id", hotelId);
         query.setParameter("types", types);
+        query.setParameter("dateFrom", dateFrom);
+        query.setParameter("dateTo", dateTo);
         return query.getResultList();
     }
 }

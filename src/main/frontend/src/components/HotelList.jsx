@@ -3,7 +3,7 @@ import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
-import {Button, Form} from "react-bootstrap";
+import {Button, Card, Col, Form, Row} from "react-bootstrap";
 import {useLocale} from "./LoginContext";
 import {api} from "../Api";
 import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
@@ -15,8 +15,17 @@ import {useHistory, useLocation} from "react-router";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import { useThemeColor } from './Utils/ThemeColor/ThemeColorProvider';
 import {rolesConstant} from "../Constants";
-import Input from "./EditOwnAccount/Input";
 import axios from "axios";
+import hotelPhoto from "../images/hotel.jpg";
+import hotelPhoto2 from "../images/hotel2.jpg";
+import hotelPhoto3 from "../images/hotel3.jpg";
+import hotelPhoto4 from "../images/hotel4.jpg";
+import hotelPhoto5 from "../images/hotel5.jpg";
+import hotelPhoto6 from "../images/hotel6.jpg";
+import hotelPhoto7 from "../images/hotel7.jpg";
+import hotelPhoto8 from "../images/hotel8.jpg";
+import hotelPhoto9 from "../images/hotel9.jpg";
+import hotelPhoto10 from "../images/hotel10.jpg";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -42,6 +51,8 @@ function HotelList(props) {
             address: "",
             cityName: "",
             rating: "",
+            image: "",
+            description: ""
         }
     ]);
     const dispatchDialog = useDialogPermanentChange();
@@ -50,6 +61,64 @@ function HotelList(props) {
     const filteredItems = data.filter(item => {
         return item.name && item.name.toLowerCase().includes(filterText.toLowerCase());
     });
+
+    const rand = () => {
+        const min = 1;
+        const max = 10;
+        const rand = min + Math.floor(Math.random() * (max - min));
+        switch(rand) {
+            case 1:
+                return hotelPhoto;
+            case 2:
+                return hotelPhoto2;
+            case 3:
+                return hotelPhoto3;
+            case 4:
+                return hotelPhoto4;
+            case 5:
+                return hotelPhoto5;
+            case 6:
+                return hotelPhoto6;
+            case 7:
+                return hotelPhoto7;
+            case 8:
+                return hotelPhoto8;
+            case 9:
+                return hotelPhoto9;
+            case 10:
+                return hotelPhoto10;
+            default:
+                return hotelPhoto;
+        }
+    }
+
+    const HotelCard = ({hotel}) => (
+        <Col xs={12} md={6} lg={3} key={hotel.id}>
+            {themeColor === "light" ? (
+                <Card style={{width: '16rem', background: '#f5f5f5', marginTop: '2rem'}}>
+                    <Card.Img variant="top" src={hotel.image ? (hotel.image) : (rand())}/>
+                    <Card.Body>
+                        <Card.Title>{hotel.name}</Card.Title>
+                        <Card.Text>{hotel.cityName}</Card.Text>
+                        <Button className="btn-sm" onClick={event => {
+                            history.push('/hotels/hotelInfo?id=' + hotel.id);
+                        }}>{t('details')}</Button>
+                    </Card.Body>
+                </Card>
+            ) : (
+                <Card style={{width: '16rem', background: '#2b2b2b', marginTop: '2rem'}}>
+                    <Card.Img variant="top" src={hotel.image ? (hotel.image) : (rand())}/>
+                    <Card.Body>
+                        <Card.Title>{hotel.name}</Card.Title>
+                        <Card.Text>{hotel.cityName}</Card.Text>
+                        <Button className="btn-sm" onClick={event => {
+                            history.push('/hotels/hotelInfo?id=' + hotel.id);
+                        }}>{t('details')}</Button>
+                    </Card.Body>
+                </Card>
+            )}
+        </Col>
+    )
 
     const getHotelData = async (id) => {
         const response = await api.getHotel(id,{
@@ -285,13 +354,15 @@ function HotelList(props) {
                     />
                 </div>
                 {token === null || token === '' ? (
-                    <DataTable className={"rounded-0"}
-                               noDataComponent={i18n.t('table.no.result')}
-                               columns={guestColumns}
-                               data={filteredItems}
-                               subHeader
-                               theme={themeColor}
-                    />
+                    <div style={{height: '35rem', display: 'flex', flex: '1', flexDirection: 'row', width: '75rem', overflowY: 'scroll'}}>
+                        <div className='row-wrapper' style={{padding: '1rem'}}>
+                            <Row>
+                                {data.map(hotel => (
+                                    <HotelCard key={hotel.id} hotel={hotel}/>
+                                ))}
+                            </Row>
+                        </div>
+                    </div>
                 ) : ( null )}
                 {token !== null && token !== '' && currentRole === rolesConstant.client ? (
                     <DataTable className={"rounded-0"}

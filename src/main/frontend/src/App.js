@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {HashRouter, Route, Switch} from 'react-router-dom';
-import './App.css';
+import { HashRouter, Route, Switch } from 'react-router-dom';
+import './App.scss';
 import NavigationBar from "./components/Partial/Navbar";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {fab} from "@fortawesome/free-brands-svg-icons";
@@ -32,6 +32,7 @@ import ReportGeneratorForm from "./components/RaportGenerating/ReportGeneratorFo
 import HotelList from "./components/HotelList";
 import AssignManager from "./components/AssignManager";
 import ActiveBookings from "./components/ActiveBookings";
+import AddHotelForm from "./components/AddHotel/AddHotelForm";
 import ArchiveBookings from "./components/ArchiveBookings";
 
 library.add(fab, faSignInAlt, faUserPlus);
@@ -153,6 +154,7 @@ function App() {
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/activeReservations" component={ActiveBookings}
                                           meta={{auth: true, clientManager: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/hotels/addHotel" component={AddHotelForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels" component={HotelList} meta={{}}/>
                             <GuardedRoute exact path="/hotels/assignManager" component={AssignManager}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>

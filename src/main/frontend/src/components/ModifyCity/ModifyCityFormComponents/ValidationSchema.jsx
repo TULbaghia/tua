@@ -8,7 +8,7 @@ import {validatorFactory, ValidatorType} from "../../Validation/Validators";
 export const ModifyCityValidationSchema = values => {
     const errors = {};
     if (!values.name) {
-        errors.name = i18n.t('addCity.error.name_required');
+        errors.name = i18n.t('modifyCity.error.name_required');
     } else {
         validatorFactory(values.name, ValidatorType.CITY_NAME).forEach(x => {
             errors.name = x;
@@ -16,7 +16,7 @@ export const ModifyCityValidationSchema = values => {
     }
 
     if (!values.description) {
-        errors.description = i18n.t('addCity.error.description_required');
+        errors.description = i18n.t('modifyCity.error.description_required');
     } else {
         validatorFactory(values.description, ValidatorType.CITY_DESCRIPTION).forEach(x => {
             errors.description = x;

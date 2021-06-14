@@ -1,10 +1,10 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.moh.CityDescription;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.moh.CityName;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -30,6 +30,7 @@ import static pl.lodz.p.it.ssbd2021.ssbd06.entities.City.CITY_CONSTRAINT;
     @NamedQuery(name = "City.findById", query = "SELECT c FROM City c WHERE c.id = :id"),
     @NamedQuery(name = "City.findByName", query = "SELECT c FROM City c WHERE c.name = :name")})
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class City extends AbstractEntity implements Serializable {
 
     public static final String CITY_CONSTRAINT = "uk_city_name";
@@ -45,26 +46,26 @@ public class City extends AbstractEntity implements Serializable {
     @Getter
     @Setter
     @NotNull
+    @NonNull
     @Basic(optional = false)
     @Size(min = 1, max = 31)
     @Column(name = "name")
+    @CityName
     private String name;
 
     @Getter
     @Setter
+    @NotNull
+    @NonNull
     @Basic(optional = false)
     @Size(min = 4, max = 255)
     @Column(name = "description")
+    @CityDescription
     private String description;
 
     @Setter
     @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "city")
     private Set<Hotel> hotelList = new HashSet<>();
-
-    public City(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
 
     public Long getId() {
         return id;

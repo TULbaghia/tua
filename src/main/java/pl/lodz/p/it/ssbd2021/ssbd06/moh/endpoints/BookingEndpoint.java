@@ -1,6 +1,9 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
+import org.mapstruct.factory.Mappers;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IBookingMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BookingEndpointLocal;
@@ -15,6 +18,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,12 +73,26 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     @Override
     @RolesAllowed("getAllActiveReservations")
     public List<BookingDto> showActiveBooking() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        List<Booking> activeBookings = bookingManager.showActiveBooking();
+        List<BookingDto> result = new ArrayList<>(activeBookings.size());
+        for (Booking booking : activeBookings) {
+            BookingDto bookingDto = Mappers.getMapper(IBookingMapper.class).toBookingDto(booking);
+            bookingDto.setBookingStatus(booking.getStatus().toString());
+            result.add(bookingDto);
+        }
+        return result;
     }
 
     @Override
     @RolesAllowed("getAllArchiveReservations")
     public List<BookingDto> showEndedBooking() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        List<Booking> activeBookings = bookingManager.showEndedBooking();
+        List<BookingDto> result = new ArrayList<>(activeBookings.size());
+        for (Booking booking : activeBookings) {
+            BookingDto bookingDto = Mappers.getMapper(IBookingMapper.class).toBookingDto(booking);
+            bookingDto.setBookingStatus(booking.getStatus().toString());
+            result.add(bookingDto);
+        }
+        return result;
     }
 }

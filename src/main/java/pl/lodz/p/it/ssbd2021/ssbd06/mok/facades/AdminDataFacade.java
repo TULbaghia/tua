@@ -54,7 +54,7 @@ public class AdminDataFacade extends AbstractFacade<AdminData> {
 
     @DenyAll
     @Override
-    public AdminData find(Object id) {
+    public AdminData find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

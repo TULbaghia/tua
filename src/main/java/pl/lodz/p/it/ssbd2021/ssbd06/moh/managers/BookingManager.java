@@ -12,6 +12,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
@@ -21,11 +23,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.security.enterprise.SecurityContext;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,6 +47,8 @@ public class BookingManager {
     private BoxFacade boxFacade;
     @Inject
     private AccountFacade accountFacade;
+    @Inject
+    private SecurityContext securityContext;
 
     /**
      * Zwraca wskazaną rezerwację:
@@ -166,9 +172,20 @@ public class BookingManager {
      * @return lista rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed("getAllActiveReservations")
-    List<Booking> showActiveBooking() throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @RolesAllowed({"getAllActiveReservations", "Client"})
+    public List<Booking> showActiveBooking() throws AppBaseException {
+        String callerName = securityContext.getCallerPrincipal().getName();
+        if (securityContext.isCallerInRole("Client")) {
+            return bookingFacade.findAllActive().stream()
+                    .filter(b -> b.getAccount().getLogin().equals(callerName))
+                    .collect(Collectors.toList());
+        } else {
+            return bookingFacade.findAllActive().stream()
+                    .filter(b -> b.getBookingLineList().stream().anyMatch(
+                            bl -> bl.getBox().getHotel().getManagerDataList().stream().anyMatch(
+                                    md -> md.getAccount().getLogin().equals(callerName))))
+                    .collect(Collectors.toList());
+        }
     }
 
     /**
@@ -179,8 +196,19 @@ public class BookingManager {
      * @return lista rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed("getAllArchiveReservations")
-    List<Booking> showEndedBooking() throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @RolesAllowed({"getAllArchiveReservations", "Client"})
+    public List<Booking> showEndedBooking() throws AppBaseException {
+        String callerName = securityContext.getCallerPrincipal().getName();
+        if (securityContext.isCallerInRole("Client")) {
+            return bookingFacade.findAllArchived().stream()
+                    .filter(b -> b.getAccount().getLogin().equals(callerName))
+                    .collect(Collectors.toList());
+        } else {
+            return bookingFacade.findAllArchived().stream()
+                    .filter(b -> b.getBookingLineList().stream().anyMatch(
+                            bl -> bl.getBox().getHotel().getManagerDataList().stream().anyMatch(
+                                    md -> md.getAccount().getLogin().equals(callerName))))
+                    .collect(Collectors.toList());
+        }
     }
 }

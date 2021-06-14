@@ -194,7 +194,7 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
 
     @DenyAll
     @Override
-    public PendingCode find(Object id) {
+    public PendingCode find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

@@ -13,7 +13,7 @@ GRANT SELECT ON rating TO ssbd06mok;
 
 GRANT SELECT ON account TO ssbd06moh;
 GRANT SELECT ON pending_code TO ssbd06moh;
-GRANT SELECT ON role TO ssbd06moh;
+GRANT SELECT, UPDATE ON role TO ssbd06moh;
 GRANT SELECT ON admin_data TO ssbd06moh;
 GRANT SELECT ON client_data TO ssbd06moh;
 GRANT SELECT, UPDATE, DELETE, INSERT ON booking TO ssbd06moh;

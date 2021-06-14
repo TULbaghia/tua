@@ -185,6 +185,8 @@ create table hotel
     version           bigint        not null,
     address           varchar(63)   not null,
     name              varchar(63)   not null,
+    image             varchar(127),
+    description       varchar(511)  not null,
     rating            numeric(2, 1),
     created_by        bigint        not null,
     modified_by       bigint,
@@ -423,4 +425,4 @@ from account a
          join role r on a.id = r.account_id
 where a.confirmed = true
   and a.enabled = true
-  and r.enabled = true
+  and r.enabled = true;

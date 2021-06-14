@@ -20,6 +20,9 @@ public class HotelDto implements Signable {
     private String cityName;
     private BigDecimal rating;
 
+    private String image;
+    private String description;
+
     private Long version;
 
     @Override

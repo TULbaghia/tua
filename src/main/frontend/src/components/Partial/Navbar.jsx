@@ -1,7 +1,7 @@
 import {Dropdown, Nav, Navbar} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {useLocale} from "../LoginContext";
 import {withNamespaces} from 'react-i18next';
 import {library} from "@fortawesome/fontawesome-svg-core";
@@ -168,13 +168,27 @@ function NavigationBar(props) {
                                     <LinkContainer to="/cities">
                                         <Nav.Link>{t('cityList')}</Nav.Link>
                                     </LinkContainer>
+                                    <LinkContainer to="/cities/add">
+                                        <Nav.Link>{t('addCity.action')}</Nav.Link>
+                                    </LinkContainer>
                                 </>
                             )}
                             {currentRole === rolesConstant.manager && (
                                 <>
-                                    <LinkContainer to="/myHotel">
-                                        <Nav.Link>{t('myHotel')}</Nav.Link>
-                                    </LinkContainer>
+                                    <Dropdown className="d-flex">
+                                        <DropdownToggle id="dropdown-basic" className="dropButton" variant="Info">
+                                            <span style={{marginRight: "10px"}}>{t('myHotel')}</span>
+                                        </DropdownToggle>
+
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item as={Link} to="/hotels/editOwnHotel">
+                                                {t('editOwnHotel.navbar.title')}
+                                            </Dropdown.Item>
+                                            <Dropdown.Item as={Link} to="/hotels/generateReport">
+                                                {t('generateReport.navbar.title')}
+                                            </Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
                                     <LinkContainer to="/activeReservations">
                                         <Nav.Link>{t('activeReservations')}</Nav.Link>
                                     </LinkContainer>
@@ -190,6 +204,12 @@ function NavigationBar(props) {
                                     </LinkContainer>
                                     <LinkContainer to="/reservation">
                                         <Nav.Link>{t('reservation')}</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/archiveReservations">
+                                        <Nav.Link>{t('archiveReservations')}</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/activeReservations">
+                                        <Nav.Link>{t('activeReservations')}</Nav.Link>
                                     </LinkContainer>
                                 </>
                             )}

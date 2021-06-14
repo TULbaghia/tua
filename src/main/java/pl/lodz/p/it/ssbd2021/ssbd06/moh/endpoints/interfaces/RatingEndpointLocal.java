@@ -1,10 +1,12 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import java.util.List;
@@ -21,6 +23,7 @@ public interface RatingEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista ocen hotelu
      */
+    @PermitAll
     List<RatingDto> getAll(Long hotelId) throws AppBaseException;
 
     /**
@@ -30,7 +33,7 @@ public interface RatingEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("addHotelRating")
-    void addRating(RatingDto ratingDto) throws AppBaseException;
+    void addRating(NewRatingDto ratingDto) throws AppBaseException;
 
     /**
      * Modyfikuje ocenę

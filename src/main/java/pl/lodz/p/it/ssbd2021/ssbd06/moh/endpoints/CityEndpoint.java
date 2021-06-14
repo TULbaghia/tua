@@ -1,15 +1,14 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
 import org.mapstruct.factory.Mappers;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.ICityMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewCityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.CityEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.CityManager;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -19,8 +18,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Endpoint odpowiadający za zarządzanie miastami.
@@ -35,31 +34,37 @@ public class CityEndpoint extends AbstractEndpoint implements CityEndpointLocal 
 
     @Override
     public CityDto get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return Mappers.getMapper(ICityMapper.class).toCityDto(cityManager.get(id));
     }
 
     @Override
     @RolesAllowed("getAllCities")
-    public List<CityDto> getAll() throws AppBaseException {
-        List<City> cities = cityManager.getAll();
-        List<CityDto> result = new ArrayList<>();
-        ICityMapper mapper = Mappers.getMapper(ICityMapper.class);
-        for (City city: cities){
-            result.add(mapper.toCityDto(city));
-        }
-        return result;
+    public List<CityDto> getAllCities() throws AppBaseException {
+        ICityMapper cityMapper = Mappers.getMapper(ICityMapper.class);
+        List<City> allCities = cityManager.getAll();
+        return allCities.stream().map(cityMapper::toCityDto).collect(Collectors.toList());
     }
 
     @Override
     @RolesAllowed("addCity")
-    public void addCity(CityDto cityDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addCity(NewCityDto newCityDto) throws AppBaseException {
+        ICityMapper cityMapper = Mappers.getMapper(ICityMapper.class);
+        cityManager.addCity(cityMapper.toCity(newCityDto));
     }
 
     @Override
     @RolesAllowed("updateCity")
     public void updateCity(CityDto cityDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        City city = cityManager.get(cityDto.getId());
+
+        CityDto cityIntegrity = Mappers.getMapper(ICityMapper.class).toCityDto(city);
+        if (!verifyIntegrity(cityIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        Mappers.getMapper(ICityMapper.class).toCity(cityDto, city);
+
+        cityManager.updateCity(city);
     }
 
     @Override

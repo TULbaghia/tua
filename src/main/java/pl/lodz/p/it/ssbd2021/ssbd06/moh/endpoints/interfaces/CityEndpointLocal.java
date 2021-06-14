@@ -2,10 +2,12 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewCityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -29,16 +31,16 @@ public interface CityEndpointLocal extends CallingClass {
      * @return lista miast
      */
     @RolesAllowed("getAllCities")
-    List<CityDto> getAll() throws AppBaseException;
+    List<CityDto> getAllCities() throws AppBaseException;
 
     /**
      * Dodaje miasto
      *
-     * @param cityDto dto z danymi miasta
+     * @param newCityDto dto z danymi miasta
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("addCity")
-    void addCity(CityDto cityDto) throws AppBaseException;
+    void addCity(NewCityDto newCityDto) throws AppBaseException;
 
     /**
      * Modyfikuje miasto

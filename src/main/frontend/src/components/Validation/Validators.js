@@ -79,6 +79,48 @@ export const validateUserEmail = (data) => {
     return errors.filter(err => err !== undefined);
 }
 
+export const validateHotelName = (data) => {
+    let errors = [];
+    errors.push(sizeValidator(data, 2, 31));
+    errors.push(patternValidator(data, /^[A-ZĆŁÓŚŹŻ\s]{1}[a-ząęćńóśłźż]+$/));
+    return errors.filter(err => err !== undefined);
+}
+
+export const validateAddress = (data) => {
+    let errors = [];
+    errors.push(sizeValidator(data, 2, 63));
+    errors.push(patternValidator(data, /^[A-Za-z0-9ĆŁÓŚŹŻąęćńóśłźż\s/]+$/));
+    return errors.filter(err => err !== undefined);
+}
+
+export const validateHotelImage = (data) => {
+    let errors = [];
+    errors.push(sizeValidator(data, 2, 127));
+    errors.push(patternValidator(data, /^(\b(https?|ftp|file):\/\/)?[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]$/));
+    return errors.filter(err => err !== undefined);
+}
+
+export const validateHotelDescription = (data) => {
+    let errors = [];
+    errors.push(sizeValidator(data, 8, 511));
+    errors.push(patternValidator(data, /^[A-Za-z0-9ĄĘĆŃÓŚŁŹŻąęćńóśłźż.,:\s\-]+$/));
+    return errors.filter(err => err !== undefined);
+}
+
+export const validateCityName = (data) => {
+    let errors = [];
+    errors.push(sizeValidator(data, 2, 31));
+    errors.push(patternValidator(data, /^[A-ZĆŁÓŚŹŻ\s]{1}[A-Za-ząęćńóśłźż \-]+$/));
+    return errors.filter(err => err !== undefined);
+}
+
+export const validateCityDescription = (data) => {
+    let errors = [];
+    errors.push(sizeValidator(data, 8, 511));
+    errors.push(patternValidator(data, /^[A-Za-z0-9ĄĘĆŃÓŚŁŹŻąęćńóśłźż.,:\s\-]+$/));
+    return errors.filter(err => err !== undefined);
+}
+
 export const ValidatorType = {
     CONTACT_NUMBER: "CONTACT_NUMBER",
     FIRSTNAME: "FIRSTNAME",
@@ -88,6 +130,12 @@ export const ValidatorType = {
     PASSWORD: "PASSWORD",
     PEN_CODE: "PEN_CODE",
     USER_EMAIL: "USER_EMAIL",
+    HOTEL_NAME: "HOTEL_NAME",
+    ADDRESS: "ADDRESS",
+    HOTEL_IMAGE: "HOTEL_IMAGE",
+    HOTEL_DESCRIPTION: "HOTEL_DESCRIPTION",
+    CITY_NAME: "CITY_NAME",
+    CITY_DESCRIPTION: "CITY_DESCRIPTION"
 };
 
 export const validatorFactory = (data, validatorType) => {
@@ -108,6 +156,18 @@ export const validatorFactory = (data, validatorType) => {
             return validatePenCode(data);
         case ValidatorType.USER_EMAIL:
             return validateUserEmail(data);
+        case ValidatorType.HOTEL_NAME:
+            return validateHotelName(data);
+        case ValidatorType.ADDRESS:
+            return validateAddress(data);
+        case ValidatorType.HOTEL_IMAGE:
+            return validateHotelImage(data);
+        case ValidatorType.HOTEL_DESCRIPTION:
+            return validateHotelDescription(data);
+        case ValidatorType.CITY_NAME:
+            return validateCityName(data);
+        case ValidatorType.CITY_DESCRIPTION:
+            return validateCityDescription(data);
         default:
             return [];
     }

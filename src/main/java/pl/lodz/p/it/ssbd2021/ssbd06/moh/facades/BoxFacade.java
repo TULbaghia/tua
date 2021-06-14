@@ -56,7 +56,7 @@ public class BoxFacade extends AbstractFacade<Box> {
 
     @PermitAll
     @Override
-    public Box find(Object id) {
+    public Box find(Object id) throws AppBaseException {
         return super.find(id);
     }
 

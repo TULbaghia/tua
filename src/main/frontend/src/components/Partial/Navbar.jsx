@@ -205,6 +205,9 @@ function NavigationBar(props) {
                                     <LinkContainer to="/activeReservations">
                                         <Nav.Link>{t('activeReservations')}</Nav.Link>
                                     </LinkContainer>
+                                    <LinkContainer to="/boxlist">
+                                        <Nav.Link>BoxList</Nav.Link>
+                                    </LinkContainer>
                                 </>
                             )}
                         </Nav>

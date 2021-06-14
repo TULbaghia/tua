@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
-import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;

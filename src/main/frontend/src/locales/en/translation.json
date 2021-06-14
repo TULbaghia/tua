@@ -302,5 +302,9 @@
   "finishedBookingStatus": "Finished",
   "cancelReservation": "Cancel reservation",
   "endReservation": "End reservation",
-  "button.end": "End"
+  "button.end": "End",
+  "button.edit": "Modify",
+  "button.delete": "Delete",
+  "box.price": "Price"
+
 }

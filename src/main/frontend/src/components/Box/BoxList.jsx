@@ -1,0 +1,75 @@
+import React, {Component, useEffect, useState} from "react";
+import {useLocale} from "../LoginContext";
+import BoxItem from "./BoxItem";
+import {CardColumns, CardDeck} from "react-bootstrap";
+import "./BoxListStyle.scss"
+import {withNamespaces} from "react-i18next";
+
+function BoxList(props) {
+
+    const [boxes, setBoxes] = useState([])
+    const {token} = useLocale();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        const requestOptions = {
+            method: "GET",
+            headers: {
+                Authorization: token,
+            },
+        };
+
+        fetch("/resources/boxes/all/-1", requestOptions)
+            .then((res) => res.json())
+            .then(
+                (boxes) => {
+                    setBoxes(boxes);
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+    }
+
+    const handleDelete = (boxId) => {
+        setBoxes(boxes.filter((b) => b.id !== boxId))
+    };
+
+    const {onModify} = props;
+
+    return (
+        <CardColumns className={"my-5"}>
+            {boxes.map((box) => (
+                <BoxItem
+                    key={box.id}
+                    onDelete={handleDelete}
+                    onModify={onModify}
+                    box={box}
+                />
+            ))}
+        </CardColumns>
+    );
+}
+
+function Boxes(props) {
+
+    const handleModify = (userId) => {
+        props.history.push({
+            pathname: "/",
+            state: {idOfUser: userId},
+        });
+    };
+
+    return (
+        // <React.Fragment>
+        <div className={"container"}>
+            <BoxList onModify={handleModify}/>
+        </div>
+        // </React.Fragment>
+    );
+}
+
+export default withNamespaces()(Boxes);

@@ -316,7 +316,16 @@
   "finishedBookingStatus": "Finished",
   "cancelReservation": "Cancel reservation",
   "endReservation": "End reservation",
-  "button.end": "End",
   "search.hotel": "Search hotel...",
-  "addRating": "Add rating"
+  "addRating": "Add rating",
+  "button.end": "End",
+
+  "addCity.title" : "City addition",
+  "addCity.action" : "Add city",
+  "addCity.name" : "City name",
+  "addCity.description" : "City description",
+  "addCity.error.name_required": "Name is required",
+  "addCity.error.description_required": "Description required",
+  "addCity.success": "City has been successfully added",
+  "exception.city.name_invalid": "City name is already in use"
 }

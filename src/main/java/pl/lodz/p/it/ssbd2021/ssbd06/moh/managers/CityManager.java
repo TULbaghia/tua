@@ -4,7 +4,6 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.CityFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
@@ -62,14 +61,15 @@ public class CityManager {
     }
 
     /**
-     * Dodaje miasto
+     * Dodaje nwoe miasto.
      *
-     * @param cityDto dto z danymi miasta
-     * @throws AppBaseException podczas błędu związanego z bazą danych
+     * @param city dodawany obiekt City.
+     * @throws AppBaseException podczas błędu związanego z bazą danych.
      */
     @RolesAllowed("addCity")
-    void addCity(CityDto cityDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addCity(City city) throws AppBaseException {
+        city.setCreatedBy(accountFacade.findByLogin(getLogin()));
+        cityFacade.create(city);
     }
 
     /**

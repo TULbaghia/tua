@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Size(min = 8, max = 511, message = "validation.city.description.size")
-@Pattern(regexp = RegularExpression.CITY_DESCRIPTION, message = "validation.hotel.description.pattern")
+@Pattern(regexp = RegularExpression.CITY_DESCRIPTION, message = "validation.city.description.pattern")
 public @interface CityDescription {
     String message() default "validation.city.description.pattern";
 

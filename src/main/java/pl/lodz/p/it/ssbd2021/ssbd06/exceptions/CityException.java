@@ -1,11 +1,10 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 
 /**
- * Reprezentuje błąd dotyczący encji City
+ * Reprezentuje błąd dotyczący encji City.
  */
 public class CityException extends AppBaseException {
-
-    private static final String CITY_NAME_INVALID = "exception.city.name_already_exists";
+    private static final String CITY_NAME_INVALID = "exception.city.name_invalid";
 
     private CityException(String message, Throwable cause) {
         super(message, cause);

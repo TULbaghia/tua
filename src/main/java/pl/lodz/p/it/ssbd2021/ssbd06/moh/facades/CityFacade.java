@@ -1,18 +1,20 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.facades;
 
+import org.hibernate.exception.ConstraintViolationException;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CityException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
+
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
-
-import org.hibernate.exception.ConstraintViolationException;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.*;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
-
 import java.util.List;
 
 @Stateless
@@ -23,19 +25,26 @@ public class CityFacade extends AbstractFacade<City> {
     @PersistenceContext(unitName = "ssbd06mohPU")
     private EntityManager em;
 
+    public CityFacade() {
+        super(City.class);
+    }
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
-    public CityFacade() {
-        super(City.class);
-    }
-
     @PermitAll
     @Override
     public void create(City entity) throws AppBaseException {
-        super.create(entity);
+        try {
+            super.create(entity);
+        } catch (ConstraintViolationException e) {
+            if (e.getCause().getMessage().contains(City.CITY_CONSTRAINT)) {
+                throw CityException.cityNameExists(e.getCause());
+            }
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
     @PermitAll

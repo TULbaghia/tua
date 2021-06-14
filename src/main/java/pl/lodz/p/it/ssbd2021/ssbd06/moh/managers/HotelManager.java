@@ -1,10 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.*;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.HotelException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.RoleException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
@@ -148,23 +146,11 @@ public class HotelManager {
      * Przypisuje managera (po loginie) do hotelu
      *
      * @param hotelId      identyfikator hotelu
-     * @param managerLogin login managera którego przypisać do hotelu
+     * @param managerData rola managera którego przypisać do hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("addManagerToHotel")
-    public void addManagerToHotel(Long hotelId, String managerLogin) throws AppBaseException {
-        Account account = accountFacade.findByLogin(managerLogin);
-        Set<Role> roleList = account.getRoleList();
-        Role managerRole = null;
-        for (Role role : roleList) {
-            if (role.getAccessLevel() == AccessLevel.MANAGER && role.isEnabled()) {
-                managerRole = role;
-            }
-        }
-        if (managerRole == null) {
-            throw RoleException.accountNotManager();
-        }
-        ManagerData managerData = managerDataFacade.find(managerRole.getId());
+    public void addManagerToHotel(Long hotelId, ManagerData managerData) throws AppBaseException {
         if (managerData.getHotel() != null) {
             throw HotelException.hasManager();
         }

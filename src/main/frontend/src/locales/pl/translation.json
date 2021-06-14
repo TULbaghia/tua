@@ -331,5 +331,20 @@
   "addCity.error.name_required": "Nazwa jest wymagana",
   "addCity.error.description_required": "Opis jest wymagany",
   "addCity.success": "Miasto zostało pomyślnie dodane",
-  "exception.city.name_invalid": "Nazwa miasta jest już w użyciu"
+  "exception.city.name_invalid": "Nazwa miasta jest już w użyciu",
+
+  "addBox.navbar.title" : "Dodaj nowy box",
+
+  "addBox.title": "Dodawanie boxu",
+  "addBox.price" : "Cena",
+  "addBox.animalType" : "Zwierzę",
+  "addBox.success": "Box został pomyślnie dodany",
+
+  "DOG": "Pies",
+  "CAT":  "Kot",
+  "RODENT": "Gryzoń",
+  "BIRD": "Ptak",
+  "RABBIT": "Królik",
+  "LIZARD": "Jaszczurka",
+  "TURTLE": "Żółw"
 }

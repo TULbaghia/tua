@@ -121,6 +121,13 @@ export const validateCityDescription = (data) => {
     return errors.filter(err => err !== undefined);
 }
 
+export const validatePrice = (data) => {
+    let errors = [];
+    errors.push(sizeValidator(data, 1, 8));
+    errors.push(patternValidator(data, /^(\d*\.)?\d+$/));
+    return errors.filter(err => err !== undefined);
+}
+
 export const ValidatorType = {
     CONTACT_NUMBER: "CONTACT_NUMBER",
     FIRSTNAME: "FIRSTNAME",
@@ -135,7 +142,8 @@ export const ValidatorType = {
     HOTEL_IMAGE: "HOTEL_IMAGE",
     HOTEL_DESCRIPTION: "HOTEL_DESCRIPTION",
     CITY_NAME: "CITY_NAME",
-    CITY_DESCRIPTION: "CITY_DESCRIPTION"
+    CITY_DESCRIPTION: "CITY_DESCRIPTION",
+    PRICE: "PRICE"
 };
 
 export const validatorFactory = (data, validatorType) => {
@@ -168,6 +176,8 @@ export const validatorFactory = (data, validatorType) => {
             return validateCityName(data);
         case ValidatorType.CITY_DESCRIPTION:
             return validateCityDescription(data);
+        case ValidatorType.PRICE:
+            return validatePrice(data);
         default:
             return [];
     }

@@ -327,5 +327,20 @@
   "addCity.error.name_required": "Name is required",
   "addCity.error.description_required": "Description required",
   "addCity.success": "City has been successfully added",
-  "exception.city.name_invalid": "City name is already in use"
+  "exception.city.name_invalid": "City name is already in use",
+
+  "addBox.navbar.title" : "Add new box",
+
+  "addBox.title": "Box addition",
+  "addBox.price" : "Price",
+  "addBox.animalType" : "Animal type",
+  "addBox.success": "Box has been successfully added",
+
+  "DOG": "Dog",
+  "CAT":  "Cat",
+  "RODENT": "Rodent",
+  "BIRD": "Bird",
+  "RABBIT": "Rabbit",
+  "LIZARD": "Lizard",
+  "TURTLE": "Turtle"
 }

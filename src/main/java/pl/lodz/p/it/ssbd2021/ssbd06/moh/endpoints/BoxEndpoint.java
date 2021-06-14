@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IBoxMapper;
@@ -9,6 +10,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BoxEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.BoxManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.HotelManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -31,6 +33,9 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
 
     @Inject
     private BoxManager boxManager;
+
+    @Inject
+    private HotelManager hotelManager;
 
     @Override
     public BoxDto get(Long id) throws AppBaseException {
@@ -78,7 +83,11 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
     @Override
     @RolesAllowed("addBox")
     public void addBox(NewBoxDto boxDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        Box box = new Box();
+        Mappers.getMapper(IBoxMapper.class).toBox(boxDto, box);
+        Hotel hotel = hotelManager.get(boxDto.getHotelId());
+        box.setHotel(hotel);
+        boxManager.addBox(box);
     }
 
     @Override

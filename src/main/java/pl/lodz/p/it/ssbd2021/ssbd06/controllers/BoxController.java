@@ -74,7 +74,7 @@ public class BoxController extends AbstractController {
     }
 
     /**
-     * Dodaje klatkę
+     * Dodaje nową klatkę
      *
      * @param boxDto dto z danymi nowej klatki
      * @throws AppBaseException podczas błędu związanego z dodaniem klatki
@@ -82,7 +82,7 @@ public class BoxController extends AbstractController {
     @POST
     @RolesAllowed("addBox")
     public void addBox(NewBoxDto boxDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(()->boxEndpoint.addBox(boxDto), boxEndpoint);
     }
 
     /**

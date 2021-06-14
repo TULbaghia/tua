@@ -264,7 +264,7 @@
   "exception.role_exception.account_not_manager": "Chosen account doesn't have role Manager",
   "assignTitle": "Assign manager to hotel",
   "assignManager.success": "Manager assigned successfully",
-  "exception.hotel.has_manager": "Hotel already have assigned manager",
+  "exception.hotel.has_manager": "This manager have been already assigned",
   "emptyListManager": "No unassigned managers",
   "search.hotel": "Search hotel...",
 
@@ -284,6 +284,21 @@
   "modifyHotel.modify.info": "You are currently modifying hotel named: ",
   "exception.hotel.name_invalid": "Hotel name exists",
   "modifyHotel.error.id_invalid": "Hotel id is invalid",
+  "modifyHotel.error.description_required": "Hotel description is required",
+  "modifyHotel.modify.description" : "Hotel description",
+  "modifyHotel.modify.image" : "Graphics",
+
+  "addHotel.title": "Create new Hotel",
+  "addHotel.add.name": "Hotel name",
+  "addHotel.add.address": "Hotel address",
+  "addHotel.add.image": "Hotel image URL",
+  "addHotel.add.description": "Description",
+  "addHotel.add.city": "City",
+  "addHotel.success": "Hotel has been added",
+  "addHotel.error.address_required": "Address is required",
+  "addHotel.error.name_required": "Name is required",
+  "addHotel.error.city_required": "City is required",
+  "addHotel.error.description_required": "Hotel description is required",
 
   "reportGenerator.time_label" : "Time",
   "reportGenerator.title" : "Hotel report generating",
@@ -306,5 +321,15 @@
   "finishedBookingStatus": "Finished",
   "cancelReservation": "Cancel reservation",
   "endReservation": "End reservation",
-  "button.end": "End"
+  "addRating": "Add rating",
+  "button.end": "End",
+
+  "addCity.title" : "City addition",
+  "addCity.action" : "Add city",
+  "addCity.name" : "City name",
+  "addCity.description" : "City description",
+  "addCity.error.name_required": "Name is required",
+  "addCity.error.description_required": "Description required",
+  "addCity.success": "City has been successfully added",
+  "exception.city.name_invalid": "City name is already in use"
 }

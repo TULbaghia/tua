@@ -15,7 +15,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
 @Mapper
 public interface IHotelMapper {
     /**
-     * Dokonuje mapowania z obiektu Hotel na obiekt UpdateHotelDto
+     * Dokonuje mapowania z obiektu Hotel na obiekt HotelDto
      * @param hotel obiekt klasy Hotel
      * @return zmapowany obiekt klasy UpdateHotelDto
      */

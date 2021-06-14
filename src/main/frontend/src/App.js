@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {HashRouter, Route, Switch} from 'react-router-dom';
-import './App.css';
+import { HashRouter, Route, Switch } from 'react-router-dom';
+import './App.scss';
 import NavigationBar from "./components/Partial/Navbar";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {fab} from "@fortawesome/free-brands-svg-icons";
@@ -33,6 +33,9 @@ import CityList from "./components/city/CitiesList";
 import HotelList from "./components/HotelList";
 import AssignManager from "./components/AssignManager";
 import ActiveBookings from "./components/ActiveBookings";
+import AddHotelForm from "./components/AddHotel/AddHotelForm";
+import ArchiveBookings from "./components/ArchiveBookings";
+import AddCityForm from "./components/AddCity/AddCityForm";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -151,6 +154,7 @@ function App() {
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/activeReservations" component={ActiveBookings}
                                           meta={{auth: true, clientManager: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/hotels/addHotel" component={AddHotelForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels" component={HotelList} meta={{}}/>
                             <GuardedRoute exact path="/hotels/assignManager" component={AssignManager}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
@@ -160,9 +164,12 @@ function App() {
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/generateReport" component={ReportGeneratorForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
-                            <GuardedRoute exact path="/cities" component={CityList} 
+                            <GuardedRoute exact path="/archiveReservations" component={ArchiveBookings}
+                                          meta={{auth: true, clientManager: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/cities/add" component={AddCityForm}
+                                          meta={{auth: true, admin: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/cities" component={CityList}
                                           meta={{auth: true, all: true, logged, currentRole}}/>
-                            <GuardedRoute exact path="/hotels" component={HotelList} meta={{ }}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

@@ -26,7 +26,7 @@ import java.io.Serializable;
         @NamedQuery(name = "Rating.findById", query = "SELECT r FROM Rating r WHERE r.id = :id"),
         @NamedQuery(name = "Rating.findByRate", query = "SELECT r FROM Rating r WHERE r.rate = :rate"),
         @NamedQuery(name = "Rating.findByHidden", query = "SELECT r FROM Rating r WHERE r.hidden = :hidden"),
-        })
+        @NamedQuery(name = "Rating.getAllRatingsForHotelId", query = "SELECT DISTINCT r FROM Rating r, BookingLine bl WHERE r.booking.id = bl.booking.id AND bl.box.hotel.id = :id")})
 @NoArgsConstructor
 public class Rating extends AbstractEntity implements Serializable {
 

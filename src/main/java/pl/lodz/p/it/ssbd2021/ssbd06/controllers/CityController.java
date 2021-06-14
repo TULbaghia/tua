@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.CityEndpointLocal;
@@ -22,7 +23,7 @@ import java.util.List;
 public class CityController extends AbstractController {
 
     @Inject
-    private CityEndpointLocal cityEndpointLocal;
+    private CityEndpointLocal cityEndpoint;
 
     @Inject
     private MessageSigner messageSigner;
@@ -52,8 +53,9 @@ public class CityController extends AbstractController {
      */
     @GET
     @RolesAllowed("getAllCities")
-    public List<CityDto> getAllCities() throws AppBaseException {
-        return cityEndpointLocal.getAllCities();
+    @Operation(operationId = "getAllCities", summary = "getAllCities")
+    public List<CityDto> getAll() throws AppBaseException {
+        return repeat(() -> cityEndpoint.getAllCities(), cityEndpoint);
     }
 
     /**

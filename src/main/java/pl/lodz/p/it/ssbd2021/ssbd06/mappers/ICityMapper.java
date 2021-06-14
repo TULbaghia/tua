@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
  */
 @Mapper
 public interface ICityMapper {
+
     /**
      * Dokonuje mapowania z obiektu City na obiekt CityDto
      *

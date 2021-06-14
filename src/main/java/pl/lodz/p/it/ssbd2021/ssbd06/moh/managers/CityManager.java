@@ -17,6 +17,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +42,8 @@ public class CityManager {
      * Zwraca miasto o podanym identyfikatorze
      *
      * @param id identyfikator miasta.
-     * @throws AppBaseException gdy nie udało się pobrać danych lub podczas błędu z bazą danych
      * @return wyszukiwane miasto.
+     * @throws AppBaseException gdy nie udało się pobrać danych lub podczas błędu z bazą danych
      */
     @PermitAll
     public City get(Long id) throws AppBaseException {
@@ -52,12 +53,12 @@ public class CityManager {
     /**
      * Zwraca listę miast
      *
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista miast
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("getAllCities")
     public List<City> getAll() throws AppBaseException {
-        return cityFacade.findAll();
+        return new ArrayList<>(cityFacade.findAll());
     }
 
     /**

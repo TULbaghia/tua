@@ -261,7 +261,6 @@
   "assignManager.success": "Manager assigned successfully",
   "exception.hotel.has_manager": "Hotel already have assigned manager",
   "emptyListManager": "No unassigned managers",
-  "search.hotel": "Search hotel...",
   "exception.database_query_exception.concurrent_operation": "Error encountered during operation execution",
 
   "editOwnHotel.navbar.title" : "Modify hotel",
@@ -302,5 +301,7 @@
   "finishedBookingStatus": "Finished",
   "cancelReservation": "Cancel reservation",
   "endReservation": "End reservation",
-  "button.end": "End"
+  "button.end": "End",
+  "search.hotel": "Search hotel...",
+  "addRating": "Add rating"
 }

@@ -32,6 +32,7 @@ import ReportGeneratorForm from "./components/RaportGenerating/ReportGeneratorFo
 import HotelList from "./components/HotelList";
 import AssignManager from "./components/AssignManager";
 import ActiveBookings from "./components/ActiveBookings";
+import ArchiveBookings from "./components/ArchiveBookings";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -161,6 +162,8 @@ function App() {
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/generateReport" component={ReportGeneratorForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/archiveReservations" component={ArchiveBookings}
+                                          meta={{auth: true, clientManager: true, logged, currentRole}}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

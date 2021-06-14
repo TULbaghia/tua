@@ -55,7 +55,7 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     @Override
     @RolesAllowed("cancelReservation")
     public void cancelBooking(Long bookingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        bookingManager.cancelBooking(bookingId);
     }
 
     @Override

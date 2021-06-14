@@ -1,11 +1,14 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BookingException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -14,6 +17,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +29,8 @@ import java.util.stream.Collectors;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class BookingManager {
 
+    private static final long TEN_DAYS_IN_MILLIS = 864000000L;
+
     @Inject
     private BookingFacade bookingFacade;
 
@@ -33,6 +39,9 @@ public class BookingManager {
 
     @Inject
     private SecurityContext securityContext;
+
+    @Inject
+    private EmailSender emailSender;
 
     /**
      * Zwraca wskazaną rezerwację:
@@ -88,8 +97,38 @@ public class BookingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("cancelReservation")
-    void cancelBooking(Long bookingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void cancelBooking(Long bookingId) throws AppBaseException {
+        Booking booking = bookingFacade.find(bookingId);
+        String callerName = securityContext.getCallerPrincipal().getName();
+        String clientLogin = booking.getAccount().getLogin();
+        if (securityContext.isCallerInRole("Client") && !callerName.equals(clientLogin)) {
+            throw BookingException.accessDenied();
+        }
+        if (booking.getStatus().equals(BookingStatus.PENDING)) {
+            if (securityContext.isCallerInRole("Client") && isLessThanTenDaysFromNow(booking.getDateFrom())) {
+                throw BookingException.timeForCancellationExceeded();
+            }
+            booking.setStatus(BookingStatus.CANCELLED);
+            bookingFacade.edit(booking);
+            emailSender.sendCancelReservationEmail(booking.getAccount(), booking.getId());
+        } else if (booking.getStatus().equals(BookingStatus.IN_PROGRESS)) {
+            throw BookingException.inProgressBookingCancellation();
+        } else if (booking.getStatus().equals(BookingStatus.FINISHED)) {
+            throw BookingException.finishedBookingCancellation();
+        } else {
+            throw BookingException.bookingAlreadyCancelled();
+        }
+    }
+
+    /**
+     * Sprawdza czy został przekroczony dozwolony czas na anulowanie rezerwacji
+     *
+     * @param bookingBeginDate data rozpoczęcia rezerwacji
+     * @return czy został przekroczony dozwolony czas
+     */
+    private boolean isLessThanTenDaysFromNow(Date bookingBeginDate) {
+        long differenceInMillis = (bookingBeginDate.getTime() - new Date().getTime());
+        return differenceInMillis < TEN_DAYS_IN_MILLIS;
     }
 
     /**

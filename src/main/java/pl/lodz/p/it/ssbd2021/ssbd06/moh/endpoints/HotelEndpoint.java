@@ -136,7 +136,17 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @Override
     @RolesAllowed("deleteManagerFromHotel")
     public void deleteManagerFromHotel(String managerLogin) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        var managerData = hotelManager.findHotelByManagerLogin(managerLogin).getManagerDataList()
+                .stream()
+                .filter(x -> x.getAccount().getLogin().equals(managerLogin))
+                .findAny()
+                .get();
+        ManagerDataDto managerDataDto = Mappers.getMapper(IRoleMapper.class).toManagerDataDto(managerData);
+
+        if (!verifyIntegrity(managerDataDto)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+        hotelManager.deleteManagerFromHotel(managerLogin);
     }
 
     @Override

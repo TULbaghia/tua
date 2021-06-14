@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Manager odpowiadający za zarządzanie hotelami.
@@ -187,8 +188,20 @@ public class HotelManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("deleteManagerFromHotel")
-    void deleteManagerFromHotel(String managerLogin) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void deleteManagerFromHotel(String managerLogin) throws AppBaseException {
+        Account managerAccount = accountFacade.findByLogin(managerLogin);
+        Hotel managerHotel = managerDataFacade.findHotelByManagerId(managerLogin);
+        if (managerHotel == null) {
+            throw HotelException.noHotelAssigned();
+        }
+        ManagerData managerData = managerHotel.getManagerDataList()
+                .stream()
+                .filter(md -> md.getAccount().getId().equals(managerAccount.getId()))
+                .findFirst()
+                .get();
+        managerData.setHotel(null);
+
+        managerDataFacade.edit(managerData);
     }
 
     /**

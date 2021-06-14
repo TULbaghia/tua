@@ -317,5 +317,16 @@
   "finishedBookingStatus": "Finished",
   "cancelReservation": "Cancel reservation",
   "endReservation": "End reservation",
-  "button.end": "End"
+  "button.end": "End",
+
+  "modifyCity.title": "Edit city",
+  "modifyCity.modify.info": "You are editing: ",
+  "modifyCity.modify.name": "Name",
+  "modifyCity.modify.description": "Description",
+  "modifyCity.success": "Changed city data",
+  "exception.city.name_already_exists": "This city name already exists",
+  "validation.city.description.size": "City description length is incorrect",
+  "validation.hotel.description.pattern": "City description does not meet pattern requirements",
+  "validation.city.name.size": "City name length is incorrect",
+  "validation.city.name.pattern": "City name does not meet pattern requirements"
 }

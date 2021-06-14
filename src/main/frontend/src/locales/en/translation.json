@@ -244,6 +244,11 @@
   "exception.role_exception.account_not_confirmed": "Cannot edit role of unconfirmed account",
   "dataRefresh": "Data has been refreshed",
 
+  "exception.database_query_exception.concurrent_operation": "Error encountered during operation execution",
+
+  "cities.list.bread_crumb": "List of cities",
+  "cities.list.header": "Cities list",
+
   "hotelName": "Name",
   "address": "Address",
   "city": "City",
@@ -261,7 +266,7 @@
   "assignManager.success": "Manager assigned successfully",
   "exception.hotel.has_manager": "This manager have been already assigned",
   "emptyListManager": "No unassigned managers",
-  "exception.database_query_exception.concurrent_operation": "Error encountered during operation execution",
+  "search.hotel": "Search hotel...",
 
   "editOwnHotel.navbar.title" : "Modify hotel",
   "generateReport.navbar.title" : "Generate report",
@@ -316,7 +321,6 @@
   "finishedBookingStatus": "Finished",
   "cancelReservation": "Cancel reservation",
   "endReservation": "End reservation",
-  "search.hotel": "Search hotel...",
   "addRating": "Add rating",
   "button.end": "End",
 

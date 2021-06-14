@@ -29,6 +29,7 @@ import {GuardedRoute, GuardProvider} from 'react-router-guards';
 import OtherUserInfo from "./components/OtherUserInfo";
 import ModifyHotelForm from "./components/ModifyHotel/ModifyHotelForm";
 import ReportGeneratorForm from "./components/RaportGenerating/ReportGeneratorForm";
+import CityList from "./components/city/CitiesList";
 import HotelList from "./components/HotelList";
 import AssignManager from "./components/AssignManager";
 import ActiveBookings from "./components/ActiveBookings";
@@ -151,8 +152,6 @@ function App() {
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
-                            <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo}
-                                          meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/activeReservations" component={ActiveBookings}
                                           meta={{auth: true, clientManager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/addHotel" component={AddHotelForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
@@ -169,6 +168,8 @@ function App() {
                                           meta={{auth: true, clientManager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/cities/add" component={AddCityForm}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/cities" component={CityList}
+                                          meta={{auth: true, all: true, logged, currentRole}}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

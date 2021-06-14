@@ -248,6 +248,10 @@
   "dataRefresh": "Dane zostały odświeżone",
 
   "exception.database_query_exception.concurrent_operation": "Napotkano konflikt podczas wykonywania operacji",
+
+  "cities.list.bread_crumb": "Lista miast",
+  "cities.list.header": "Lista miast",
+
   "hotelName": "Nazwa",
   "address": "Adres",
   "city": "Miasto",

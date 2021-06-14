@@ -10,6 +10,7 @@ public class NotFoundException extends AppBaseException {
     private static final String HOTEL_NOT_FOUND = "exception.not_found_exception.hotel_not_found";
     private static final String BOX_NOT_FOUND = "exception.not_found_exception.box_not_found";
     private static final String CITY_NOT_FOUND = "exception.not_found_exception.city_not_found";
+    private static final String RATING_NOT_FOUND = "exception.not_found_exception.rating_not_found";
 
     private NotFoundException(String message, Throwable cause) {
         super(message, cause);
@@ -27,6 +28,16 @@ public class NotFoundException extends AppBaseException {
      */
     public static NotFoundException accountNotFound(Throwable cause) {
         return new NotFoundException(ACCOUNT_NOT_FOUND, cause);
+    }
+
+    /**
+     * Tworzy wyjątek reprezentujący nieznalezienie encji rating.
+     *
+     * @param cause wyjątek, który zostanie opakowany
+     * @return wyjątek NotFoundException
+     */
+    public static NotFoundException ratingNotFound(Throwable cause) {
+        return new NotFoundException(RATING_NOT_FOUND, cause);
     }
 
     /**

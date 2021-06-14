@@ -2,11 +2,20 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.RatingException;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.RatingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -18,6 +27,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.ArrayList;
+import javax.security.enterprise.SecurityContext;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -30,6 +42,18 @@ public class RatingManager {
 
     @Inject
     private RatingFacade ratingFacade;
+
+    @Inject
+    private BookingFacade bookingFacade;
+
+    @Inject
+    private AccountFacade accountFacade;
+
+    @Inject
+    private HotelFacade hotelFacade;
+
+    @Inject
+    private SecurityContext securityContext;
 
     /**
      * Zwraca listę ocen hotelu
@@ -64,8 +88,56 @@ public class RatingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("addHotelRating")
-    public void addRating(RatingDto ratingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addRating(NewRatingDto ratingDto) throws AppBaseException {
+        Booking ratedBooking = bookingFacade.find(ratingDto.getBookingId());
+        if(ratedBooking == null) {
+            throw RatingException.bookingNotExists();
+        }
+        if(ratedBooking.getStatus() != BookingStatus.FINISHED) {
+            throw RatingException.bookingNotFinished();
+        }
+        if (ratedBooking.getRating() != null) {
+            throw RatingException.ratingAlreadyExists();
+        }
+
+        Account clientAccount = accountFacade.findByLogin(securityContext.getCallerPrincipal().getName());
+        if (!ratedBooking.getAccount().getId().equals(clientAccount.getId())) {
+            throw RatingException.bookingNotOwned();
+        }
+
+        Rating rating = new Rating(ratingDto.getRate(), false);
+        if(ratingDto.getComment() != null) {
+            rating.setComment(ratingDto.getComment());
+        }
+
+        rating.setBooking(ratedBooking);
+        rating.setCreatedBy(clientAccount);
+        ratingFacade.create(rating);
+
+        Long hotelId = ratedBooking.getBookingLineList().stream().findAny().get().getBox().getHotel().getId();
+        BigDecimal hotelRating = calculateAverageRating(hotelId);
+        Hotel hotel = hotelFacade.find(hotelId);
+        hotel.setRating(hotelRating);
+        hotelFacade.edit(hotel);
+
+    }
+
+    /**
+     * Metoda odpowiedzialna za wyliczanie średniej wartości z ocen powiązanych z danym hotelem.
+     *
+     * @param hotelId id hotelu
+     * @return średnia ocena hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    private BigDecimal calculateAverageRating(Long hotelId) throws AppBaseException {
+        List<Rating> ratings = ratingFacade.getAllRatingsForHotelId(hotelId);
+        if(ratings.isEmpty()) {
+            return null;
+        }
+        return BigDecimal.valueOf(ratings.stream()
+                .mapToDouble(Rating::getRate)
+                .average()
+                .getAsDouble()).setScale(1, RoundingMode.HALF_UP);
     }
 
     /**

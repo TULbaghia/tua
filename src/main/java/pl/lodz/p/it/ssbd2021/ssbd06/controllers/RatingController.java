@@ -1,12 +1,16 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.RatingEndpointLocal;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.inject.Inject;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -37,13 +41,14 @@ public class RatingController extends AbstractController {
     /**
      * Dodaje ocene
      *
-     * @param ratingDto dto z danymi oceny
+     * @param newRatingDto dto z danymi oceny
      * @throws AppBaseException podczas błędu związanego z dodawaniem oceny hotelu
      */
     @POST
     @RolesAllowed("addHotelRating")
-    public void addRating(RatingDto ratingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void addRating(@NotNull @Valid NewRatingDto newRatingDto) throws AppBaseException {
+        repeat(() -> ratingEndpoint.addRating(newRatingDto), ratingEndpoint);
     }
 
     /**

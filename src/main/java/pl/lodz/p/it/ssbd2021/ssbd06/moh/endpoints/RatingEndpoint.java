@@ -2,6 +2,8 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRatingMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
@@ -45,8 +47,8 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
 
     @Override
     @RolesAllowed("addHotelRating")
-    public void addRating(RatingDto ratingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addRating(NewRatingDto ratingDto) throws AppBaseException {
+        ratingManager.addRating(ratingDto);
     }
 
     @Override

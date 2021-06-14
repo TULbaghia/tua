@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CityException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.CityFacade;
@@ -81,8 +82,12 @@ public class CityManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("deleteCity")
-    void deleteCity(Long cityId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void deleteCity(Long cityId) throws AppBaseException {
+        City city = Optional.ofNullable(cityFacade.find(cityId)).orElseThrow(NotFoundException::cityNotFound);
+        if(city.getHotelList().size() != 0){
+            throw CityException.deleteHasHotels();
+        }
+        cityFacade.remove(city);
     }
 
     /**

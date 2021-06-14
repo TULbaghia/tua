@@ -1,17 +1,24 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
+import org.mapstruct.factory.Mappers;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRatingMapper;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.RatingEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.RatingManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,10 +27,20 @@ import java.util.List;
 @Stateful
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-public class RatingEndpoint  extends AbstractEndpoint implements RatingEndpointLocal {
+public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLocal {
+
+    @Inject
+    private RatingManager ratingManager;
+
     @Override
+    @PermitAll
     public List<RatingDto> getAll(Long hotelId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        List<Rating> ratings = ratingManager.getAll(hotelId);
+        List<RatingDto> result = new ArrayList<>();
+        for (Rating rating : ratings) {
+            result.add(Mappers.getMapper(IRatingMapper.class).toRatingDto(rating));
+        }
+        return result;
     }
 
     @Override

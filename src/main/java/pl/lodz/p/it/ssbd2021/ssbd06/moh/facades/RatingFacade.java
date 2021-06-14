@@ -55,6 +55,12 @@ public class RatingFacade extends AbstractFacade<Rating> {
         return super.find(id);
     }
 
+    /**
+     * Zwraca listę wszystkich ocen w systemie.
+     *
+     * @return lista ocen
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
     @PermitAll
     @Override
     public List<Rating> findAll() throws AppBaseException {

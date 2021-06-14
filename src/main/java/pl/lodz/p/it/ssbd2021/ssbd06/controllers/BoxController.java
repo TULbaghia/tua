@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BoxEndpointLocal;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -81,7 +82,7 @@ public class BoxController extends AbstractController {
      */
     @POST
     @RolesAllowed("addBox")
-    public void addBox(NewBoxDto boxDto) throws AppBaseException {
+    public void addBox(@NotNull @Valid NewBoxDto boxDto) throws AppBaseException {
         repeat(()->boxEndpoint.addBox(boxDto), boxEndpoint);
     }
 

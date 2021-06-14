@@ -307,5 +307,6 @@
   "description": "About",
   "comments": "Comments",
   "hiddenComment": "Due to inappropriate content the comment has been hidden",
-  "averageRating": "Average rating:"
+  "averageRating": "Average rating:",
+  "hotelInfo": "Hotel info"
 }

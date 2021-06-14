@@ -310,5 +310,6 @@
   "description": "O nas",
   "comments": "Komentarze",
   "hiddenComment": "Ze względu na nieodpowiednią treść, komentarz został ukryty",
-  "averageRating": "Średnia ocen:"
+  "averageRating": "Średnia ocen:",
+  "hotelInfo": "Dane hotelu"
 }

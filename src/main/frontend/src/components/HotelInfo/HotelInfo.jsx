@@ -11,11 +11,16 @@ import {faCity, faMapMarkedAlt} from '@fortawesome/free-solid-svg-icons'
 import {Rating} from "@material-ui/lab";
 import {api} from "../../Api";
 import {dateConverter} from "../../i18n";
+import BreadCrumb from "../Partial/BreadCrumb";
+import {Link} from "react-router-dom";
+import {rolesConstant} from "../../Constants";
+import {useLocale} from "../LoginContext";
 
 
 function Home(props) {
     const {t, i18n} = props
     const location = useLocation();
+    const {currentRole} = useLocale();
     const history = useHistory();
     const parsedQuery = queryString.parse(location.search);
     const [hotelData, setHotelData] = useState({
@@ -40,13 +45,14 @@ function Home(props) {
 
     React.useEffect(() => {
         handleHotelDataFetch();
+        handleRatingDataFetch();
+        sortRatingData();
     }, []);
 
     const handleHotelDataFetch = () => {
         getHotelInfo().then(res => {
             console.log(res.data);
             setHotelData(res.data);
-            handleRatingDataFetch();
         }).catch(err => {
             if (err.response != null) {
                 if (err.response.status === 500) {
@@ -63,11 +69,9 @@ function Home(props) {
     const handleRatingDataFetch = () => {
         getRatingInfo().then(res => {
             console.log(res.data);
-            setRatingData({
+            setRatingData([
                 ...res.data,
-                creationDate: dateConverter(res.data.creationDate.slice(0, -5)),
-            });
-            sortRatingData();
+            ]);
         }).catch(err => {
             if (err.response != null) {
                 if (err.response.status === 500) {
@@ -87,6 +91,22 @@ function Home(props) {
 
     return (
         <>
+            <div className="container">
+                <BreadCrumb>
+                    <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
+                    {currentRole === rolesConstant.admin && (
+                        <li className="breadcrumb-item"><Link to="/">{t('adminDashboard')}</Link></li>
+                    )}
+                    {currentRole === rolesConstant.manager && (
+                        <li className="breadcrumb-item"><Link to="/">{t('managerDashboard')}</Link></li>
+                    )}
+                    {currentRole === rolesConstant.client && (
+                        <li className="breadcrumb-item"><Link to="/">{t('userDashboard')}</Link></li>
+                    )}
+                    <li className="breadcrumb-item"><Link to="/hotels">{t('hotelList')}</Link></li>
+                    <li className="breadcrumb-item active" aria-current="page">{t('hotelInfo')}</li>
+                </BreadCrumb>
+            </div>
             <div id={"hotelInfo"} className={"container mt-2 p-4 mb-5"}>
                 <div className={"row"}>
                     <div className={"col-md-6 col-sm-8 col-10 mb-2"}>
@@ -137,9 +157,9 @@ function Home(props) {
                 </div>
                 <div className={"row"}>
                     <div className={"col-md-12 mt-3"}>
-                        {ratingData.map((item) => (
+                        {ratingData.length > 0 && ratingData.map((item) => (
                             <RatingComponent rate={item.rate} login={item.createdBy} content={item.comment}
-                                                    hidden={item.hidden} date={item.creationDate}/>
+                                             hidden={item.hidden} date={dateConverter(item.creationDate.slice(0, -5))}/>
                         ))}
                     </div>
                 </div>

@@ -3,9 +3,12 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.RatingEndpointLocal;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
@@ -13,6 +16,9 @@ import java.util.List;
  */
 @Path("/ratings")
 public class RatingController extends AbstractController {
+
+    @Inject
+    private RatingEndpointLocal ratingEndpoint;
 
     /**
      * Zwraca listę ocen hotelu
@@ -23,8 +29,9 @@ public class RatingController extends AbstractController {
      */
     @GET
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<RatingDto> getAll(@PathParam("id") Long hotelId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return repeat(() -> ratingEndpoint.getAll(hotelId), ratingEndpoint);
     }
 
     /**

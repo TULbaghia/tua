@@ -38,7 +38,7 @@ public class CityController extends AbstractController {
     @GET
     @Path("/{id}")
     public Response get(@PathParam("id") Long id) throws AppBaseException {
-        CityDto cityDto = cityEndpointLocal.get(id);
+        CityDto cityDto = cityEndpoint.get(id);
         return Response.ok()
                 .entity(cityDto)
                 .header("ETag", messageSigner.sign(cityDto))
@@ -81,7 +81,7 @@ public class CityController extends AbstractController {
     @EtagValidatorFilterBinding
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateCity(@NotNull @Valid CityDto cityDto) throws AppBaseException {
-        repeat(() -> cityEndpointLocal.updateCity(cityDto), cityEndpointLocal);
+        repeat(() -> cityEndpoint.updateCity(cityDto), cityEndpoint);
     }
 
     /**

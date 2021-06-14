@@ -304,5 +304,8 @@
   "endReservation": "End reservation",
   "button.end": "End",
   "location": "Location",
-  "description": "About"
+  "description": "About",
+  "comments": "Comments",
+  "hiddenComment": "Due to inappropriate content the comment has been hidden",
+  "averageRating": "Average rating:"
 }

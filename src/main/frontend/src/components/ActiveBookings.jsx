@@ -52,7 +52,12 @@ function ActiveBookings(props) {
     });
 
     const handleEndReservationClick = (bookingId) => {
-        axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/end/${bookingId}`)
+        // axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/end/${bookingId}`, {}, {
+        //     Headers: {
+        //         "Authorization": `${localStorage.getItem("token")}`
+        //     }
+        // })
+        api.endBooking(bookingId, {headers: {Authorization: token}})
             .then (() => {
                 dispatchNotificationSuccess({message: i18n.t('booking.ending.success')})
             })

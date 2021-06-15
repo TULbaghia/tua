@@ -32,6 +32,9 @@ public class BoxManager {
     private AccountFacade accountFacade;
 
     @Inject
+    private HotelManager hotelManager;
+
+    @Inject
     private HttpServletRequest servletRequest;
 
     /**
@@ -64,6 +67,7 @@ public class BoxManager {
      */
     @RolesAllowed("addBox")
     public void addBox(Box box) throws AppBaseException {
+        box.setHotel(hotelManager.findHotelByManagerLogin(getLogin()));
         box.setCreatedBy(accountFacade.findByLogin(getLogin()));
         boxFacade.create(box);
     }

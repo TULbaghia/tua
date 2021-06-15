@@ -331,5 +331,11 @@
   "addCity.error.name_required": "Name is required",
   "addCity.error.description_required": "Description required",
   "addCity.success": "City has been successfully added",
-  "exception.city.name_invalid": "City name is already in use"
+  "exception.city.name_invalid": "City name is already in use",
+  "location": "Location",
+  "description": "About",
+  "comments": "Comments",
+  "hiddenComment": "Due to inappropriate content the comment has been hidden",
+  "averageRating": "Average rating:",
+  "hotelInfo": "Hotel info"
 }

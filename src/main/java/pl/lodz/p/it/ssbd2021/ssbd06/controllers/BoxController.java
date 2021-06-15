@@ -6,6 +6,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BoxEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -13,6 +15,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -24,6 +27,9 @@ public class BoxController extends AbstractController {
     @Inject
     private BoxEndpointLocal boxEndpoint;
 
+    @Inject
+    MessageSigner messageSigner;
+
     /**
      * Zwraca klatkę o podanym identyfikatorze
      *
@@ -33,8 +39,12 @@ public class BoxController extends AbstractController {
      */
     @GET
     @Path("/{id}")
-    public BoxDto get(@PathParam("id") Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public Response get(@PathParam("id") Long id) throws AppBaseException {
+        BoxDto boxDto = boxEndpoint.get(id);
+        return Response.ok()
+                .entity(boxDto)
+                .header("ETag", messageSigner.sign(boxDto))
+                .build();
     }
 
     /**
@@ -94,8 +104,10 @@ public class BoxController extends AbstractController {
      */
     @PUT
     @RolesAllowed("updateBox")
-    public void updateBox(BoxDto boxDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @EtagValidatorFilterBinding
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateBox(@NotNull @Valid BoxDto boxDto) throws AppBaseException {
+        repeat(()-> boxEndpoint.updateBox(boxDto), boxEndpoint);
     }
 
     /**

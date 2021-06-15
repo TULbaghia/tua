@@ -35,4 +35,17 @@ public interface IBoxMapper {
             @Mapping(target = "pricePerDay", source = "price")
     })
     void toBox(NewBoxDto newBoxDto, @MappingTarget Box box) throws AppBaseException;
+
+
+    /**
+     * Mapuje obiekt klasy BoxDto na obiekt klasy Box
+     *
+     * @param boxDto obiekt klasy BoxDto
+     * @param box obiekt klasy Box
+     * @throws AppBaseException w sytuacji wystąpienia błędu
+     */
+    @Mappings({
+            @Mapping(target = "pricePerDay", source = "price")
+    })
+    void toBox(BoxDto boxDto, @MappingTarget Box box) throws AppBaseException;
 }

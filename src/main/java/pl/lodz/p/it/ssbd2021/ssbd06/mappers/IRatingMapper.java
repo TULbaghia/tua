@@ -26,7 +26,7 @@ public interface IRatingMapper {
      * Dokonuje mapowania z obiektu RatingDto na obiekt Rating
      *
      * @param ratingDto obiekt klasy RatingDto
-     * @return obiekt klasy Rating na ktróry przeprowadzamy mapowanie
+     * @return obiekt klasy Rating na który przeprowadzamy mapowanie
      */
     @Mapping(target = "createdBy", ignore = true)
     Rating toRating(RatingDto ratingDto);

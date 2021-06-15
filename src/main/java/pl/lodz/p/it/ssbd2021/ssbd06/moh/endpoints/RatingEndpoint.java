@@ -2,6 +2,9 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRatingMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
@@ -22,6 +25,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Endpoint odpowiadający za zarządzanie ocenami hoteli.
@@ -33,6 +37,11 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
 
     @Inject
     private RatingManager ratingManager;
+
+    @PermitAll
+    public RatingDto get(Long id) throws AppBaseException {
+        return Mappers.getMapper(IRatingMapper.class).toRatingDto(ratingManager.get(id));
+    }
 
     @Override
     @PermitAll
@@ -60,7 +69,13 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
     @Override
     @RolesAllowed("deleteHotelRating")
     public void deleteRating(Long ratingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        Rating rating = ratingManager.get(ratingId);
+        RatingDto ratingIntegrity = Mappers.getMapper(IRatingMapper.class).toRatingDto(rating);
+        if (!verifyIntegrity(ratingIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        ratingManager.deleteRating(ratingId);
     }
 
     @Override

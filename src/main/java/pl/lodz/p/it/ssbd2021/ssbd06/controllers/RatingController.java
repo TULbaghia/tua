@@ -5,14 +5,17 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.RatingEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -23,6 +26,27 @@ public class RatingController extends AbstractController {
 
     @Inject
     private RatingEndpointLocal ratingEndpoint;
+
+    @Inject
+    private MessageSigner messageSigner;
+
+    /**
+     * Zwraca ocenę hotelu
+     *
+     * @param id identyfikator oceny
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     * @return obiekt dto oceny hotelu
+     */
+    @GET
+    @Path("/get/{id}")
+    @PermitAll
+    public Response get(@NotNull @PathParam("id") Long id) throws AppBaseException {
+        RatingDto ratingDto = repeat(() -> ratingEndpoint.get(id), ratingEndpoint);
+        return Response.ok()
+                .entity(ratingDto)
+                .header("ETag", messageSigner.sign(ratingDto))
+                .build();
+    }
 
     /**
      * Zwraca listę ocen hotelu
@@ -72,8 +96,9 @@ public class RatingController extends AbstractController {
     @DELETE
     @RolesAllowed("deleteHotelRating")
     @Path("/{id}")
-    public void deleteRating(@PathParam("id") Long ratingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @EtagValidatorFilterBinding
+    public void deleteRating(@NotNull @PathParam("id") Long ratingId) throws AppBaseException {
+        repeat(() -> ratingEndpoint.deleteRating(ratingId), ratingEndpoint);
     }
 
     /**

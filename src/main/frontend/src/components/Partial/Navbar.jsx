@@ -168,6 +168,9 @@ function NavigationBar(props) {
                                     <LinkContainer to="/cities">
                                         <Nav.Link>{t('cityList')}</Nav.Link>
                                     </LinkContainer>
+                                    <LinkContainer to="/cities/add">
+                                        <Nav.Link>{t('addCity.action')}</Nav.Link>
+                                    </LinkContainer>
                                 </>
                             )}
                             {currentRole === rolesConstant.manager && (
@@ -201,6 +204,9 @@ function NavigationBar(props) {
                                     </LinkContainer>
                                     <LinkContainer to="/reservation">
                                         <Nav.Link>{t('reservation')}</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/archiveReservations">
+                                        <Nav.Link>{t('archiveReservations')}</Nav.Link>
                                     </LinkContainer>
                                     <LinkContainer to="/activeReservations">
                                         <Nav.Link>{t('activeReservations')}</Nav.Link>

@@ -21,6 +21,8 @@ import {getCities, getOtherHotelEtag, getOwnHotelEtag, modifyHotel, modifyOtherH
 import {rolesConstant} from "../../Constants";
 import queryString from "query-string";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
+import TextAreaComponent from "./ModifyHotelFormComponents/TextAreaComponent";
+import {Col, Container, Row} from "react-bootstrap";
 
 function ModifyHotelForm() {
     const location = useLocation();
@@ -28,7 +30,14 @@ function ModifyHotelForm() {
     const {token, currentRole} = useLocale();
     const [etag, setETag] = useState()
     const [cities, setCities] = useState([]);
-    const [hotel, setHotel] = useState({id: "", name: "", address: "", cityName: ""});
+    const [hotel, setHotel] = useState({
+        id: "",
+        name: "",
+        address: "",
+        cityName: "",
+        image: null,
+        description: ""
+    });
 
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
@@ -96,7 +105,7 @@ function ModifyHotelForm() {
     }
 
     return (
-        <div id="modify-hotel-container">
+        <div id="modify-hotel-form">
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">{i18n.t('mainPage')}</Link>
@@ -106,51 +115,73 @@ function ModifyHotelForm() {
                         {currentRole === rolesConstant.manager ? i18n.t('managerDashboard') : i18n.t('adminDashboard')}
                     </Link>
                 </li>
-                <li className="breadcrumb-item active" aria-current="page">{i18n.t('modifyHotel.title')}</li>
+                <li className="breadcrumb-item active" aria-current="page">
+                    {i18n.t('modifyHotel.title')}
+                </li>
             </BreadCrumb>
-            <div className="floating-box">
-                <div className="d-block w-100 text-center">
-                    <h1 className="mb-3">{i18n.t('modifyHotel.title')}</h1>
-                    <h5>{i18n.t('modifyHotel.modify.info')}{hotel.name}</h5>
-                    <button className="w-50 btn-background-custom btn btn-primary my-3"
-                            onClick={(e) => handleFetch(false)}
-                            type="submit">
-                        {i18n.t("refresh")}
-                    </button>
-                    <p className="obligatory-fields">{i18n.t('obligatoryFields')}</p>
-                </div>
-                <Formik
-                    initialValues={{
-                        name: hotel.name,
-                        address: hotel.address,
-                        city: cities.filter(x => x.name === hotel.cityName).map(x => x.id)[0]
-                    }}
-                    enableReinitialize
-                    validate={ModifyHotelValidationSchema}
-                    onSubmit={(values, {setSubmitting}) => handleHotelModify(values, setSubmitting)}>
-                    {({isSubmitting, handleChange}) => (
-                        <Form className="container">
-                            <FieldComponent name="name"
-                                            label={i18n.t('modifyHotel.modify.name')}
-                                            handleChange={handleChange}/>
-                            <FieldComponent name="address"
-                                            label={i18n.t('modifyHotel.modify.address')}
-                                            handleChange={handleChange}/>
-                            <SelectComponent name="city"
-                                             entryValue={hotel.cityName}
-                                             label={i18n.t('modifyHotel.modify.city')}
-                                             values={cities}
-                                             handleChange={handleChange}/>
-                            <div className="d-flex w-100 justify-content-center">
-                                <button className="btn-background-custom btn btn-lg btn-primary mt-3"
-                                        type="submit"
-                                        disabled={isSubmitting}>
-                                    {i18n.t('send')}
-                                </button>
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
+            <div className="floating-box form-floating-box">
+                <Container>
+                    <Row className="text-center justify-content-center d-block">
+                        <h1 className="mb-3">{i18n.t('modifyHotel.title')}</h1>
+                        <h5>{i18n.t('modifyHotel.modify.info')}{hotel.name}</h5>
+                        <button className="my-3 w-25 btn-background-custom btn btn-primary"
+                                onClick={(e) => handleFetch(false)}
+                                type="submit">
+                            {i18n.t("refresh")}
+                        </button>
+                        <p className="obligatory-fields">
+                            {i18n.t('obligatoryFields')}
+                        </p>
+                    </Row>
+                    <Formik
+                        initialValues={{
+                            name: hotel.name,
+                            address: hotel.address,
+                            city: cities.filter(x => x.name === hotel.cityName).map(x => x.id)[0],
+                            image: hotel.image,
+                            description: hotel.description,
+                        }}
+                        enableReinitialize
+                        validate={ModifyHotelValidationSchema}
+                        onSubmit={(values, {setSubmitting}) => handleHotelModify(values, setSubmitting)}>
+                        {({isSubmitting, handleChange}) => (
+                            <Form>
+                                <Row>
+                                    <Col sm={6}>
+                                        <FieldComponent name="name"
+                                                        label={i18n.t('modifyHotel.modify.name')}
+                                                        handleChange={handleChange}/>
+                                        <FieldComponent name="address"
+                                                        label={i18n.t('modifyHotel.modify.address')}
+                                                        handleChange={handleChange}/>
+                                        <SelectComponent name="city"
+                                                         entryValue={hotel.cityName}
+                                                         label={i18n.t('modifyHotel.modify.city')}
+                                                         values={cities}
+                                                         handleChange={handleChange}/>
+                                    </Col>
+                                    <Col sm={6}>
+                                        <TextAreaComponent name="description"
+                                                           obligatory
+                                                           label={i18n.t('modifyHotel.modify.description')}
+                                                           handleChange={handleChange}/>
+                                        <TextAreaComponent name="image"
+                                                           placeholder="/static/media/example.jpg"
+                                                           label={i18n.t('modifyHotel.modify.image')}
+                                                           handleChange={handleChange}/>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <button className="btn-background-custom btn btn-lg btn-primary mt-3"
+                                            type="submit"
+                                            disabled={isSubmitting}>
+                                        {i18n.t('send')}
+                                    </button>
+                                </Row>
+                            </Form>
+                        )}
+                    </Formik>
+                </Container>
             </div>
         </div>
     )

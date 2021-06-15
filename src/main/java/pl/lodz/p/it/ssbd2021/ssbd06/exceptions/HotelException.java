@@ -8,6 +8,7 @@ public class HotelException extends AppBaseException {
     private static final String HOTEL_NOT_EXIST = "exception.hotel.not_exist";
     private static final String HOTEL_HAS_MANAGER = "exception.hotel.has_manager";
     private static final String HOTEL_NAME_INVALID = "exception.hotel.name_invalid";
+    private static final String NO_HOTEL_ASSIGNED = "exception.hotel.no_hotel_assigned";
 
     private HotelException(String message, Throwable cause) {
         super(message, cause);
@@ -52,6 +53,15 @@ public class HotelException extends AppBaseException {
      */
     public static HotelException hasManager() {
         return new HotelException(HOTEL_HAS_MANAGER);
+    }
+
+    /**
+     * Wyjątek reprezentuje błąd podczas usuwania managera z hotelu związany z brakiem przydzielonego hotelu dla managera.
+     *
+     * @return wyjątek HotelException
+     */
+    public static AppBaseException noHotelAssigned() {
+        return new HotelException(NO_HOTEL_ASSIGNED);
     }
 }
 

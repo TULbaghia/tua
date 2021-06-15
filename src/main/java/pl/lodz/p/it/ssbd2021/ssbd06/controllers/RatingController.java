@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.RatingEndpointLocal
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -22,7 +23,7 @@ public class RatingController extends AbstractController {
 
     @Inject
     private RatingEndpointLocal ratingEndpoint;
-    
+
     /**
      * Zwraca listę ocen hotelu
      *
@@ -32,8 +33,9 @@ public class RatingController extends AbstractController {
      */
     @GET
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<RatingDto> getAll(@PathParam("id") Long hotelId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return repeat(() -> ratingEndpoint.getAll(hotelId), ratingEndpoint);
     }
 
     /**

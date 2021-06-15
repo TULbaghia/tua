@@ -248,6 +248,10 @@
   "dataRefresh": "Dane zostały odświeżone",
 
   "exception.database_query_exception.concurrent_operation": "Napotkano konflikt podczas wykonywania operacji",
+
+  "cities.list.bread_crumb": "Lista miast",
+  "cities.list.header": "Lista miast",
+
   "hotelName": "Nazwa",
   "address": "Adres",
   "city": "Miasto",
@@ -263,7 +267,7 @@
   "exception.role_exception.account_not_manager": "Wybrane konto nie posiada roli Manager",
   "assignTitle": "Przypisz managera do hotelu",
   "assignManager.success": "Manager przypisany pomyślnie",
-  "exception.hotel.has_manager": "Hotel ma już przypisanego managera",
+  "exception.hotel.has_manager": "Ten manager został już przypisany",
   "search.hotel": "Wyszukaj hotel...",
 
   "modifyHotel.title" : "Modyfikacja danych hotelu",
@@ -279,6 +283,21 @@
   "modifyHotel.modify.info": "Obecnie modyfikujesz hotel o nazwie: ",
   "exception.hotel.name_invalid": "Podana nazwa hotelu już istnieje",
   "modifyHotel.error.id_invalid": "Nieprawidłowe id hotelu",
+  "modifyHotel.error.description_required": "Opis jest wymagany",
+  "modifyHotel.modify.description" : "Opis hotelu",
+  "modifyHotel.modify.image" : "Grafika",
+
+  "addHotel.title": "Dodaj nowy hotel",
+  "addHotel.add.name": "Nazwa hotelu",
+  "addHotel.add.address": "Adres hotelu",
+  "addHotel.add.image": "Odnośnik do zdjęcia hotelu",
+  "addHotel.add.description": "Opis",
+  "addHotel.add.city": "Miasto",
+  "addHotel.success": "Pomyślnie dodano hotel",
+  "addHotel.error.address_required": "Adres jest wymagany",
+  "addHotel.error.name_required": "Nazwa jest wymagana",
+  "addHotel.error.city_required": "Miasto jest wymagane",
+  "addHotel.error.description_required": "Opis jest wymagany",
 
   "reportGenerator.time_label" : "Czas",
   "reportGenerator.title" : "Raport działalności hotelu",
@@ -305,6 +324,16 @@
   "finishedBookingStatus": "Zakończony",
   "cancelReservation": "Anuluj rezerwację",
   "endReservation": "Zakończ rezerwację",
-  "button.end": "Zakończ"
+  "button.end": "Zakończ",
 
+  "addRating": "Dodaj ocenę",
+
+  "addCity.title" : "Dodawanie nowego miasta",
+  "addCity.action" : "Dodaj miasto",
+  "addCity.name" : "Nazwa miasta",
+  "addCity.description" : "Opis miasta",
+  "addCity.error.name_required": "Nazwa jest wymagana",
+  "addCity.error.description_required": "Opis jest wymagany",
+  "addCity.success": "Miasto zostało pomyślnie dodane",
+  "exception.city.name_invalid": "Nazwa miasta jest już w użyciu"
 }

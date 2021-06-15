@@ -337,8 +337,12 @@
 
   "addBox.title": "Dodawanie boxu",
   "addBox.price" : "Cena",
+  "addBox.description" : "Opis",
   "addBox.animalType" : "Zwierzę",
   "addBox.success": "Box został pomyślnie dodany",
+
+  "addBox.error.price_required": "Podanie ceny jest wymagane",
+  "addBox.error.description_required": "Opis jest wymagany",
 
   "DOG": "Pies",
   "CAT":  "Kot",

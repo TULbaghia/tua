@@ -68,7 +68,7 @@ function AddBoxForm() {
                     </Row>
                     <Formik initialValues={{
                         price: "",
-                        hotel: "",
+                        description: "",
                         animalType: "",
                     }}
                     enableReinitialize
@@ -90,6 +90,14 @@ function AddBoxForm() {
                                         <FieldComponent name="price"
                                                         label={i18n.t('addBox.price')}
                                                         placeholder={i18n.t('addBox.price')}
+                                                        handleChange={handleChange}/>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <FieldComponent name="description"
+                                                        label={i18n.t('addBox.description')}
+                                                        placeholder={i18n.t('addBox.description')}
                                                         handleChange={handleChange}/>
                                     </Col>
                                 </Row>

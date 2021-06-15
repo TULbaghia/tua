@@ -4,7 +4,7 @@ export const addBox = ({values, token}) => {
     return api.addBox({
         animalType: values.animalType,
         price: values.price,
-        hotelId: "-1"
+        description: values.description
     }, {
         headers: {
             "Content-Type": "application/json",

@@ -1,13 +1,21 @@
 import i18n from "i18next";
 import {validatorFactory, ValidatorType} from "../../Validation/Validators";
 
-export const AddBoxValidationSchema = (values) => {
+export const AddBoxValidationSchema = values => {
     const errors = {};
     if (!values.price) {
-        errors.name = i18n.t('addBox.error.price_required');
+        errors.price = i18n.t('addBox.error.price_required');
     } else {
         validatorFactory(values.price, ValidatorType.PRICE).forEach(x => {
-            errors.name = x;
+            errors.price = x;
+        })
+    }
+
+    if (!values.description) {
+        errors.description = i18n.t('addBox.error.description_required');
+    } else {
+        validatorFactory(values.description, ValidatorType.BOX_DESCRIPTION).forEach(x => {
+            errors.description = x;
         })
     }
 

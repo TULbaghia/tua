@@ -36,6 +36,7 @@ public class BookingController extends AbstractController {
      * @return dto rezerwacji
      */
     @GET
+    @RolesAllowed("getReservation")
     @Path("/{id}")
     public Response get(@PathParam("id") Long id) throws AppBaseException {
         BookingDto bookingDto = repeat(() -> bookingEndpoint.get(id), bookingEndpoint);

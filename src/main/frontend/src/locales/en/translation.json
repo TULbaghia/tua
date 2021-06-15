@@ -331,5 +331,5 @@
   "addCity.error.name_required": "Name is required",
   "addCity.error.description_required": "Description required",
   "addCity.success": "City has been successfully added",
-  "exception.city.name_invalid": "City name is already in use",
+  "exception.city.name_invalid": "City name is already in use"
 }

@@ -103,13 +103,8 @@ public class BookingManager {
     @RolesAllowed("cancelReservation")
     public void cancelBooking(Long bookingId) throws AppBaseException {
         Booking booking = bookingFacade.find(bookingId);
-        String callerName = securityContext.getCallerPrincipal().getName();
-        String clientLogin = booking.getAccount().getLogin();
-        if (securityContext.isCallerInRole("Client") && !callerName.equals(clientLogin)) {
-            throw BookingException.accessDenied();
-        }
         if (booking.getStatus().equals(BookingStatus.PENDING)) {
-            if (securityContext.isCallerInRole("Client") && isLessThanTenDaysFromNow(booking.getDateFrom())) {
+            if (securityContext.isCallerInRole("Client") && !isBetweenAllowedTimeLimit(booking.getCreationDate(), booking.getDateFrom())) {
                 throw BookingException.timeForCancellationExceeded();
             }
             booking.setStatus(BookingStatus.CANCELLED);
@@ -125,14 +120,18 @@ public class BookingManager {
     }
 
     /**
-     * Sprawdza czy został przekroczony dozwolony czas na anulowanie rezerwacji
+     * Sprawdza czy został zachowany dozwolony limit czas na anulowanie rezerwacji -
+     * mniej niż 24h od złożenia rezerwacji i więcej niż 48h od rozpoczęcia rezerwacji
      *
      * @param bookingBeginDate data rozpoczęcia rezerwacji
      * @return czy został przekroczony dozwolony czas
      */
-    private boolean isLessThanTenDaysFromNow(Date bookingBeginDate) {
-        long differenceInMillis = (bookingBeginDate.getTime() - new Date().getTime());
-        return differenceInMillis < bookingConfig.getTenDaysInMillis();
+    private boolean isBetweenAllowedTimeLimit(Date bookingCreationDate, Date bookingBeginDate) {
+        long timeFromCreationBooking = (new Date().getTime() - bookingCreationDate.getTime());
+        long timeToBookingBegin = (bookingBeginDate.getTime() - new Date().getTime());
+
+        return timeFromCreationBooking < bookingConfig.getDayInMillis() &&
+                timeToBookingBegin > (bookingConfig.getDayInMillis() * 2);
     }
 
     /**

@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 public class BoxDto {
     private Long id;
     private BigDecimal price;
+    private String description;
     @ValueOfEnum(enumClass = AnimalType.class)
     private String animalType;
     private Long hotelId;

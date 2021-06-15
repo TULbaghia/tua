@@ -80,7 +80,7 @@ VALUES (-1, now(), null, 1, 0, 55.55, 'Duża klatka dla psa', -2, null, -1),
        (-10, now(), null, 1, 0, 34.90, 'Mała klatka dla psa', -5, null, -3),
        (-11, now(), null, 1, 1, 43.44, 'Mała klatka dla kota', -6, null, -4),
        (-12, now(), null, 1, 3, 32.14, 'Standardowa klatka dla ptaka', -6, null, -4),
-       (-13, now(), null, 1, 4, 48.49, 'Akwarium dla królika', -6, null, -4),
+       (-13, now(), null, 1, 4, 48.49, 'Duża klatka dla królika', -6, null, -4),
        (-14, now(), null, 1, 6, 29.44, 'Akwarium dla żółwia', -6, null, -4);
 
 -- Inicjalizacja rezerwacji

@@ -17,6 +17,7 @@ import { useThemeColor } from './../Utils/ThemeColor/ThemeColorProvider';
 import {rolesConstant} from "../../Constants";
 
 
+
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
         <Form>
@@ -39,6 +40,8 @@ function CitiesList(props) {
     ]);
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
+    const dispatchCriticalDialog = useDialogPermanentChange();
+
     const filteredItems = data.filter(item => {
         return item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
     });
@@ -76,23 +79,38 @@ function CitiesList(props) {
         },
     ];
 
-    if(currentRole == rolesConstant.manager || currentRole == rolesConstant.admin){
+    if(currentRole == rolesConstant.admin){
         columns.push({
-            name: t('details'),
-            selector: 'details',
+            name: t('delete'),
+            selector: 'delete',
             cell: row => {
                 return(
                     <Button className="btn-sm" onClick={async event => {
-                        console.log(row)
-                        api.deleteCity(row.id, {headers: {Authorization: token}}).then(res => {
-                            dispatchNotificationSuccess({message: i18n.t('city.delete.success')})
-                        }).catch(err => {
-                            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-                        }).finally(() => fetchData());
+                        dispatchCriticalDialog({
+                            callbackOnSave: () => deleteCity(row.id),
+                        })
                     }}>{t('delete')}</Button>
                 )
             }
         })
+    }
+
+    function deleteCity(id){
+        api.getCity(id, {method: 'GET',  headers: {Authorization: token}})
+        .then(res => {
+            console.log("etag")
+            console.log(res)
+            console.log(res.headers.etag)
+            api.deleteCity(id, null, {headers: {
+                Authorization: token,
+                "If-Match": res.headers.etag
+            }}).then(res => {
+                dispatchNotificationSuccess({message: i18n.t('city.delete.success')})
+            }).catch(err => {
+                dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            })
+        }).catch(err => dispatchNotificationDanger({message: i18n.t(err.response.data.message)}))
+        .finally(() => fetchData());
     }
 
 

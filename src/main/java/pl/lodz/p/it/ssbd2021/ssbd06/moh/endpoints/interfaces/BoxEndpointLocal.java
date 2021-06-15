@@ -64,7 +64,7 @@ public interface BoxEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("updateBox")
-    void updateBox(BoxDto boxDto) throws AppBaseException;
+    void updateBox(UpdateBoxDto boxDto) throws AppBaseException;
 
     /**
      * Usuwa klatkę

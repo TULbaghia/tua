@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateBoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BoxEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
@@ -106,7 +107,7 @@ public class BoxController extends AbstractController {
     @RolesAllowed("updateBox")
     @EtagValidatorFilterBinding
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateBox(@NotNull @Valid BoxDto boxDto) throws AppBaseException {
+    public void updateBox(@NotNull @Valid UpdateBoxDto boxDto) throws AppBaseException {
         repeat(()-> boxEndpoint.updateBox(boxDto), boxEndpoint);
     }
 

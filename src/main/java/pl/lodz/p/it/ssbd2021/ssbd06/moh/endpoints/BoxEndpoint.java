@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IBoxMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateBoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BoxEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.BoxManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.HotelManager;
@@ -91,7 +92,7 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
 
     @Override
     @RolesAllowed("updateBox")
-    public void updateBox(BoxDto boxDto) throws AppBaseException {
+    public void updateBox(UpdateBoxDto boxDto) throws AppBaseException {
         Box box = boxManager.get(boxDto.getId());
 
         BoxDto boxIntegrity = Mappers.getMapper(IBoxMapper.class).toBoxDto(box);

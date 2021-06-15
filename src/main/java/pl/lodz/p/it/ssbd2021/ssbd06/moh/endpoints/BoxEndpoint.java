@@ -85,8 +85,6 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
     public void addBox(NewBoxDto boxDto) throws AppBaseException {
         Box box = new Box();
         Mappers.getMapper(IBoxMapper.class).toBox(boxDto, box);
-        Hotel hotel = hotelManager.get(boxDto.getHotelId());
-        box.setHotel(hotel);
         boxManager.addBox(box);
     }
 

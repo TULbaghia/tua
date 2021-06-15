@@ -18,5 +18,4 @@ public class NewBoxDto {
     private BigDecimal price;
     @ValueOfEnum(enumClass = AnimalType.class)
     private String animalType;
-    private Long hotelId;
 }

@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IBookingMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
@@ -61,6 +62,12 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     @Override
     @RolesAllowed("endReservation")
     public void endBooking(Long bookingId) throws AppBaseException {
+        Booking booking = bookingManager.get(bookingId);
+        BookingDto bookingIntegrity = Mappers.getMapper(IBookingMapper.class).toBookingDto(booking);
+        if(!verifyIntegrity(bookingIntegrity)){
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
         bookingManager.endBooking(bookingId);
     }
 

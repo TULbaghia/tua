@@ -46,7 +46,7 @@ public class BookingManager {
      * @return rezerwacja
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    Booking get(Long id) throws AppBaseException {
+    public Booking get(Long id) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 

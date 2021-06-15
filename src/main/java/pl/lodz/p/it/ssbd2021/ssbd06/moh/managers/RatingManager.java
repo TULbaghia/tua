@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
+import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
@@ -10,6 +11,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.RatingException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRatingMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
@@ -54,6 +56,11 @@ public class RatingManager {
 
     @Inject
     private SecurityContext securityContext;
+
+    @PermitAll
+    public Rating getRating(Long ratingId) throws AppBaseException {
+        return ratingFacade.find(ratingId);
+    }
 
     /**
      * Zwraca listę ocen hotelu
@@ -165,12 +172,14 @@ public class RatingManager {
     /**
      * Zmień widoczność oceny
      *
-     * @param ratingId         dto z danymi hotelu
+     * @param ratingId         identyfikator oceny hotelu
      * @param ratingVisibility poziom widoczności
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("hideHotelRating")
     public void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        Rating rating = ratingFacade.find(ratingId);
+        rating.setHidden(ratingVisibility.isValue());
+        ratingFacade.edit(rating);
     }
 }

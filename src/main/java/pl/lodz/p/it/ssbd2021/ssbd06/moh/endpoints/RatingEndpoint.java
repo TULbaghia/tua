@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
@@ -66,6 +67,13 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
     @Override
     @RolesAllowed("hideHotelRating")
     public void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        Rating rating = ratingManager.getRating(ratingId);
+
+        RatingDto ratingIntegrity = Mappers.getMapper(IRatingMapper.class).toRatingDto(rating);
+        if(!verifyIntegrity(ratingIntegrity)){
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        ratingManager.changeVisibility(ratingId, ratingVisibility);
     }
 }

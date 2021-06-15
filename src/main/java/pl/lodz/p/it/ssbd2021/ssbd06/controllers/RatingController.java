@@ -87,6 +87,6 @@ public class RatingController extends AbstractController {
     @RolesAllowed("hideHotelRating")
     @Path("/{ratingId}/{visibility}")
     public void changeVisibility(@PathParam("ratingId") Long ratingId, @PathParam("visibility") RatingVisibility ratingVisibility) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> ratingEndpoint.changeVisibility(ratingId, ratingVisibility), ratingEndpoint);
     }
 }

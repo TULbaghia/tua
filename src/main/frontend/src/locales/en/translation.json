@@ -334,5 +334,6 @@
   "exception.city.name_invalid": "City name is already in use",
 
   "exception.delete.city.has_hotels": "Cannot delete city with hotels assigned",
-  "city.delete.success": "Successfully deleted city"
+  "city.delete.success": "Successfully deleted city",
+  "exception.not_found_exception.city_not_found": "City does not exist or has been deleted"
 }

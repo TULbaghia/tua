@@ -338,5 +338,6 @@
   "exception.city.name_invalid": "Nazwa miasta jest już w użyciu",
 
   "exception.delete.city.has_hotels": "Nie można usunąć miasta do którego są przypisane hotele",
-  "city.delete.success": "Pomyślnie usunięto miasto"
+  "city.delete.success": "Pomyślnie usunięto miasto",
+  "exception.not_found_exception.city_not_found": "Miasto nie istnieje lub zostało usunięte"
 }

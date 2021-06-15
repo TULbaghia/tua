@@ -108,7 +108,7 @@ function CitiesList(props) {
                 dispatchNotificationSuccess({message: i18n.t('city.delete.success')})
             }).catch(err => {
                 dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-            })
+            }).finally(() => fetchData());
         }).catch(err => dispatchNotificationDanger({message: i18n.t(err.response.data.message)}))
         .finally(() => fetchData());
     }

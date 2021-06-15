@@ -14,6 +14,8 @@ import {
 import {useHistory} from "react-router";
 import {ResponseErrorHandler} from "./../Validation/ResponseErrorHandler";
 import { useThemeColor } from './../Utils/ThemeColor/ThemeColorProvider';
+import {rolesConstant} from "../../Constants";
+
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -27,7 +29,7 @@ const FilterComponent = ({filterText, onFilter, placeholderText}) => (
 function CitiesList(props) {
     const {t, i18n} = props
     const history = useHistory()
-    const {token, setToken} = useLocale();
+    const {token, setToken, currentRole, setCurrentRole} = useLocale();
     const [filterText, setFilterText] = React.useState('');
     const themeColor = useThemeColor()
     const [data, setData] = useState([
@@ -74,6 +76,26 @@ function CitiesList(props) {
         },
     ];
 
+    if(currentRole == rolesConstant.manager || currentRole == rolesConstant.admin){
+        columns.push({
+            name: t('details'),
+            selector: 'details',
+            cell: row => {
+                return(
+                    <Button className="btn-sm" onClick={async event => {
+                        console.log(row)
+                        api.deleteCity(row.id, {headers: {Authorization: token}}).then(res => {
+                            dispatchNotificationSuccess({message: i18n.t('city.delete.success')})
+                        }).catch(err => {
+                            dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+                        }).finally(() => fetchData());
+                    }}>{t('delete')}</Button>
+                )
+            }
+        })
+    }
+
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -92,7 +114,7 @@ function CitiesList(props) {
                     }
                 }
                 console.log(r)
-            });
+            })
         }
     }
 

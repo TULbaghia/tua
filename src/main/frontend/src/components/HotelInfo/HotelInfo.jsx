@@ -158,7 +158,7 @@ function Home(props) {
                 <div className={"row"}>
                     <div className={"col-md-12 mt-3"}>
                         {ratingData.length > 0 && ratingData.map((item) => (
-                            <RatingComponent rate={item.rate} login={item.createdBy} content={item.comment}
+                            <RatingComponent id={item.id} rate={item.rate} login={item.createdBy} content={item.comment}
                                              hidden={item.hidden} date={dateConverter(item.creationDate.slice(0, -5))}/>
                         ))}
                     </div>

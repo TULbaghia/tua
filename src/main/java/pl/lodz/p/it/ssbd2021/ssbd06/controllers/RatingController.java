@@ -75,13 +75,12 @@ public class RatingController extends AbstractController {
      * Zmień widoczność oceny
      *
      * @param ratingId id oceny hotelu
-     * @param ratingVisibility poziom widoczności
      * @throws AppBaseException podczas błędu związanego ze zmianą widoczności oceny
      */
     @PATCH
     @RolesAllowed("hideHotelRating")
-    @Path("/{ratingId}/{visibility}")
-    public void changeVisibility(@PathParam("ratingId") Long ratingId, @PathParam("visibility") RatingVisibility ratingVisibility) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @Path("/changeVisibility/{ratingId}")
+    public void changeVisibility(@PathParam("ratingId") Long ratingId) throws AppBaseException {
+        repeat(() -> ratingEndpoint.changeVisibility(ratingId), ratingEndpoint);
     }
 }

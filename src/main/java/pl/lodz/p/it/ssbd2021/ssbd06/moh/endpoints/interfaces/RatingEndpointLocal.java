@@ -55,10 +55,9 @@ public interface RatingEndpointLocal extends CallingClass {
     /**
      * Zmień widoczność oceny
      *
-     * @param ratingId dto z danymi hotelu
-     * @param ratingVisibility poziom widoczności
+     * @param ratingId identyfikator oceny hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("hideHotelRating")
-    void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException;
+    void changeVisibility(Long ratingId) throws AppBaseException;
 }

@@ -57,6 +57,11 @@ public class RatingManager {
         return ratingsFromGivenHotel;
     }
 
+    @PermitAll
+    public Rating getRating(Long ratingId) throws AppBaseException {
+        return ratingFacade.find(ratingId);
+    }
+
     /**
      * Dodaje ocene
      *
@@ -93,12 +98,13 @@ public class RatingManager {
     /**
      * Zmień widoczność oceny
      *
-     * @param ratingId         dto z danymi hotelu
-     * @param ratingVisibility poziom widoczności
+     * @param ratingId         identyfikator oceny hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("hideHotelRating")
-    public void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void changeVisibility(Long ratingId) throws AppBaseException {
+        Rating rating = ratingFacade.find(ratingId);
+        rating.setHidden(!rating.isHidden());
+        ratingFacade.edit(rating);
     }
 }

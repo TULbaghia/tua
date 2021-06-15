@@ -311,5 +311,8 @@
   "comments": "Komentarze",
   "hiddenComment": "Ze względu na nieodpowiednią treść, komentarz został ukryty",
   "averageRating": "Średnia ocen:",
-  "hotelInfo": "Dane hotelu"
+  "hotelInfo": "Dane hotelu",
+  "hide.button": "Ukryj",
+  "show.button": "Pokaż",
+  "change.comment.visibility.success": "Widoczność komentarza została zmieniona"
 }

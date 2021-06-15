@@ -335,5 +335,7 @@
   "addCity.error.name_required": "Nazwa jest wymagana",
   "addCity.error.description_required": "Opis jest wymagany",
   "addCity.success": "Miasto zostało pomyślnie dodane",
-  "exception.city.name_invalid": "Nazwa miasta jest już w użyciu"
+  "exception.city.name_invalid": "Nazwa miasta jest już w użyciu",
+
+  "booking.ending.success": "Rezerwacja została zakończona pomyślnie"
 }

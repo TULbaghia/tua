@@ -16,6 +16,7 @@ import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import { useThemeColor } from './Utils/ThemeColor/ThemeColorProvider';
 import {dateConverter} from "../i18n";
 import {rolesConstant} from "../Constants";
+import axios from "axios";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -49,6 +50,16 @@ function ActiveBookings(props) {
     const filteredItems = data.filter(item => {
         return item.id && item.id.toString().includes(filterText);
     });
+
+    const handleEndReservationClick = (bookingId) => {
+        axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/end/${bookingId}`)
+            .then (() => {
+                dispatchNotificationSuccess({message: i18n.t('booking.ending.success')})
+            })
+            .catch(err => {
+                ResponseErrorHandler(err, dispatchNotificationDanger)
+            })
+    }
 
     const columns = [
         {
@@ -107,9 +118,15 @@ function ActiveBookings(props) {
             name: t('endReservation'),
             cell: row => {
                 return(
-                    <Button className="btn-sm" onClick={event => {
-                        console.log("reservation: " + row.id + " ended");
-                    }}>{t("button.end")}</Button>
+                    row.bookingStatus === "IN_PROGRESS" ?
+                    <Button className="btn-sm" onClick={() => {
+                        dispatchDialog({
+                            callbackOnSave: () => handleEndReservationClick(row.id),
+                            callbackOnCancel: () => null
+                        })
+                    }
+                    }>{t("button.end")}</Button>
+                    : null
                 );
             }
         });

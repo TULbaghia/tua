@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.facades;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -45,7 +46,7 @@ public class RatingFacade extends AbstractFacade<Rating> {
         super.edit(entity);
     }
 
-    @PermitAll
+    @RolesAllowed("deleteHotelRating")
     @Override
     public void remove(Rating entity) throws AppBaseException {
         super.remove(entity);
@@ -87,6 +88,7 @@ public class RatingFacade extends AbstractFacade<Rating> {
      * @return Lista ocen
      * @throws AppBaseException gdy nie udało się przeprowadzić operacji pobrania ocen
      */
+    @RolesAllowed({"deleteHotelRating", "addHotelRating"})
     public List<Rating> getAllRatingsForHotelId(Long hotelId) throws AppBaseException {
         try {
             TypedQuery<Rating> ratingTypedQuery = em.createNamedQuery("Rating.getAllRatingsForHotelId", Rating.class);

@@ -1,11 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
@@ -26,11 +21,12 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import java.util.ArrayList;
 import javax.security.enterprise.SecurityContext;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Manager odpowiadający za zarządzanie ocenami hoteli.
@@ -54,6 +50,18 @@ public class RatingManager {
 
     @Inject
     private SecurityContext securityContext;
+
+    /**
+     * Zwraca ocenę hotelu
+     *
+     * @param id identyfikator oceny
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     * @return obiekt oceny hotelu
+     */
+    @PermitAll
+    public Rating get(Long id) throws AppBaseException {
+        return Optional.ofNullable(ratingFacade.find(id)).orElseThrow(NotFoundException::ratingNotFound);
+    }
 
     /**
      * Zwraca listę ocen hotelu
@@ -129,6 +137,7 @@ public class RatingManager {
      * @return średnia ocena hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed({"deleteHotelRating", "addHotelRating"})
     private BigDecimal calculateAverageRating(Long hotelId) throws AppBaseException {
         List<Rating> ratings = ratingFacade.getAllRatingsForHotelId(hotelId);
         if(ratings.isEmpty()) {
@@ -159,7 +168,26 @@ public class RatingManager {
      */
     @RolesAllowed("deleteHotelRating")
     public void deleteRating(Long ratingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        Rating rating = get(ratingId);
+        Account self = accountFacade.findByLogin(securityContext.getCallerPrincipal().getName());
+        if (!rating.getCreatedBy().equals(self)) {
+            throw RatingException.bookingNotOwned();
+        }
+
+        Optional<Hotel> optionalHotel = rating.getBooking().getBookingLineList()
+                .stream()
+                .limit(1)
+                .map(BookingLine::getBox)
+                .map(Box::getHotel)
+                .findAny();
+
+        ratingFacade.remove(rating);
+
+        if (optionalHotel.isPresent()) {
+            Hotel hotel = optionalHotel.get();
+            hotel.setRating(calculateAverageRating(hotel.getId()));
+            hotelFacade.edit(hotel);
+        }
     }
 
     /**

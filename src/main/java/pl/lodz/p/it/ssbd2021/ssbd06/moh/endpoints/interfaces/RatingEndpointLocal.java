@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
@@ -16,6 +17,17 @@ import java.util.List;
  */
 @Local
 public interface RatingEndpointLocal extends CallingClass {
+
+    /**
+     * Zwraca ocenę hotelu
+     *
+     * @param id identyfikator oceny
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     * @return obiekt oceny hotelu
+     */
+    @PermitAll
+    RatingDto get(Long id) throws AppBaseException;
+
     /**
      * Zwraca listę ocen hotelu
      *

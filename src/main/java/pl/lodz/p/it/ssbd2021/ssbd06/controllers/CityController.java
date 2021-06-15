@@ -96,6 +96,6 @@ public class CityController extends AbstractController {
     @Path("/{id}")
     @Operation(operationId = "deleteCity", summary = "deleteCity")
     public void deleteCity(@PathParam("id") Long cityId) throws AppBaseException {
-        repeat(() -> cityEndpointLocal.deleteCity(cityId), cityEndpointLocal);
+        repeat(() -> cityEndpoint.deleteCity(cityId), cityEndpoint);
     }
 }

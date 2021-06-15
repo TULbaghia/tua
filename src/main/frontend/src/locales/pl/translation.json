@@ -335,5 +335,9 @@
   "addCity.error.name_required": "Nazwa jest wymagana",
   "addCity.error.description_required": "Opis jest wymagany",
   "addCity.success": "Miasto zostało pomyślnie dodane",
-  "exception.city.name_invalid": "Nazwa miasta jest już w użyciu"
+  "exception.city.name_invalid": "Nazwa miasta jest już w użyciu",
+
+  "exception.delete.city.has_hotels": "Nie można usunąć miasta do którego są przypisane hotele",
+  "city.delete.success": "Pomyślnie usunięto miasto",
+  "exception.not_found_exception.city_not_found": "Miasto nie istnieje lub zostało usunięte"
 }

@@ -3,7 +3,7 @@ import {useHistory} from "react-router";
 import {Link, useParams} from "react-router-dom";
 import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "../Partial/BreadCrumb"
-import {Configuration, DefaultApi} from "api-client";
+import {Configuration, DefaultApi} from "ssbd06-api";
 import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "../Utils/Notification/NotificationProvider";
 import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
 import i18n from "../../i18n";

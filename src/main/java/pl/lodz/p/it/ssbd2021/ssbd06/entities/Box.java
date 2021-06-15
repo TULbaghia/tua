@@ -2,15 +2,18 @@ package pl.lodz.p.it.ssbd2021.ssbd06.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEntity;
+import pl.lodz.p.it.ssbd2021.ssbd06.validation.moh.BoxDescription;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
@@ -48,6 +51,15 @@ public class Box extends AbstractEntity implements Serializable {
     @Basic(optional = false)
     @Column(name = "price_per_day")
     private BigDecimal pricePerDay;
+
+    @Getter
+    @Setter
+    @NotNull
+    @NonNull
+    @Size(min = 1, max = 31)
+    @Column(name = "description", length = 31, nullable = false)
+    @BoxDescription
+    private String description;
 
     @Setter
     @OneToMany(mappedBy = "box")

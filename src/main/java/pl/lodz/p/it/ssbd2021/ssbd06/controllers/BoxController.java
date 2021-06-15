@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BoxEndpointLocal;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -51,6 +52,7 @@ public class BoxController extends AbstractController {
     /**
      * Zwraca listę klatek przypisanych do hotelu
      *
+     * @param id identyfikator hotelu
      * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
      * @return lista dto klatek przypisanych do hotelu
      */
@@ -62,6 +64,14 @@ public class BoxController extends AbstractController {
         return repeat(() -> boxEndpoint.getAllBoxesInHotel(id), boxEndpoint);
     }
 
+    /**
+     * Zwraca listę klatek przypisanych do hotelu przeznaczonych dla konkretnego typu zwierzęcia
+     *
+     * @param id identyfikator hotelu
+     * @param animalType typ zwierzęcia
+     * @return lista dto klatek przypisanych do hotelu
+     * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
+     */
     @GET
     @Path("/all/{id}/{animalType}")
     @RolesAllowed("getAllBoxes")
@@ -73,15 +83,15 @@ public class BoxController extends AbstractController {
     }
 
     /**
-     * Dodaje klatkę
+     * Dodaje nową klatkę
      *
      * @param boxDto dto z danymi nowej klatki
      * @throws AppBaseException podczas błędu związanego z dodaniem klatki
      */
     @POST
     @RolesAllowed("addBox")
-    public void addBox(NewBoxDto boxDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addBox(@NotNull @Valid NewBoxDto boxDto) throws AppBaseException {
+        repeat(()->boxEndpoint.addBox(boxDto), boxEndpoint);
     }
 
     /**

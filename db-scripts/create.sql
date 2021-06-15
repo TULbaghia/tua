@@ -222,6 +222,7 @@ create table box
     version           bigint        not null,
     animal_type       integer       not null,
     price_per_day     numeric(8, 2) not null,
+    description       varchar(31)   not null,
     created_by        bigint        not null,
     modified_by       bigint,
     hotel_id          bigint        not null,
@@ -425,4 +426,4 @@ from account a
          join role r on a.id = r.account_id
 where a.confirmed = true
   and a.enabled = true
-  and r.enabled = true
+  and r.enabled = true;

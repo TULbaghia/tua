@@ -259,9 +259,8 @@
   "exception.role_exception.account_not_manager": "Chosen account doesn't have role Manager",
   "assignTitle": "Assign manager to hotel",
   "assignManager.success": "Manager assigned successfully",
-  "exception.hotel.has_manager": "Hotel already have assigned manager",
+  "exception.hotel.has_manager": "This manager have been already assigned",
   "emptyListManager": "No unassigned managers",
-  "search.hotel": "Search hotel...",
   "exception.database_query_exception.concurrent_operation": "Error encountered during operation execution",
 
   "editOwnHotel.navbar.title" : "Modify hotel",
@@ -280,6 +279,21 @@
   "modifyHotel.modify.info": "You are currently modifying hotel named: ",
   "exception.hotel.name_invalid": "Hotel name exists",
   "modifyHotel.error.id_invalid": "Hotel id is invalid",
+  "modifyHotel.error.description_required": "Hotel description is required",
+  "modifyHotel.modify.description" : "Hotel description",
+  "modifyHotel.modify.image" : "Graphics",
+
+  "addHotel.title": "Create new Hotel",
+  "addHotel.add.name": "Hotel name",
+  "addHotel.add.address": "Hotel address",
+  "addHotel.add.image": "Hotel image URL",
+  "addHotel.add.description": "Description",
+  "addHotel.add.city": "City",
+  "addHotel.success": "Hotel has been added",
+  "addHotel.error.address_required": "Address is required",
+  "addHotel.error.name_required": "Name is required",
+  "addHotel.error.city_required": "City is required",
+  "addHotel.error.description_required": "Hotel description is required",
 
   "reportGenerator.time_label" : "Time",
   "reportGenerator.title" : "Hotel report generating",
@@ -307,4 +321,34 @@
   "button.delete": "Delete",
   "box.price": "Price"
 
+  "search.hotel": "Search hotel...",
+  "addRating": "Add rating",
+
+  "addCity.title" : "City addition",
+  "addCity.action" : "Add city",
+  "addCity.name" : "City name",
+  "addCity.description" : "City description",
+  "addCity.error.name_required": "Name is required",
+  "addCity.error.description_required": "Description required",
+  "addCity.success": "City has been successfully added",
+  "exception.city.name_invalid": "City name is already in use",
+
+  "addBox.navbar.title" : "Add new box",
+
+  "addBox.title": "Box addition",
+  "addBox.price" : "Price",
+  "addBox.description" : "Description",
+  "addBox.animalType" : "Animal type",
+  "addBox.success": "Box has been successfully added",
+
+  "addBox.error.price_required": "Box price is required",
+  "addBox.error.description_required": "Box description is required",
+
+  "DOG": "Dog",
+  "CAT":  "Cat",
+  "RODENT": "Rodent",
+  "BIRD": "Bird",
+  "RABBIT": "Rabbit",
+  "LIZARD": "Lizard",
+  "TURTLE": "Turtle"
 }

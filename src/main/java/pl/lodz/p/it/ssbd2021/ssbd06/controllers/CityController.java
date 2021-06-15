@@ -94,7 +94,8 @@ public class CityController extends AbstractController {
     @DELETE
     @RolesAllowed("deleteCity")
     @Path("/{id}")
+    @Operation(operationId = "deleteCity", summary = "deleteCity")
     public void deleteCity(@PathParam("id") Long cityId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> cityEndpointLocal.deleteCity(cityId), cityEndpointLocal);
     }
 }

@@ -70,6 +70,6 @@ public class CityEndpoint extends AbstractEndpoint implements CityEndpointLocal 
     @Override
     @RolesAllowed("deleteCity")
     public void deleteCity(Long cityId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        cityManager.deleteCity(cityId);
     }
 }

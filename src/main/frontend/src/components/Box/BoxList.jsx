@@ -1,7 +1,6 @@
 import React, {Component, useEffect, useState} from "react";
 import {useLocale} from "../LoginContext";
 import BoxItem from "./BoxItem";
-import {CardColumns, CardDeck} from "react-bootstrap";
 import "./BoxListStyle.scss"
 import {withNamespaces} from "react-i18next";
 
@@ -43,7 +42,7 @@ function BoxList(props) {
     return (
         <div className={"my-5 row"}>
             {boxes.map((box) => (
-                <div className={"col-md-3 my-2"}>
+                <div style={{display: "flex"}} className={"col-md-3 my-2"}>
                     <BoxItem
                         key={box.id}
                         onDelete={handleDelete}
@@ -66,11 +65,9 @@ function Boxes(props) {
     };
 
     return (
-        // <React.Fragment>
-        <div className={"container"}>
+        <div id={"box-list"} className={"container"}>
             <BoxList onModify={handleModify}/>
         </div>
-        // </React.Fragment>
     );
 }
 

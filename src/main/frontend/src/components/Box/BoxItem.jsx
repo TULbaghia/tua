@@ -46,31 +46,6 @@ function BoxItem(props) {
                         variant="danger">{i18n.t('button.delete')}</Button>
             </Card.Body>
         </Card>
-
-        //   /////////////////////////////////
-        //   <div className="card text-center my-2">
-        //       <div className="card-body">
-        //           <h5 className="card-title">
-        //               {box.animalType} {box.hotelId}
-        //           </h5>
-        //           <h6 className="card-subtitle mb-2 text-muted">{box.price}</h6>
-        //           <p className="card-text">ID: {box.id}</p>
-        //           {/* <button className="btn btn-secondary btn-sm">Click</button> */}
-        //           <button
-        //               className="btn btn-warning btn-sm"
-        //               onClick={() => onModify(box.id)}
-        //           >
-        //               Modify
-        //           </button>
-        //           {/* <button
-        //   className="btn btn-danger btn-sm "
-        //   onClick={() => onDelete(user.uuid)}
-        // >
-        //   Delete
-        // </button> */}
-        //       </div>
-        //   </div>
-        //   //////////////////////////////////
     );
 }
 

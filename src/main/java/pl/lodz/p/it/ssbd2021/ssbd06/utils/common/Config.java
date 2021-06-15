@@ -48,6 +48,9 @@ public class Config implements Serializable {
     private static final String MAIL_ENDPOINT_ACTIVATE = "mail.endpoint.activate";
     private static final String MAIL_ENDPOINT_EMAIL_CHANGE = "mail.endpoint.email_change";
 
+    private static final String TEN_DAYS_IN_MILLIS = "ten.days.millis";
+
+
     private String get(String key) {
         return properties.getProperty(key);
     }
@@ -111,6 +114,11 @@ public class Config implements Serializable {
     public String getMailEndpointEmailChange() {
         return get(MAIL_ENDPOINT_EMAIL_CHANGE);
     }
+
+    public Long getTenDaysInMillis() {
+        return getLong(TEN_DAYS_IN_MILLIS);
+    }
+
 
     /**
      * Zwraca zawartość wiadamości w zależności od parametrów

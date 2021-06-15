@@ -7,9 +7,11 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BookingException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -29,8 +31,6 @@ import java.util.stream.Collectors;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class BookingManager {
 
-    private static final long TEN_DAYS_IN_MILLIS = 864000000L;
-
     @Inject
     private BookingFacade bookingFacade;
 
@@ -43,6 +43,9 @@ public class BookingManager {
     @Inject
     private EmailSender emailSender;
 
+    @Inject
+    private Config bookingConfig;
+
     /**
      * Zwraca wskazaną rezerwację:
      * - Dla managera dozwolone rezerwacja w jego hotelu,
@@ -52,8 +55,9 @@ public class BookingManager {
      * @return rezerwacja
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    Booking get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @PermitAll
+    public Booking get(Long id) throws AppBaseException {
+        return bookingFacade.find(id);
     }
 
     /**
@@ -128,7 +132,7 @@ public class BookingManager {
      */
     private boolean isLessThanTenDaysFromNow(Date bookingBeginDate) {
         long differenceInMillis = (bookingBeginDate.getTime() - new Date().getTime());
-        return differenceInMillis < TEN_DAYS_IN_MILLIS;
+        return differenceInMillis < bookingConfig.getTenDaysInMillis();
     }
 
     /**

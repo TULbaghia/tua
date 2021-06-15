@@ -3,17 +3,14 @@ import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
-import {Button, Form, FormCheck} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import {useLocale} from "./LoginContext";
 import {api} from "../Api";
 import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
-import {
-    useNotificationDangerAndInfinity,
-    useNotificationSuccessAndShort
-} from "./Utils/Notification/NotificationProvider";
+import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
-import { useThemeColor } from './Utils/ThemeColor/ThemeColorProvider';
+import {useThemeColor} from './Utils/ThemeColor/ThemeColorProvider';
 import {dateConverter} from "../i18n";
 import {rolesConstant} from "../Constants";
 
@@ -50,6 +47,19 @@ function ActiveBookings(props) {
         return item.id && item.id.toString().includes(filterText);
     });
 
+    const handleCancelReservation = async (id) => {
+        api.cancelBooking(id, {
+            method: "PATCH",
+            headers: {
+                Authorization: token,
+            }
+        }).then(res => {
+            console.log(res);
+            dispatchNotificationSuccess({message: i18n.t('reservationCancel.success')})
+        })
+            .catch(err => ResponseErrorHandler(err, dispatchNotificationDanger))
+    };
+
     const columns = [
         {
             name: 'Id',
@@ -61,7 +71,7 @@ function ActiveBookings(props) {
             selector: 'dateFrom',
             sortable: true,
             cell: row => {
-                return(
+                return (
                     dateConverter(row.dateFrom.slice(0, -5))
                 );
             }
@@ -71,7 +81,7 @@ function ActiveBookings(props) {
             selector: 'dateTo',
             sortable: true,
             cell: row => {
-                return(
+                return (
                     dateConverter(row.dateTo.slice(0, -5))
                 );
             }
@@ -86,18 +96,18 @@ function ActiveBookings(props) {
             selector: 'bookingStatus',
             sortable: true,
             cell: row => {
-                return(
-                  t(row.bookingStatus.toLowerCase() + "BookingStatus")
+                return (
+                    t(row.bookingStatus.toLowerCase() + "BookingStatus")
                 );
             }
         },
         {
             name: t('cancelReservation'),
             cell: row => {
-                return(
-                    <Button className="btn-sm" onClick={event => {
-                        console.log("reservation: " + row.id + " cancelled");
-                    }}>{t("dialog.button.cancel")}</Button>
+                return (
+                    <Button className="btn-sm"
+                            onClick={() => handleCancelReservation(row.id)}
+                    >{t("dialog.button.cancel")}</Button>
                 );
             }
         },
@@ -106,7 +116,7 @@ function ActiveBookings(props) {
         columns.push({
             name: t('endReservation'),
             cell: row => {
-                return(
+                return (
                     <Button className="btn-sm" onClick={event => {
                         console.log("reservation: " + row.id + " ended");
                     }}>{t("button.end")}</Button>
@@ -180,4 +190,5 @@ function ActiveBookings(props) {
         </div>
     )
 }
+
 export default withNamespaces()(ActiveBookings);

@@ -2,7 +2,9 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Role;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IBookingMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
@@ -18,6 +20,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,7 +36,23 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
 
     @Override
     public BookingDto get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        Booking booking = bookingManager.get(id);
+
+        boolean b = booking.getBookingLineList()
+                .stream()
+                .limit(1)
+                .map(x -> x.getBox().getHotel().getManagerDataList())
+                .flatMap(Collection::stream)
+                .filter(Role::isEnabled)
+                .map(x -> x.getAccount().getLogin())
+                .anyMatch(x -> x.equals(getLogin()));
+
+        if (getLogin().equals(booking.getAccount().getLogin()) && !b) {
+
+        } else if (b) {
+
+        }
+        return Mappers.getMapper(IBookingMapper.class).toBookingDto(bookingManager.get(id));
     }
 
     @Override
@@ -55,6 +74,11 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     @Override
     @RolesAllowed("cancelReservation")
     public void cancelBooking(Long bookingId) throws AppBaseException {
+        Booking booking = bookingManager.get(bookingId);
+        BookingDto bookingIntegrity = Mappers.getMapper(IBookingMapper.class).toBookingDto(booking);
+        if (!verifyIntegrity(bookingIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
         bookingManager.cancelBooking(bookingId);
     }
 

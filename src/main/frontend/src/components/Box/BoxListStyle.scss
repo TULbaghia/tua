@@ -26,11 +26,12 @@
   }
 
   @include media-breakpoint-only(lg) {
-    margin-left: 0.5rem;
+    margin-left: 0.2rem;
   }
 
   @include media-breakpoint-only(md) {
-    margin-left: 0.4rem;
+    margin-left: 0rem;
+    margin-top: 0.2rem;
   }
 
   @include media-breakpoint-down(sm) {

@@ -22,7 +22,7 @@ function BoxList(props) {
             },
         };
 
-        fetch("/resources/boxes/all/-1", requestOptions)
+        fetch("/resources/boxes", requestOptions)
             .then((res) => res.json())
             .then(
                 (boxes) => {
@@ -41,16 +41,18 @@ function BoxList(props) {
     const {onModify} = props;
 
     return (
-        <CardColumns className={"my-5"}>
+        <div className={"my-5 row"}>
             {boxes.map((box) => (
-                <BoxItem
-                    key={box.id}
-                    onDelete={handleDelete}
-                    onModify={onModify}
-                    box={box}
-                />
+                <div className={"col-md-3 my-2"}>
+                    <BoxItem
+                        key={box.id}
+                        onDelete={handleDelete}
+                        onModify={onModify}
+                        box={box}
+                    />
+                </div>
             ))}
-        </CardColumns>
+        </div>
     );
 }
 

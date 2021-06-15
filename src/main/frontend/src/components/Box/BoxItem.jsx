@@ -33,13 +33,13 @@ function BoxItem(props) {
     }
 
     return (
-        <Card className={"text-center min-vw-75 card-item"}>
+        <Card className={"text-center card-item"}>
             <Card.Img className={"p-3"} style={{borderBottom: "1px solid var(--dark)"}} variant="top"
                       src={getIcon(box.animalType)}/>
             <Card.Body>
                 <Card.Title id={v4()}>{i18n.t('box.price')}: {box.price}</Card.Title>
                 <Card.Text>
-                    {box.animalType}
+                    {box.description}
                 </Card.Text>
                 <Button id={v4()} onClick={() => onModify(box.id)} variant="warning">{i18n.t('button.edit')}</Button>
                 <Button id={v4()} onClick={() => onDelete(box.id)} className={"card-button"}

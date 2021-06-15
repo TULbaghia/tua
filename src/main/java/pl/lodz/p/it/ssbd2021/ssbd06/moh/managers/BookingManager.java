@@ -1,7 +1,10 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BookingException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
@@ -99,8 +102,21 @@ public class BookingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("endReservation")
-    void endBooking(Long bookingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void endBooking(Long bookingId) throws AppBaseException {
+        Booking booking = bookingFacade.find(bookingId);
+        Hotel bookingHotel = booking.getBookingLineList().stream().findFirst().get().getBox().getHotel();
+        String callerName = securityContext.getCallerPrincipal().getName();
+        //todo: ograniczenie dla managera przypisanego do hotelu
+        if (booking.getStatus().equals(BookingStatus.IN_PROGRESS)) {
+            booking.setStatus(BookingStatus.FINISHED);
+            bookingFacade.edit(booking);
+        } else if (booking.getStatus().equals(BookingStatus.FINISHED)) {
+            throw BookingException.bookingAlreadyFinished();
+        } else if (booking.getStatus().equals(BookingStatus.PENDING)) {
+            throw BookingException.bookingNotStartedYet();
+        } else if (booking.getStatus().equals(BookingStatus.CANCELLED)) {
+            throw BookingException.bookingCancelledBeforeStart();
+        }
     }
 
     /**

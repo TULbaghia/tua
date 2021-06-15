@@ -1,11 +1,18 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BoxEndpointLocal;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
@@ -13,6 +20,10 @@ import java.util.List;
  */
 @Path("/boxes")
 public class BoxController extends AbstractController {
+
+    @Inject
+    private BoxEndpointLocal boxEndpoint;
+
     /**
      * Zwraca klatkę o podanym identyfikatorze
      *
@@ -34,20 +45,45 @@ public class BoxController extends AbstractController {
      */
     @GET
     @RolesAllowed("getAllBoxes")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<BoxDto> getAll() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return repeat(() -> boxEndpoint.getAll(), boxEndpoint);
     }
 
     /**
-     * Dodaje klatkę
+     * Zwraca listę klatek przypisanych do hotelu
+     *
+     * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
+     * @return lista dto klatek przypisanych do hotelu
+     */
+    @GET
+    @Path("/all/{id}")
+    @RolesAllowed("getAllBoxes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<BoxDto> getAllBoxesInHotel(@NotNull @PathParam("id") Long id) throws AppBaseException {
+        return repeat(() -> boxEndpoint.getAllBoxesInHotel(id), boxEndpoint);
+    }
+
+    @GET
+    @Path("/all/{id}/{animalType}")
+    @RolesAllowed("getAllBoxes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<BoxDto> getSomeTypeBoxesFromHotel(@NotNull @PathParam("id") Long id,
+                                                  @NotNull @PathParam("animalType") AnimalType animalType)
+            throws AppBaseException {
+        return repeat(() -> boxEndpoint.getSomeTypeBoxesFromHotel(id, animalType), boxEndpoint);
+    }
+
+    /**
+     * Dodaje nową klatkę
      *
      * @param boxDto dto z danymi nowej klatki
      * @throws AppBaseException podczas błędu związanego z dodaniem klatki
      */
     @POST
     @RolesAllowed("addBox")
-    public void addBox(NewBoxDto boxDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addBox(@NotNull @Valid NewBoxDto boxDto) throws AppBaseException {
+        repeat(()->boxEndpoint.addBox(boxDto), boxEndpoint);
     }
 
     /**

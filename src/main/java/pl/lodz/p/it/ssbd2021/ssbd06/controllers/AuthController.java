@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.auth.dto.LoginDataDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.auth.endpoints.AuthEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
@@ -50,6 +51,7 @@ public class AuthController extends AbstractController {
     @Path("auth")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON})
+    @Operation(operationId = "login", summary = "login")
     public Response login(@NotNull @Valid LoginDataDto loginDataDto) throws AppBaseException {
         try {
             String token = authEndpoint.login(loginDataDto);
@@ -84,6 +86,7 @@ public class AuthController extends AbstractController {
     @GET
     @RolesAllowed("logoutUser")
     @Path("logout")
+    @Operation(operationId = "logout", summary = "logout")
     public Response logout() {
         authEndpoint.logout();
         return Response.ok().build();
@@ -96,6 +99,7 @@ public class AuthController extends AbstractController {
      */
     @POST
     @Path("/refresh-token")
+    @Operation(operationId = "refreshToken", summary = "refreshToken")
     public Response refreshToken(@NotNull String token){
         String refreshedToken = authEndpoint.refreshToken(token);
         return Response.ok().entity(refreshedToken).build();

@@ -55,11 +55,11 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
 
     @Override
     @RolesAllowed("getAllBoxes")
-    public List<BoxDto> getAllBoxesInHotel(Long hotelId) throws AppBaseException {
+    public List<BoxDto> getAllBoxesInHotel(String loginManger) throws AppBaseException {
         List<Box> boxes = boxManager.getAll();
         List<BoxDto> result = new ArrayList<>();
         for(Box box : boxes) {
-            if(box.getHotel().getId().equals(hotelId)) {
+            if(box.getHotel().getId().equals(hotelManager.findHotelByManagerLogin(loginManger).getId())) {
                 result.add(Mappers.getMapper(IBoxMapper.class).toBoxDto(box));
             }
         }

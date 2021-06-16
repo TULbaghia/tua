@@ -190,6 +190,9 @@ function NavigationBar(props) {
                                             <Dropdown.Item as={Link} to="/boxes/add">
                                                 {t("addBox.navbar.title")}
                                             </Dropdown.Item>
+                                            <Dropdown.Item as={Link} to="/boxlist">
+                                                {t("boxList.navbar.title")}
+                                            </Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                     <LinkContainer to="/activeReservations">
@@ -213,9 +216,6 @@ function NavigationBar(props) {
                                     </LinkContainer>
                                     <LinkContainer to="/activeReservations">
                                         <Nav.Link>{t('activeReservations')}</Nav.Link>
-                                    </LinkContainer>
-                                    <LinkContainer to="/boxlist">
-                                        <Nav.Link>BoxList</Nav.Link>
                                     </LinkContainer>
                                 </>
                             )}

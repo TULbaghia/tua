@@ -52,16 +52,16 @@ public class BoxController extends AbstractController {
     /**
      * Zwraca listę klatek przypisanych do hotelu
      *
-     * @param id identyfikator hotelu
+     * @param loginManger login menadżera hotelu
      * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
      * @return lista dto klatek przypisanych do hotelu
      */
     @GET
-    @Path("/all/{id}")
+    @Path("/all/{login}")
     @RolesAllowed("getAllBoxes")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<BoxDto> getAllBoxesInHotel(@NotNull @PathParam("id") Long id) throws AppBaseException {
-        return repeat(() -> boxEndpoint.getAllBoxesInHotel(id), boxEndpoint);
+    public List<BoxDto> getAllBoxesInHotel(@NotNull @PathParam("login") String loginManger) throws AppBaseException {
+        return repeat(() -> boxEndpoint.getAllBoxesInHotel(loginManger), boxEndpoint);
     }
 
     /**

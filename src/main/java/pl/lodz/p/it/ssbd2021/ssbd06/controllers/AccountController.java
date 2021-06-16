@@ -413,6 +413,13 @@ public class AccountController extends AbstractController {
         return repeat(() -> accountEndpoint.getAllManagers(), accountEndpoint);
     }
 
+    /**
+     * Zwraca listę wszystkich managerów przypisanych do danego hotelu
+     *
+     * @param hotelId
+     * @return lista użytkowników
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
     @GET
     @RolesAllowed("getManagerData")
     @Produces(MediaType.APPLICATION_JSON)

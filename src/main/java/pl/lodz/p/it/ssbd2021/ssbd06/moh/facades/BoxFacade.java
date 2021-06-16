@@ -94,4 +94,14 @@ public class BoxFacade extends AbstractFacade<Box> {
         query.setParameter("dateTo", dateTo);
         return query.getResultList();
     }
+
+    @PermitAll
+    // todo specific access role ?
+    public List<Box> getAvailableBoxesByHotelIdAndBetween(long hotelId, Date dateFrom, Date dateTo){
+        TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByTypesByHotelIdAndBetween", Box.class);
+        query.setParameter("hotel_id", hotelId);
+        query.setParameter("dateFrom", dateFrom);
+        query.setParameter("dateTo", dateTo);
+        return query.getResultList();
+    }
 }

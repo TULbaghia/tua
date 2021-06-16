@@ -1,18 +1,22 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.DateParam;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BoxEndpointLocal;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -118,5 +122,13 @@ public class BoxController extends AbstractController {
     @Path("/{id}")
     public void deleteBox(@PathParam("id") Long boxId) throws AppBaseException {
         throw new UnsupportedOperationException();
+    }
+
+    @GET
+    @Path("/all/{id}/from/{date_from}/to/{date_to}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getAvailableBoxesBetween", summary = "getAvailableBoxesBetween")
+    public List<BoxDto> getAvailableBoxesBetween(@PathParam("id") Long hotelId, @PathParam("date_from") DateParam dateFrom, @PathParam("date_to") DateParam dateTo) throws AppBaseException {
+        return repeat(() -> boxEndpoint.getAvailableBoxesBetween(hotelId, dateFrom.getDate(), dateTo.getDate()), boxEndpoint);
     }
 }

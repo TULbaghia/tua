@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -101,5 +102,10 @@ public class BoxManager {
      */
     private String getLogin() {
         return servletRequest.getUserPrincipal().getName();
+    }
+
+    @RolesAllowed("getAllBoxes")
+    public List<Box> getAvailableBoxesBetween(Long hotelId, Date dateFrom, Date dateTo) {
+        return new ArrayList<>(boxFacade.getAvailableBoxesByHotelIdAndBetween(hotelId, dateFrom, dateTo));
     }
 }

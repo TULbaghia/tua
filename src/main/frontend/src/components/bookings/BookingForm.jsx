@@ -20,6 +20,10 @@ import { Field } from "formik";
 import DatePickerField from "../controls/DatePickerField";
 import "../../css/booking-form.css";
 import { useLocale } from "../LoginContext";
+import { useEffect } from "react";
+import DataTable from "react-data-table-component"
+import {Checkbox, Button} from "react-bootstrap";
+
 
 function SignUp(props) {
   const { t, i18n } = props;
@@ -29,28 +33,63 @@ function SignUp(props) {
   const history = useHistory();
   const [submitting, setSubmitting] = useState(false);
   const { token, setToken } = useLocale();
+  const [ hotels, setHotels] = useState([])
+  const [ boxes, setBoxes] = useState([])
+  const [selectedBoxes, setSelectedBoxes] = useState([])
 
-  const colorTheme = useThemeColor();
+  const themeColor = useThemeColor();
 
-  // todo remove
-  const hotels = [
+  useEffect(() => {
+    api.getAllHotelsList({headers: {Authorization: token}}).then(res => {
+    const hotelList = res.data.map((el,i) => {
+        return {
+          label: el.name,
+          value: el.id
+        }
+      })
+    setHotels(hotelList)
+
+    })
+  }, [])
+
+  const columns = [
     {
-      label: "hotel_1", // name
-      value: -1, // id
+        name: 'Type',
+        selector: 'animalType',
+        sortable: true,
+        width: "10rem"
     },
     {
-      label: "hotel_2",
-      value: -2,
-    },
+      name: 'Description',
+      selector: 'description',
+      sortable: false,
+      width: "10rem"
+  },
+  {
+    name: 'Price',
+    selector: 'price',
+    sortable: false,
+    width: "10rem"
+},
     {
-      label: "hotel_3",
-      value: -3,
+        name: t('details'),
+        selector: 'details',
+        cell: row => {
+            return(
+                <input type="checkbox" onChange={e => {
+                  console.log(e.target.checked)
+                  const index = selectedBoxes.indexOf(row.id)
+                  if(index === -1 && e.target.checked){
+                    selectedBoxes.push(row.id)
+                  }else if(!e.target.checked){
+                    selectedBoxes.splice(index, 1)
+                    setSelectedBoxes(selectedBoxes)
+                  }
+                }}/>
+            )
+        }
     },
-    {
-      label: "hotel_4",
-      value: -4,
-    },
-  ];
+];
 
   const animalTypes = [
     {
@@ -95,25 +134,32 @@ function SignUp(props) {
     ],
   };
 
+  function fetchBoxes(hotelId, dateFrom, dateTo){
+    api.getAvailableBoxesBetween(hotelId, dateFrom.toISOString().split('T')[0], dateTo.toISOString().split('T')[0], {headers: {Authorization: token}}).then(res => {
+      setBoxes(res.data)
+    })
+  }
+
   function onSubmit(values, { resetForm }) {
     setSubmitting(true);
     console.log(values);
+    console.log(selectedBoxes)
 
-    const { ...dto } = values;
-    api
-      .addBooking(dto, { headers: { Authorization: token } })
-      .then((res) => {
-        dispatchNotificationSuccess({
-          message: t("booking.create.success"),
-        });
-        resetForm();
-      })
-      .catch((err) => {
-        ResponseErrorHandler(err, dispatchNotificationDanger);
-      })
-      .finally(() => {
-        setSubmitting(false);
-      });
+    // const { ...dto } = values;
+    // api
+    //   .addBooking(dto, { headers: { Authorization: token } })
+    //   .then((res) => {
+    //     dispatchNotificationSuccess({
+    //       message: t("booking.create.success"),
+    //     });
+    //     resetForm();
+    //   })
+    //   .catch((err) => {
+    //     ResponseErrorHandler(err, dispatchNotificationDanger);
+    //   })
+    //   .finally(() => {
+    //     setSubmitting(false);
+    //   });
   }
 
   function validate(values) {
@@ -171,6 +217,27 @@ function SignUp(props) {
                 <label htmlFor="dateTo">{t('booking.form.date_to')}</label>
                 <DatePickerField name="dateTo" />
               </div>
+
+              <div className="col-12">
+                <button
+                  className="btn btn-primary"
+                  style={{ backgroundColor: "#7749F8" }}
+                  onClick={() => fetchBoxes(values.hotelId, values.dateFrom, values.dateTo)}
+                  type="button"
+                >
+                  {t("send")}
+                </button>
+              </div>
+
+              <DataTable className={"rounded-0"}
+                    noDataComponent={i18n.t('table.no.result')}
+                    columns={columns}
+                    data={boxes}
+                    subHeader
+                    theme={themeColor}
+                />
+
+
 
               <div className="col-md-12">
                 <label htmlFor="boxes">{t('booking.form.boxes')}</label>

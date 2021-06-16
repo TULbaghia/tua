@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.Signable;
 
+import java.util.Date;
+
 /**
  * Klasa DTO reprezentująca ocenę hotelu
  */
@@ -18,6 +20,7 @@ public class RatingDto implements Signable {
     private Long bookingId;
     private boolean hidden;
     private String createdBy;
+    private Date creationDate;
 
     private Long version;
 

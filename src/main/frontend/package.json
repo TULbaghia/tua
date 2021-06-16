@@ -9,6 +9,8 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/lab": "^4.0.0-alpha.58",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -35,8 +37,7 @@
     "react-router-dom": "^5.1.2",
     "react-router-guards": "^1.0.2",
     "react-scripts": "4.0.3",
-    "react-select": "^4.3.1",
-    "ssbd06-api": "0.0.5",
+    "ssbd06-api": "0.0.9",
     "styled-components": "^5.3.0",
     "uuid": "^8.3.2",
     "web-vitals": "^1.0.1"

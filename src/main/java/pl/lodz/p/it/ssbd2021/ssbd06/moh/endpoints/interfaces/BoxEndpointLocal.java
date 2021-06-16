@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
@@ -30,6 +31,22 @@ public interface BoxEndpointLocal extends CallingClass {
      */
     @RolesAllowed("getAllBoxes")
     List<BoxDto> getAll() throws AppBaseException;
+
+    /**
+     * @param hotelId identyfikator hotelu dla którego chcemy zwrócić listę klatek
+     * @return lista klatek
+     * @throws AppBaseException w momencie wystąpienia błędu
+     */
+    @RolesAllowed("getAllBoxes")
+    List<BoxDto> getAllBoxesInHotel(Long hotelId) throws AppBaseException;
+
+    /**
+     * @param hotelId identyfikator hotelu dla którego chcemy zwrócić listę klatek
+     * @return lista klatek
+     * @throws AppBaseException w momencie wystąpienia błędu
+     */
+    @RolesAllowed("getAllBoxes")
+    List<BoxDto> getSomeTypeBoxesFromHotel(Long hotelId, AnimalType animalType) throws AppBaseException;
 
     /**
      * Dodaje klatkę

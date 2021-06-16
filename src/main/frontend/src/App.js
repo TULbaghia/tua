@@ -32,11 +32,14 @@ import ReportGeneratorForm from "./components/RaportGenerating/ReportGeneratorFo
 import CityList from "./components/city/CitiesList";
 import HotelList from "./components/HotelList";
 import AssignManager from "./components/AssignManager";
-import BookingForm from './components/bookings/BookingForm';
 import ActiveBookings from "./components/ActiveBookings";
 import AddHotelForm from "./components/AddHotel/AddHotelForm";
 import ArchiveBookings from "./components/ArchiveBookings";
 import AddCityForm from "./components/AddCity/AddCityForm";
+import ModifyCityForm from "./components/ModifyCity/ModifyCityForm";
+import HotelInfo from './components/HotelInfo/HotelInfo';
+import AddBoxForm from "./components/AddBox/AddBoxForm";
+import BookingForm from './components/bookings/BookingForm';
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -171,15 +174,12 @@ function App() {
                                           meta={{auth: true, clientManager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/cities/add" component={AddCityForm}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
-                            <GuardedRoute exact path="/myAccount" component={UserInfo} meta={{ auth: true, all: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/userPage" component={AppUsersPage} meta={{ auth: true, all: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/editOwnAccount" component={EditOwnAccount} meta={{ auth: true, all: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/accounts" component={UserList} meta={{ auth: true, admin: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/editOtherAccount" component={EditOtherAccountForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo} meta={{auth: true, admin: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/cities" component={CityList} meta={{auth: true, admin: true, manager: true, logged, currentRole }}/>
-                            <GuardedRoute exact path="/hotels" component={HotelList} meta={{ }}/>
-                            <GuardedRoute exact path="/hotels/assignManager" component={AssignManager} meta={{ auth: true, admin: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/cities" component={CityList}
+                                          meta={{auth: true, all: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/cities/editCity" component={ModifyCityForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/hotels/hotelInfo" component={HotelInfo} meta={{}}/>
+                            <GuardedRoute exact path="/boxes/add" component={AddBoxForm}
+                                          meta={{auth: true, manager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/booking/add" component={BookingForm} meta={{auth: true, client: true, logged, currentRole }}/>
                             <Route component={NotFound}/>
                         </Switch>

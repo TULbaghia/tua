@@ -3,14 +3,18 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +24,19 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class BoxManager {
+
+    @Inject
+    private BoxFacade boxFacade;
+
+    @Inject
+    private AccountFacade accountFacade;
+
+    @Inject
+    private HotelManager hotelManager;
+
+    @Inject
+    private HttpServletRequest servletRequest;
+
     /**
      * Zwraca klatke o podanym identyfikatorze
      *
@@ -38,19 +55,21 @@ public class BoxManager {
      * @return lista klatek
      */
     @RolesAllowed("getAllBoxes")
-    List<Box> getAll() throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<Box> getAll() throws AppBaseException {
+        return new ArrayList<>(boxFacade.findAll());
     }
 
     /**
-     * Dodaje klatkę
+     * Dodaje nową klatkę
      *
-     * @param boxDto dto z danymi nowej klatki
+     * @param box dodawana nowa klatka
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("addBox")
-    void addBox(NewBoxDto boxDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addBox(Box box) throws AppBaseException {
+        box.setHotel(hotelManager.findHotelByManagerLogin(getLogin()));
+        box.setCreatedBy(accountFacade.findByLogin(getLogin()));
+        boxFacade.create(box);
     }
 
     /**
@@ -73,5 +92,14 @@ public class BoxManager {
     @RolesAllowed("deleteBox")
     void deleteBox(Long boxId) throws AppBaseException {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Pobiera z obiektu żądania login użytkownika
+     *
+     * @return login uzytkownika wywołującego żądanie
+     */
+    private String getLogin() {
+        return servletRequest.getUserPrincipal().getName();
     }
 }

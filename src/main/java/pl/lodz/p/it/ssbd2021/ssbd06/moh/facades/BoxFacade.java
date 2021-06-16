@@ -9,9 +9,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import javax.validation.ConstraintViolationException;
+
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -21,7 +24,6 @@ import java.util.List;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Interceptors({LoggingInterceptor.class})
-
 public class BoxFacade extends AbstractFacade<Box> {
 
     @PersistenceContext(unitName = "ssbd06mohPU")
@@ -39,7 +41,11 @@ public class BoxFacade extends AbstractFacade<Box> {
     @PermitAll
     @Override
     public void create(Box entity) throws AppBaseException {
-        super.create(entity);
+        try {
+            super.create(entity);
+        } catch (ConstraintViolationException e) {
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
     @PermitAll

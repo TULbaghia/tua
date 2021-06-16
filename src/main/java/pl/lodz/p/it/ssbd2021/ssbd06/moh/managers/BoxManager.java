@@ -89,12 +89,11 @@ public class BoxManager {
     /**
      * Usuwa klatkę
      *
-     * @param boxId identyfikator klatki
+     * @param box identyfikator klatki
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("deleteBox")
-    public void deleteBox(Long boxId) throws AppBaseException {
-        Box box = get(boxId);
+    public void deleteBox(Box box) throws AppBaseException {
         boxFacade.remove(box);
     }
 

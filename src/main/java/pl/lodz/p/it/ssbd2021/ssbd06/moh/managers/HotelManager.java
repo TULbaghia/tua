@@ -287,6 +287,7 @@ public class HotelManager {
      * @param animalType rodzaj zwierzęcia
      * @param hotelId identyfikator hotelu
      * @return wartość logiczna
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PermitAll
     private boolean checkHotelPetTypeAllowed(AnimalType animalType, Long hotelId) throws AppBaseException {
@@ -298,6 +299,13 @@ public class HotelManager {
         return result.isPresent();
     }
 
+    /**
+     * Sprawdza czy dany hotel oferuje boxy dla danych typów zwierząt.
+     * @param animalTypes lista typów zwierząt
+     * @param hotelId identyfikator hotelu
+     * @return wartość logiczna
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
     @PermitAll
     private boolean checkHotelPetTypeListAllowed(List<AnimalType> animalTypes, Long hotelId) throws AppBaseException {
         for (AnimalType type: animalTypes){

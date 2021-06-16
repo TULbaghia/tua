@@ -135,7 +135,7 @@ export const ValidatorType = {
     HOTEL_IMAGE: "HOTEL_IMAGE",
     HOTEL_DESCRIPTION: "HOTEL_DESCRIPTION",
     CITY_NAME: "CITY_NAME",
-    CITY_DESCRIPTION: "CITY_DESCRIPTION"
+    CITY_DESCRIPTION: "CITY_DESCRIPTION",
 };
 
 export const validatorFactory = (data, validatorType) => {

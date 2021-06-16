@@ -373,5 +373,12 @@
   "BIRD": "Bird",
   "RABBIT": "Rabbit",
   "LIZARD": "Lizard",
-  "TURTLE": "Turtle"
+  "TURTLE": "Turtle",
+
+  "reservationCancel.success": "Booking has been successfully canceled",
+  "exception.booking.cancelled_booking" : "Booking have been already cancelled",
+  "exception.booking.finished_booking": "Booking have been already finished",
+  "exception.booking.in_progress_booking": "Booking is in progress",
+  "exception.booking.time_exceeded": "Time limit for canceling booking has been exceeded",
+  "exception.booking.access_denied": "Access has been denied"
 }

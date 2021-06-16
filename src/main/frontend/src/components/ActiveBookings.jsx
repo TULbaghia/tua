@@ -47,18 +47,38 @@ function ActiveBookings(props) {
         return item.id && item.id.toString().includes(filterText);
     });
 
-    const handleCancelReservation = async (id) => {
-        api.cancelBooking(id, {
-            method: "PATCH",
+    const getReservationData = async (id) => {
+        return await api.get(id, {
+            method: "GET",
             headers: {
                 Authorization: token,
             }
-        }).then(res => {
-            console.log(res);
-            dispatchNotificationSuccess({message: i18n.t('reservationCancel.success')})
-        })
-            .catch(err => ResponseErrorHandler(err, dispatchNotificationDanger))
+        });
     };
+
+    const cancelReservation = (id) => {
+        getReservationData(id).then(res => {
+            api.cancelBooking(id, {
+                method: "PATCH",
+                headers: {
+                    Authorization: token,
+                    "If-Match": res.headers.etag
+                }
+            }).then(res => {
+                dispatchNotificationSuccess({message: i18n.t('reservationCancel.success')})
+            }).catch(err => {
+                if (err.response != null) {
+                    if (err.response.status === 403) {
+                        history.push("/errors/forbidden")
+                    } else if (err.response.status === 500) {
+                        history.push("/errors/internal")
+                    }
+                }
+                dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            }).finally(() => fetchData());
+        })
+    }
+
 
     const columns = [
         {
@@ -106,7 +126,16 @@ function ActiveBookings(props) {
             cell: row => {
                 return (
                     <Button className="btn-sm"
-                            onClick={() => handleCancelReservation(row.id)}
+                            onClick={event => {
+                                dispatchDialog({
+                                    callbackOnSave: () => {
+                                        cancelReservation(row.id);
+                                    },
+                                    callbackOnCancel: () => {
+                                        console.log("Cancel")
+                                    },
+                                })
+                            }}
                     >{t("dialog.button.cancel")}</Button>
                 );
             }

@@ -367,6 +367,12 @@
   "addBox.animalType" : "Zwierzę",
   "addBox.success": "Box został pomyślnie dodany",
 
+  "reservationCancel.success": "Pomyślnie anulowano rezerwację",
+  "exception.booking.cancelled_booking" : "Rezerwacja jest już anulowana",
+  "exception.booking.finished_booking": "Rezerwacja jest zakończona",
+  "exception.booking.in_progress_booking": "Rezerwacja w trakcie trwania",
+  "exception.booking.time_exceeded": "Limit czasu na anulowanie rezerwacji został przekroczony",
+  "exception.booking.access_denied": "Brak dostępu do zasobu",
   "addBox.error.price_required": "Podanie ceny jest wymagane",
   "addBox.error.description_required": "Opis jest wymagany",
 

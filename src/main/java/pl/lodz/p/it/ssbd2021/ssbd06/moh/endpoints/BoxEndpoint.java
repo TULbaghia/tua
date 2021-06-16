@@ -1,10 +1,12 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
 import org.mapstruct.factory.Mappers;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Role;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BoxException;
@@ -116,6 +118,36 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
     @Override
     @RolesAllowed("deleteBox")
     public void deleteBox(Long boxId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        Box boxToDelete = boxManager.get(boxId);
+
+        BoxDto boxIntegrity = Mappers.getMapper(IBoxMapper.class).toBoxDto(boxToDelete);
+        if(!verifyIntegrity(boxIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        boolean canDelete = boxToDelete.getHotel().getManagerDataList()
+                .stream()
+                .filter(Role::isEnabled).anyMatch(x -> x.getAccount().getLogin().equals(getLogin()));
+
+        boolean isInProgress = boxToDelete.getBookingLineList()
+                .stream()
+                .map(BookingLine::getBooking)
+                .anyMatch(x -> x.getStatus().equals(BookingStatus.IN_PROGRESS));
+
+        boolean isPending = boxToDelete.getBookingLineList()
+                .stream()
+                .map(BookingLine::getBooking)
+                .anyMatch(x -> x.getStatus().equals(BookingStatus.PENDING));
+
+        if(!canDelete) {
+            throw BoxException.accessDenied();
+        }
+        if(isInProgress) {
+            throw BoxException.boxIsUsed();
+        }
+        if(isPending) {
+            throw BoxException.boxIsPending();
+        }
+        boxManager.deleteBox(boxId);
     }
 }

@@ -93,8 +93,9 @@ public class BoxManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("deleteBox")
-    void deleteBox(Long boxId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void deleteBox(Long boxId) throws AppBaseException {
+        Box box = get(boxId);
+        boxFacade.remove(box);
     }
 
     /**

@@ -96,8 +96,8 @@ function AddBoxForm() {
                                 <Row>
                                     <Col>
                                         <FieldComponent name="description"
-                                                        label={i18n.t('description')}
-                                                        placeholder={i18n.t('description')}
+                                                        label={i18n.t('box.description')}
+                                                        placeholder={i18n.t('box.description')}
                                                         handleChange={handleChange}/>
                                     </Col>
                                 </Row>

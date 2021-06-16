@@ -1,7 +1,9 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BookingException;
@@ -17,7 +19,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -104,9 +108,6 @@ public class BookingManager {
     @RolesAllowed("endReservation")
     public void endBooking(Long bookingId) throws AppBaseException {
         Booking booking = bookingFacade.find(bookingId);
-        Hotel bookingHotel = booking.getBookingLineList().stream().findFirst().get().getBox().getHotel();
-        String callerName = securityContext.getCallerPrincipal().getName();
-        //todo: ograniczenie dla managera przypisanego do hotelu
         if (booking.getStatus().equals(BookingStatus.IN_PROGRESS)) {
             booking.setStatus(BookingStatus.FINISHED);
             bookingFacade.edit(booking);

@@ -53,11 +53,6 @@ function ActiveBookings(props) {
     });
 
     const handleEndReservationClick = (id) => {
-        // axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/end/${bookingId}`, {}, {
-        //     Headers: {
-        //         "Authorization": `${localStorage.getItem("token")}`
-        //     }
-        // })
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/${id}`, {
             headers: {
                 "Authorization": token
@@ -65,20 +60,25 @@ function ActiveBookings(props) {
         })
             .then(res => {
                 setETag(res.headers.etag)
-            }, () => axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/end/${id}`, {},
-                {
-                    Headers: {
-                        "Authorization": token,
-                        "If-Match": etag
-                    }
-                })
+                endReservation(id, res.headers.etag)
+            })
+    }
+
+    const endReservation = (id, eTag) => {
+        axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/end/${id}`, {},
+            {
+                headers: {
+                    "Authorization": token,
+                    "If-Match": eTag
+                }
+            })
             .then (() => {
+                fetchData()
                 dispatchNotificationSuccess({message: i18n.t('booking.ending.success')})
             })
             .catch(err => {
                 ResponseErrorHandler(err, dispatchNotificationDanger)
             })
-            )
     }
 
     const columns = [

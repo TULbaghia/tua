@@ -354,5 +354,24 @@
   "comments": "Comments",
   "hiddenComment": "Due to inappropriate content the comment has been hidden",
   "averageRating": "Average rating:",
-  "hotelInfo": "Hotel info"
+  "hotelInfo": "Hotel info",
+
+  "addBox.navbar.title" : "Add new box",
+
+  "addBox.title": "Box addition",
+  "addBox.price" : "Price",
+  "addBox.description" : "Description",
+  "addBox.animalType" : "Animal type",
+  "addBox.success": "Box has been successfully added",
+
+  "addBox.error.price_required": "Box price is required",
+  "addBox.error.description_required": "Box description is required",
+
+  "DOG": "Dog",
+  "CAT":  "Cat",
+  "RODENT": "Rodent",
+  "BIRD": "Bird",
+  "RABBIT": "Rabbit",
+  "LIZARD": "Lizard",
+  "TURTLE": "Turtle"
 }

@@ -357,5 +357,24 @@
   "comments": "Komentarze",
   "hiddenComment": "Ze względu na nieodpowiednią treść, komentarz został ukryty",
   "averageRating": "Średnia ocen:",
-  "hotelInfo": "Dane hotelu"
+  "hotelInfo": "Dane hotelu",
+
+  "addBox.navbar.title" : "Dodaj nowy box",
+
+  "addBox.title": "Dodawanie boxu",
+  "addBox.price" : "Cena",
+  "addBox.description" : "Opis",
+  "addBox.animalType" : "Zwierzę",
+  "addBox.success": "Box został pomyślnie dodany",
+
+  "addBox.error.price_required": "Podanie ceny jest wymagane",
+  "addBox.error.description_required": "Opis jest wymagany",
+
+  "DOG": "Pies",
+  "CAT":  "Kot",
+  "RODENT": "Gryzoń",
+  "BIRD": "Ptak",
+  "RABBIT": "Królik",
+  "LIZARD": "Jaszczurka",
+  "TURTLE": "Żółw"
 }

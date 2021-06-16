@@ -3,11 +3,18 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewCityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.CityEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -19,6 +26,9 @@ public class CityController extends AbstractController {
     @Inject
     private CityEndpointLocal cityEndpoint;
 
+    @Inject
+    private MessageSigner messageSigner;
+
     /**
      * Zwraca miasto o podanym identyfikatorze
      *
@@ -28,8 +38,13 @@ public class CityController extends AbstractController {
      */
     @GET
     @Path("/{id}")
-    public CityDto get(@PathParam("id") Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @Operation(operationId = "getCity", summary = "getCity")
+    public Response get(@PathParam("id") Long id) throws AppBaseException {
+        CityDto cityDto = cityEndpoint.get(id);
+        return Response.ok()
+                .entity(cityDto)
+                .header("ETag", messageSigner.sign(cityDto))
+                .build();
     }
 
     /**
@@ -46,15 +61,16 @@ public class CityController extends AbstractController {
     }
 
     /**
-     * Dodaje miasto
+     * Dodaje nowe miasto.
      *
-     * @param cityDto dto z danymi miasta
-     * @throws AppBaseException podczas błędu związanego z dodawaniem miasta
+     * @param newCityDto dto z danymi miasta.
+     * @throws AppBaseException podczas błędu związanego z dodawaniem miasta.
      */
     @POST
     @RolesAllowed("addCity")
-    public void addCity(CityDto cityDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @Operation(operationId = "addCity", summary = "addCity")
+    public void addCity(@Valid NewCityDto newCityDto) throws AppBaseException {
+        repeat(() -> cityEndpoint.addCity(newCityDto), cityEndpoint);
     }
 
     /**
@@ -65,8 +81,11 @@ public class CityController extends AbstractController {
      */
     @PUT
     @RolesAllowed("updateCity")
-    public void updateCity(CityDto cityDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @EtagValidatorFilterBinding
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "updateCity", summary = "updateCity")
+    public void updateCity(@NotNull @Valid CityDto cityDto) throws AppBaseException {
+        repeat(() -> cityEndpoint.updateCity(cityDto), cityEndpoint);
     }
 
     /**
@@ -77,8 +96,10 @@ public class CityController extends AbstractController {
      */
     @DELETE
     @RolesAllowed("deleteCity")
+    @EtagValidatorFilterBinding
     @Path("/{id}")
+    @Operation(operationId = "deleteCity", summary = "deleteCity")
     public void deleteCity(@PathParam("id") Long cityId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> cityEndpoint.deleteCity(cityId), cityEndpoint);
     }
 }

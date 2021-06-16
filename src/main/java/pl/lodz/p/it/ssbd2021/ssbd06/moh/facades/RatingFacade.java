@@ -1,14 +1,17 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.facades;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
+
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -43,7 +46,7 @@ public class RatingFacade extends AbstractFacade<Rating> {
         super.edit(entity);
     }
 
-    @PermitAll
+    @RolesAllowed("deleteHotelRating")
     @Override
     public void remove(Rating entity) throws AppBaseException {
         super.remove(entity);
@@ -55,6 +58,12 @@ public class RatingFacade extends AbstractFacade<Rating> {
         return super.find(id);
     }
 
+    /**
+     * Zwraca listę wszystkich ocen w systemie.
+     *
+     * @return lista ocen
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
     @PermitAll
     @Override
     public List<Rating> findAll() throws AppBaseException {
@@ -71,5 +80,24 @@ public class RatingFacade extends AbstractFacade<Rating> {
     @Override
     public int count() throws AppBaseException {
         return super.count();
+    }
+
+    /**
+     * Zwraca wszystkie oceny dla hotelu o danym id.
+     * @param hotelId id hotelu
+     * @return Lista ocen
+     * @throws AppBaseException gdy nie udało się przeprowadzić operacji pobrania ocen
+     */
+    @RolesAllowed({"deleteHotelRating", "addHotelRating"})
+    public List<Rating> getAllRatingsForHotelId(Long hotelId) throws AppBaseException {
+        try {
+            TypedQuery<Rating> ratingTypedQuery = em.createNamedQuery("Rating.getAllRatingsForHotelId", Rating.class);
+            ratingTypedQuery.setParameter("id", hotelId);
+            return ratingTypedQuery.getResultList();
+        } catch (NoResultException e) {
+            throw NotFoundException.ratingNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
     }
 }

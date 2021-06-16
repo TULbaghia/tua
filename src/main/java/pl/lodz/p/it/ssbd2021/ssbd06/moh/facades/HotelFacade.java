@@ -64,7 +64,14 @@ public class HotelFacade extends AbstractFacade<Hotel> {
     @PermitAll
     @Override
     public void create(Hotel entity) throws AppBaseException {
-        super.create(entity);
+        try {
+            super.create(entity);
+        } catch (ConstraintViolationException e) {
+            if (e.getCause().getMessage().contains(Hotel.HOTEL_NAME_CONSTRAINT)) {
+                throw HotelException.hotelNameExists(e.getCause());
+            }
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
     @PermitAll

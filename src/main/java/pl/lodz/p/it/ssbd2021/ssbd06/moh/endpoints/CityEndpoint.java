@@ -8,8 +8,12 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.ICityMapper;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.ICityMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewCityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.CityEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.CityManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
@@ -23,7 +27,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +43,7 @@ public class CityEndpoint extends AbstractEndpoint implements CityEndpointLocal 
 
     @Override
     public CityDto get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return Mappers.getMapper(ICityMapper.class).toCityDto(cityManager.get(id));
     }
 
     @Override
@@ -53,19 +56,36 @@ public class CityEndpoint extends AbstractEndpoint implements CityEndpointLocal 
 
     @Override
     @RolesAllowed("addCity")
-    public void addCity(CityDto cityDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addCity(NewCityDto newCityDto) throws AppBaseException {
+        ICityMapper cityMapper = Mappers.getMapper(ICityMapper.class);
+        cityManager.addCity(cityMapper.toCity(newCityDto));
     }
 
     @Override
     @RolesAllowed("updateCity")
     public void updateCity(CityDto cityDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        City city = cityManager.get(cityDto.getId());
+
+        CityDto cityIntegrity = Mappers.getMapper(ICityMapper.class).toCityDto(city);
+        if (!verifyIntegrity(cityIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        Mappers.getMapper(ICityMapper.class).toCity(cityDto, city);
+
+        cityManager.updateCity(city);
     }
 
     @Override
     @RolesAllowed("deleteCity")
     public void deleteCity(Long cityId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        City city = cityManager.get(cityId);
+
+        CityDto cityIntegrity = Mappers.getMapper(ICityMapper.class).toCityDto(city);
+        if (!verifyIntegrity(cityIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        cityManager.deleteCity(cityId);
     }
 }

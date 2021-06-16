@@ -2,9 +2,11 @@ package pl.lodz.p.it.ssbd2021.ssbd06.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Mapping;
+
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
 
 /**
@@ -13,10 +15,11 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
 @Mapper
 public interface IHotelMapper {
     /**
-     * Dokonuje mapowania z obiektu Hotel na obiekt UpdateHotelDto
+     * Dokonuje mapowania z obiektu Hotel na obiekt HotelDto
      * @param hotel obiekt klasy Hotel
      * @return zmapowany obiekt klasy UpdateHotelDto
      */
+    @Mapping(target = "cityName", expression = "java(hotel.getCity().getName())")
     HotelDto toHotelDto(Hotel hotel);
 
     /**

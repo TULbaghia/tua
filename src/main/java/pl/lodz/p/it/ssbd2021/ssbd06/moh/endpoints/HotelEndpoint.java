@@ -13,8 +13,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.HotelEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.CityManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.HotelManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.ManagerDataDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.AccountManager;
-import pl.lodz.p.it.ssbd2021.ssbd06.mok.managers.RoleManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.AccountManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.RoleManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -44,16 +44,16 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     private HotelManager hotelManager;
 
     @Inject
-    private AccountManager accountManager;
-
-    @Inject
-    private RoleManager roleManager;
-
-    @Inject
     private CityManager cityManager;
 
     @Inject
     private SecurityContext securityContext;
+
+    @Inject
+    private AccountManager accountManager;
+
+    @Inject
+    private RoleManager roleManager;
 
     @Override
     @PermitAll
@@ -100,7 +100,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @Override
     @RolesAllowed("addHotel")
     public void addHotel(NewHotelDto hotelDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        hotelManager.addHotel(hotelDto);
     }
 
     @Override
@@ -130,13 +130,23 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
         if (!verifyIntegrity(managerDataDto)) {
             throw AppOptimisticLockException.optimisticLockException();
         }
-        hotelManager.addManagerToHotel(hotelId, managerLogin);
+        hotelManager.addManagerToHotel(hotelId, managerData);
     }
 
     @Override
     @RolesAllowed("deleteManagerFromHotel")
     public void deleteManagerFromHotel(String managerLogin) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        var managerData = hotelManager.findHotelByManagerLogin(managerLogin).getManagerDataList()
+                .stream()
+                .filter(x -> x.getAccount().getLogin().equals(managerLogin))
+                .findAny()
+                .get();
+        ManagerDataDto managerDataDto = Mappers.getMapper(IRoleMapper.class).toManagerDataDto(managerData);
+
+        if (!verifyIntegrity(managerDataDto)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+        hotelManager.deleteManagerFromHotel(managerLogin);
     }
 
     @Override
@@ -151,7 +161,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
         }
 
         Mappers.getMapper(IHotelMapper.class).toHotel(hotelDto, hotel);
-        City city = cityManager.findByName(hotelDto.getCityName());
+        City city = cityManager.get(hotelDto.getCityId());
         hotel.setCity(city);
         hotelManager.updateHotel(hotel);
     }
@@ -167,7 +177,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
         }
 
         Mappers.getMapper(IHotelMapper.class).toHotel(hotelDto, hotel);
-        City city = cityManager.findByName(hotelDto.getCityName());
+        City city = cityManager.get(hotelDto.getCityId());
         hotel.setCity(city);
         hotelManager.updateHotel(hotel);
     }

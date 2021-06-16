@@ -1,0 +1,15 @@
+/* BODY DIALOG GRID RECALCULATION FIX */
+body.modal-open {
+  padding: 0 !important;
+  overflow-y: auto !important;
+}
+
+.defloatify {
+  &.floating-box,
+  .floating-box {
+    position: unset !important;
+    left: unset !important;
+    right: unset !important;
+    transform: unset !important;
+  }
+}

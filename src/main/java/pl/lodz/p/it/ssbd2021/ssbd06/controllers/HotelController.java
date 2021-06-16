@@ -88,8 +88,8 @@ public class HotelController extends AbstractController {
      */
     @POST
     @RolesAllowed("addHotel")
-    public void addHotel(NewHotelDto hotelDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addHotel(@Valid NewHotelDto hotelDto) throws AppBaseException {
+        repeat(() -> hotelEndpoint.addHotel(hotelDto), hotelEndpoint);
     }
 
     /**
@@ -122,14 +122,15 @@ public class HotelController extends AbstractController {
     /**
      * Usuwa managera (po loginie) z hotelu
      *
-     * @param managerLogin login managera którego przypisać do hotelu
+     * @param managerLogin login managera do usunięcia z hotelu
      * @throws AppBaseException podczas błędu związanego z usunięciem managera z hotelu
      */
     @PATCH
     @RolesAllowed("deleteManagerFromHotel")
+    @EtagValidatorFilterBinding
     @Path("/remove/{managerLogin}")
     public void deleteManagerFromHotel(@PathParam("managerLogin") String managerLogin) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> hotelEndpoint.deleteManagerFromHotel(managerLogin), hotelEndpoint);
     }
 
     /**

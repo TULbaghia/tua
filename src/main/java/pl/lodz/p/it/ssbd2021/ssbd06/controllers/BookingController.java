@@ -5,10 +5,14 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BookingEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -21,6 +25,9 @@ public class BookingController extends AbstractController {
     @Inject
     private BookingEndpointLocal bookingEndpoint;
 
+    @Inject
+    private MessageSigner messageSigner;
+
     /**
      * Zwraca wskazaną rezerwację:
      * - Dla managera dozwolone rezerwacja w jego hotelu,
@@ -31,9 +38,14 @@ public class BookingController extends AbstractController {
      * @return dto rezerwacji
      */
     @GET
+    @RolesAllowed("getReservation")
     @Path("/{id}")
-    public BookingDto get(@PathParam("id") Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public Response get(@PathParam("id") Long id) throws AppBaseException {
+        BookingDto bookingDto = repeat(() -> bookingEndpoint.get(id), bookingEndpoint);
+        return Response.ok()
+                .entity(bookingDto)
+                .header("ETag", messageSigner.sign(bookingDto))
+                .build();
     }
 
     /**
@@ -84,9 +96,10 @@ public class BookingController extends AbstractController {
      */
     @PATCH
     @RolesAllowed("cancelReservation")
+    @EtagValidatorFilterBinding
     @Path("/cancel/{id}")
     public void cancelBooking(@PathParam("id") Long bookingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> bookingEndpoint.cancelBooking(bookingId), bookingEndpoint);
     }
 
     /**
@@ -141,6 +154,6 @@ public class BookingController extends AbstractController {
     @RolesAllowed("getAllArchiveReservations")
     @Path("/ended")
     public List<BookingDto> showEndedBooking() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return repeat(() -> bookingEndpoint.showEndedBooking(), bookingEndpoint);
     }
 }

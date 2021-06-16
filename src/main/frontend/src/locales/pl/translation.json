@@ -376,5 +376,10 @@
   "BIRD": "Ptak",
   "RABBIT": "Królik",
   "LIZARD": "Jaszczurka",
-  "TURTLE": "Żółw"
+  "TURTLE": "Żółw",
+  "deleteManager": "Usuń managera",
+  "unassignManager.success": "Manager został usunięty pomyślnie",
+  "unassignManager": "Usuń managera z hotelu",
+  "emptyListManagerUnassign": "Brak przypisanych managerów"
+
 }

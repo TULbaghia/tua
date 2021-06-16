@@ -373,5 +373,9 @@
   "BIRD": "Bird",
   "RABBIT": "Rabbit",
   "LIZARD": "Lizard",
-  "TURTLE": "Turtle"
+  "TURTLE": "Turtle",
+  "deleteManager": "Unassign manager",
+  "unassignManager.success": "Manager unassigned successfully",
+  "unassignManager": "Unassign manager",
+  "emptyListManagerUnassign": "There is no managers assigned to the hotel"
 }

@@ -344,13 +344,12 @@
   "addBox.navbar.title" : "Dodaj nowy box",
 
   "addBox.title": "Dodawanie boxu",
-  "addBox.price" : "Cena",
-  "addBox.description" : "Opis",
-  "addBox.animalType" : "Zwierzę",
+  "description" : "Opis",
+  "animalType" : "Zwierzę",
   "addBox.success": "Box został pomyślnie dodany",
 
-  "addBox.error.price_required": "Podanie ceny jest wymagane",
-  "addBox.error.description_required": "Opis jest wymagany",
+  "box.error.price_required": "Podanie ceny jest wymagane",
+  "box.error.description_required": "Opis jest wymagany",
 
   "DOG": "Pies",
   "CAT":  "Kot",
@@ -358,5 +357,11 @@
   "BIRD": "Ptak",
   "RABBIT": "Królik",
   "LIZARD": "Jaszczurka",
-  "TURTLE": "Żółw"
+  "TURTLE": "Żółw",
+
+  "modifyBox.title": "Modyfikacja boxa",
+  "modifyBox.success": "Box został pomyślnie zmodyfikowany",
+  "modifyBox.modify.info": "Modyfikujesz: ",
+
+  "exception.box.access_denied": "Brak uprawnień do modyfikacji zasobu"
 }

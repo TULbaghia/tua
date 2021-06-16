@@ -340,13 +340,12 @@
   "addBox.navbar.title" : "Add new box",
 
   "addBox.title": "Box addition",
-  "addBox.price" : "Price",
-  "addBox.description" : "Description",
-  "addBox.animalType" : "Animal type",
+  "description" : "Description",
+  "animalType" : "Animal type",
   "addBox.success": "Box has been successfully added",
 
-  "addBox.error.price_required": "Box price is required",
-  "addBox.error.description_required": "Box description is required",
+  "box.error.price_required": "Box price is required",
+  "box.error.description_required": "Box description is required",
 
   "DOG": "Dog",
   "CAT":  "Cat",
@@ -354,5 +353,11 @@
   "BIRD": "Bird",
   "RABBIT": "Rabbit",
   "LIZARD": "Lizard",
-  "TURTLE": "Turtle"
+  "TURTLE": "Turtle",
+
+  "modifyBox.title": "Box modification",
+  "modifyBox.success": "Box has been successfully modified",
+  "modifyBox.modify.info": "You are editing: ",
+
+  "exception.box.access_denied": "No permission to edit this resource"
 }

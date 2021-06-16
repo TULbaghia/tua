@@ -14,25 +14,25 @@
 /**
  * 
  * @export
- * @interface AccountPersonalDetailsDto
+ * @interface UpdateBoxDto
  */
-export interface AccountPersonalDetailsDto {
+export interface UpdateBoxDto {
+    /**
+     * 
+     * @type {any}
+     * @memberof UpdateBoxDto
+     */
+    price?: any;
     /**
      * 
      * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @memberof UpdateBoxDto
      */
-    firstname?: any;
+    description?: any;
     /**
      * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @type {number}
+     * @memberof UpdateBoxDto
      */
-    contactNumber?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
-     */
-    lastname?: any;
+    id?: any;
 }

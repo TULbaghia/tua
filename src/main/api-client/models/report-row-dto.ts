@@ -14,43 +14,49 @@
 /**
  * 
  * @export
- * @interface BoxDto
+ * @interface ReportRowDto
  */
-export interface BoxDto {
+export interface ReportRowDto {
     /**
      * 
      * @type {any}
-     * @memberof BoxDto
+     * @memberof ReportRowDto
      */
     price?: any;
     /**
      * 
-     * @type {string}
-     * @memberof BoxDto
+     * @type {number}
+     * @memberof ReportRowDto
      */
-    animalType?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof BoxDto
-     */
-    description?: any;
+    dateTo?: any;
     /**
      * 
      * @type {number}
-     * @memberof BoxDto
+     * @memberof ReportRowDto
+     */
+    rating?: any;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportRowDto
      */
     id?: any;
     /**
      * 
      * @type {number}
-     * @memberof BoxDto
+     * @memberof ReportRowDto
      */
-    hotelId?: any;
+    dateFrom?: any;
     /**
      * 
-     * @type {number}
-     * @memberof BoxDto
+     * @type {string}
+     * @memberof ReportRowDto
      */
-    version?: any;
+    status?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportRowDto
+     */
+    ownerLogin?: any;
 }

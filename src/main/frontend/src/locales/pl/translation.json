@@ -337,7 +337,7 @@
   "exception.city.name_invalid": "Nazwa miasta jest już w użyciu",
 
   "addBox.navbar.title" : "Dodaj nowy box",
-  "boxList.navbar.title" : "Box list",
+  "boxList.navbar.title" : "Lista boxów",
 
   "addBox.title": "Dodawanie boxu",
   "addBox.price" : "Cena",

@@ -7,7 +7,7 @@ import {withNamespaces} from "react-i18next";
 function BoxList(props) {
 
     const [boxes, setBoxes] = useState([])
-    const {token} = useLocale();
+    const {token, username} = useLocale();
 
     useEffect(() => {
         fetchData();
@@ -21,7 +21,7 @@ function BoxList(props) {
             },
         };
 
-        fetch("/resources/boxes", requestOptions)
+        fetch("/resources/boxes/all/" + username, requestOptions)
             .then((res) => res.json())
             .then(
                 (boxes) => {
@@ -33,42 +33,33 @@ function BoxList(props) {
             );
     }
 
+    const handleModify = (userId) => {
+        props.history.push({
+            pathname: "/",
+            state: {idOfBox: userId},
+        });
+    };
+
     const handleDelete = (boxId) => {
         setBoxes(boxes.filter((b) => b.id !== boxId))
     };
 
-    const {onModify} = props;
-
-    return (
-        <div className={"my-5 row"}>
-            {boxes.map((box) => (
-                <div style={{display: "flex"}} className={"col-md-3 my-2"}>
-                    <BoxItem
-                        key={box.id}
-                        onDelete={handleDelete}
-                        onModify={onModify}
-                        box={box}
-                    />
-                </div>
-            ))}
-        </div>
-    );
-}
-
-function Boxes(props) {
-
-    const handleModify = (userId) => {
-        props.history.push({
-            pathname: "/",
-            state: {idOfUser: userId},
-        });
-    };
-
     return (
         <div id={"box-list"} className={"container"}>
-            <BoxList onModify={handleModify}/>
+            <div className={"my-5 row"}>
+                {boxes.map((box) => (
+                    <div style={{display: "flex"}} className={"col-md-3 my-2"}>
+                        <BoxItem
+                            key={box.id}
+                            onDelete={handleDelete}
+                            onModify={handleModify}
+                            box={box}
+                        />
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
 
-export default withNamespaces()(Boxes);
+export default withNamespaces()(BoxList);

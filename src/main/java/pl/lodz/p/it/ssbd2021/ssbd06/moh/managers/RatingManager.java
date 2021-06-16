@@ -1,21 +1,12 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.*;
-import org.mapstruct.factory.Mappers;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.RatingException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRatingMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
@@ -63,8 +54,8 @@ public class RatingManager {
      * Zwraca ocenę hotelu
      *
      * @param id identyfikator oceny
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return obiekt oceny hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PermitAll
     public Rating get(Long id) throws AppBaseException {
@@ -73,6 +64,7 @@ public class RatingManager {
 
     /**
      * Zwraca ocenę o podanym id
+     *
      * @param ratingId id oceny
      * @return ocena
      * @throws AppBaseException podczas błędu związanego z bazą danych
@@ -117,10 +109,10 @@ public class RatingManager {
     @RolesAllowed("addHotelRating")
     public void addRating(NewRatingDto ratingDto) throws AppBaseException {
         Booking ratedBooking = bookingFacade.find(ratingDto.getBookingId());
-        if(ratedBooking == null) {
+        if (ratedBooking == null) {
             throw RatingException.bookingNotExists();
         }
-        if(ratedBooking.getStatus() != BookingStatus.FINISHED) {
+        if (ratedBooking.getStatus() != BookingStatus.FINISHED) {
             throw RatingException.bookingNotFinished();
         }
         if (ratedBooking.getRating() != null) {
@@ -133,7 +125,7 @@ public class RatingManager {
         }
 
         Rating rating = new Rating(ratingDto.getRate(), false);
-        if(ratingDto.getComment() != null) {
+        if (ratingDto.getComment() != null) {
             rating.setComment(ratingDto.getComment());
         }
 
@@ -159,7 +151,7 @@ public class RatingManager {
     @RolesAllowed({"deleteHotelRating", "addHotelRating"})
     private BigDecimal calculateAverageRating(Long hotelId) throws AppBaseException {
         List<Rating> ratings = ratingFacade.getAllRatingsForHotelId(hotelId);
-        if(ratings.isEmpty()) {
+        if (ratings.isEmpty()) {
             return null;
         }
         return BigDecimal.valueOf(ratings.stream()
@@ -171,12 +163,18 @@ public class RatingManager {
     /**
      * Modyfikuje ocenę
      *
-     * @param ratingDto dto z danymi oceny
+     * @param updateRatingDto dto z danymi oceny
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("updateHotelRating")
-    public void updateRating(RatingDto ratingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void updateRating(UpdateRatingDto updateRatingDto) throws AppBaseException {
+        Rating rating = getRating(updateRatingDto.getId());
+        if (!rating.isHidden()) {
+            rating.setComment(updateRatingDto.getComment());
+        }
+        rating.setRate(updateRatingDto.getRate());
+        rating.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
+        ratingFacade.edit(rating);
     }
 
     /**
@@ -212,7 +210,7 @@ public class RatingManager {
     /**
      * Zmień widoczność oceny
      *
-     * @param ratingId         identyfikator oceny hotelu
+     * @param ratingId identyfikator oceny hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("hideHotelRating")

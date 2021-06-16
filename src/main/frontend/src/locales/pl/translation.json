@@ -376,5 +376,11 @@
   "BIRD": "Ptak",
   "RABBIT": "Królik",
   "LIZARD": "Jaszczurka",
-  "TURTLE": "Żółw"
+  "TURTLE": "Żółw",
+
+  "choose.animal.type": "Wybierz typ zwierzęcia",
+  "filter.button": "Filtruj",
+  "rating.minimal": "Minimalna ocena",
+  "rating.maximal": "Maksymalna ocena",
+  "text.animal.type": "Rodzaj zwierzęcia"
 }

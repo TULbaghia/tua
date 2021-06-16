@@ -373,5 +373,11 @@
   "BIRD": "Bird",
   "RABBIT": "Rabbit",
   "LIZARD": "Lizard",
-  "TURTLE": "Turtle"
+  "TURTLE": "Turtle",
+
+  "choose.animal.type": "Choose animal type",
+  "filter.button": "Filter",
+  "rating.minimal": "Minimal rating",
+  "rating.maximal": "Maximal rating",
+  "text.animal.type": "Animal type"
 }

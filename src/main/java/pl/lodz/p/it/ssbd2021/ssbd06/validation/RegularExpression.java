@@ -20,4 +20,5 @@ public class RegularExpression {
 
     public static final String CITY_NAME = "^[A-ZĆŁÓŚŹŻ\\s]{1}[A-Za-ząęćńóśłźż \\-]+$";
     public static final String CITY_DESCRIPTION = "^[A-Za-z0-9ĄĘĆŃÓŚŁŹŻąęćńóśłźż.,:\\s\\-]+$";
+    public static final String BOX_DESCRIPTION = "^[A-Za-z0-9ĄĘĆŃÓŚŁŹŻąęćńóśłźż.,:\\s\\-]+$";
 }

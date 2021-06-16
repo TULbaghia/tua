@@ -70,6 +70,13 @@ public class CityEndpoint extends AbstractEndpoint implements CityEndpointLocal 
     @Override
     @RolesAllowed("deleteCity")
     public void deleteCity(Long cityId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        City city = cityManager.get(cityId);
+
+        CityDto cityIntegrity = Mappers.getMapper(ICityMapper.class).toCityDto(city);
+        if (!verifyIntegrity(cityIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        cityManager.deleteCity(cityId);
     }
 }

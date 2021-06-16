@@ -39,6 +39,15 @@ public interface RatingEndpointLocal extends CallingClass {
     List<RatingDto> getAll(Long hotelId) throws AppBaseException;
 
     /**
+     * Zwraca ocenę o podanym id
+     * @param ratingId id oceny
+     * @return ocena
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @RolesAllowed("getHotelRating")
+    RatingDto getRating(Long ratingId) throws AppBaseException;
+
+    /**
      * Dodaje ocene
      *
      * @param ratingDto dto z danymi oceny
@@ -68,10 +77,9 @@ public interface RatingEndpointLocal extends CallingClass {
     /**
      * Zmień widoczność oceny
      *
-     * @param ratingId dto z danymi hotelu
-     * @param ratingVisibility poziom widoczności
+     * @param ratingId identyfikator oceny hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("hideHotelRating")
-    void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException;
+    void changeVisibility(Long ratingId) throws AppBaseException;
 }

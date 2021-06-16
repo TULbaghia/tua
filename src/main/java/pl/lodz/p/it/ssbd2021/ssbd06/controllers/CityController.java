@@ -38,6 +38,7 @@ public class CityController extends AbstractController {
      */
     @GET
     @Path("/{id}")
+    @Operation(operationId = "getCity", summary = "getCity")
     public Response get(@PathParam("id") Long id) throws AppBaseException {
         CityDto cityDto = cityEndpoint.get(id);
         return Response.ok()
@@ -67,6 +68,7 @@ public class CityController extends AbstractController {
      */
     @POST
     @RolesAllowed("addCity")
+    @Operation(operationId = "addCity", summary = "addCity")
     public void addCity(@Valid NewCityDto newCityDto) throws AppBaseException {
         repeat(() -> cityEndpoint.addCity(newCityDto), cityEndpoint);
     }
@@ -81,6 +83,7 @@ public class CityController extends AbstractController {
     @RolesAllowed("updateCity")
     @EtagValidatorFilterBinding
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "updateCity", summary = "updateCity")
     public void updateCity(@NotNull @Valid CityDto cityDto) throws AppBaseException {
         repeat(() -> cityEndpoint.updateCity(cityDto), cityEndpoint);
     }
@@ -93,8 +96,10 @@ public class CityController extends AbstractController {
      */
     @DELETE
     @RolesAllowed("deleteCity")
+    @EtagValidatorFilterBinding
     @Path("/{id}")
+    @Operation(operationId = "deleteCity", summary = "deleteCity")
     public void deleteCity(@PathParam("id") Long cityId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> cityEndpoint.deleteCity(cityId), cityEndpoint);
     }
 }

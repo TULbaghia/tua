@@ -67,21 +67,21 @@ INSERT INTO client_data (id)
 VALUES (-8);
 
 -- Inicjalizacja boxów
-INSERT INTO box (id, creation_date, modification_date, version, animal_type, price_per_day, created_by, modified_by, hotel_id)
-VALUES (-1, now(), null, 1, 0, 55.55, -2, null, -1),
-       (-2, now(), null, 1, 0, 55.55, -2, null, -1),
-       (-3, now(), null, 1, 1, 39.99, -2, null, -1),
-       (-4, now(), null, 1, 2, 43.90, -2, null, -1),
-       (-5, now(), null, 1, 3, 29.99, -3, null, -2),
-       (-6, now(), null, 1, 4, 35.22, -3, null, -2),
-       (-7, now(), null, 1, 5, 49.90, -3, null, -2),
-       (-8, now(), null, 1, 0, 39.90, -5, null, -3),
-       (-9, now(), null, 1, 0, 29.99, -5, null, -3),
-       (-10, now(), null, 1, 0, 34.90, -5, null, -3),
-       (-11, now(), null, 1, 1, 43.44, -6, null, -4),
-       (-12, now(), null, 1, 3, 32.14, -6, null, -4),
-       (-13, now(), null, 1, 4, 48.49, -6, null, -4),
-       (-14, now(), null, 1, 6, 29.44, -6, null, -4);
+INSERT INTO box (id, creation_date, modification_date, version, animal_type, price_per_day, description, created_by, modified_by, hotel_id)
+VALUES (-1, now(), null, 1, 0, 55.55, 'Duża klatka dla psa', -2, null, -1),
+       (-2, now(), null, 1, 0, 55.55, 'Duża klatka dla psa', -2, null, -1),
+       (-3, now(), null, 1, 1, 39.99, 'Standardowa klatka dla kota', -2, null, -1),
+       (-4, now(), null, 1, 2, 43.90, 'Mała klatka dla gryzonia', -2, null, -1),
+       (-5, now(), null, 1, 3, 29.99, 'Mała klatka dla ptaka', -3, null, -2),
+       (-6, now(), null, 1, 4, 35.22, 'Duża klatka dla królika', -3, null, -2),
+       (-7, now(), null, 1, 5, 49.90, 'Akwarium dla jaszczurki', -3, null, -2),
+       (-8, now(), null, 1, 0, 39.90, 'Mała klatka dla psa', -5, null, -3),
+       (-9, now(), null, 1, 0, 29.99, 'Mała klatka dla psa', -5, null, -3),
+       (-10, now(), null, 1, 0, 34.90, 'Mała klatka dla psa', -5, null, -3),
+       (-11, now(), null, 1, 1, 43.44, 'Mała klatka dla kota', -6, null, -4),
+       (-12, now(), null, 1, 3, 32.14, 'Standardowa klatka dla ptaka', -6, null, -4),
+       (-13, now(), null, 1, 4, 48.49, 'Duża klatka dla królika', -6, null, -4),
+       (-14, now(), null, 1, 6, 29.44, 'Akwarium dla żółwia', -6, null, -4);
 
 -- Inicjalizacja rezerwacji
 INSERT INTO booking (id, creation_date, modification_date, version, date_from, date_to, price, status, created_by, modified_by, account_id)

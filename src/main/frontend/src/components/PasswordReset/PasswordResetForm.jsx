@@ -1,7 +1,7 @@
 import React from "react";
 import {useHistory} from "react-router";
 import {withNamespaces} from "react-i18next";
-import {Configuration, DefaultApi} from "api-client";
+import {Configuration, DefaultApi} from "ssbd06-api";
 import {Link, useParams} from "react-router-dom";
 import {Form, Formik} from 'formik';
 import FieldComponent from "./FieldComponent";

@@ -14,6 +14,9 @@ import {
 import {useHistory} from "react-router";
 import {ResponseErrorHandler} from "./../Validation/ResponseErrorHandler";
 import { useThemeColor } from './../Utils/ThemeColor/ThemeColorProvider';
+import {rolesConstant} from "../../Constants";
+
+
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -27,7 +30,7 @@ const FilterComponent = ({filterText, onFilter, placeholderText}) => (
 function CitiesList(props) {
     const {t, i18n} = props
     const history = useHistory()
-    const {token, setToken} = useLocale();
+    const {token, setToken, currentRole, setCurrentRole} = useLocale();
     const [filterText, setFilterText] = React.useState('');
     const themeColor = useThemeColor()
     const [data, setData] = useState([
@@ -37,6 +40,8 @@ function CitiesList(props) {
     ]);
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
+    const dispatchCriticalDialog = useDialogPermanentChange();
+
     const filteredItems = data.filter(item => {
         return item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
     });
@@ -74,6 +79,41 @@ function CitiesList(props) {
         },
     ];
 
+    if(currentRole == rolesConstant.admin){
+        columns.push({
+            name: t('delete'),
+            selector: 'delete',
+            cell: row => {
+                return(
+                    <Button className="btn-sm" onClick={async event => {
+                        dispatchCriticalDialog({
+                            callbackOnSave: () => deleteCity(row.id),
+                        })
+                    }}>{t('delete')}</Button>
+                )
+            }
+        })
+    }
+
+    function deleteCity(id){
+        api.getCity(id, {method: 'GET',  headers: {Authorization: token}})
+        .then(res => {
+            console.log("etag")
+            console.log(res)
+            console.log(res.headers.etag)
+            api.deleteCity(id, null, {headers: {
+                Authorization: token,
+                "If-Match": res.headers.etag
+            }}).then(res => {
+                dispatchNotificationSuccess({message: i18n.t('city.delete.success')})
+            }).catch(err => {
+                dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            }).finally(() => fetchData());
+        }).catch(err => dispatchNotificationDanger({message: i18n.t(err.response.data.message)}))
+        .finally(() => fetchData());
+    }
+
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -92,7 +132,7 @@ function CitiesList(props) {
                     }
                 }
                 console.log(r)
-            });
+            })
         }
     }
 

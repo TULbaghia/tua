@@ -36,6 +36,8 @@ import ActiveBookings from "./components/ActiveBookings";
 import AddHotelForm from "./components/AddHotel/AddHotelForm";
 import ArchiveBookings from "./components/ArchiveBookings";
 import AddCityForm from "./components/AddCity/AddCityForm";
+import ModifyCityForm from "./components/ModifyCity/ModifyCityForm";
+import AddBoxForm from "./components/AddBox/AddBoxForm";
 import HotelInfo from './components/HotelInfo/HotelInfo';
 
 
@@ -172,6 +174,10 @@ function App() {
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/cities" component={CityList}
                                           meta={{auth: true, all: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/cities/editCity" component={ModifyCityForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/hotels/hotelInfo" component={HotelInfo} meta={{}}/>
+                            <GuardedRoute exact path="/boxes/add" component={AddBoxForm}
+                                          meta={{auth: true, manager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/hotelInfo" component={HotelInfo} meta={{}}/>
                             <Route component={NotFound}/>
                         </Switch>

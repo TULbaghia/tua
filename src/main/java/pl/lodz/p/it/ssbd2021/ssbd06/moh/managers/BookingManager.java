@@ -19,6 +19,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;

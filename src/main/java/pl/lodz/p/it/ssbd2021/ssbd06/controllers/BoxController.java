@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
@@ -33,6 +34,7 @@ public class BoxController extends AbstractController {
      */
     @GET
     @Path("/{id}")
+    @Operation(operationId = "getBox", summary = "getBox")
     public BoxDto get(@PathParam("id") Long id) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -46,6 +48,7 @@ public class BoxController extends AbstractController {
     @GET
     @RolesAllowed("getAllBoxes")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getAllBoxesList", summary = "getAllBoxesList")
     public List<BoxDto> getAll() throws AppBaseException {
         return repeat(() -> boxEndpoint.getAll(), boxEndpoint);
     }
@@ -61,6 +64,7 @@ public class BoxController extends AbstractController {
     @Path("/all/{id}")
     @RolesAllowed("getAllBoxes")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getAllBoxesInHotel", summary = "getAllBoxesInHotel")
     public List<BoxDto> getAllBoxesInHotel(@NotNull @PathParam("id") Long id) throws AppBaseException {
         return repeat(() -> boxEndpoint.getAllBoxesInHotel(id), boxEndpoint);
     }
@@ -77,6 +81,7 @@ public class BoxController extends AbstractController {
     @Path("/all/{id}/{animalType}")
     @RolesAllowed("getAllBoxes")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getSomeTypeBoxesFromHotel", summary = "getSomeTypeBoxesFromHotel")
     public List<BoxDto> getSomeTypeBoxesFromHotel(@NotNull @PathParam("id") Long id,
                                                   @NotNull @PathParam("animalType") AnimalType animalType)
             throws AppBaseException {
@@ -91,6 +96,7 @@ public class BoxController extends AbstractController {
      */
     @POST
     @RolesAllowed("addBox")
+    @Operation(operationId = "addBox", summary = "addBox")
     public void addBox(@NotNull @Valid NewBoxDto boxDto) throws AppBaseException {
         repeat(()->boxEndpoint.addBox(boxDto), boxEndpoint);
     }
@@ -103,6 +109,7 @@ public class BoxController extends AbstractController {
      */
     @PUT
     @RolesAllowed("updateBox")
+    @Operation(operationId = "updateBox", summary = "updateBox")
     public void updateBox(BoxDto boxDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -116,6 +123,7 @@ public class BoxController extends AbstractController {
     @DELETE
     @RolesAllowed("deleteBox")
     @Path("/{id}")
+    @Operation(operationId = "deleteBox", summary = "deleteBox")
     public void deleteBox(@PathParam("id") Long boxId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }

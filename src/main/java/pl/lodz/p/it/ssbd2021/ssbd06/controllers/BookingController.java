@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
@@ -38,6 +39,7 @@ public class BookingController extends AbstractController {
     @GET
     @RolesAllowed("getReservation")
     @Path("/{id}")
+    @Operation(operationId = "getBooking", summary = "getBooking")
     public Response get(@PathParam("id") Long id) throws AppBaseException {
         BookingDto bookingDto = repeat(() -> bookingEndpoint.get(id), bookingEndpoint);
         return Response.ok()
@@ -55,6 +57,7 @@ public class BookingController extends AbstractController {
      * @return lista dto rezerwacji
      */
     @GET
+    @Operation(operationId = "getAllBookingsList", summary = "getAllBookings")
     public List<BookingDto> getAll() throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -69,6 +72,7 @@ public class BookingController extends AbstractController {
      */
     @GET
     @Path("/filter/{option}")
+    @Operation(operationId = "filterAllBookingsList", summary = "filterAllBookings")
     public List<BookingDto> getAll(@PathParam("option") String option) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -80,6 +84,7 @@ public class BookingController extends AbstractController {
      */
     @POST
     @RolesAllowed("bookReservation")
+    @Operation(operationId = "addBooking", summary = "addBooking")
     public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -94,6 +99,7 @@ public class BookingController extends AbstractController {
     @RolesAllowed("cancelReservation")
     @EtagValidatorFilterBinding
     @Path("/cancel/{id}")
+    @Operation(operationId = "cancelBooking", summary = "cancelBooking")
     public void cancelBooking(@PathParam("id") Long bookingId) throws AppBaseException {
         repeat(() -> bookingEndpoint.cancelBooking(bookingId), bookingEndpoint);
     }
@@ -107,6 +113,7 @@ public class BookingController extends AbstractController {
     @PATCH
     @RolesAllowed("endReservation")
     @Path("/end/{id}")
+    @Operation(operationId = "endBooking", summary = "endBooking")
     public void endBooking(@PathParam("id") Long bookingId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -119,6 +126,7 @@ public class BookingController extends AbstractController {
      */
     @PATCH
     @Path("/start/{id}")
+    @Operation(operationId = "startBooking", summary = "startBooking")
     public void startBooking(@PathParam("id") Long bookingId) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -134,6 +142,7 @@ public class BookingController extends AbstractController {
     @GET
     @RolesAllowed("getAllActiveReservations")
     @Path("/active")
+    @Operation(operationId = "showActiveBooking", summary = "showActiveBooking")
     public List<BookingDto> showActiveBooking() throws AppBaseException {
         return repeat(() -> bookingEndpoint.showActiveBooking(), bookingEndpoint);
     }
@@ -149,6 +158,7 @@ public class BookingController extends AbstractController {
     @GET
     @RolesAllowed("getAllArchiveReservations")
     @Path("/ended")
+    @Operation(operationId = "showEndedBooking", summary = "showEndedBooking")
     public List<BookingDto> showEndedBooking() throws AppBaseException {
         return repeat(() -> bookingEndpoint.showEndedBooking(), bookingEndpoint);
     }

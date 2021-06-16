@@ -64,6 +64,7 @@ public class BoxController extends AbstractController {
     /**
      * Zwraca listę klatek przypisanych do hotelu
      *
+     * @param id identyfikator hotelu
      * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
      * @return lista dto klatek przypisanych do hotelu
      */
@@ -75,6 +76,14 @@ public class BoxController extends AbstractController {
         return repeat(() -> boxEndpoint.getAllBoxesInHotel(id), boxEndpoint);
     }
 
+    /**
+     * Zwraca listę klatek przypisanych do hotelu przeznaczonych dla konkretnego typu zwierzęcia
+     *
+     * @param id identyfikator hotelu
+     * @param animalType typ zwierzęcia
+     * @return lista dto klatek przypisanych do hotelu
+     * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
+     */
     @GET
     @Path("/all/{id}/{animalType}")
     @RolesAllowed("getAllBoxes")

@@ -331,9 +331,28 @@
   "addCity.error.name_required": "Name is required",
   "addCity.error.description_required": "Description required",
   "addCity.success": "City has been successfully added",
-  "exception.city.name_invalid": "City name is already in use",
 
   "exception.delete.city.has_hotels": "Cannot delete city with hotels assigned",
   "city.delete.success": "Successfully deleted city",
-  "exception.not_found_exception.city_not_found": "City does not exist or has been deleted"
+  "exception.not_found_exception.city_not_found": "City does not exist or has been deleted",
+  "exception.city.name_invalid": "City name is already in use",
+
+  "addBox.navbar.title" : "Add new box",
+
+  "addBox.title": "Box addition",
+  "addBox.price" : "Price",
+  "addBox.description" : "Description",
+  "addBox.animalType" : "Animal type",
+  "addBox.success": "Box has been successfully added",
+
+  "addBox.error.price_required": "Box price is required",
+  "addBox.error.description_required": "Box description is required",
+
+  "DOG": "Dog",
+  "CAT":  "Cat",
+  "RODENT": "Rodent",
+  "BIRD": "Bird",
+  "RABBIT": "Rabbit",
+  "LIZARD": "Lizard",
+  "TURTLE": "Turtle"
 }

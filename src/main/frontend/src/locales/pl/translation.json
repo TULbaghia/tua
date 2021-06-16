@@ -339,5 +339,24 @@
 
   "exception.delete.city.has_hotels": "Nie można usunąć miasta do którego są przypisane hotele",
   "city.delete.success": "Pomyślnie usunięto miasto",
-  "exception.not_found_exception.city_not_found": "Miasto nie istnieje lub zostało usunięte"
+  "exception.not_found_exception.city_not_found": "Miasto nie istnieje lub zostało usunięte",
+
+  "addBox.navbar.title" : "Dodaj nowy box",
+
+  "addBox.title": "Dodawanie boxu",
+  "addBox.price" : "Cena",
+  "addBox.description" : "Opis",
+  "addBox.animalType" : "Zwierzę",
+  "addBox.success": "Box został pomyślnie dodany",
+
+  "addBox.error.price_required": "Podanie ceny jest wymagane",
+  "addBox.error.description_required": "Opis jest wymagany",
+
+  "DOG": "Pies",
+  "CAT":  "Kot",
+  "RODENT": "Gryzoń",
+  "BIRD": "Ptak",
+  "RABBIT": "Królik",
+  "LIZARD": "Jaszczurka",
+  "TURTLE": "Żółw"
 }

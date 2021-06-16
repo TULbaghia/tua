@@ -29,6 +29,6 @@ public class BookingDto implements Signable {
 
     @Override
     public String getMessageToSign() {
-        return String.format("%d;%d", id, version);
+        return String.format("%d;%d;%d", id, accountId, version);
     }
 }

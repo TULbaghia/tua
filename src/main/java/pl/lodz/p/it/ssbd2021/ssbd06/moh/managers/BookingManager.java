@@ -12,6 +12,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -50,8 +51,9 @@ public class BookingManager {
      * @return rezerwacja
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @PermitAll
     public Booking get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return bookingFacade.find(id);
     }
 
     /**

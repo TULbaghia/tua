@@ -37,7 +37,12 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
 
     @Override
     public BookingDto get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        Booking booking = bookingManager.get(id);
+        if (getLogin().equals(booking.getAccount().getLogin()) || isManagerInHotelConnectedToBooking(booking)) {
+            return Mappers.getMapper(IBookingMapper.class).toBookingDto(booking);
+        } else {
+            throw BookingException.accessDenied();
+        }
     }
 
     @Override

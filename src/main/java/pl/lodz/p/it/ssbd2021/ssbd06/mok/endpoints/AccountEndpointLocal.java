@@ -237,6 +237,13 @@ public interface AccountEndpointLocal extends CallingClass {
     @RolesAllowed("getAllManagers")
     List<AccountManagerDto> getAllManagers() throws AppBaseException;
 
+    /**
+     * Zwraca listę managerów przypisanych do danego hotelu.
+     *
+     * @param hotelId id hotelu
+     * @return lista managerów przypisanych do danego hotelu
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
     @RolesAllowed("getManagerData")
     List<AccountManagerDto> getManagersAssignedToHotel(Long hotelId) throws AppBaseException;
 }

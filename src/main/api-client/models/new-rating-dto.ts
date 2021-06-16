@@ -14,25 +14,25 @@
 /**
  * 
  * @export
- * @interface AccountPersonalDetailsDto
+ * @interface NewRatingDto
  */
-export interface AccountPersonalDetailsDto {
+export interface NewRatingDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof NewRatingDto
+     */
+    rate?: any;
     /**
      * 
      * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @memberof NewRatingDto
      */
-    firstname?: any;
+    comment?: any;
     /**
      * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
+     * @type {number}
+     * @memberof NewRatingDto
      */
-    contactNumber?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof AccountPersonalDetailsDto
-     */
-    lastname?: any;
+    bookingId?: any;
 }

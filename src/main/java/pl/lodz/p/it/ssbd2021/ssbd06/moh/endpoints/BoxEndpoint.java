@@ -3,9 +3,11 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Role;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BoxException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IBoxMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
@@ -101,7 +103,14 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
         }
 
         Mappers.getMapper(IBoxMapper.class).toBox(boxDto, box);
-        boxManager.updateBox(box);
+        boolean canModify = box.getHotel().getManagerDataList()
+                .stream()
+                .filter(Role::isEnabled).anyMatch(x -> x.getAccount().getLogin().equals(getLogin()));
+        if(canModify) {
+            boxManager.updateBox(box);
+        } else {
+            throw BoxException.accessDenied();
+        }
     }
 
     @Override

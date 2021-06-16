@@ -1,7 +1,7 @@
 import i18n from "i18next";
 import {validatorFactory, ValidatorType} from "../../Validation/Validators";
 
-export const AddBoxValidationSchema = values => {
+export const ModifyBoxValidationSchema = values => {
     const errors = {};
     if (!values.price) {
         errors.price = i18n.t('box.error.price_required');

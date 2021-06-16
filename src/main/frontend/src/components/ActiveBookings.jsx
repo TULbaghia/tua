@@ -33,6 +33,7 @@ function ActiveBookings(props) {
     const {token, setToken, currentRole, setCurrentRole} = useLocale();
     const [filterText, setFilterText] = React.useState('');
     const themeColor = useThemeColor()
+    const [etag, setETag] = useState()
     const [data, setData] = useState([
         {
             id: 0,
@@ -51,19 +52,33 @@ function ActiveBookings(props) {
         return item.id && item.id.toString().includes(filterText);
     });
 
-    const handleEndReservationClick = (bookingId) => {
+    const handleEndReservationClick = (id) => {
         // axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/end/${bookingId}`, {}, {
         //     Headers: {
         //         "Authorization": `${localStorage.getItem("token")}`
         //     }
         // })
-        api.endBooking(bookingId, {headers: {Authorization: token}})
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/${id}`, {
+            headers: {
+                "Authorization": token
+            }
+        })
+            .then(res => {
+                setETag(res.headers.etag)
+            }, () => axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/end/${id}`, {},
+                {
+                    Headers: {
+                        "Authorization": token,
+                        "If-Match": etag
+                    }
+                })
             .then (() => {
                 dispatchNotificationSuccess({message: i18n.t('booking.ending.success')})
             })
             .catch(err => {
                 ResponseErrorHandler(err, dispatchNotificationDanger)
             })
+            )
     }
 
     const columns = [

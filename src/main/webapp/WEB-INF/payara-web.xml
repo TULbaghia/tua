@@ -186,6 +186,12 @@
     </security-role-mapping>
 
     <security-role-mapping>
+        <role-name>getHotelRating</role-name>
+        <group-name>ADMIN</group-name>
+        <group-name>CLIENT</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
         <role-name>bookReservation</role-name>
         <group-name>CLIENT</group-name>
     </security-role-mapping>

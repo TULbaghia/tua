@@ -43,7 +43,14 @@ public class RatingController extends AbstractController {
         return repeat(() -> ratingEndpoint.getAll(hotelId), ratingEndpoint);
     }
 
+    /**
+     * Zwraca ocenę o podanym id
+     * @param ratingId id oceny
+     * @return ocena
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
     @GET
+    @RolesAllowed("getHotelRating")
     @Path("/rating/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRating(@PathParam("id") Long ratingId) throws AppBaseException {

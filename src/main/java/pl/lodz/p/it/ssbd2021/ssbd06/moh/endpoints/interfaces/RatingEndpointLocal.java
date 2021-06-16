@@ -32,7 +32,7 @@ public interface RatingEndpointLocal extends CallingClass {
      * @return ocena
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @PermitAll
+    @RolesAllowed("getHotelRating")
     RatingDto getRating(Long ratingId) throws AppBaseException;
 
     /**

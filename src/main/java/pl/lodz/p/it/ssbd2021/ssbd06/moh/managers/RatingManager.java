@@ -57,7 +57,13 @@ public class RatingManager {
     @Inject
     private SecurityContext securityContext;
 
-    @PermitAll
+    /**
+     * Zwraca ocenę o podanym id
+     * @param ratingId id oceny
+     * @return ocena
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @RolesAllowed("getHotelRating")
     public Rating getRating(Long ratingId) throws AppBaseException {
         return ratingFacade.find(ratingId);
     }

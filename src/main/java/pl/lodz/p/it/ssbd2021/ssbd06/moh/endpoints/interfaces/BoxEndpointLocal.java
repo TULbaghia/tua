@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
@@ -32,6 +33,22 @@ public interface BoxEndpointLocal extends CallingClass {
     List<BoxDto> getAll() throws AppBaseException;
 
     /**
+     * @param hotelId identyfikator hotelu dla którego chcemy zwrócić listę klatek
+     * @return lista klatek
+     * @throws AppBaseException w momencie wystąpienia błędu
+     */
+    @RolesAllowed("getAllBoxes")
+    List<BoxDto> getAllBoxesInHotel(Long hotelId) throws AppBaseException;
+
+    /**
+     * @param hotelId identyfikator hotelu dla którego chcemy zwrócić listę klatek
+     * @return lista klatek
+     * @throws AppBaseException w momencie wystąpienia błędu
+     */
+    @RolesAllowed("getAllBoxes")
+    List<BoxDto> getSomeTypeBoxesFromHotel(Long hotelId, AnimalType animalType) throws AppBaseException;
+
+    /**
      * Dodaje klatkę
      *
      * @param boxDto dto z danymi nowej klatki
@@ -47,7 +64,7 @@ public interface BoxEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("updateBox")
-    void updateBox(BoxDto boxDto) throws AppBaseException;
+    void updateBox(UpdateBoxDto boxDto) throws AppBaseException;
 
     /**
      * Usuwa klatkę

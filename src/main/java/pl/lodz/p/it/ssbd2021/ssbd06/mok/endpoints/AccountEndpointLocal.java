@@ -236,4 +236,7 @@ public interface AccountEndpointLocal extends CallingClass {
      */
     @RolesAllowed("getAllManagers")
     List<AccountManagerDto> getAllManagers() throws AppBaseException;
+
+    @RolesAllowed("getManagerData")
+    List<AccountManagerDto> getManagersAssignedToHotel(Long hotelId) throws AppBaseException;
 }

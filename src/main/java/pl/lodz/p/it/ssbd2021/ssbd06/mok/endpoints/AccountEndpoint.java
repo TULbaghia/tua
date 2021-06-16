@@ -289,4 +289,24 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
         }
         return result;
     }
+
+    @Override
+    public List<AccountManagerDto> getManagersAssignedToHotel(Long hotelId) throws AppBaseException {
+        List<Account> accounts = accountManager.getAllAccounts();
+        List<AccountManagerDto> result = new ArrayList<>();
+        Set<Role> roleList;
+        for (Account account: accounts) {
+            roleList = account.getRoleList();
+            for (Role role: roleList) {
+                if (role.getAccessLevel() == AccessLevel.MANAGER && role.isEnabled()) {
+                    if (roleManager.find(role.getId()).getHotel() != null && roleManager.find(role.getId()).getHotel().getId().equals(hotelId)) {
+                        AccountManagerDto accountManagerDto = new AccountManagerDto(account.getLogin(), account.getFirstname(), account.getLastname());
+                        result.add(accountManagerDto);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
 }

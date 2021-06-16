@@ -14,37 +14,49 @@
 /**
  * 
  * @export
- * @interface NewHotelDto
+ * @interface ReportRowDto
  */
-export interface NewHotelDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof NewHotelDto
-     */
-    name?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof NewHotelDto
-     */
-    address?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof NewHotelDto
-     */
-    image?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof NewHotelDto
-     */
-    description?: any;
+export interface ReportRowDto {
     /**
      * 
      * @type {number}
-     * @memberof NewHotelDto
+     * @memberof ReportRowDto
      */
-    cityId?: any;
+    id?: any;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportRowDto
+     */
+    dateFrom?: any;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportRowDto
+     */
+    dateTo?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportRowDto
+     */
+    status?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ReportRowDto
+     */
+    price?: any;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportRowDto
+     */
+    rating?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportRowDto
+     */
+    ownerLogin?: any;
 }

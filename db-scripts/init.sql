@@ -87,7 +87,7 @@ VALUES (-1, now(), null, 1, 0, 55.55, 'Duża klatka dla psa', -2, null, -1),
 INSERT INTO booking (id, creation_date, modification_date, version, date_from, date_to, price, status, created_by, modified_by, account_id)
 VALUES (-1, now(), null ,1 , current_timestamp, current_timestamp + INTERVAL '1 week', 388.85, 2, -4, null, -4),
        (-2, now() - INTERVAL '1 week', null ,1 ,now() - INTERVAL '1 week', current_timestamp - INTERVAL '5 day', 191.08, 3, -4, null, -4),
-       (-3, now(), null, 1, current_timestamp + INTERVAL '1 week', current_timestamp + INTERVAL '2 week', 209.93, 1, -7, null, -7),
+       (-3, now(), null, 1, current_timestamp + INTERVAL '1 week', current_timestamp + INTERVAL '2 week', 209.93, 3, -7, null, -7),
        (-4, now() - INTERVAL '1 week', null, 1, now() - INTERVAL '1 week', current_timestamp - INTERVAL '3 day', 175.60, 3, -7, null, -7);
 
 -- Inicjalizacja booking line

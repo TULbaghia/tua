@@ -14,19 +14,19 @@
 /**
  * 
  * @export
- * @interface MicroBoxes
+ * @interface NewCityDto
  */
-export interface MicroBoxes {
+export interface NewCityDto {
     /**
      * 
-     * @type {number}
-     * @memberof MicroBoxes
+     * @type {string}
+     * @memberof NewCityDto
      */
-    id?: any;
+    name?: any;
     /**
      * 
-     * @type {number}
-     * @memberof MicroBoxes
+     * @type {string}
+     * @memberof NewCityDto
      */
-    number?: any;
+    description?: any;
 }

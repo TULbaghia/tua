@@ -14,19 +14,25 @@
 /**
  * 
  * @export
- * @interface MicroBoxes
+ * @interface NewRatingDto
  */
-export interface MicroBoxes {
+export interface NewRatingDto {
     /**
      * 
      * @type {number}
-     * @memberof MicroBoxes
+     * @memberof NewRatingDto
      */
-    id?: any;
+    rate?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof NewRatingDto
+     */
+    comment?: any;
     /**
      * 
      * @type {number}
-     * @memberof MicroBoxes
+     * @memberof NewRatingDto
      */
-    number?: any;
+    bookingId?: any;
 }

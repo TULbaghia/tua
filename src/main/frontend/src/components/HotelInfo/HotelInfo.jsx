@@ -15,6 +15,7 @@ import BreadCrumb from "../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {rolesConstant} from "../../Constants";
 import {useLocale} from "../LoginContext";
+import {v4} from "uuid";
 
 
 function Home(props) {
@@ -33,14 +34,14 @@ function Home(props) {
     });
 
     const [ratingData, setRatingData] = useState([
-        {
-            id: "",
-            comment: "",
-            createdBy: "",
-            hidden: "",
-            rate: "",
-            creationDate: ""
-        }
+        // {
+        //     id: "",
+        //     comment: "",
+        //     createdBy: "",
+        //     hidden: "",
+        //     rate: "",
+        //     creationDate: ""
+        // }
     ]);
 
     React.useEffect(() => {
@@ -82,7 +83,7 @@ function Home(props) {
     }
 
     const getRatingInfo = async () => {
-        return await api.getAllRatings(parsedQuery.id);
+        return await api.getAllRatingsList(parsedQuery.id);
     }
 
     const sortRatingData = () => {
@@ -158,7 +159,7 @@ function Home(props) {
                 <div className={"row"}>
                     <div className={"col-md-12 mt-3"}>
                         {ratingData.length > 0 && ratingData.map((item) => (
-                            <RatingComponent rate={item.rate} login={item.createdBy} content={item.comment}
+                            <RatingComponent key={v4()} triggerRefresh={handleRatingDataFetch} id={item.id} rate={item.rate} login={item.createdBy} content={item.comment}
                                              hidden={item.hidden} date={dateConverter(item.creationDate.slice(0, -5))}/>
                         ))}
                     </div>

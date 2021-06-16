@@ -348,5 +348,11 @@
   "validation.city.name.size": "City name length is incorrect",
   "validation.city.name.pattern": "City name does not meet pattern requirements",
   "modifyCity.error.name_required": "City name is required",
-  "modifyCity.error.description_required": "City description is required"
+  "modifyCity.error.description_required": "City description is required",
+  "location": "Location",
+  "description": "About",
+  "comments": "Comments",
+  "hiddenComment": "Due to inappropriate content the comment has been hidden",
+  "averageRating": "Average rating:",
+  "hotelInfo": "Hotel info"
 }

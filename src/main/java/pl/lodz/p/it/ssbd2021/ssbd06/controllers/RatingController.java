@@ -63,6 +63,24 @@ public class RatingController extends AbstractController {
     }
 
     /**
+     * Zwraca ocenę o podanym id
+     * @param ratingId id oceny
+     * @return ocena
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @GET
+    @RolesAllowed("getHotelRating")
+    @Path("/rating/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRating(@PathParam("id") Long ratingId) throws AppBaseException {
+        RatingDto ratingDto = repeat(() -> ratingEndpoint.getRating(ratingId), ratingEndpoint);
+        return Response.ok()
+                .entity(ratingDto)
+                .header("ETag", messageSigner.sign(ratingDto))
+                .build();
+    }
+
+    /**
      * Dodaje ocene
      *
      * @param newRatingDto dto z danymi oceny
@@ -105,13 +123,12 @@ public class RatingController extends AbstractController {
      * Zmień widoczność oceny
      *
      * @param ratingId id oceny hotelu
-     * @param ratingVisibility poziom widoczności
      * @throws AppBaseException podczas błędu związanego ze zmianą widoczności oceny
      */
     @PATCH
     @RolesAllowed("hideHotelRating")
-    @Path("/{ratingId}/{visibility}")
-    public void changeVisibility(@PathParam("ratingId") Long ratingId, @PathParam("visibility") RatingVisibility ratingVisibility) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @Path("/{ratingId}")
+    public void changeVisibility(@PathParam("ratingId") Long ratingId) throws AppBaseException {
+        repeat(() -> ratingEndpoint.changeVisibility(ratingId), ratingEndpoint);
     }
 }

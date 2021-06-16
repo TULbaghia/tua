@@ -1,10 +1,18 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.*;
+import org.mapstruct.factory.Mappers;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.RatingException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRatingMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
@@ -61,6 +69,17 @@ public class RatingManager {
     @PermitAll
     public Rating get(Long id) throws AppBaseException {
         return Optional.ofNullable(ratingFacade.find(id)).orElseThrow(NotFoundException::ratingNotFound);
+    }
+
+    /**
+     * Zwraca ocenę o podanym id
+     * @param ratingId id oceny
+     * @return ocena
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @RolesAllowed("getHotelRating")
+    public Rating getRating(Long ratingId) throws AppBaseException {
+        return ratingFacade.find(ratingId);
     }
 
     /**
@@ -193,12 +212,13 @@ public class RatingManager {
     /**
      * Zmień widoczność oceny
      *
-     * @param ratingId         dto z danymi hotelu
-     * @param ratingVisibility poziom widoczności
+     * @param ratingId         identyfikator oceny hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("hideHotelRating")
-    public void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void changeVisibility(Long ratingId) throws AppBaseException {
+        Rating rating = ratingFacade.find(ratingId);
+        rating.setHidden(!rating.isHidden());
+        ratingFacade.edit(rating);
     }
 }

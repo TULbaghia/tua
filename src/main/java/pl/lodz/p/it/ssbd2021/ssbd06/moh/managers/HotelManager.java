@@ -1,9 +1,15 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
+import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.*;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.HotelException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IHotelMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
@@ -18,9 +24,12 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.QueryParam;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -85,12 +94,37 @@ public class HotelManager {
     /**
      * Zwraca listę hoteli po przefiltrowaniu
      *
+     * @param fromRating dolny przedział oceny hotelu
+     * @param toRating górny przedział oceny hotelu
+     * @param animalTypes lista typów zwierząt
      * @return lista hoteli
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PermitAll
-    List<Hotel> getAllFilter(String... option) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<HotelDto> getAllFilter(BigDecimal fromRating,
+                             BigDecimal toRating,
+                             List<AnimalType> animalTypes) throws AppBaseException {
+            List<Hotel> hotels = getAll()
+                    .stream()
+                    .filter(hotel -> {
+                        try {
+                            return hotel.getRating() != null
+                                    && hotel.getRating().compareTo(fromRating) >= 0
+                                    && hotel.getRating().compareTo(toRating) <= 0
+                                    && checkHotelPetTypeListAllowed(animalTypes, hotel.getId());
+                        } catch (AppBaseException e) {
+                            e.printStackTrace();
+                            return false;
+                        }
+                    })
+                    .collect(Collectors.toList());
+        List<HotelDto> result = new ArrayList<>();
+        for (Hotel hotel: hotels) {
+            HotelDto hotelDto = Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
+            hotelDto.setCityName(hotel.getCity().getName());
+            result.add(hotelDto);
+        }
+        return result;
     }
 
     /**
@@ -246,5 +280,31 @@ public class HotelManager {
     @RolesAllowed("generateReport")
     public List<Booking> generateReport(Hotel hotel, Date from, Date to) throws AppBaseException {
         return hotelFacade.findAllHotelBookingsInTimeRange(hotel.getId(), from, to);
+    }
+
+    /**
+     * Sprawdza czy dany hotel oferuje boxy dla danego typu zwierzęcia.
+     * @param animalType rodzaj zwierzęcia
+     * @param hotelId identyfikator hotelu
+     * @return wartość logiczna
+     */
+    @PermitAll
+    private boolean checkHotelPetTypeAllowed(AnimalType animalType, Long hotelId) throws AppBaseException {
+        Optional<Box> result = hotelFacade.find(hotelId).getBoxList()
+                .stream()
+                .filter(box -> box.getAnimalType().equals(animalType))
+                .findAny();
+
+        return result.isPresent();
+    }
+
+    @PermitAll
+    private boolean checkHotelPetTypeListAllowed(List<AnimalType> animalTypes, Long hotelId) throws AppBaseException {
+        for (AnimalType type: animalTypes){
+            if (!checkHotelPetTypeAllowed(type, hotelId)){
+                return false;
+            }
+        }
+        return true;
     }
 }

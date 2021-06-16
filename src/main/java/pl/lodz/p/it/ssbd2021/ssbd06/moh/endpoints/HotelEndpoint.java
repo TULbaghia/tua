@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IBookingMapper;
@@ -25,6 +26,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.math.BigDecimal;
 import javax.security.enterprise.SecurityContext;
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,8 +95,24 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
 
     @Override
     @PermitAll
-    public List<HotelDto> getAllFilter(String... option) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public List<HotelDto> getAllFilter(BigDecimal fromRating,
+                                       BigDecimal toRating,
+                                       boolean dog,
+                                       boolean cat,
+                                       boolean rodent,
+                                       boolean bird,
+                                       boolean rabbit,
+                                       boolean lizard,
+                                       boolean turtle) throws AppBaseException {
+        List<AnimalType> animalTypes = new ArrayList<>();
+        if (dog) animalTypes.add(AnimalType.DOG);
+        if (cat) animalTypes.add(AnimalType.CAT);
+        if (rodent) animalTypes.add(AnimalType.RODENT);
+        if (bird) animalTypes.add(AnimalType.BIRD);
+        if (rabbit) animalTypes.add(AnimalType.RABBIT);
+        if (lizard) animalTypes.add(AnimalType.LIZARD);
+        if (turtle) animalTypes.add(AnimalType.TURTLE);
+        return hotelManager.getAllFilter(fromRating, toRating, animalTypes);
     }
 
     @Override

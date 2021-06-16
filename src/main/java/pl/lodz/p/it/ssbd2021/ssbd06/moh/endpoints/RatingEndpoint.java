@@ -45,6 +45,13 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
     }
 
     @Override
+    @PermitAll
+    public RatingDto getRating(Long ratingId) throws AppBaseException {
+        Rating rating = ratingManager.getRating(ratingId);
+        return Mappers.getMapper(IRatingMapper.class).toRatingDto(rating);
+    }
+
+    @Override
     @RolesAllowed("addHotelRating")
     public void addRating(RatingDto ratingDto) throws AppBaseException {
         throw new UnsupportedOperationException();

@@ -52,10 +52,12 @@ function LanguageSwitcher(props) {
 
     const handleClickPl = () => {
         setLanguage(i18n, "pl")
+        document.title = t('animalHotel')
     }
 
     const handleClickEn = () => {
         setLanguage(i18n, "en")
+        document.title = t('animalHotel')
     }
 
     const handleClickLoggedPl = () => {
@@ -262,9 +264,6 @@ function NavigationBar(props) {
                             </LinkContainer>
                             <LinkContainer to="/hotels">
                                 <Nav.Link>{t('hotels')}</Nav.Link>
-                            </LinkContainer>
-                            <LinkContainer to="/regulations">
-                                <Nav.Link>{t('regulations')}</Nav.Link>
                             </LinkContainer>
                         </Nav>
                         <Nav className="navbar-right">

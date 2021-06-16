@@ -51,6 +51,7 @@ function EditOtherAccountForm({t, i18n}) {
 
     React.useEffect(() => {
         handleDataFetch();
+        document.title = t('animalHotel');
     }, []);
 
     const handleDataFetch = (firstTime = true) => {

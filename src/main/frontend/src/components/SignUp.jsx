@@ -32,6 +32,7 @@ function SignUp(props) {
     const colorTheme = useThemeColor();
 
     React.useEffect(() => {
+        document.title = t('animalHotel');
         setReCaptchaKey(v4());
     }, [colorTheme, i18n.language])
 

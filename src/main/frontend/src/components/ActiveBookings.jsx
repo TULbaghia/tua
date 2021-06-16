@@ -156,6 +156,7 @@ function ActiveBookings(props) {
 
     useEffect(() => {
         fetchData();
+        document.title = t('animalHotel');
     }, []);
 
     const fetchData = () => {

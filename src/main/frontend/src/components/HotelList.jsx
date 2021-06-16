@@ -13,7 +13,7 @@ import {
 } from "./Utils/Notification/NotificationProvider";
 import {useHistory, useLocation} from "react-router";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
-import { useThemeColor } from './Utils/ThemeColor/ThemeColorProvider';
+import {useThemeColor} from './Utils/ThemeColor/ThemeColorProvider';
 import {rolesConstant} from "../Constants";
 import axios from "axios";
 import hotelPhoto from "../images/hotel.jpg";
@@ -276,6 +276,7 @@ function HotelList(props) {
     ];
 
     useEffect(() => {
+        document.title = t('animalHotel');
         fetchData();
     }, []);
 
@@ -296,7 +297,7 @@ function HotelList(props) {
     }
 
     const getAllHotels = async () => {
-        return await api.getAllHotels({headers: {Authorization: token}})
+        return await api.getAllHotelsList({headers: {Authorization: token}})
     }
 
     const subHeaderComponentMemo = React.useMemo(() => {

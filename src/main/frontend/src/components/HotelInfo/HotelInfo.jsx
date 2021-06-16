@@ -47,6 +47,7 @@ function Home(props) {
         handleHotelDataFetch();
         handleRatingDataFetch();
         sortRatingData();
+        document.title = t('animalHotel');
     }, []);
 
     const handleHotelDataFetch = () => {

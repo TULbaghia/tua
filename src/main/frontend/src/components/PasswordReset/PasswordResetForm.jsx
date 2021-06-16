@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useHistory} from "react-router";
 import {withNamespaces} from "react-i18next";
 import {Configuration, DefaultApi} from "ssbd06-api";
@@ -24,6 +24,9 @@ function PasswordResetForm({t, i18n}) {
     const conf = new Configuration()
     const api = new DefaultApi(conf)
 
+    useEffect(() => {
+        document.title = t('animalHotel');
+    }, [])
 
     const handleConfirmation = (values, setSubmitting) => (
         dispatchCriticalDialog({

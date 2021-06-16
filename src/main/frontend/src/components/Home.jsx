@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, useEffect} from "react";
 import dog from "../images/dog_gradient.jpg";
 import logo from "../images/logo.png"
 import hand from "../images/hand.jpg"
@@ -9,6 +9,10 @@ import "../css/Home.css"
 function Home(props) {
     const {t, i18n} = props
     const {isAuthenticated} = props;
+
+    useEffect(() => {
+        document.title = t('animalHotel')
+    }, [])
 
     // *** LANDING PAGE ***
     return (

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import BreadCrumb from "../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import i18n from "../../i18n";
@@ -29,6 +29,10 @@ function AddBoxForm() {
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchDialog = useDialogPermanentChange();
+
+    useEffect(() => {
+        document.title = i18n.t('animalHotel');
+    }, [])
 
     const handleAddBox = (values, setSubmitting) => {
         dispatchDialog({

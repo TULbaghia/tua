@@ -32,6 +32,7 @@ function AddHotelForm() {
     const dispatchDialog = useDialogPermanentChange();
 
     useEffect(() => {
+        document.title = i18n.t('animalHotel');
         if (token) {
             handleFetch();
         }

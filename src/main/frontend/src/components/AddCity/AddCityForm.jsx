@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useLocale} from "../LoginContext";
 import i18n from "../../i18n";
 import BreadCrumb from "../Partial/BreadCrumb";
@@ -24,6 +24,10 @@ function AddCityForm() {
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchDialog = useDialogPermanentChange();
+
+    useEffect(() => {
+        document.title = i18n.t('animalHotel');
+    }, [])
 
     const handleAddCity = (values, setSubmitting) => {
         dispatchDialog({

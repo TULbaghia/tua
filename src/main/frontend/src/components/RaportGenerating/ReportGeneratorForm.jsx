@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import BreadCrumb from "../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
@@ -42,6 +42,10 @@ function ReportGeneratorForm() {
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationWarning = useNotificationWarningAndLong()
+
+    useEffect(() => {
+        document.title = i18n.t('animalHotel');
+    }, [])
 
     const handleGenerateReport = e => {
         setIsFetching(true);

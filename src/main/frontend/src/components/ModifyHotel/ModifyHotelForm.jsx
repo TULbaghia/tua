@@ -45,6 +45,7 @@ function ModifyHotelForm() {
     const idFromQuery = queryString.parse(location.search).id;
 
     useEffect(() => {
+        document.title = i18n.t('animalHotel');
         if (token) {
             handleFetch();
         }

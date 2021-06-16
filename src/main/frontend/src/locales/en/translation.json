@@ -380,7 +380,7 @@
   "exception.booking.finished_booking": "Booking have been already finished",
   "exception.booking.in_progress_booking": "Booking is in progress",
   "exception.booking.time_exceeded": "Time limit for canceling booking has been exceeded",
-  "exception.booking.access_denied": "Access has been denied"
+  "exception.booking.access_denied": "Access has been denied",
 
   "booking.form.bread_crumb": "Add booking",
   "booking.form.title": "Add booking",

@@ -47,7 +47,11 @@ public class BoxFacade extends AbstractFacade<Box> {
     @PermitAll
     @Override
     public void edit(Box entity) throws AppBaseException {
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (ConstraintViolationException e) {
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
     @PermitAll

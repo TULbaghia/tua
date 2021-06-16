@@ -5,9 +5,11 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IBoxMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateBoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BoxEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.BoxManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.HotelManager;
@@ -39,7 +41,7 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
 
     @Override
     public BoxDto get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return Mappers.getMapper(IBoxMapper.class).toBoxDto(boxManager.get(id));
     }
 
     @Override
@@ -90,8 +92,16 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
 
     @Override
     @RolesAllowed("updateBox")
-    public void updateBox(BoxDto boxDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void updateBox(UpdateBoxDto boxDto) throws AppBaseException {
+        Box box = boxManager.get(boxDto.getId());
+
+        BoxDto boxIntegrity = Mappers.getMapper(IBoxMapper.class).toBoxDto(box);
+        if(!verifyIntegrity(boxIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        Mappers.getMapper(IBoxMapper.class).toBox(boxDto, box);
+        boxManager.updateBox(box);
     }
 
     @Override

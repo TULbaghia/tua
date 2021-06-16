@@ -41,7 +41,8 @@ public interface BoxEndpointLocal extends CallingClass {
     List<BoxDto> getAllBoxesInHotel(Long hotelId) throws AppBaseException;
 
     /**
-     * @param hotelId identyfikator hotelu dla którego chcemy zwrócić listę klatek
+     * @param hotelId identyfikator hotelu dla którego chcemy pobrać listę klatek
+     * @param animalType typ zwierzęcia dla którego chcemy pobrać klatki
      * @return lista klatek
      * @throws AppBaseException w momencie wystąpienia błędu
      */

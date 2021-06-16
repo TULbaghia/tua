@@ -335,6 +335,12 @@
   "addCity.error.name_required": "Nazwa jest wymagana",
   "addCity.error.description_required": "Opis jest wymagany",
   "addCity.success": "Miasto zostało pomyślnie dodane",
-  "exception.city.name_invalid": "Nazwa miasta jest już w użyciu"
+  "exception.city.name_invalid": "Nazwa miasta jest już w użyciu",
 
+  "reservationCancel.success": "Pomyślnie anulowano rezerwację",
+  "exception.booking.cancelled_booking" : "Rezerwacja jest już anulowana",
+  "exception.booking.finished_booking": "Rezerwacja jest zakończona",
+  "exception.booking.in_progress_booking": "Rezerwacja w trakcie trwania",
+  "exception.booking.time_exceeded": "Limit czasu na anulowanie rezerwacji został przekroczony",
+  "exception.booking.access_denied": "Brak dostępu do zasobu"
 }

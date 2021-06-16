@@ -331,5 +331,12 @@
   "addCity.error.name_required": "Name is required",
   "addCity.error.description_required": "Description required",
   "addCity.success": "City has been successfully added",
-  "exception.city.name_invalid": "City name is already in use"
+  "exception.city.name_invalid": "City name is already in use",
+
+  "reservationCancel.success": "Booking has been successfully canceled",
+  "exception.booking.cancelled_booking" : "Booking have been already cancelled",
+  "exception.booking.finished_booking": "Booking have been already finished",
+  "exception.booking.in_progress_booking": "Booking is in progress",
+  "exception.booking.time_exceeded": "Time limit for canceling booking has been exceeded",
+  "exception.booking.access_denied": "Access has been denied"
 }

@@ -173,13 +173,12 @@ public class RatingManager {
      * Zmień widoczność oceny
      *
      * @param ratingId         identyfikator oceny hotelu
-     * @param ratingVisibility poziom widoczności
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("hideHotelRating")
-    public void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException {
+    public void changeVisibility(Long ratingId) throws AppBaseException {
         Rating rating = ratingFacade.find(ratingId);
-        rating.setHidden(ratingVisibility.isValue());
+        rating.setHidden(!rating.isHidden());
         ratingFacade.edit(rating);
     }
 }

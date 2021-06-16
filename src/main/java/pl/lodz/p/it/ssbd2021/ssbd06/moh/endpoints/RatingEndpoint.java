@@ -47,6 +47,13 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
     }
 
     @Override
+    @PermitAll
+    public RatingDto getRating(Long ratingId) throws AppBaseException {
+        Rating rating = ratingManager.getRating(ratingId);
+        return Mappers.getMapper(IRatingMapper.class).toRatingDto(rating);
+    }
+
+    @Override
     @RolesAllowed("addHotelRating")
     public void addRating(NewRatingDto ratingDto) throws AppBaseException {
         ratingManager.addRating(ratingDto);
@@ -66,7 +73,7 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
 
     @Override
     @RolesAllowed("hideHotelRating")
-    public void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException {
+    public void changeVisibility(Long ratingId) throws AppBaseException {
         Rating rating = ratingManager.getRating(ratingId);
 
         RatingDto ratingIntegrity = Mappers.getMapper(IRatingMapper.class).toRatingDto(rating);
@@ -74,6 +81,6 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
             throw AppOptimisticLockException.optimisticLockException();
         }
 
-        ratingManager.changeVisibility(ratingId, ratingVisibility);
+        ratingManager.changeVisibility(ratingId);
     }
 }

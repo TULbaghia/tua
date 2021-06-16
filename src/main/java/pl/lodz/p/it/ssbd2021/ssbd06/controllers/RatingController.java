@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.RatingEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -23,6 +25,9 @@ public class RatingController extends AbstractController {
 
     @Inject
     private RatingEndpointLocal ratingEndpoint;
+
+    @Inject
+    private MessageSigner messageSigner;
 
     /**
      * Zwraca listę ocen hotelu
@@ -36,6 +41,17 @@ public class RatingController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public List<RatingDto> getAll(@PathParam("id") Long hotelId) throws AppBaseException {
         return repeat(() -> ratingEndpoint.getAll(hotelId), ratingEndpoint);
+    }
+
+    @GET
+    @Path("/rating/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRating(@PathParam("id") Long ratingId) throws AppBaseException {
+        RatingDto ratingDto = repeat(() -> ratingEndpoint.getRating(ratingId), ratingEndpoint);
+        return Response.ok()
+                .entity(ratingDto)
+                .header("ETag", messageSigner.sign(ratingDto))
+                .build();
     }
 
     /**
@@ -80,13 +96,12 @@ public class RatingController extends AbstractController {
      * Zmień widoczność oceny
      *
      * @param ratingId id oceny hotelu
-     * @param ratingVisibility poziom widoczności
      * @throws AppBaseException podczas błędu związanego ze zmianą widoczności oceny
      */
     @PATCH
     @RolesAllowed("hideHotelRating")
-    @Path("/{ratingId}/{visibility}")
-    public void changeVisibility(@PathParam("ratingId") Long ratingId, @PathParam("visibility") RatingVisibility ratingVisibility) throws AppBaseException {
-        repeat(() -> ratingEndpoint.changeVisibility(ratingId, ratingVisibility), ratingEndpoint);
+    @Path("/{ratingId}")
+    public void changeVisibility(@PathParam("ratingId") Long ratingId) throws AppBaseException {
+        repeat(() -> ratingEndpoint.changeVisibility(ratingId), ratingEndpoint);
     }
 }

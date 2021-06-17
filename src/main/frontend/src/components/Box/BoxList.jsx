@@ -14,26 +14,38 @@ import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
 } from "../Utils/Notification/NotificationProvider";
-import {useHistory} from "react-router";
+import {useHistory, useLocation} from "react-router";
+import queryString from "query-string";
 
 function BoxList(props) {
 
     const [boxes, setBoxes] = useState([])
     const {token, username, currentRole} = useLocale();
     const history = useHistory();
+    const location = useLocation();
 
     const dispatchDialog = useDialogPermanentChange();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
 
     const [searchTerm, setSearchTerm] = React.useState('');
+    const hotelIdFromUrl = queryString.parse(location.search).id;
+
+    const decideFetch = (refresh = false) => {
+        if (hotelIdFromUrl !== undefined) {
+            fetchDataForClient(refresh);
+        }
+        else {
+            fetchData(refresh);
+        }
+    }
 
     const handleSearchBox = (event) => {
         setSearchTerm(event.target.value);
         if (event.target.value !== '') {
             setBoxes(filteredItems);
         } else {
-            fetchData();
+            decideFetch();
         }
     }
 
@@ -42,7 +54,13 @@ function BoxList(props) {
     });
 
     useEffect(() => {
-        fetchData();
+        if (currentRole === rolesConstant.manager) {
+            debugger;
+            fetchData();
+        } else if (currentRole === rolesConstant.client) {
+            debugger;
+            fetchDataForClient();
+        }
     }, [token]);
 
     const fetchData = (refresh = false) => {
@@ -67,6 +85,35 @@ function BoxList(props) {
         }
     }
 
+    const fetchDataForClient = (refresh = false) => {
+
+        debugger;
+        const requestOptions = {
+            method: "GET",
+            headers: {
+                Authorization: token,
+            },
+        };
+        if (hotelIdFromUrl !== undefined) {
+
+            fetch("/resources/boxes/all/id/" + hotelIdFromUrl, requestOptions)
+                .then((res) => res.json())
+                .then((boxes) => {
+                    setBoxes(boxes);
+                })
+                .catch(err => {
+                    ResponseErrorHandler(err, dispatchNotificationDanger)
+                });
+        }
+        if (refresh) {
+            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+        }
+    }
+
+    const handleIsManager = () => {
+        return currentRole === rolesConstant.manager;
+    }
+
     const handleModify = (userId) => {
         props.history.push({
             pathname: "/",
@@ -89,6 +136,9 @@ function BoxList(props) {
                 {currentRole === rolesConstant.client && (
                     <li className="breadcrumb-item"><Link to="/">{i18n.t('userDashboard')}</Link></li>
                 )}
+                {hotelIdFromUrl !== undefined && (
+                    <li className="breadcrumb-item"><Link to="/hotels">{i18n.t('hotelInfo')}</Link></li>
+                )}
                 <li className="breadcrumb-item active" aria-current="page">{i18n.t('boxList.navbar.title')}</li>
             </BreadCrumb>
 
@@ -98,7 +148,7 @@ function BoxList(props) {
                     <h1 className="col-md-6">{i18n.t('boxList.navbar.title')}</h1>
                     <div className={"col-md-6"}>
                         <Button className="btn-secondary float-right m-2" onClick={event => {
-                            fetchData(true);
+                            decideFetch(true);
                             setSearchTerm('');
                         }}>
                             {i18n.t("refresh")}
@@ -107,7 +157,7 @@ function BoxList(props) {
                             <Button className="btn-primary float-right m-2" onClick={event => {
                                 history.push('/hotels/addHotel');
                             }}>{i18n.t("addBox")}</Button>
-                        ) : (null)}
+                        ) : (<></>)}
                         <input
                             className="input float-right m-2"
                             type="text"
@@ -124,7 +174,6 @@ function BoxList(props) {
                     display: 'flex',
                     flex: '1',
                     flexDirection: 'row',
-                    minWidth: "25rem",
                     overflowY: 'scroll'
                 }}>
                     <div className='row-wrapper' style={{padding: '1rem'}}>
@@ -138,6 +187,7 @@ function BoxList(props) {
                                                 onDelete={handleDelete}
                                                 onModify={handleModify}
                                                 box={box}
+                                                isManager={handleIsManager}
                                             />
                                         </div>
                                     ))}

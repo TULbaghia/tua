@@ -81,6 +81,12 @@ function Home(props) {
         });
     }
 
+    const handleBoxListClick = (key) => {
+        if (key === "boxlist") {
+            history.push("/boxes?id=" + parsedQuery.id)
+        }
+    }
+
     const getRatingInfo = async () => {
         return await api.getAllRatings(parsedQuery.id);
     }
@@ -115,10 +121,11 @@ function Home(props) {
                 </div>
                 <div className={"row"}>
                     <div className={"col-md-4 col-sm-6 col-8 mb-3"}>
-                        <img alt="cat" className="img-fluid" src={hotelData.image === undefined ? cat : hotelData.image}/>
+                        <img alt="cat" className="img-fluid"
+                             src={hotelData.image === undefined ? cat : hotelData.image}/>
                     </div>
                     <div className={"col-md-8 col-sm-6 col-4"}>
-                        <Tabs defaultActiveKey="description" transition={false} id="tab">
+                        <Tabs defaultActiveKey="description" transition={false} id="tab" onSelect={handleBoxListClick}>
                             <Tab eventKey="description" title={t('descriptionHotel')}>
                                 <div className={"text-justify mt-2"}>
                                     {hotelData.description}
@@ -135,6 +142,11 @@ function Home(props) {
                                         <span className={"ml-3"}>{hotelData.address}</span>
                                     </ListGroup.Item>
                                 </ListGroup>
+                            </Tab>
+                            <Tab eventKey="boxlist" title={t('boxList.navbar.title')}>
+                                <div className={"text-justify mt-2"}>
+                                    {hotelData.description}
+                                </div>
                             </Tab>
                         </Tabs>
                     </div>

@@ -11,7 +11,7 @@ import i18n from '../../i18n';
 import {v4} from "uuid";
 
 function BoxItem(props) {
-    const {box, onModify, onDelete} = props;
+    const {box, onModify, onDelete, isManager} = props;
 
     const getIcon = (animalType) => {
         switch (animalType) {
@@ -41,9 +41,15 @@ function BoxItem(props) {
                 <Card.Text>
                     {box.description}
                 </Card.Text>
-                <Button id={v4()} onClick={() => onModify(box.id)} variant="warning">{i18n.t('button.edit')}</Button>
-                <Button id={v4()} onClick={() => onDelete(box.id)} className={"card-button"}
-                        variant="danger">{i18n.t('button.delete')}</Button>
+                {isManager() ? (
+                    <>
+                        <Button id={v4()} onClick={() => onModify(box.id)}
+                                variant="warning">{i18n.t('button.edit')}</Button>
+                        <Button id={v4()} onClick={() => onDelete(box.id)} className={"card-button"}
+                                variant="danger">{i18n.t('button.delete')}</Button>
+                    </>
+                ) : (<></>)}
+
             </Card.Body>
         </Card>
     );

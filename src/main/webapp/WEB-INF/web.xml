@@ -176,6 +176,10 @@
     <security-role>
         <role-name>getAllArchiveReservations</role-name>
     </security-role>
+    
+    <security-role>
+        <role-name>getReservation</role-name>
+    </security-role>
 
     <security-role>
         <role-name>getReservation</role-name>

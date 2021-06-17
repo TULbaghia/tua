@@ -108,7 +108,7 @@ public class BookingController extends AbstractController {
     @RolesAllowed("endReservation")
     @Path("/end/{id}")
     public void endBooking(@PathParam("id") Long bookingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> bookingEndpoint.endBooking(bookingId), bookingEndpoint);
     }
 
     /**

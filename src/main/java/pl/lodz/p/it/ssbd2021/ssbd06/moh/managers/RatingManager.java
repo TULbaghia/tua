@@ -148,7 +148,7 @@ public class RatingManager {
      * @return średnia ocena hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed({"deleteHotelRating", "addHotelRating"})
+    @RolesAllowed({"deleteHotelRating", "addHotelRating", "updateHotelRating"})
     private BigDecimal calculateAverageRating(Long hotelId) throws AppBaseException {
         List<Rating> ratings = ratingFacade.getAllRatingsForHotelId(hotelId);
         if (ratings.isEmpty()) {
@@ -172,9 +172,23 @@ public class RatingManager {
         if (!rating.isHidden()) {
             rating.setComment(updateRatingDto.getComment());
         }
+
         rating.setRate(updateRatingDto.getRate());
         rating.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
         ratingFacade.edit(rating);
+
+        Optional<Hotel> optionalHotel = rating.getBooking().getBookingLineList()
+                .stream()
+                .limit(1)
+                .map(BookingLine::getBox)
+                .map(Box::getHotel)
+                .findAny();
+
+        if (optionalHotel.isPresent()) {
+            Hotel hotel = optionalHotel.get();
+            hotel.setRating(calculateAverageRating(hotel.getId()));
+            hotelFacade.edit(hotel);
+        }
     }
 
     /**

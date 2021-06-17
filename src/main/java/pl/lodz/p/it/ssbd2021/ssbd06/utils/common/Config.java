@@ -170,7 +170,8 @@ public class Config implements Serializable {
         CHANGE_EMAIL("email_change"),
         ADMIN_LOGIN("admin_login"),
         ACTIVATE_SUCCESS("activate_success"),
-        CANCEL_RESERVATION("cancel_reservation");
+        CANCEL_RESERVATION("cancel_reservation"),
+        CREATE_RESERVATION("create_reservation");
 
         @Getter
         private final String value;

@@ -180,7 +180,7 @@ function App() {
                             <GuardedRoute exact path="/hotels/hotelInfo" component={HotelInfo} meta={{}}/>
                             <GuardedRoute exact path="/boxes/add" component={AddBoxForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
-                            <GuardedRoute exact path="/booking/add" component={BookingForm} meta={{auth: true, client: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/reservation" component={BookingForm} meta={{auth: true, client: true, logged, currentRole }}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

@@ -23,6 +23,8 @@ import { useLocale } from "../LoginContext";
 import { useEffect } from "react";
 import DataTable from "react-data-table-component"
 import {Checkbox, Button} from "react-bootstrap";
+import {useDialogPermanentChange} from "./../Utils/CriticalOperations/CriticalOperationProvider";
+
 
 
 function SignUp(props) {
@@ -36,6 +38,7 @@ function SignUp(props) {
   const [ hotels, setHotels] = useState([])
   const [ boxes, setBoxes] = useState([])
   const [selectedBoxes, setSelectedBoxes] = useState([])
+  const dispatchCriticalDialog = useDialogPermanentChange({message:"booking.cancellation_limit_info"});
 
   const themeColor = useThemeColor();
 
@@ -54,26 +57,25 @@ function SignUp(props) {
 
   const columns = [
     {
-        name: 'Type',
+        name: t('addBox.animalType'),
         selector: 'animalType',
         sortable: true,
         width: "10rem"
     },
     {
-      name: 'Description',
+      name: t('booking.description'),
       selector: 'description',
       sortable: false,
       width: "10rem"
   },
   {
-    name: 'Price',
+    name: t('price'),
     selector: 'price',
     sortable: false,
     width: "10rem"
 },
     {
-        name: t('details'),
-        selector: 'details',
+        name: t('booking.book'),
         cell: row => {
             return(
                 <input type="checkbox" onChange={e => {
@@ -122,17 +124,17 @@ function SignUp(props) {
     },
   ];
 
+  const tommorrow = new Date()
+  tommorrow.setDate(new Date().getDate() + 1)
+
   const initialValues = {
     hotelId: -1,
-    dateFrom: new Date(),
-    dateTo: new Date(),
-    boxes: [
-      {
-        type: 0,
-        quantity: 1,
-      },
-    ],
+    dateFrom: tommorrow,
+    dateTo: tommorrow,
+    boxes: [],
   };
+
+  console.log(initialValues)
 
   function fetchBoxes(hotelId, dateFrom, dateTo){
     api.getAvailableBoxesBetween(hotelId, dateFrom.toISOString().split('T')[0], dateTo.toISOString().split('T')[0], {headers: {Authorization: token}}).then(res => {
@@ -142,30 +144,47 @@ function SignUp(props) {
 
   function onSubmit(values, { resetForm }) {
     setSubmitting(true);
-    console.log(values);
-    console.log(selectedBoxes)
+    const dto = {...values, boxes: selectedBoxes};
 
-    // const { ...dto } = values;
-    // api
-    //   .addBooking(dto, { headers: { Authorization: token } })
-    //   .then((res) => {
-    //     dispatchNotificationSuccess({
-    //       message: t("booking.create.success"),
-    //     });
-    //     resetForm();
-    //   })
-    //   .catch((err) => {
-    //     ResponseErrorHandler(err, dispatchNotificationDanger);
-    //   })
-    //   .finally(() => {
-    //     setSubmitting(false);
-    //   });
+    dispatchCriticalDialog({
+      callbackOnSave: () => createReservation(dto, resetForm),
+      callbackOnCancel: () => {
+        setSubmitting(false)
+      }
+    })
+  }
+
+  function createReservation(dto, resetForm){
+    api
+    .addBooking(dto, { headers: { Authorization: token } })
+    .then((res) => {
+      dispatchNotificationSuccess({
+        message: t("booking.create.success"),
+      });
+      resetForm();
+    })
+    .catch((err) => {
+      ResponseErrorHandler(err, dispatchNotificationDanger);
+    })
+    .finally(() => {
+      setSubmitting(false);
+    });
   }
 
   function validate(values) {
     const errors = {};
+    const now = new Date();
     if (values.dateFrom >= values.dateTo) {
       errors.dateFrom = t("booking.form.error.date_not_earlier");
+    }
+    if(values.dateFrom < now){
+      errors.dateFrom = t("booking.date_cannot_refer_to_past")
+    }
+    if(values.dateTo < now){
+      errors.dateTo = t("booking.date_cannot_refer_to_past")
+    }
+    if(selectedBoxes.length === 0){
+      errors.boxes = "boxes at least one element"
     }
     return errors;
   }
@@ -215,82 +234,40 @@ function SignUp(props) {
 
               <div className="col-md-12">
                 <label htmlFor="dateTo">{t('booking.form.date_to')}</label>
+                {errors && touched && errors.dateTo && (
+                  <div style={{ color: "red" }}>{errors.dateTo}</div>
+                )}
                 <DatePickerField name="dateTo" />
               </div>
 
-              <div className="col-12">
+              <div className="col-12 my-3">
                 <button
                   className="btn btn-primary"
                   style={{ backgroundColor: "#7749F8" }}
                   onClick={() => fetchBoxes(values.hotelId, values.dateFrom, values.dateTo)}
                   type="button"
                 >
-                  {t("send")}
+                  {t("booking.search_boxes")}
                 </button>
               </div>
 
+              <div className="col-12">
               <DataTable className={"rounded-0"}
                     noDataComponent={i18n.t('table.no.result')}
                     columns={columns}
+                    noHeader={true}
                     data={boxes}
-                    subHeader
                     theme={themeColor}
                 />
-
-
-
-              <div className="col-md-12">
-                <label htmlFor="boxes">{t('booking.form.boxes')}</label>
-                <FieldArray name="boxes">
-                  {({ push }) => {
-                    const len = values.boxes.length;
-                    return (
-                      <div className="col-md-12">
-                        {values.boxes.map((box, index) => (
-                          <div key={index} className="row my-2">
-                            <div className="col-md-5">
-                              <Field
-                                className="col-md-5"
-                                name={`boxes.${index}.type`}
-                                component={SelectField}
-                                options={animalTypes}
-                              />
-                            </div>
-                            <Field
-                              className="col-md-5"
-                              name={`boxes.${index}.quantity`}
-                              type="number"
-                              min="1"
-                            />
-                            {len === index + 1 && (
-                              <div className="col-md-2">
-                                <button
-                                  type="button"
-                                  className="btn btn-primary"
-                                  style={{ backgroundColor: "#7749F8" }}
-                                  onClick={() =>
-                                    push({ type: "", quantity: "" })
-                                  }
-                                >
-                                  +
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    );
-                  }}
-                </FieldArray>
               </div>
 
-              <div className="col-12 d-flex justify-content-center mb-3">
+              <div className="col-12 d-flex justify-content-center my-3">
                 <button
                   className="btn btn-primary"
                   style={{ backgroundColor: "#7749F8" }}
                   type="submit"
                 >
-                  {t("send")}
+                  {t("booking.create_reservation")}
                 </button>
               </div>
             </Form>

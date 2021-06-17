@@ -32,6 +32,7 @@ import java.util.Date;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -103,14 +104,10 @@ public class BookingManager {
     public void addBooking(NewBookingDto bookingDto, String username) throws AppBaseException {
         Account account = accountFacade.findByLogin(username);
 
-        List<AnimalType> types = bookingDto.getBoxes().stream()
-                .map(NewBookingDto.BookedBoxes::getType)
-                .map(AnimalType::valueOf)
-                .collect(Collectors.toList());
-        List<Box> availableBoxes = boxFacade.getAvailableBoxesByTypesAndHotelId(bookingDto.getHotelId(), types, bookingDto.getDateFrom(), bookingDto.getDateTo());
+        List<Box> availableBoxes = boxFacade.getAvailableBoxesByIdListAndHotelId(bookingDto.getHotelId(), bookingDto.getBoxes(), bookingDto.getDateFrom(), bookingDto.getDateTo());
 
         // not enough boxes to fulfill the booking or booking has been sent without any boxes
-        if(availableBoxes.size() == 0){
+        if(availableBoxes.size() != bookingDto.getBoxes().size()){
             throw BookingException.notEnoughBoxesOfSpecifiedType();
         }
 
@@ -119,24 +116,20 @@ public class BookingManager {
         BigDecimal price = BigDecimal.ZERO;
         long bookingDurationDays = Duration.between(booking.getDateFrom().toInstant(), booking.getDateTo().toInstant()).toDays();
 
-        for (NewBookingDto.BookedBoxes typedBoxes : bookingDto.getBoxes()) {
-            List<Box> boxes = availableBoxes.stream()
-                    .filter(x -> x.getAnimalType().equals(AnimalType.valueOf(typedBoxes.getType())))
-                    .limit(typedBoxes.getQuantity())
-                    .collect(Collectors.toList());
-            if (boxes.size() < typedBoxes.getQuantity()) {
-                throw BookingException.notEnoughBoxesOfSpecifiedType();
+        for (Box box : availableBoxes) {
+            if(bookingDto.getBoxes().stream().noneMatch(x -> Objects.equals(x, box.getId()))){
+                throw BookingException.boxesNotAvailable();
             }
-            for (Box box : boxes) {
-                BookingLine bookingLine = new BookingLine(box.getPricePerDay(), booking, box);
-                bookingLine.setCreatedBy(account);
-                booking.getBookingLineList().add(bookingLine);
-                price = price.add(box.getPricePerDay().multiply(BigDecimal.valueOf(bookingDurationDays)));
-            }
+            BookingLine bookingLine = new BookingLine(box.getPricePerDay(), booking, box);
+            bookingLine.setCreatedBy(account);
+            booking.getBookingLineList().add(bookingLine);
+            price = price.add(box.getPricePerDay().multiply(BigDecimal.valueOf(bookingDurationDays)));
         }
+
         booking.setPrice(price);
         booking.setCreatedBy(account);
         bookingFacade.create(booking);
+        emailSender.sendCreateReservationEmail(booking.getAccount(), booking.getId());
     }
 
     /**

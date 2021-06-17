@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -14,17 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewBookingDto {
-    List<BookedBoxes> boxes;
 
     private Date dateFrom;
     private Date dateTo;
+    @NotNull
     private Long hotelId;
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class BookedBoxes {
-        private int type;
-        private long quantity;
-    }
+    @NotEmpty
+    List<Long> boxes;
 }

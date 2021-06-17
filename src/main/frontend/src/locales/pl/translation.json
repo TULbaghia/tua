@@ -391,6 +391,12 @@
   "booking.form.boxes": "Boxy",
   "booking.create.success": "Pomyślnie dokonano rezerwacji",
   "booking.form.error.date_not_earlier": "Data rozpoczęcia rezerwacji powinna być wcześniejsza od daty zakończenia",
+  "booking.search_boxes": "Wyszukaj",
+  "booking.create_reservation": "Rezerwuj",
+  "booking.date_cannot_refer_to_past": "Data nie może być z przeszłości",
+  "booking.cancellation_limit_info": "Rezerwacja może być anulowana w przeciągu dwóch dni od złożenia zamówienia",
+  "booking.description": "Opis",
+  "booking.book": "Zarezerwuj",
   "exception.boxes.not_enough": "Nie wystarczająca liczba boxów aby zreazliować rezerwacje w wybranym okresie",
 
   "hotel": "Hotel"

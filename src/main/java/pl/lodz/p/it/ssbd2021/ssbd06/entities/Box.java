@@ -41,6 +41,11 @@ import java.util.Set;
             "b.hotel.id = :hotel_id " +
             "AND b.id NOT IN (SELECT bl.box.id FROM BookingLine bl WHERE bl.booking.dateTo >= :dateFrom AND bl.booking.dateFrom <= :dateTo)"
     ),
+    @NamedQuery(name = "getAvailableBoxesByIdListAndHotelId", query = "SELECT b FROM Box b WHERE " +
+            "b.hotel.id = :hotel_id " +
+            "AND b.id NOT IN (SELECT bl.box.id FROM BookingLine bl WHERE bl.booking.dateTo >= :dateFrom AND bl.booking.dateFrom <= :dateTo AND (bl.booking.status = pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus.IN_PROGRESS OR bl.booking.status = pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus.PENDING))  " +
+            "AND b.id IN :boxIdList"
+    ),
 })
 @NoArgsConstructor
 public class Box extends AbstractEntity implements Serializable {

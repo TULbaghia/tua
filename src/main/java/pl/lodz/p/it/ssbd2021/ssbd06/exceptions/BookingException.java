@@ -5,6 +5,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
  */
 public class BookingException extends AppBaseException{
     private static final String NOT_ENOUGH_BOXES = "exception.boxes.not_enough";
+    private static final String BOXES_NOT_AVAILABLE = "exception.boxes.not_available";
     private static final String CANCELLED_BOOKING = "exception.booking.cancelled_booking";
     private static final String FINISHED_BOOKING_CANCEL = "exception.booking.finished_booking";
     private static final String IN_PROGRESS_BOOKING_CANCEL = "exception.booking.in_progress_booking";
@@ -21,6 +22,10 @@ public class BookingException extends AppBaseException{
 
     public static BookingException notEnoughBoxesOfSpecifiedType() {
         return new BookingException(NOT_ENOUGH_BOXES);
+    }
+
+    public static BookingException boxesNotAvailable() {
+        return new BookingException(BOXES_NOT_AVAILABLE);
     }
 
     /**

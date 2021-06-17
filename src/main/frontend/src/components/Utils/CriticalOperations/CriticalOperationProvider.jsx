@@ -45,7 +45,7 @@ export const useDialog = () => {
     }
 };
 
-export const useDialogPermanentChange = () => {
+export const useDialogPermanentChange = ({title = "dialog.permanent_change.title", message = "dialog.permanent_change.message"}) => {
     const dispatch = useContext(CriticalOperation);
 
     return ({callbackOnSave = (() => {}), callbackOnCancel = (() => {}), ...props}) => {
@@ -53,8 +53,8 @@ export const useDialogPermanentChange = () => {
             type: "ADD_DIALOG",
             payload: {
                 id: v4(),
-                title: i18n.t("dialog.permanent_change.title"),
-                message: i18n.t("dialog.permanent_change.message"),
+                title: i18n.t(title),
+                message: i18n.t(message),
                 callbackOnSave: callbackOnSave,
                 callbackOnCancel: callbackOnCancel,
                 ...props

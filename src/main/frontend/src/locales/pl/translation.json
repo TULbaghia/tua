@@ -358,11 +358,12 @@
   "comments": "Komentarze",
   "hiddenComment": "Ze względu na nieodpowiednią treść, komentarz został ukryty",
   "averageRating": "Średnia ocen:",
+  "hotelInfo": "Dane hotelu",
 
   "addBox.navbar.title" : "Dodaj nowy box",
 
   "addBox.title": "Dodawanie boxu",
-  "description" : "Opis",
+  "box.description" : "Opis",
   "animalType" : "Zwierzę",
   "addBox.success": "Box został pomyślnie dodany",
 
@@ -398,5 +399,4 @@
   "unassignManager.success": "Manager został usunięty pomyślnie",
   "unassignManager": "Usuń managera z hotelu",
   "emptyListManagerUnassign": "Brak przypisanych managerów"
-
 }

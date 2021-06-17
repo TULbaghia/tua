@@ -130,6 +130,6 @@ public class BoxController extends AbstractController {
     @RolesAllowed("deleteBox")
     @Path("/{id}")
     public void deleteBox(@PathParam("id") Long boxId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(()-> boxEndpoint.deleteBox(boxId), boxEndpoint);
     }
 }

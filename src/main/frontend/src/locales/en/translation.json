@@ -360,7 +360,7 @@
   "addBox.navbar.title" : "Add new box",
 
   "addBox.title": "Box addition",
-  "description" : "Description",
+  "box.description" : "Description",
   "animalType" : "Animal type",
   "addBox.success": "Box has been successfully added",
 

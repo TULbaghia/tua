@@ -40,6 +40,7 @@ import ModifyCityForm from "./components/ModifyCity/ModifyCityForm";
 import HotelInfo from './components/HotelInfo/HotelInfo';
 import AddBoxForm from "./components/AddBox/AddBoxForm";
 import ModifyBoxForm from "./components/ModifyBox/ModifyBoxForm";
+import UnassignManager from "./components/UnassignManager";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -161,6 +162,8 @@ function App() {
                             <GuardedRoute exact path="/hotels/addHotel" component={AddHotelForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels" component={HotelList} meta={{}}/>
                             <GuardedRoute exact path="/hotels/assignManager" component={AssignManager}
+                                          meta={{auth: true, admin: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/hotels/unassignManager" component={UnassignManager}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/editOwnHotel" component={ModifyHotelForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>

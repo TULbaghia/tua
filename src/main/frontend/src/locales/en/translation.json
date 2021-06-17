@@ -389,5 +389,9 @@
   "exception.box.access_denied": "No permission to edit this resource",
   "hide.button": "Hide",
   "show.button": "Show",
-  "change.comment.visibility.success": "Comment visibility has been changed successfully"
+  "change.comment.visibility.success": "Comment visibility has been changed successfully",
+  "deleteManager": "Unassign manager",
+  "unassignManager.success": "Manager unassigned successfully",
+  "unassignManager": "Unassign manager",
+  "emptyListManagerUnassign": "There is no managers assigned to the hotel"
 }

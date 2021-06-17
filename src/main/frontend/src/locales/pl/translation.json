@@ -393,5 +393,10 @@
   "hotelInfo": "Dane hotelu",
   "hide.button": "Ukryj",
   "show.button": "Pokaż",
-  "change.comment.visibility.success": "Widoczność komentarza została zmieniona"
+  "change.comment.visibility.success": "Widoczność komentarza została zmieniona",
+  "deleteManager": "Usuń managera",
+  "unassignManager.success": "Manager został usunięty pomyślnie",
+  "unassignManager": "Usuń managera z hotelu",
+  "emptyListManagerUnassign": "Brak przypisanych managerów"
+
 }

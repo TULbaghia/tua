@@ -273,6 +273,17 @@ function HotelList(props) {
                 )
             },
         },
+        {
+            name: t('deleteManager'),
+            selector: 'delete',
+            cell: row => {
+                return(
+                    <Button className="btn-sm" onClick={event => {
+                        history.push('/hotels/unassignManager?id=' + row.id);
+                    }}>{t("delete")}</Button>
+                )
+            }
+        },
     ];
 
     useEffect(() => {
@@ -296,7 +307,7 @@ function HotelList(props) {
     }
 
     const getAllHotels = async () => {
-        return await api.getAllHotels({headers: {Authorization: token}})
+        return await api.getAllHotelsList({headers: {Authorization: token}})
     }
 
     const subHeaderComponentMemo = React.useMemo(() => {

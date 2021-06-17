@@ -32,11 +32,10 @@ function BoxList(props) {
     const hotelIdFromUrl = queryString.parse(location.search).id;
 
     const decideFetch = (refresh = false) => {
-        if (hotelIdFromUrl !== undefined) {
-            fetchDataForClient(refresh);
-        }
-        else {
-            fetchData(refresh);
+        if (hotelIdFromUrl !== undefined && (currentRole === rolesConstant.manager || currentRole === rolesConstant.client)) {
+            fetchHotelDataById(refresh);
+        } else if (hotelIdFromUrl === undefined && currentRole === rolesConstant.manager) {
+            fetchHotelData(refresh);
         }
     }
 
@@ -54,16 +53,10 @@ function BoxList(props) {
     });
 
     useEffect(() => {
-        if (currentRole === rolesConstant.manager) {
-            debugger;
-            fetchData();
-        } else if (currentRole === rolesConstant.client) {
-            debugger;
-            fetchDataForClient();
-        }
+        decideFetch();
     }, [token]);
 
-    const fetchData = (refresh = false) => {
+    const fetchHotelData = (refresh = false) => {
         const requestOptions = {
             method: "GET",
             headers: {
@@ -85,26 +78,22 @@ function BoxList(props) {
         }
     }
 
-    const fetchDataForClient = (refresh = false) => {
-
-        debugger;
+    const fetchHotelDataById = (refresh = false) => {
         const requestOptions = {
             method: "GET",
             headers: {
                 Authorization: token,
             },
         };
-        if (hotelIdFromUrl !== undefined) {
 
-            fetch("/resources/boxes/all/id/" + hotelIdFromUrl, requestOptions)
-                .then((res) => res.json())
-                .then((boxes) => {
-                    setBoxes(boxes);
-                })
-                .catch(err => {
-                    ResponseErrorHandler(err, dispatchNotificationDanger)
-                });
-        }
+        fetch("/resources/boxes/all/id/" + hotelIdFromUrl, requestOptions)
+            .then((res) => res.json())
+            .then((boxes) => {
+                setBoxes(boxes);
+            })
+            .catch(err => {
+                ResponseErrorHandler(err, dispatchNotificationDanger)
+            });
         if (refresh) {
             dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
         }
@@ -114,11 +103,8 @@ function BoxList(props) {
         return currentRole === rolesConstant.manager;
     }
 
-    const handleModify = (userId) => {
-        props.history.push({
-            pathname: "/",
-            state: {idOfBox: userId},
-        });
+    const handleModify = (boxId) => {
+        history.push("/boxes/modify?id=" + boxId)
     };
 
     const handleDelete = (boxId) => {
@@ -155,7 +141,7 @@ function BoxList(props) {
                         </Button>
                         {token !== null && token !== '' && currentRole === rolesConstant.manager ? (
                             <Button className="btn-primary float-right m-2" onClick={event => {
-                                history.push('/hotels/addHotel');
+                                history.push('/boxes/add');
                             }}>{i18n.t("addBox")}</Button>
                         ) : (<></>)}
                         <input
@@ -178,7 +164,7 @@ function BoxList(props) {
                 }}>
                     <div className='row-wrapper' style={{padding: '1rem'}}>
                         <div className={"row"} style={{display: "flex"}}>
-                            {boxes.length === 0 ? (<div>No result to show</div>) : (
+                            {boxes.length === 0 ? (<div>{i18n.t('table.no.result')}</div>) : (
                                 <>
                                     {boxes.map((box) => (
                                         <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>

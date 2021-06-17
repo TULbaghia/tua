@@ -36,7 +36,7 @@ function BoxItem(props) {
         <Card className={"text-center card-item"}>
             <Card.Img className={"p-3"} style={{borderBottom: "1px solid var(--dark)"}} variant="top"
                       src={getIcon(box.animalType)}/>
-            <Card.Body>
+            <Card.Body className={"card-item-body"}>
                 <Card.Title id={v4()}>{i18n.t('box.price')}: {box.price}</Card.Title>
                 <Card.Text>
                     {box.description}

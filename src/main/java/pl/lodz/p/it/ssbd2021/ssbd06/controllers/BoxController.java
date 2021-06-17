@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
-import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
@@ -35,11 +35,12 @@ public class BoxController extends AbstractController {
      * Zwraca klatkę o podanym identyfikatorze
      *
      * @param id identyfikator klatki
-     * @throws AppBaseException podczas błędu związanego z pobieraniem klatki
      * @return dto klatki
+     * @throws AppBaseException podczas błędu związanego z pobieraniem klatki
      */
     @GET
     @Path("/{id}")
+    @Operation(operationId = "getBox", summary = "getBox")
     public Response get(@PathParam("id") Long id) throws AppBaseException {
         BoxDto boxDto = boxEndpoint.get(id);
         return Response.ok()
@@ -51,12 +52,13 @@ public class BoxController extends AbstractController {
     /**
      * Zwraca listę klatek
      *
-     * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
      * @return lista dto klatek
+     * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
      */
     @GET
     @RolesAllowed("getAllBoxes")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getAllBoxesList", summary = "getAllBoxesList")
     public List<BoxDto> getAll() throws AppBaseException {
         return repeat(() -> boxEndpoint.getAll(), boxEndpoint);
     }
@@ -65,13 +67,14 @@ public class BoxController extends AbstractController {
      * Zwraca listę klatek przypisanych do hotelu
      *
      * @param id identyfikator hotelu
-     * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
      * @return lista dto klatek przypisanych do hotelu
+     * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
      */
     @GET
     @Path("/all/{id}")
     @RolesAllowed("getAllBoxes")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getAllBoxesInHotel", summary = "getAllBoxesInHotel")
     public List<BoxDto> getAllBoxesInHotel(@NotNull @PathParam("id") Long id) throws AppBaseException {
         return repeat(() -> boxEndpoint.getAllBoxesInHotel(id), boxEndpoint);
     }
@@ -79,7 +82,7 @@ public class BoxController extends AbstractController {
     /**
      * Zwraca listę klatek przypisanych do hotelu przeznaczonych dla konkretnego typu zwierzęcia
      *
-     * @param id identyfikator hotelu
+     * @param id         identyfikator hotelu
      * @param animalType typ zwierzęcia
      * @return lista dto klatek przypisanych do hotelu
      * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
@@ -88,6 +91,7 @@ public class BoxController extends AbstractController {
     @Path("/all/{id}/{animalType}")
     @RolesAllowed("getAllBoxes")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getSomeTypeBoxesFromHotel", summary = "getSomeTypeBoxesFromHotel")
     public List<BoxDto> getSomeTypeBoxesFromHotel(@NotNull @PathParam("id") Long id,
                                                   @NotNull @PathParam("animalType") AnimalType animalType)
             throws AppBaseException {
@@ -102,8 +106,9 @@ public class BoxController extends AbstractController {
      */
     @POST
     @RolesAllowed("addBox")
+    @Operation(operationId = "addBox", summary = "addBox")
     public void addBox(@NotNull @Valid NewBoxDto boxDto) throws AppBaseException {
-        repeat(()->boxEndpoint.addBox(boxDto), boxEndpoint);
+        repeat(() -> boxEndpoint.addBox(boxDto), boxEndpoint);
     }
 
     /**
@@ -116,8 +121,9 @@ public class BoxController extends AbstractController {
     @RolesAllowed("updateBox")
     @EtagValidatorFilterBinding
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "updateBox", summary = "updateBox")
     public void updateBox(@NotNull @Valid UpdateBoxDto boxDto) throws AppBaseException {
-        repeat(()-> boxEndpoint.updateBox(boxDto), boxEndpoint);
+        repeat(() -> boxEndpoint.updateBox(boxDto), boxEndpoint);
     }
 
     /**
@@ -129,7 +135,8 @@ public class BoxController extends AbstractController {
     @DELETE
     @RolesAllowed("deleteBox")
     @Path("/{id}")
+    @Operation(operationId = "deleteBox", summary = "deleteBox")
     public void deleteBox(@PathParam("id") Long boxId) throws AppBaseException {
-        repeat(()-> boxEndpoint.deleteBox(boxId), boxEndpoint);
+        repeat(() -> boxEndpoint.deleteBox(boxId), boxEndpoint);
     }
 }

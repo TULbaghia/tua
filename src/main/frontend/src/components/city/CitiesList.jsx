@@ -48,22 +48,10 @@ function CitiesList(props) {
 
     const columns = [
         {
-            name: 'Name',
+            name: t('city'),
             selector: 'name',
             sortable: true,
             width: "10rem"
-        },
-        {
-            name: t('edit'),
-            selector: 'edit',
-            cell: row => {
-                return (
-                    <Button className="btn-sm" onClick={event => {
-                        // todo 
-                        // history.push('/editOtherAccount?login=' + row.login);
-                    }}>{t("edit")}</Button>
-                )
-            },
         },
         {
             name: t('details'),
@@ -93,6 +81,18 @@ function CitiesList(props) {
                 )
             }
         })
+        columns.push({
+            name: t('edit'),
+            selector: 'edit',
+            cell: row => {
+                return (
+                    <Button className="btn-sm" onClick={event => {
+                        // todo 
+                        // history.push('/editOtherAccount?login=' + row.login);
+                    }}>{t("edit")}</Button>
+                )
+            },
+        },)
     }
 
     function deleteCity(id){

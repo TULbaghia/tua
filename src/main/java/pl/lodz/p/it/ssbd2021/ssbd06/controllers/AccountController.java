@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AccessLevel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.ThemeColor;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
@@ -49,6 +50,7 @@ public class AccountController extends AbstractController {
     @EtagValidatorFilterBinding
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "blockAccount", summary = "blockAccount")
     public void blockAccount(@NotNull @Login @PathParam("login") @Valid String login)
             throws AppBaseException {
         repeat(() -> accountEndpoint.blockAccount(login), accountEndpoint);
@@ -65,6 +67,7 @@ public class AccountController extends AbstractController {
     @EtagValidatorFilterBinding
     @Path("/{login}/unblock")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "unblockAccount", summary = "unblockAccount")
     public void unblockAccount(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {
         repeat(() -> accountEndpoint.unblockAccount(login), accountEndpoint);
     }
@@ -78,6 +81,7 @@ public class AccountController extends AbstractController {
      */
     @POST
     @Path("/confirm/{code}")
+    @Operation(operationId = "confirm", summary = "confirm")
     public void confirm(@NotNull @PenCode @PathParam("code") @Valid String code) throws AppBaseException {
         repeat(() -> accountEndpoint.confirmAccount(code), accountEndpoint);
     }
@@ -91,6 +95,7 @@ public class AccountController extends AbstractController {
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "registerAccount", summary = "registerAccount")
     public void registerAccount(@NotNull @Valid RegisterAccountDto registerAccountDto) throws AppBaseException {
         repeat(() -> accountEndpoint.registerAccount(registerAccountDto), accountEndpoint);
     }
@@ -106,6 +111,7 @@ public class AccountController extends AbstractController {
     @EtagValidatorFilterBinding
     @Path("/edit")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "editOwnAccountDetails", summary = "editOwnAccountDetails")
     public void editOwnAccountDetails(@NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto)
             throws AppBaseException {
         repeat(() -> accountEndpoint.editOwnAccountDetails(accountPersonalDetailsDto), accountEndpoint);
@@ -123,6 +129,7 @@ public class AccountController extends AbstractController {
     @EtagValidatorFilterBinding
     @Path("/edit/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "editOtherAccountDetails", summary = "editOtherAccountDetails")
     public void editOtherAccountDetails(@NotNull @Login @PathParam("login") @Valid String login,
                                         @NotNull @Valid AccountPersonalDetailsDto accountPersonalDetailsDto)
             throws AppBaseException {
@@ -140,6 +147,7 @@ public class AccountController extends AbstractController {
     @RolesAllowed("getOtherAccountInfo")
     @Path("/{login}/role")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getUserRole", summary = "getUserRole")
     public Response getUserRole(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {
         RolesDto rolesDto = repeat(() -> roleEndpoint.getUserRole(login), roleEndpoint);
         return Response.ok()
@@ -158,6 +166,7 @@ public class AccountController extends AbstractController {
     @RolesAllowed("getOwnAccountInfo")
     @Path("/self/role")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getSelfRole", summary = "getSelfRole")
     public Response getSelfRole() throws AppBaseException {
         RolesDto rolesDto = repeat(() -> roleEndpoint.getUserRole(), roleEndpoint);
         return Response.ok()
@@ -177,6 +186,7 @@ public class AccountController extends AbstractController {
     @RolesAllowed("addAccessLevel")
     @EtagValidatorFilterBinding
     @Path("/user/{login}/grant/{accessLevel}")
+    @Operation(operationId = "grantAccessLevel", summary = "grantAccessLevel")
     public void grantAccessLevel(@NotNull @Login @PathParam("login") @Valid String login,
                                  @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
         repeat(() -> roleEndpoint.grantAccessLevel(login, accessLevel), roleEndpoint);
@@ -193,6 +203,7 @@ public class AccountController extends AbstractController {
     @RolesAllowed("deleteAccessLevel")
     @EtagValidatorFilterBinding
     @Path("/user/{login}/revoke/{accessLevel}")
+    @Operation(operationId = "revokeAccessLevel", summary = "revokeAccessLevel")
     public void revokeAccessLevel(@NotNull @Login @PathParam("login") @Valid String login,
                                   @NotNull @PathParam("accessLevel") AccessLevel accessLevel) throws AppBaseException {
         repeat(() -> roleEndpoint.revokeAccessLevel(login, accessLevel), roleEndpoint);
@@ -207,6 +218,7 @@ public class AccountController extends AbstractController {
     @GET
     @RolesAllowed("getAllAccounts")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getAllAccountsList", summary = "getAllAccountsList")
     public List<AccountDto> getAllAccountsList() throws AppBaseException {
         return repeat(() -> accountEndpoint.getAllAccounts(), accountEndpoint);
     }
@@ -222,6 +234,7 @@ public class AccountController extends AbstractController {
     @RolesAllowed("getOtherAccountInfo")
     @Path("/user/{login}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "showAccount", summary = "showAccount")
     public Response showAccount(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {
         AccountDto accountDto = repeat(() -> accountEndpoint.getAccount(login), accountEndpoint);
         return Response.ok()
@@ -240,6 +253,7 @@ public class AccountController extends AbstractController {
     @RolesAllowed("getOwnAccountInfo")
     @Path("/user")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "showAccountInformation", summary = "showAccountInformation")
     public Response showAccountInformation() throws AppBaseException {
         AccountDto accountDto = repeat(() -> accountEndpoint.getOwnAccountInfo(), accountEndpoint);
         return Response.ok()
@@ -259,6 +273,7 @@ public class AccountController extends AbstractController {
     @EtagValidatorFilterBinding
     @Path("/self/password")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "changePassword", summary = "changePassword")
     public void changePassword(@NotNull @Valid PasswordChangeDto passwordChangeDto) throws AppBaseException {
         repeat(() -> accountEndpoint.changePassword(passwordChangeDto), accountEndpoint);
     }
@@ -272,6 +287,7 @@ public class AccountController extends AbstractController {
     @POST
     @Path("/user/reset")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "resetPassword", summary = "resetPassword")
     public void resetPassword(@NotNull @Valid PasswordResetDto passwordResetDto) throws AppBaseException {
         repeat(() -> accountEndpoint.resetPassword(passwordResetDto), accountEndpoint);
     }
@@ -284,6 +300,7 @@ public class AccountController extends AbstractController {
      */
     @PUT
     @Path("/user/{email}/reset")
+    @Operation(operationId = "sendResetPassword", summary = "sendResetPassword")
     public void sendResetPassword(@NotNull @UserEmail @PathParam("email") @Valid String email) throws AppBaseException {
         repeat(() -> accountEndpoint.sendResetPassword(email), accountEndpoint);
     }
@@ -296,6 +313,7 @@ public class AccountController extends AbstractController {
      */
     @PUT
     @Path("/user/{email}/resetagain")
+    @Operation(operationId = "sendResetPasswordAgain", summary = "sendResetPasswordAgain")
     public void sendResetPasswordAgain(@NotNull @UserEmail @PathParam("email") @Valid String email) throws AppBaseException {
         repeat(() -> accountEndpoint.sendResetPasswordAgain(email), accountEndpoint);
     }
@@ -311,6 +329,7 @@ public class AccountController extends AbstractController {
     @EtagValidatorFilterBinding
     @Path("/user/password")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "changeOtherPassword", summary = "changeOtherPassword")
     public void changeOtherPassword(@NotNull @Valid PasswordChangeOtherDto passwordChangeOtherDto) throws AppBaseException {
         repeat(() -> accountEndpoint.changeOtherPassword(passwordChangeOtherDto), accountEndpoint);
     }
@@ -326,6 +345,7 @@ public class AccountController extends AbstractController {
     @EtagValidatorFilterBinding
     @Path("/self/edit/email")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "editOwnAccountEmail", summary = "editOwnAccountEmail")
     public void editOwnAccountEmail(@NotNull @Valid EmailDto emailDto) throws AppBaseException {
         repeat(() -> accountEndpoint.editOwnAccountEmail(emailDto), accountEndpoint);
     }
@@ -341,6 +361,7 @@ public class AccountController extends AbstractController {
     @EtagValidatorFilterBinding
     @Path("/user/edit/email/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "editOtherAccountEmail", summary = "editOtherAccountEmail")
     public void editOtherAccountEmail(@NotNull @Login @PathParam("login") @Valid String login,
                                       @NotNull @Valid EmailDto emailDto) throws AppBaseException {
         repeat(() -> accountEndpoint.editOtherAccountEmail(emailDto, login), accountEndpoint);
@@ -354,6 +375,7 @@ public class AccountController extends AbstractController {
      */
     @POST
     @Path("/user/confirm/email/{code}")
+    @Operation(operationId = "confirmEmail", summary = "confirmEmail")
     public void confirmEmail(@NotNull @PenCode @PathParam("code") @Valid String code) throws AppBaseException {
         repeat(() -> accountEndpoint.confirmEmail(code), accountEndpoint);
     }
@@ -366,6 +388,7 @@ public class AccountController extends AbstractController {
     @GET
     @RolesAllowed("changeAccessLevel")
     @Path("changeOwnAccessLevel/{accessLevel}")
+    @Operation(operationId = "changeOwnAccessLevel", summary = "changeOwnAccessLevel")
     public Response changeOwnAccessLevel(@NotNull @PathParam("accessLevel") AccessLevel accessLevel) {
         accountEndpoint.changeOwnAccessLevel(accessLevel);
         return Response.ok().build();
@@ -381,6 +404,7 @@ public class AccountController extends AbstractController {
     @EtagValidatorFilterBinding
     @RolesAllowed("editOwnLanguage")
     @Path("/self/edit/language/{lang}")
+    @Operation(operationId = "editOwnLanguage", summary = "editOwnLanguage")
     public void editOwnLanguage(@PathParam("lang") @NotNull @Language String language) throws AppBaseException {
         repeat(() -> accountEndpoint.editOwnLanguage(language), accountEndpoint);
     }
@@ -395,6 +419,7 @@ public class AccountController extends AbstractController {
     @EtagValidatorFilterBinding
     @RolesAllowed("editOwnThemeSettings")
     @Path("/theme/{themeColor}")
+    @Operation(operationId = "changeThemeColor", summary = "changeThemeColor")
     public void changeThemeColor(@NotNull @PathParam("themeColor") ThemeColor themeColor) throws AppBaseException {
         repeat(() -> accountEndpoint.changeThemeColor(themeColor), accountEndpoint);
     }
@@ -409,6 +434,7 @@ public class AccountController extends AbstractController {
     @RolesAllowed("getAllManagers")
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/managers")
+    @Operation(operationId = "getAllManagersList", summary = "getAllManagersList")
     public List<AccountManagerDto> getAllManagersList() throws AppBaseException {
         return repeat(() -> accountEndpoint.getAllManagers(), accountEndpoint);
     }
@@ -439,6 +465,7 @@ public class AccountController extends AbstractController {
     @RolesAllowed("getManagerData")
     @Path("/{login}/manager")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getManagerData", summary = "getManagerData")
     public Response getManagerData(@NotNull @Login @PathParam("login") @Valid String login) throws AppBaseException {
         ManagerDataDto managerDataDto = repeat(() -> roleEndpoint.getManagerData(login), roleEndpoint);
         return Response.ok()

@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
@@ -41,6 +42,7 @@ public class HotelController extends AbstractController {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getHotel", summary = "getHotel")
     public HotelDto get(@PathParam("id") Long id) throws AppBaseException {
         return repeat(() -> hotelEndpoint.get(id), hotelEndpoint);
     }
@@ -53,6 +55,7 @@ public class HotelController extends AbstractController {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getAllHotelsList", summary = "getAllHotelsList")
     public List<HotelDto> getAll() throws AppBaseException {
         return repeat(() -> hotelEndpoint.getAll(), hotelEndpoint);
     }
@@ -66,6 +69,7 @@ public class HotelController extends AbstractController {
      */
     @GET
     @Path("/look/{option}")
+    @Operation(operationId = "lookForHotel", summary = "lookForHotel")
     public List<HotelDto> lookForHotel(@PathParam("option") String option) throws AppBaseException {
         return repeat(() -> hotelEndpoint.lookForHotel(option), hotelEndpoint);
     }
@@ -78,6 +82,7 @@ public class HotelController extends AbstractController {
      */
     @GET
     @Path("/filter/{option}")
+    @Operation(operationId = "filterAllHotels", summary = "filterAllHotels")
     public List<HotelDto> getAllFilter(@PathParam("option") String option) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -127,6 +132,7 @@ public class HotelController extends AbstractController {
      */
     @POST
     @RolesAllowed("addHotel")
+    @Operation(operationId = "addHotel", summary = "addHotel")
     public void addHotel(@Valid NewHotelDto hotelDto) throws AppBaseException {
         repeat(() -> hotelEndpoint.addHotel(hotelDto), hotelEndpoint);
     }
@@ -139,6 +145,7 @@ public class HotelController extends AbstractController {
      */
     @DELETE
     @RolesAllowed("deleteHotel")
+    @Operation(operationId = "deleteHotel", summary = "deleteHotel")
     public void deleteHotel(Long hotelId) throws AppBaseException {
         repeat(() -> hotelEndpoint.deleteHotel(hotelId), hotelEndpoint);
     }
@@ -153,6 +160,7 @@ public class HotelController extends AbstractController {
     @PATCH
     @RolesAllowed("addManagerToHotel")
     @Path("/add/{managerLogin}/{hotelId}")
+    @Operation(operationId = "addManagerToHotel", summary = "addManagerToHotel")
     public void addManagerToHotel(@PathParam("hotelId") Long hotelId, @PathParam("managerLogin") String managerLogin)
             throws AppBaseException {
         repeat(() -> hotelEndpoint.addManagerToHotel(hotelId, managerLogin), hotelEndpoint);
@@ -168,6 +176,7 @@ public class HotelController extends AbstractController {
     @RolesAllowed("deleteManagerFromHotel")
     @EtagValidatorFilterBinding
     @Path("/remove/{managerLogin}")
+    @Operation(operationId = "deleteManagerFromHotel", summary = "deleteManagerFromHotel")
     public void deleteManagerFromHotel(@PathParam("managerLogin") String managerLogin) throws AppBaseException {
         repeat(() -> hotelEndpoint.deleteManagerFromHotel(managerLogin), hotelEndpoint);
     }
@@ -183,6 +192,7 @@ public class HotelController extends AbstractController {
     @RolesAllowed("updateOwnHotel")
     @EtagValidatorFilterBinding
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "updateOwnHotel", summary = "updateOwnHotel")
     public void updateOwnHotel(@Valid UpdateHotelDto hotelDto) throws AppBaseException {
         repeat(() -> hotelEndpoint.updateOwnHotel(hotelDto), hotelEndpoint);
     }
@@ -200,6 +210,7 @@ public class HotelController extends AbstractController {
     @RolesAllowed("updateOtherHotel")
     @EtagValidatorFilterBinding
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "updateOtherHotel", summary = "updateOtherHotel")
     public void updateOtherHotel(@PathParam("id") Long id, @Valid UpdateHotelDto hotelDto) throws AppBaseException {
         repeat(() -> hotelEndpoint.updateOtherHotel(id, hotelDto), hotelEndpoint);
     }
@@ -214,6 +225,7 @@ public class HotelController extends AbstractController {
     @RolesAllowed("getOwnHotelInfo")
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getOwnHotelInfo", summary = "getOwnHotelInfo")
     public Response getOwnHotelInfo() throws AppBaseException {
         HotelDto hotelDto = repeat(() -> hotelEndpoint.getOwnHotelInfo(), hotelEndpoint);
         return Response.ok()
@@ -233,6 +245,7 @@ public class HotelController extends AbstractController {
     @RolesAllowed("getOtherHotelInfo")
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getOtherHotelInfo", summary = "getOtherHotelInfo")
     public Response getOtherHotelInfo(@PathParam("id") Long id) throws AppBaseException {
         HotelDto hotelDto = repeat(() -> hotelEndpoint.getOtherHotelInfo(id), hotelEndpoint);
         return Response.ok()
@@ -251,6 +264,7 @@ public class HotelController extends AbstractController {
     @GET
     @RolesAllowed("generateReport")
     @Path("/raport/{from}/{to}")
+    @Operation(operationId = "generateReport", summary = "generateReport")
     public GenerateReportDto generateReport(@PathParam("from") Long from, @PathParam("to") Long to)
             throws AppBaseException {
         return hotelEndpoint.generateReport(from, to);

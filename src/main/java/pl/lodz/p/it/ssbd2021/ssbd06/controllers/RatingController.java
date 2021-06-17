@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
@@ -39,6 +40,7 @@ public class RatingController extends AbstractController {
     @GET
     @Path("/get/{id}")
     @PermitAll
+    @Operation(operationId = "getRating", summary = "getRating")
     public Response get(@NotNull @PathParam("id") Long id) throws AppBaseException {
         RatingDto ratingDto = repeat(() -> ratingEndpoint.get(id), ratingEndpoint);
         return Response.ok()
@@ -57,6 +59,7 @@ public class RatingController extends AbstractController {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getAllRatingsList", summary = "getAllRatingsList")
     public List<RatingDto> getAll(@PathParam("id") Long hotelId) throws AppBaseException {
         return repeat(() -> ratingEndpoint.getAll(hotelId), ratingEndpoint);
     }
@@ -71,6 +74,7 @@ public class RatingController extends AbstractController {
     @RolesAllowed("getHotelRating")
     @Path("/rating/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getHotelRating", summary = "getHotelRating")
     public Response getRating(@PathParam("id") Long ratingId) throws AppBaseException {
         RatingDto ratingDto = repeat(() -> ratingEndpoint.getRating(ratingId), ratingEndpoint);
         return Response.ok()
@@ -88,6 +92,7 @@ public class RatingController extends AbstractController {
     @POST
     @RolesAllowed("addHotelRating")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "addRating", summary = "addRating")
     public void addRating(@NotNull @Valid NewRatingDto newRatingDto) throws AppBaseException {
         repeat(() -> ratingEndpoint.addRating(newRatingDto), ratingEndpoint);
     }
@@ -100,6 +105,7 @@ public class RatingController extends AbstractController {
      */
     @PUT
     @RolesAllowed("updateHotelRating")
+    @Operation(operationId = "updateRating", summary = "updateRating")
     public void updateRating(RatingDto ratingDto) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -114,6 +120,7 @@ public class RatingController extends AbstractController {
     @RolesAllowed("deleteHotelRating")
     @Path("/{id}")
     @EtagValidatorFilterBinding
+    @Operation(operationId = "deleteRating", summary = "deleteRating")
     public void deleteRating(@NotNull @PathParam("id") Long ratingId) throws AppBaseException {
         repeat(() -> ratingEndpoint.deleteRating(ratingId), ratingEndpoint);
     }
@@ -127,6 +134,7 @@ public class RatingController extends AbstractController {
     @PATCH
     @RolesAllowed("hideHotelRating")
     @Path("/changeVisibility/{ratingId}")
+    @Operation(operationId = "changeVisibility", summary = "changeVisibility")
     public void changeVisibility(@PathParam("ratingId") Long ratingId) throws AppBaseException {
         repeat(() -> ratingEndpoint.changeVisibility(ratingId), ratingEndpoint);
     }

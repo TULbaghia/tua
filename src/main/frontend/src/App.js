@@ -55,6 +55,7 @@ function App() {
             setRoles(roles);
             if (localStorage.getItem('currentRole') === null) {
                 setCurrentRole(roles[0])
+                localStorage.setItem('currentRole', roles[0])
             }
             setUsername(login)
             localStorage.setItem('username', login)

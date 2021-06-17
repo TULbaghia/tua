@@ -354,5 +354,7 @@
   "BIRD": "Ptak",
   "RABBIT": "Królik",
   "LIZARD": "Jaszczurka",
-  "TURTLE": "Żółw"
+  "TURTLE": "Żółw",
+
+  "addBox": "Add box"
 }

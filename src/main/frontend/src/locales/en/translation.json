@@ -351,5 +351,8 @@
   "BIRD": "Bird",
   "RABBIT": "Rabbit",
   "LIZARD": "Lizard",
-  "TURTLE": "Turtle"
+  "TURTLE": "Turtle",
+
+  "addBox": "Add box",
+  "search.box": "Search box..."
 }

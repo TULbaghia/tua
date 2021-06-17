@@ -16,14 +16,6 @@ import {
 } from "../Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
 
-const FilterComponent = ({filterText, onFilter, placeholderText}) => (
-    <>
-        <Form>
-            <Form.Control type="text" value={filterText} onChange={onFilter} placeholder={placeholderText}/>
-        </Form>
-    </>
-);
-
 function BoxList(props) {
 
     const [boxes, setBoxes] = useState([])
@@ -35,43 +27,25 @@ function BoxList(props) {
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
 
     const [searchTerm, setSearchTerm] = React.useState('');
-    const [filterText, setFilterText] = React.useState('');
 
     const handleSearchBox = (event) => {
-        // debugger;
         setSearchTerm(event.target.value);
-        // setBoxes(boxes.filter((b) => b.id !== event.target.value))
-        setBoxes(filteredItems);
-
-
-        // if(event.target.value !== '') {
-        //     filteredItems(event.target.value)
-        // }
+        if (event.target.value !== '') {
+            setBoxes(filteredItems);
+        } else {
+            fetchData();
+        }
     }
 
-    const subHeaderComponentMemo = React.useMemo(() => {
-
-        return <FilterComponent onFilter={e => {
-            setFilterText(e.target.value);
-        }} filterText={filterText} placeholderText={i18n.t('filterPhase')}/>;
-    }, [filterText]);
-
     const filteredItems = boxes.filter(item => {
-        return item.description && item.description.toLowerCase().includes(filterText.toLowerCase());
+        return item.description && item.description.toLowerCase().includes(searchTerm.toLowerCase());
     });
-    //
-    // const handleSearchTermChange = (event) => {
-    //     setSearchTerm(event.target.value)
-    //     if(event.target.value !== '') {
-    //         filteredItems(event.target.value)
-    //     }
-    // }
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [token]);
 
-    const fetchData = () => {
+    const fetchData = (refresh = false) => {
         const requestOptions = {
             method: "GET",
             headers: {
@@ -81,18 +55,16 @@ function BoxList(props) {
 
         fetch("/resources/boxes/all/" + username, requestOptions)
             .then((res) => res.json())
-            .then(
-                (boxes) => {
-                    setBoxes(boxes);
-                    // setFilterText('')
-                    dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
-                },
-                (error) => {
-                    console.log(error);
-                }
-            ).catch(err => {
-            ResponseErrorHandler(err, dispatchNotificationDanger)
-        });
+            .then((boxes) => {
+                setBoxes(boxes);
+            })
+            .catch(err => {
+                ResponseErrorHandler(err, dispatchNotificationDanger)
+            });
+
+        if (refresh) {
+            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+        }
     }
 
     const handleModify = (userId) => {
@@ -120,59 +92,59 @@ function BoxList(props) {
                 <li className="breadcrumb-item active" aria-current="page">{i18n.t('boxList.navbar.title')}</li>
             </BreadCrumb>
 
-            {/*<div className="floating-box">*/}
             <div style={{position: "absolute"}} className={"box-grid"}>
 
                 <div className={"row"}>
                     <h1 className="col-md-6">{i18n.t('boxList.navbar.title')}</h1>
                     <div className={"col-md-6"}>
-                    <Button className="btn-secondary float-right m-2" onClick={event => {
-                        fetchData()
-                    }}>
-                        {i18n.t("refresh")}
-                    </Button>
-                    {token !== null && token !== '' && currentRole === rolesConstant.manager ? (
-                        <Button className="btn-primary float-right m-2" onClick={event => {
-                            history.push('/hotels/addHotel');
-                        }}>{i18n.t("addHotel")}</Button>
-                    ) : (null)}
-                    <input
-                        className="input float-right m-2"
-                        type="text"
-                        placeholder={i18n.t("search.hotel")}
-                        value={searchTerm}
-                        onKeyUp={handleSearchBox}
-                        onChange={handleSearchBox}
-                    />
+                        <Button className="btn-secondary float-right m-2" onClick={event => {
+                            fetchData(true);
+                            setSearchTerm('');
+                        }}>
+                            {i18n.t("refresh")}
+                        </Button>
+                        {token !== null && token !== '' && currentRole === rolesConstant.manager ? (
+                            <Button className="btn-primary float-right m-2" onClick={event => {
+                                history.push('/hotels/addHotel');
+                            }}>{i18n.t("addBox")}</Button>
+                        ) : (null)}
+                        <input
+                            className="input float-right m-2"
+                            type="text"
+                            placeholder={i18n.t("search.box")}
+                            value={searchTerm}
+                            onKeyUp={handleSearchBox}
+                            onChange={handleSearchBox}
+                        />
                     </div>
                 </div>
-
 
                 <div style={{
                     maxHeight: '35rem',
                     display: 'flex',
                     flex: '1',
                     flexDirection: 'row',
-                    // width: '75rem',
+                    minWidth: "25rem",
                     overflowY: 'scroll'
                 }}>
                     <div className='row-wrapper' style={{padding: '1rem'}}>
                         <div className={"row"} style={{display: "flex"}}>
-                            {boxes.map((box) => (
-                                <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
-                                    <BoxItem
-                                        key={box.id}
-                                        onDelete={handleDelete}
-                                        onModify={handleModify}
-                                        box={box}
-                                    />
-                                </div>
-                            ))}
+                            {boxes.length === 0 ? (<div>No result to show</div>) : (
+                                <>
+                                    {boxes.map((box) => (
+                                        <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
+                                            <BoxItem
+                                                key={box.id}
+                                                onDelete={handleDelete}
+                                                onModify={handleModify}
+                                                box={box}
+                                            />
+                                        </div>
+                                    ))}
+                                </>
+                            )}
                         </div>
-                        {/*</div>*/}
                     </div>
-
-
                 </div>
             </div>
         </div>

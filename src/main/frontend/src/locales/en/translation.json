@@ -304,8 +304,8 @@
   "reportGenerator.title" : "Hotel report generating",
   "reportGenerator.action" : "Generate report",
   "reportGenerator.table.title" : "Bookings from given period",
-  "reportGenerator.from" : "From",
-  "reportGenerator.to" : "To",
+  "reportGenerator.from" : "From date",
+  "reportGenerator.to" : "To date",
   "reportGenerator.table.price" : "Price",
   "reportGenerator.table.rating" : "Rating",
   "reportGenerator.table.owner_login" : "Owner login",
@@ -324,7 +324,7 @@
   "addRating": "Add rating",
   "button.end": "End",
 
-  "addCity.title" : "City addition",
+  "addCity.title" : "Adding city",
   "addCity.action" : "Add city",
   "addCity.name" : "City name",
   "addCity.description" : "City description",
@@ -380,5 +380,8 @@
   "exception.booking.finished_booking": "Booking have been already finished",
   "exception.booking.in_progress_booking": "Booking is in progress",
   "exception.booking.time_exceeded": "Time limit for canceling booking has been exceeded",
-  "exception.booking.access_denied": "Access has been denied"
+  "exception.booking.access_denied": "Access has been denied",
+
+  "addCity.send.form": "Add",
+  "currency": "PLN"
 }

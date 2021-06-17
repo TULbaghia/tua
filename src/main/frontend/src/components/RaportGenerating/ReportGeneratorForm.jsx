@@ -84,9 +84,12 @@ function ReportGeneratorForm() {
                         <Col className="d-inline-block d-sm-flex justify-content-center">
                             <DatePickerCustom setPickDate={setStartDate}
                                               pickDate={startDate}
+                                              setEndDate={setEndDate}
+                                              currentEndDate={endDate}
                                               label={i18n.t('reportGenerator.from')}/>
                             <DatePickerCustom setPickDate={setEndDate}
                                               pickDate={endDate}
+                                              minDate={startDate}
                                               label={i18n.t('reportGenerator.to')}/>
                         </Col>
                     </Row>

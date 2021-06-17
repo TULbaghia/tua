@@ -382,5 +382,8 @@
   "BIRD": "Ptak",
   "RABBIT": "Królik",
   "LIZARD": "Jaszczurka",
-  "TURTLE": "Żółw"
+  "TURTLE": "Żółw",
+
+  "addCity.send.form": "Dodaj",
+  "currency": "zł"
 }

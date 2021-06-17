@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import i18n from "../../i18n";
 import DataTable from "react-data-table-component";
 import moment from "moment";
@@ -16,13 +16,14 @@ function ReportsTable({bookings}) {
             name: 'Id',
             selector: 'id',
             sortable: true,
-            width: "10rem"
+            width: "4rem"
         },
         {
             name: i18n.t('reportGenerator.from'),
             selector: 'dateFrom',
             sortable: true,
             width: "10rem",
+            style: ({ textTransform: 'capitalize'}),
             cell: row => (row.dateFrom ?
                 moment(row.dateFrom).locale(momentHelper()).local().format('LLLL').toString() : "")
         },
@@ -31,6 +32,7 @@ function ReportsTable({bookings}) {
             selector: 'dateTo',
             sortable: true,
             width: "10rem",
+            style: ({ textTransform: 'capitalize'}),
             cell: row => (row.dateTo ?
                 moment(row.dateTo).locale(momentHelper()).local().format('LLLL').toString() : "")
         },
@@ -38,13 +40,15 @@ function ReportsTable({bookings}) {
             name: 'Status',
             selector: 'status',
             sortable: true,
-            width: "10rem"
+            width: "10rem",
+            cell: row => (row.status ? i18n.t(row.status.toLowerCase() + "BookingStatus") : "")
         },
         {
             name: i18n.t('reportGenerator.table.price'),
             selector: 'price',
             sortable: true,
-            width: "10rem"
+            width: "10rem",
+            cell: row => (row.price ? row.price + " " + i18n.t('currency'): "")
         },
         {
             name: i18n.t('reportGenerator.table.rating'),

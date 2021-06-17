@@ -30,7 +30,7 @@ function AddCityForm() {
             callbackOnSave: () => {
                 addCity({values, token}).then(res => {
                     dispatchNotificationSuccess({message: i18n.t('addCity.success')});
-                    history.push("/");
+                    history.push("/cities");
                 }).catch(err => {
                     ResponseErrorHandler(err, dispatchNotificationDanger);
                 });
@@ -55,7 +55,7 @@ function AddCityForm() {
                     {i18n.t('addCity.title')}
                 </li>
             </BreadCrumb>
-            <div className="floating-box">
+            <div className="floating-box custom-form-width">
                 <Container>
                     <Row className="text-center justify-content-center d-block">
                         <h1 className="mb-3">{i18n.t('addCity.title')}</h1>
@@ -90,7 +90,7 @@ function AddCityForm() {
                                     <button className="btn-background-custom btn btn-lg btn-primary mt-3"
                                             type="submit"
                                             disabled={isSubmitting}>
-                                        {i18n.t('send')}
+                                        {i18n.t('addCity.send.form')}
                                     </button>
                                 </Row>
                             </Form>

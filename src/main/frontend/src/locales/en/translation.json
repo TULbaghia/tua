@@ -331,6 +331,7 @@
   "addCity.error.name_required": "Name is required",
   "addCity.error.description_required": "Description required",
   "addCity.success": "City has been successfully added",
+
   "exception.city.name_invalid": "City name is already in use",
 
   "exception.delete.city.has_hotels": "Cannot delete city with hotels assigned",
@@ -350,7 +351,7 @@
   "modifyCity.error.name_required": "City name is required",
   "modifyCity.error.description_required": "City description is required",
   "location": "Location",
-  "description": "About",
+  "descriptionHotel": "About",
   "comments": "Comments",
   "hiddenComment": "Due to inappropriate content the comment has been hidden",
   "averageRating": "Average rating:",
@@ -359,13 +360,12 @@
   "addBox.navbar.title" : "Add new box",
 
   "addBox.title": "Box addition",
-  "addBox.price" : "Price",
-  "addBox.description" : "Description",
-  "addBox.animalType" : "Animal type",
+  "description" : "Description",
+  "animalType" : "Animal type",
   "addBox.success": "Box has been successfully added",
 
-  "addBox.error.price_required": "Box price is required",
-  "addBox.error.description_required": "Box description is required",
+  "box.error.price_required": "Box price is required",
+  "box.error.description_required": "Box description is required",
 
   "DOG": "Dog",
   "CAT":  "Cat",
@@ -380,5 +380,11 @@
   "exception.booking.finished_booking": "Booking have been already finished",
   "exception.booking.in_progress_booking": "Booking is in progress",
   "exception.booking.time_exceeded": "Time limit for canceling booking has been exceeded",
-  "exception.booking.access_denied": "Access has been denied"
+  "exception.booking.access_denied": "Access has been denied",
+
+  "modifyBox.title": "Box modification",
+  "modifyBox.success": "Box has been successfully modified",
+  "modifyBox.modify.info": "You are editing: ",
+
+  "exception.box.access_denied": "No permission to edit this resource"
 }

@@ -119,7 +119,7 @@ function Home(props) {
                     </div>
                     <div className={"col-md-8 col-sm-6 col-4"}>
                         <Tabs defaultActiveKey="description" transition={false} id="tab">
-                            <Tab eventKey="description" title={t('description')}>
+                            <Tab eventKey="description" title={t('descriptionHotel')}>
                                 <div className={"text-justify mt-2"}>
                                     {hotelData.description}
                                 </div>

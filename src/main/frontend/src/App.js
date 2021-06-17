@@ -39,6 +39,7 @@ import AddCityForm from "./components/AddCity/AddCityForm";
 import ModifyCityForm from "./components/ModifyCity/ModifyCityForm";
 import HotelInfo from './components/HotelInfo/HotelInfo';
 import AddBoxForm from "./components/AddBox/AddBoxForm";
+import ModifyBoxForm from "./components/ModifyBox/ModifyBoxForm";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -176,6 +177,8 @@ function App() {
                             <GuardedRoute exact path="/cities/editCity" component={ModifyCityForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels/hotelInfo" component={HotelInfo} meta={{}}/>
                             <GuardedRoute exact path="/boxes/add" component={AddBoxForm}
+                                          meta={{auth: true, manager: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/boxes/modify" component={ModifyBoxForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
                             <Route component={NotFound}/>
                         </Switch>

@@ -1,40 +1,68 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import BreadCrumb from "../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import i18n from "../../i18n";
 import {Col, Container, Row} from "react-bootstrap";
 import {Form, Formik} from "formik";
-import {AddBoxValidationSchema} from "./AddBoxFormComponents/ValidationSchema";
-import FieldComponent from "./AddBoxFormComponents/FieldComponent";
+import {ModifyBoxValidationSchema} from "./ModifyBoxFormComponents/ValidationSchema";
+import FieldComponent from "./ModifyBoxFormComponents/FieldComponent";
 import {withNamespaces} from "react-i18next";
-import "./AddBoxFormWrapper.scss"
-import SelectComponent from "./AddBoxFormComponents/SelectComponent";
-import {useHistory} from "react-router";
+import "./ModifyBoxFormWrapper.scss"
+import {useHistory, useLocation} from "react-router";
 import {useLocale} from "../LoginContext";
 import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
 } from "../Utils/Notification/NotificationProvider";
 import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
-import {addBox} from "./AddBoxApiUtil";
+import {getBox, modifyBox} from "./ModifyBoxApiUtil";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
+import queryString from "query-string";
+import {v4} from "uuid";
 
-function AddBoxForm() {
+function ModifyBoxForm() {
 
-    const animals = ["DOG", "CAT", "RODENT", "BIRD", "RABBIT", "LIZARD", "TURTLE"]
+    const location = useLocation();
     const history = useHistory();
     const {token} = useLocale();
-    const [animalTypes, setAnimalTypes] = useState(animals);
+    const [etag, setETag] = useState();
+    const [box, setBox] = useState({
+        id: "",
+        price: "",
+        description: ""
+    });
+
+    const boxId = queryString.parse(location.search).id;
 
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchDialog = useDialogPermanentChange();
 
-    const handleAddBox = (values, setSubmitting) => {
+    useEffect(() => {
+        if (token) {
+            handleFetch(true);
+        }
+    }, [token]);
+
+
+    const handleFetch = (firstFetch = false) => {
+        getBox(boxId, token).then(response => {
+            setBox({...response.data, key: v4()});
+            setETag(response.headers.etag);
+        }).catch(error => {
+            ResponseErrorHandler(error, dispatchNotificationDanger);
+        });
+
+        if (!firstFetch) {
+            dispatchNotificationSuccess({message: i18n.t('dataRefresh')});
+        }
+    }
+
+    const handleModifyBox = (values, setSubmitting) => {
         dispatchDialog({
             callbackOnSave: () => {
-                addBox({values, token}).then(res => {
-                    dispatchNotificationSuccess({message: i18n.t('addBox.success')});
+                modifyBox({values, token, etag}).then(res => {
+                    dispatchNotificationSuccess({message: i18n.t('modifyBox.success')});
                     history.push("/");
                 }).catch(err => {
                     ResponseErrorHandler(err, dispatchNotificationDanger);
@@ -48,7 +76,7 @@ function AddBoxForm() {
     }
 
     return (
-        <div id="add-box-form">
+        <div id="modify-box-form">
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">{i18n.t('mainPage')}</Link>
@@ -57,32 +85,35 @@ function AddBoxForm() {
                     <Link to="/">{i18n.t('managerDashboard')}</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
-                    {i18n.t('addBox.title')}
+                    {i18n.t('modifyBox.title')}
                 </li>
             </BreadCrumb>
             <div className={"floating-box"}>
                 <Container>
                     <Row className="text-center justify-content-center d-block">
-                        <h1 className="mb-3">{i18n.t('addBox.title')}</h1>
+                        <h1 className="mb-3">{i18n.t('modifyBox.title')}</h1>
+                        <h5>{i18n.t('modifyBox.modify.info')}{box.description}</h5>
+                        <button className="mt-3 w-25 btn-background-custom btn btn-primary"
+                                onClick={(e) => handleFetch()}
+                                type="submit">
+                            {i18n.t("refresh")}
+                        </button>
                         <p className="obligatory-fields">{i18n.t('obligatoryFields')}</p>
                     </Row>
-                    <Formik initialValues={{
-                        price: "",
-                        description: "",
-                        animalType: "",
-                    }}
-                    enableReinitialize
-                    validate={AddBoxValidationSchema}
-                    onSubmit={(values, {setSubmitting}) => handleAddBox(values, setSubmitting)}>
+                    <Formik
+                        initialValues={{...box}}
+                        enableReinitialize
+                        validate={ModifyBoxValidationSchema}
+                        onSubmit={(values, {setSubmitting}) => handleModifyBox(values, setSubmitting)}>
                         {({isSubmitting, handleChange}) => (
                             <Form>
                                 <Row>
                                     <Col>
-                                        <SelectComponent name="animalType"
-                                                        entryValue={animalTypes[0]}
+                                        <FieldComponent name="animalType"
                                                         label={i18n.t('animalType')}
-                                                        values={animalTypes}
-                                                        handleChange={handleChange}/>
+                                                        placeholder={i18n.t('animalType')}
+                                                        handleChange={handleChange}
+                                                        readonly={true}/>
                                     </Col>
                                 </Row>
                                 <Row>
@@ -105,7 +136,7 @@ function AddBoxForm() {
                                     <button className="btn-background-custom btn btn-lg btn-primary mt-3"
                                             type="submit"
                                             disabled={isSubmitting}>
-                                        {i18n.t('add')}
+                                        {i18n.t('edit')}
                                     </button>
                                 </Row>
                             </Form>
@@ -116,4 +147,5 @@ function AddBoxForm() {
         </div>
     )
 }
-export default withNamespaces()(AddBoxForm)
+
+export default withNamespaces()(ModifyBoxForm)

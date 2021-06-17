@@ -51,6 +51,9 @@ function AddCityForm() {
                 <li className="breadcrumb-item">
                     <Link to="/">{i18n.t('adminDashboard')}</Link>
                 </li>
+                <li className="breadcrumb-item" aria-current="page">
+                    <Link to="/cities">{i18n.t('cities.list.bread_crumb')}</Link>
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
                     {i18n.t('addCity.title')}
                 </li>

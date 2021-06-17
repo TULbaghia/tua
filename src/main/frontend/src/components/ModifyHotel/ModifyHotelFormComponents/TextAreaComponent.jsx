@@ -6,7 +6,7 @@ function TextAreaComponent({label, name, handleChange, obligatory = false, place
         <>
             <h6 className="mt-3 mb-0">{label}</h6>
             <div className="d-flex w-100">
-                <Field className="text-area-custom w-100 my-2"
+                <Field className="text-area-custom w-100 my-2 form-control"
                        as="textarea"
                        name={name}
                        placeholder={placeholder}

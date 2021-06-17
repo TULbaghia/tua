@@ -166,6 +166,11 @@ function CitiesList(props) {
                             ResponseErrorHandler(err, dispatchNotificationDanger)
                         })
                     }}>{t("refresh")}</Button>
+                    {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
+                        <Button className="btn-primary float-right m-2" onClick={event => {
+                            history.push('/cities/add');
+                        }}>{t('addCity.action')}</Button>
+                    ) : ( null )}
                 </div>
                 <DataTable className={"rounded-0"}
                     noDataComponent={i18n.t('table.no.result')}

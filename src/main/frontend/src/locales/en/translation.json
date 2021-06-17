@@ -405,5 +405,10 @@
   "rating.maximal": "Maximal rating",
   "text.animal.type": "Animal type",
 
-  "booking.ending.success": "Reservation has been ended successfully"
+  "booking.ending.success": "Reservation has been ended successfully",
+
+  "sort.by.rating.ascending": "Rating ascending",
+  "sort.by.rating.descending": "Rating descending",
+  "sort.alphabetically": "Alphabetically",
+  "sort.by": "Sort by"
 }

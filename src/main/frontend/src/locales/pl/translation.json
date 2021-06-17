@@ -408,5 +408,10 @@
   "unassignManager": "Usuń managera z hotelu",
   "emptyListManagerUnassign": "Brak przypisanych managerów",
 
-  "booking.ending.success": "Rezerwacja została zakończona pomyślnie"
+  "booking.ending.success": "Rezerwacja została zakończona pomyślnie",
+
+  "sort.by.rating.ascending": "Oceną rosnąco",
+  "sort.by.rating.descending": "Oceną malejąco",
+  "sort.alphabetically": "Alfabetycznie",
+  "sort.by": "Sortuj"
 }

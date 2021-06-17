@@ -33,6 +33,14 @@ public interface BoxEndpointLocal extends CallingClass {
     List<BoxDto> getAll() throws AppBaseException;
 
     /**
+     * @param loginManger login menagera hotelu dla którego chcemy zwrócić listę klatek
+     * @return lista klatek
+     * @throws AppBaseException w momencie wystąpienia błędu
+     */
+    @RolesAllowed("getAllBoxes")
+    List<BoxDto> getAllBoxesInHotel(String loginManger) throws AppBaseException;
+
+    /**
      * @param hotelId identyfikator hotelu dla którego chcemy zwrócić listę klatek
      * @return lista klatek
      * @throws AppBaseException w momencie wystąpienia błędu

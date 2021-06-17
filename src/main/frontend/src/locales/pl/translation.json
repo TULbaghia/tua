@@ -299,6 +299,7 @@
   "addHotel.error.name_required": "Nazwa jest wymagana",
   "addHotel.error.city_required": "Miasto jest wymagane",
   "addHotel.error.description_required": "Opis jest wymagany",
+  "addHotel.form.add": "Dodaj hotel",
 
   "reportGenerator.time_label" : "Czas",
   "reportGenerator.title" : "Raport działalności hotelu",

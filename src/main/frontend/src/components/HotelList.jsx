@@ -311,7 +311,7 @@ function HotelList(props) {
     }
 
     const getAllHotels = async () => {
-        return await api.getAllHotelsList({headers: {Authorization: token}})
+        return await api.getAllHotelList({headers: {Authorization: token}})
     }
 
     const subHeaderComponentMemo = React.useMemo(() => {

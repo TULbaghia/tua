@@ -24,6 +24,7 @@ function PasswordResetForm({t, i18n}) {
     const conf = new Configuration()
     const api = new DefaultApi(conf)
 
+    
     const handleConfirmation = (values, setSubmitting) => (
         dispatchCriticalDialog({
             callbackOnSave: () => handleSubmit(values, setSubmitting),

@@ -5,7 +5,6 @@ import {withNamespaces} from "react-i18next";
 
 function Forbidden(props) {
     const {t, i18n} = props
-
     return(
         <div className="floating-box">
             <img className="shadow p-3 mb-5 rounded" src={cat} alt={t('staringCat')}/>

@@ -141,6 +141,9 @@ function ActiveBookings(props) {
             name: t('price'),
             selector: 'price',
             sortable: true,
+            cell: row => {
+                return row.price + " " + t('currency');
+            }
         },
         {
             name: t('bookingStatus'),

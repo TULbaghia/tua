@@ -316,7 +316,7 @@
   "reservationStart": "Reservation start",
   "reservationEnd": "Reservation end",
   "price": "Price",
-  "bookingStatus": "Stan rezerwacji",
+  "bookingStatus": "Booking status",
   "pendingBookingStatus": "Pending",
   "cancelledBookingStatus": "Cancelled",
   "in_progressBookingStatus": "In progress",

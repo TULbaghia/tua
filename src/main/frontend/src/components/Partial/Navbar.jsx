@@ -263,9 +263,6 @@ function NavigationBar(props) {
                             <LinkContainer to="/hotels">
                                 <Nav.Link>{t('hotels')}</Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to="/regulations">
-                                <Nav.Link>{t('regulations')}</Nav.Link>
-                            </LinkContainer>
                         </Nav>
                         <Nav className="navbar-right">
                             <ThemeColorSwitcher/>

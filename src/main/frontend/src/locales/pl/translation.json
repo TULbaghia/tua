@@ -390,7 +390,7 @@
   "LIZARD": "Jaszczurka",
   "TURTLE": "Żółw",
 
-  "addBox": "Add box",
+  "addBox": "Dodaj box",
 
   "choose.animal.type": "Wybierz typ zwierzęcia",
   "filter.button": "Filtruj",
@@ -411,5 +411,6 @@
   "unassignManager": "Usuń managera z hotelu",
   "emptyListManagerUnassign": "Brak przypisanych managerów",
 
-  "booking.ending.success": "Rezerwacja została zakończona pomyślnie"
+  "booking.ending.success": "Rezerwacja została zakończona pomyślnie",
+  "search.box": "Wyszukaj box..."
 }

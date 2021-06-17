@@ -37,7 +37,6 @@ const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     </>
 );
 
-
 function HotelList(props) {
     const {t, i18n} = props
     const history = useHistory()
@@ -67,72 +66,45 @@ function HotelList(props) {
         return item.name && item.name.toLowerCase().includes(filterText.toLowerCase());
     });
 
-    const rand = () => {
-        const min = 1;
-        const max = 10;
-        const rand = min + Math.floor(Math.random() * (max - min));
-        switch(rand) {
-            case 1:
-                return hotelPhoto;
-            case 2:
-                return hotelPhoto2;
-            case 3:
-                return hotelPhoto3;
-            case 4:
-                return hotelPhoto4;
-            case 5:
-                return hotelPhoto5;
-            case 6:
-                return hotelPhoto6;
-            case 7:
-                return hotelPhoto7;
-            case 8:
-                return hotelPhoto8;
-            case 9:
-                return hotelPhoto9;
-            case 10:
-                return hotelPhoto10;
-            default:
-                return hotelPhoto;
-        }
-    }
-
     const HotelCard = ({hotel}) => (
         <Col xs={12} md={6} lg={3} key={hotel.id}>
             {themeColor === "light" ? (
-                <Card style={{width: '16rem', background: '#f5f5f5', marginTop: '2rem'}}>
-                    <Card.Img variant="top" src={hotel.image ? (hotel.image) : (rand())}/>
-                    <Card.Body>
-                        <Card.Title>{hotel.name}</Card.Title>
-                        <Card.Text>{hotel.cityName}</Card.Text>
-                        <Button className="btn-sm" onClick={event => {
-                            history.push('/hotels/hotelInfo?id=' + hotel.id);
-                        }}>{t('details')}</Button>
-                    </Card.Body>
+                <Card style={{width: '16rem', background: '#f5f5f5', marginRight: '20rem', marginTop: '2rem'}}>
+                    <Card.Img variant="top" src={hotel.image ? (hotel.image) : (hotelPhoto)}/>
+                    {hotel.name ? (
+                        <Card.Body>
+                            <Card.Title>{hotel.name}</Card.Title>
+                            <Card.Text>{hotel.cityName}</Card.Text>
+                            <Button className="btn-sm" onClick={event => {
+                                history.push('/hotels/hotelInfo?id=' + hotel.id);
+                            }}>{t('details')}</Button>
+                        </Card.Body>
+                    ) : (
+                        <Card.Body>
+                            <Card.Title>{t('emptyListHotel')}</Card.Title>
+                        </Card.Body>
+                    )}
                 </Card>
             ) : (
-                <Card style={{width: '16rem', background: '#2b2b2b', marginTop: '2rem'}}>
-                    <Card.Img variant="top" src={hotel.image ? (hotel.image) : (rand())}/>
-                    <Card.Body>
-                        <Card.Title>{hotel.name}</Card.Title>
-                        <Card.Text>{hotel.cityName}</Card.Text>
-                        <Button className="btn-sm" onClick={event => {
-                            history.push('/hotels/hotelInfo?id=' + hotel.id);
-                        }}>{t('details')}</Button>
-                    </Card.Body>
+                <Card style={{width: '16rem', background: '#2b2b2b', marginRight: '20rem', marginTop: '2rem'}}>
+                    <Card.Img variant="top" src={hotel.image ? (hotel.image) : (hotelPhoto)}/>
+                    {hotel.name ? (
+                        <Card.Body>
+                            <Card.Title>{hotel.name}</Card.Title>
+                            <Card.Text>{hotel.cityName}</Card.Text>
+                            <Button className="btn-sm" onClick={event => {
+                                history.push('/hotels/hotelInfo?id=' + hotel.id);
+                            }}>{t('details')}</Button>
+                        </Card.Body>
+                    ) : (
+                        <Card.Body>
+                            <Card.Title>{t('emptyListHotel')}</Card.Title>
+                        </Card.Body>
+                    )}
                 </Card>
             )}
         </Col>
     )
-
-    const getHotelData = async (id) => {
-        const response = await api.getHotel(id,{
-            method: "GET",
-            headers: {
-                Authorization: token,
-            }})
-        return response;
-    };
 
     const handleSearchTermChange = (event) => {
         setSearchTerm(event.target.value)
@@ -182,39 +154,6 @@ function HotelList(props) {
             }
         });
     }
-
-    const guestColumns = [
-        {
-            name: t('hotelName'),
-            selector: 'name',
-            width: "10rem"
-        },
-        {
-            name: t('address'),
-            selector: 'address',
-            width: "10rem"
-        },
-        {
-            name: t('city'),
-            selector: 'cityName',
-            width: "10rem"
-        },
-        {
-            name: t('rating'),
-            selector: 'rating'
-        },
-        {
-            name: t('details'),
-            selector: 'details',
-            cell: row => {
-                return(
-                    <Button className="btn-sm" onClick={event => {
-                        history.push('/hotels/hotelInfo?id=' + row.id);
-                    }}>{t('details')}</Button>
-                )
-            }
-        },
-    ];
 
     const managerColumns = [
         {
@@ -340,7 +279,6 @@ function HotelList(props) {
     }
 
     const subHeaderComponentMemo = React.useMemo(() => {
-
         return <FilterComponent onFilter={e => {
             setFilterText(e.target.value);
         }} filterText={filterText} placeholderText={t('filterPhase')}/>;
@@ -393,6 +331,7 @@ function HotelList(props) {
                         placeholder={t("search.hotel")}
                         value={searchTerm}
                         onChange={handleSearchTermChange}
+                        style={themeColor === "light" ? ({backgroundColor: "#f8f9fa"}) : ({color: "#f8f9fa", backgroundColor: "#424242"})}
                     />
                 </div>
                 <div className="d-flex flex-row-reverse">
@@ -439,7 +378,7 @@ function HotelList(props) {
                         {t('rating')}
                     </h4>
                 </div>
-                {token === null || token === '' ? (
+                {(token === null || token === '') &&
                     <div style={{height: '35rem', display: 'flex', flex: '1', flexDirection: 'row', width: '75rem', overflowY: 'scroll'}}>
                         <div className='row-wrapper' style={{padding: '1rem'}}>
                             <Row>
@@ -449,34 +388,38 @@ function HotelList(props) {
                             </Row>
                         </div>
                     </div>
-                ) : ( null )}
-                {token !== null && token !== '' && currentRole === rolesConstant.client ? (
-                    <DataTable className={"rounded-0"}
-                               noDataComponent={i18n.t('table.no.result')}
-                               columns={guestColumns}
-                               data={filteredItems}
-                               subHeader
-                               theme={themeColor}
-                    />
-                ) : ( null )}
-                {token !== null && token !== '' && currentRole === rolesConstant.manager ? (
+                }
+                {(token !== null && token !== '' && currentRole === rolesConstant.client) &&
+                    <div style={{height: '35rem', display: 'flex', flex: '1', flexDirection: 'row', width: '75rem', overflowY: 'scroll'}}>
+                        <div className='row-wrapper' style={{padding: '1rem'}}>
+                            <Row>
+                                {data.map(hotel => (
+                                    <HotelCard key={hotel.id} hotel={hotel}/>
+                                ))}
+                            </Row>
+                        </div>
+                    </div>
+                }
+                {(token !== null && token !== '' && currentRole === rolesConstant.manager) &&
                     <DataTable className={"rounded-0"}
                                noDataComponent={i18n.t('table.no.result')}
                                columns={managerColumns}
                                data={filteredItems}
                                subHeader
                                theme={themeColor}
+                               subHeaderComponent={subHeaderComponentMemo}
                     />
-                ) : ( null )}
-                {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
+                }
+                {(token !== null && token !== '' && currentRole === rolesConstant.admin) &&
                     <DataTable className={"rounded-0"}
                                noDataComponent={i18n.t('table.no.result')}
                                columns={adminColumns}
                                data={filteredItems}
                                subHeader
                                theme={themeColor}
+                               subHeaderComponent={subHeaderComponentMemo}
                     />
-                ) : ( null )}
+                }
             </div>
         </div>
     )

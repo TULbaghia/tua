@@ -267,6 +267,7 @@
   "exception.hotel.has_manager": "This manager have been already assigned",
   "emptyListManager": "No unassigned managers",
   "search.hotel": "Search hotel...",
+  "emptyListHotel": "No hotels to display",
 
   "editOwnHotel.navbar.title" : "Modify hotel",
   "generateReport.navbar.title" : "Generate report",

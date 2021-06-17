@@ -379,5 +379,10 @@
   "filter.button": "Filter",
   "rating.minimal": "Minimal rating",
   "rating.maximal": "Maximal rating",
-  "text.animal.type": "Animal type"
+  "text.animal.type": "Animal type",
+
+  "sort.by.rating.ascending": "Rating ascending",
+  "sort.by.rating.descending": "Rating descending",
+  "sort.alphabetically": "Alphabetically",
+  "sort.by": "Sort by"
 }

@@ -27,7 +27,9 @@ import hotelPhoto8 from "../images/hotel8.jpg";
 import hotelPhoto9 from "../images/hotel9.jpg";
 import hotelPhoto10 from "../images/hotel10.jpg";
 import Select from 'react-select';
-import {animalTypes, queryBuilder} from "./Utils/AnimalTypes/AnimalTypes";
+import {animalTypes, queryBuilder} from "./Utils/HotelsView/AnimalTypes";
+import {sortingTypes} from "./Utils/HotelsView/SortingTypes";
+import i18n from "i18next";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -47,6 +49,7 @@ function HotelList(props) {
     const [etag, setETag] = useState();
     const [searchTerm, setSearchTerm] = React.useState('');
     const [selectedValue, setSelectedValue] = useState([]);
+    const [sortSelectedValue, setSortSelectedValue] = useState();
     const [minRatingValue, setMinRatingValue] = useState(1);
     const [maxRatingValue, setMaxRatingValue] = useState(5);
     const [data, setData] = useState([
@@ -138,6 +141,7 @@ function HotelList(props) {
         setSearchTerm(event.target.value)
         if (event.target.value !== '') {
             fetchSearchedData(event.target.value)
+            setSortSelectedValue('')
         }
         else {
             fetchData()
@@ -148,12 +152,43 @@ function HotelList(props) {
         setSelectedValue(Array.isArray(e) ? e.map(x => x.value) : []);
     }
 
+    const handleSelectedSortValueChange = (e) => {
+        setSortSelectedValue(e);
+        sortHotelData(e.value - 1)
+    }
+
+    const sortHotelData = (property) => {
+        const types = [
+            'name',
+            'rating'
+        ];
+        let sorted
+        if (property === 0) {
+            const sortProperty = types[property];
+            sorted = [...data].sort((a, b) => {
+                if (a.name < b[sortProperty]) return -1;
+                if (a[sortProperty] > b[sortProperty]) return 1;
+                return 0;
+            })
+        }
+        else if (property === 1) {
+            const sortProperty = types[property];
+            sorted = [...data].sort((a, b) => b[sortProperty] - a[sortProperty])
+        }
+        else {
+            const sortProperty = types[property - 1]
+            sorted = [...data].sort((a, b) => a[sortProperty] - b[sortProperty])
+        }
+        setData(sorted);
+    }
+
     const handleFilterClick = () => {
         let query = queryBuilder(minRatingValue, maxRatingValue, selectedValue)
 
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/hotels/filter` + query)
             .then(res => {
                 setData(res.data)
+                setSortSelectedValue('')
             })
             .catch(err => {
                 ResponseErrorHandler(err, dispatchNotificationDanger)
@@ -312,6 +347,7 @@ function HotelList(props) {
         getAllHotels().then(r => {
             console.log(r);
             setData(r.data);
+            setSortSelectedValue('')
         }).catch(r => {
             if (r.response != null) {
                 if (r.response.status === 403) {
@@ -383,6 +419,17 @@ function HotelList(props) {
                         value={searchTerm}
                         onChange={handleSearchTermChange}
                     />
+                    <Select
+                        className="align-self-center w-25"
+                        placeholder='...'
+                        value={sortSelectedValue}
+                        options={sortingTypes}
+                        onChange={handleSelectedSortValueChange}
+                    />
+                    <h4
+                        className="float-right align-self-center">
+                        {t('sort.by')}
+                    </h4>
                 </div>
                 <div className="d-flex flex-row-reverse">
                     <Button
@@ -391,7 +438,7 @@ function HotelList(props) {
                         {t('filter.button')}
                     </Button>
                     <Select
-                        className="float-right dropdown align-self-center"
+                        className="float-right dropdown align-self-center w-25"
                         placeholder={t("choose.animal.type")}
                         value={animalTypes.filter(obj => selectedValue.includes(obj.value))}
                         options={animalTypes}

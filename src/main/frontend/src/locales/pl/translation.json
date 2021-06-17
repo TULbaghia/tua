@@ -382,5 +382,10 @@
   "filter.button": "Filtruj",
   "rating.minimal": "Minimalna ocena",
   "rating.maximal": "Maksymalna ocena",
-  "text.animal.type": "Rodzaj zwierzęcia"
+  "text.animal.type": "Rodzaj zwierzęcia",
+
+  "sort.by.rating.ascending": "Oceną rosnąco",
+  "sort.by.rating.descending": "Oceną malejąco",
+  "sort.alphabetically": "Alfabetycznie",
+  "sort.by": "Sortuj"
 }

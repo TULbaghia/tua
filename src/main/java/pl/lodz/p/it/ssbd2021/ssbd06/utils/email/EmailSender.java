@@ -169,6 +169,20 @@ public class EmailSender {
     }
 
     /**
+     * Wysyła email z powiadomieniem o anulowaniu rezerwacji.
+     *
+     * @param account odbiorca wiadomości.
+     * @param reservationId numer rezerwacji.
+     * @throws AppBaseException wysyłanie wiadomości email nie powiodło się.
+     */
+    public void sendCancelReservationEmail(Account account, Long reservationId) throws AppBaseException {
+        String lang = account.getLanguage();
+        String cancelReservationContent = emailConfig.getContentForType(lang, Config.MailType.CANCEL_RESERVATION, account.getLogin(), reservationId.toString());
+        String cancelReservationSubject = emailConfig.getSubjectForType(lang, Config.MailType.CANCEL_RESERVATION);
+        sendEmail(account.getEmail(), cancelReservationSubject, cancelReservationContent);
+    }
+
+    /**
      * Tworzy link, który jest wysyłany do użytkownika.
      * Link zawiera unikalny kod, który służy do potwierdzania procesów biznesowych.
      *

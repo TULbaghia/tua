@@ -14,8 +14,10 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.math.BigDecimal;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Kontroler odpowiadający za zarządzanie hotelami.
@@ -78,6 +80,43 @@ public class HotelController extends AbstractController {
     @Path("/filter/{option}")
     public List<HotelDto> getAllFilter(@PathParam("option") String option) throws AppBaseException {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Zwraca listę hoteli po przefiltrowaniu
+     * @param fromRating dolny przedział oceny hotelu
+     * @param toRating górny przedział oceny hotelu
+     * @param dogType wartość logiczna określająca czy hotel przyjmuje psy
+     * @param catType wartość logiczna określająca czy hotel przyjmuje koty
+     * @param rodentType wartość logiczna określająca czy hotel przyjmuje gryzonie
+     * @param birdType wartość logiczna określająca czy hotel przyjmuje ptaki
+     * @param rabbitType wartość logiczna określająca czy hotel przyjmuje króliki
+     * @param lizardType wartość logiczna określająca czy hotel przyjmuje jaszczurki
+     * @param turtleType wartość logiczna określająca czy hotel przyjmuje żółwie
+     * @return lista hoteli
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @GET
+    @Path("/filter")
+    public List<HotelDto> getFilteredHotels(@QueryParam(value = "fromRating") Double fromRating,
+                                            @QueryParam(value = "toRating") Double toRating,
+                                            @QueryParam(value = "dogType") String dogType,
+                                            @QueryParam(value = "catType") String catType,
+                                            @QueryParam(value = "rodentType") String rodentType,
+                                            @QueryParam(value = "birdType") String birdType,
+                                            @QueryParam(value = "rabbitType") String rabbitType,
+                                            @QueryParam(value = "lizardType") String lizardType,
+                                            @QueryParam(value = "turtleType") String turtleType) throws AppBaseException {
+        BigDecimal fromValue = BigDecimal.valueOf(Objects.requireNonNullElse(fromRating, 1.0));
+        BigDecimal toValue = BigDecimal.valueOf(Objects.requireNonNullElse(toRating, 5.0));
+        boolean isDog = Boolean.parseBoolean(Objects.requireNonNullElse(dogType, "false"));
+        boolean isCat = Boolean.parseBoolean(Objects.requireNonNullElse(catType, "false"));
+        boolean isRodent = Boolean.parseBoolean(Objects.requireNonNullElse(rodentType, "false"));
+        boolean isBird = Boolean.parseBoolean(Objects.requireNonNullElse(birdType, "false"));
+        boolean isRabbit = Boolean.parseBoolean(Objects.requireNonNullElse(rabbitType, "false"));
+        boolean isLizard = Boolean.parseBoolean(Objects.requireNonNullElse(lizardType, "false"));
+        boolean isTurtle = Boolean.parseBoolean(Objects.requireNonNullElse(turtleType, "false"));
+        return repeat(() -> hotelEndpoint.getAllFilter(fromValue, toValue, isDog, isCat, isRodent, isBird, isRabbit, isLizard, isTurtle), hotelEndpoint);
     }
 
     /**

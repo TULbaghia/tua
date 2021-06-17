@@ -41,6 +41,15 @@ public class NotFoundException extends AppBaseException {
     }
 
     /**
+     * Tworzy wyjątek reprezentujący nieznalezienie encji rating.
+     *
+     * @return wyjątek NotFoundException
+     */
+    public static NotFoundException ratingNotFound() {
+        return new NotFoundException(RATING_NOT_FOUND);
+    }
+
+    /**
      * Tworzy wyjątek reprezentujący nieznalezienie encji account.
      *
      * @return wyjątek NotFoundException

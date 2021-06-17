@@ -5,7 +5,7 @@ import BreadCrumb from "../Partial/BreadCrumb";
 import {withNamespaces} from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 import {Link} from "react-router-dom";
-import {Configuration, DefaultApi} from "api-client";
+import {Configuration, DefaultApi} from "ssbd06-api";
 import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort,

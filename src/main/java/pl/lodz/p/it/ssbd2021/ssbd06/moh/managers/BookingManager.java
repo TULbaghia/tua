@@ -1,12 +1,21 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BookingException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -14,7 +23,10 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +46,12 @@ public class BookingManager {
     @Inject
     private SecurityContext securityContext;
 
+    @Inject
+    private EmailSender emailSender;
+
+    @Inject
+    private Config bookingConfig;
+
     /**
      * Zwraca wskazaną rezerwację:
      * - Dla managera dozwolone rezerwacja w jego hotelu,
@@ -43,8 +61,9 @@ public class BookingManager {
      * @return rezerwacja
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    Booking get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @PermitAll
+    public Booking get(Long id) throws AppBaseException {
+        return bookingFacade.find(id);
     }
 
     /**
@@ -88,8 +107,37 @@ public class BookingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("cancelReservation")
-    void cancelBooking(Long bookingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void cancelBooking(Long bookingId) throws AppBaseException {
+        Booking booking = bookingFacade.find(bookingId);
+        if (booking.getStatus().equals(BookingStatus.PENDING)) {
+            if (securityContext.isCallerInRole("Client") && !isBetweenAllowedTimeLimit(booking.getCreationDate(), booking.getDateFrom())) {
+                throw BookingException.timeForCancellationExceeded();
+            }
+            booking.setStatus(BookingStatus.CANCELLED);
+            bookingFacade.edit(booking);
+            emailSender.sendCancelReservationEmail(booking.getAccount(), booking.getId());
+        } else if (booking.getStatus().equals(BookingStatus.IN_PROGRESS)) {
+            throw BookingException.inProgressBookingCancellation();
+        } else if (booking.getStatus().equals(BookingStatus.FINISHED)) {
+            throw BookingException.finishedBookingCancellation();
+        } else {
+            throw BookingException.bookingAlreadyCancelled();
+        }
+    }
+
+    /**
+     * Sprawdza czy został zachowany dozwolony limit czas na anulowanie rezerwacji -
+     * mniej niż 24h od złożenia rezerwacji i więcej niż 48h od rozpoczęcia rezerwacji
+     *
+     * @param bookingBeginDate data rozpoczęcia rezerwacji
+     * @return czy został przekroczony dozwolony czas
+     */
+    private boolean isBetweenAllowedTimeLimit(Date bookingCreationDate, Date bookingBeginDate) {
+        long timeFromCreationBooking = (new Date().getTime() - bookingCreationDate.getTime());
+        long timeToBookingBegin = (bookingBeginDate.getTime() - new Date().getTime());
+
+        return timeFromCreationBooking < bookingConfig.getDayInMillis() &&
+                timeToBookingBegin > (bookingConfig.getDayInMillis() * 2);
     }
 
     /**
@@ -99,8 +147,18 @@ public class BookingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("endReservation")
-    void endBooking(Long bookingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void endBooking(Long bookingId) throws AppBaseException {
+        Booking booking = bookingFacade.find(bookingId);
+        if (booking.getStatus().equals(BookingStatus.IN_PROGRESS)) {
+            booking.setStatus(BookingStatus.FINISHED);
+            bookingFacade.edit(booking);
+        } else if (booking.getStatus().equals(BookingStatus.FINISHED)) {
+            throw BookingException.bookingAlreadyFinished();
+        } else if (booking.getStatus().equals(BookingStatus.PENDING)) {
+            throw BookingException.bookingNotStartedYet();
+        } else if (booking.getStatus().equals(BookingStatus.CANCELLED)) {
+            throw BookingException.bookingCancelledBeforeStart();
+        }
     }
 
     /**

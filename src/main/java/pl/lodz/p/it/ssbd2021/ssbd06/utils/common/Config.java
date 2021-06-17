@@ -48,6 +48,9 @@ public class Config implements Serializable {
     private static final String MAIL_ENDPOINT_ACTIVATE = "mail.endpoint.activate";
     private static final String MAIL_ENDPOINT_EMAIL_CHANGE = "mail.endpoint.email_change";
 
+    private static final String DAY_IN_MILLIS = "day.in.millis";
+
+
     private String get(String key) {
         return properties.getProperty(key);
     }
@@ -112,6 +115,11 @@ public class Config implements Serializable {
         return get(MAIL_ENDPOINT_EMAIL_CHANGE);
     }
 
+    public Long getDayInMillis() {
+        return getLong(DAY_IN_MILLIS);
+    }
+
+
     /**
      * Zwraca zawartość wiadamości w zależności od parametrów
      * @param language określa język wiadomości
@@ -161,7 +169,8 @@ public class Config implements Serializable {
         ACTIVATE_ACCOUNT("activate"),
         CHANGE_EMAIL("email_change"),
         ADMIN_LOGIN("admin_login"),
-        ACTIVATE_SUCCESS("activate_success");
+        ACTIVATE_SUCCESS("activate_success"),
+        CANCEL_RESERVATION("cancel_reservation");
 
         @Getter
         private final String value;

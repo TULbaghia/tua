@@ -1,9 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
 import javax.annotation.security.PermitAll;
@@ -16,15 +15,36 @@ import java.util.List;
  */
 @Local
 public interface RatingEndpointLocal extends CallingClass {
+
+    /**
+     * Zwraca ocenę hotelu
+     *
+     * @param id identyfikator oceny
+     * @return obiekt oceny hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @PermitAll
+    RatingDto get(Long id) throws AppBaseException;
+
     /**
      * Zwraca listę ocen hotelu
      *
      * @param hotelId identyfikator hotelu
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista ocen hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PermitAll
     List<RatingDto> getAll(Long hotelId) throws AppBaseException;
+
+    /**
+     * Zwraca ocenę o podanym id
+     *
+     * @param ratingId id oceny
+     * @return ocena
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @RolesAllowed("getHotelRating")
+    RatingDto getRating(Long ratingId) throws AppBaseException;
 
     /**
      * Dodaje ocene
@@ -56,10 +76,9 @@ public interface RatingEndpointLocal extends CallingClass {
     /**
      * Zmień widoczność oceny
      *
-     * @param ratingId dto z danymi hotelu
-     * @param ratingVisibility poziom widoczności
+     * @param ratingId identyfikator oceny hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("hideHotelRating")
-    void changeVisibility(Long ratingId, RatingVisibility ratingVisibility) throws AppBaseException;
+    void changeVisibility(Long ratingId) throws AppBaseException;
 }

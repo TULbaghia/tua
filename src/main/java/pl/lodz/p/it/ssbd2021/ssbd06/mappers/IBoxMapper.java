@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBoxDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateBoxDto;
 
 /**
  * Odpowiada za przeprowadzenie mapowania z obiektów klasy Box na klasy DTO
@@ -35,4 +36,17 @@ public interface IBoxMapper {
             @Mapping(target = "pricePerDay", source = "price")
     })
     void toBox(NewBoxDto newBoxDto, @MappingTarget Box box) throws AppBaseException;
+
+
+    /**
+     * Mapuje obiekt klasy BoxDto na obiekt klasy Box
+     *
+     * @param boxDto obiekt klasy UpdateBoxDto
+     * @param box obiekt klasy Box
+     * @throws AppBaseException w sytuacji wystąpienia błędu
+     */
+    @Mappings({
+            @Mapping(target = "pricePerDay", source = "price")
+    })
+    void toBox(UpdateBoxDto boxDto, @MappingTarget Box box) throws AppBaseException;
 }

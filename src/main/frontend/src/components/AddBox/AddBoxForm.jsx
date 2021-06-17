@@ -80,7 +80,7 @@ function AddBoxForm() {
                                     <Col>
                                         <SelectComponent name="animalType"
                                                         entryValue={animalTypes[0]}
-                                                        label={i18n.t('addBox.animalType')}
+                                                        label={i18n.t('animalType')}
                                                         values={animalTypes}
                                                         handleChange={handleChange}/>
                                     </Col>
@@ -88,16 +88,16 @@ function AddBoxForm() {
                                 <Row>
                                     <Col>
                                         <FieldComponent name="price"
-                                                        label={i18n.t('addBox.price')}
-                                                        placeholder={i18n.t('addBox.price')}
+                                                        label={i18n.t('price')}
+                                                        placeholder={i18n.t('price')}
                                                         handleChange={handleChange}/>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
                                         <FieldComponent name="description"
-                                                        label={i18n.t('addBox.description')}
-                                                        placeholder={i18n.t('addBox.description')}
+                                                        label={i18n.t('box.description')}
+                                                        placeholder={i18n.t('box.description')}
                                                         handleChange={handleChange}/>
                                     </Col>
                                 </Row>

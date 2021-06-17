@@ -3,19 +3,17 @@ import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
-import {Button, Form, FormCheck} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import {useLocale} from "./LoginContext";
 import {api} from "../Api";
 import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
-import {
-    useNotificationDangerAndInfinity,
-    useNotificationSuccessAndShort
-} from "./Utils/Notification/NotificationProvider";
+import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
-import { useThemeColor } from './Utils/ThemeColor/ThemeColorProvider';
+import {useThemeColor} from './Utils/ThemeColor/ThemeColorProvider';
 import {dateConverter} from "../i18n";
 import {rolesConstant} from "../Constants";
+import axios from "axios";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -32,6 +30,7 @@ function ActiveBookings(props) {
     const {token, setToken, currentRole, setCurrentRole} = useLocale();
     const [filterText, setFilterText] = React.useState('');
     const themeColor = useThemeColor()
+    const [etag, setETag] = useState()
     const [data, setData] = useState([
         {
             id: 0,
@@ -50,6 +49,68 @@ function ActiveBookings(props) {
         return item.id && item.id.toString().includes(filterText);
     });
 
+    const handleEndReservationClick = (id) => {
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/${id}`, {
+            headers: {
+                "Authorization": token
+            }
+        })
+            .then(res => {
+                setETag(res.headers.etag)
+                endReservation(id, res.headers.etag)
+            })
+    }
+
+    const endReservation = (id, eTag) => {
+        axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/end/${id}`, {},
+            {
+                headers: {
+                    "Authorization": token,
+                    "If-Match": eTag
+                }
+            })
+            .then (() => {
+                fetchData()
+                dispatchNotificationSuccess({message: i18n.t('booking.ending.success')})
+            })
+            .catch(err => {
+                ResponseErrorHandler(err, dispatchNotificationDanger)
+            })
+    }
+
+    const getReservationData = async (id) => {
+        return await api.get(id, {
+            method: "GET",
+            headers: {
+                Authorization: token,
+            }
+        });
+    };
+
+    const cancelReservation = (id) => {
+        getReservationData(id).then(res => {
+            api.cancelBooking(id, {
+                method: "PATCH",
+                headers: {
+                    Authorization: token,
+                    "If-Match": res.headers.etag
+                }
+            }).then(res => {
+                dispatchNotificationSuccess({message: i18n.t('reservationCancel.success')})
+            }).catch(err => {
+                if (err.response != null) {
+                    if (err.response.status === 403) {
+                        history.push("/errors/forbidden")
+                    } else if (err.response.status === 500) {
+                        history.push("/errors/internal")
+                    }
+                }
+                dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+            }).finally(() => fetchData());
+        })
+    }
+
+
     const columns = [
         {
             name: 'Id',
@@ -61,7 +122,7 @@ function ActiveBookings(props) {
             selector: 'dateFrom',
             sortable: true,
             cell: row => {
-                return(
+                return (
                     dateConverter(row.dateFrom.slice(0, -5))
                 );
             }
@@ -71,7 +132,7 @@ function ActiveBookings(props) {
             selector: 'dateTo',
             sortable: true,
             cell: row => {
-                return(
+                return (
                     dateConverter(row.dateTo.slice(0, -5))
                 );
             }
@@ -86,18 +147,27 @@ function ActiveBookings(props) {
             selector: 'bookingStatus',
             sortable: true,
             cell: row => {
-                return(
-                  t(row.bookingStatus.toLowerCase() + "BookingStatus")
+                return (
+                    t(row.bookingStatus.toLowerCase() + "BookingStatus")
                 );
             }
         },
         {
             name: t('cancelReservation'),
             cell: row => {
-                return(
-                    <Button className="btn-sm" onClick={event => {
-                        console.log("reservation: " + row.id + " cancelled");
-                    }}>{t("dialog.button.cancel")}</Button>
+                return (
+                    <Button className="btn-sm"
+                            onClick={event => {
+                                dispatchDialog({
+                                    callbackOnSave: () => {
+                                        cancelReservation(row.id);
+                                    },
+                                    callbackOnCancel: () => {
+                                        console.log("Cancel")
+                                    },
+                                })
+                            }}
+                    >{t("dialog.button.cancel")}</Button>
                 );
             }
         },
@@ -107,9 +177,15 @@ function ActiveBookings(props) {
             name: t('endReservation'),
             cell: row => {
                 return(
-                    <Button className="btn-sm" onClick={event => {
-                        console.log("reservation: " + row.id + " ended");
-                    }}>{t("button.end")}</Button>
+                    row.bookingStatus === "IN_PROGRESS" ?
+                    <Button className="btn-sm" onClick={() => {
+                        dispatchDialog({
+                            callbackOnSave: () => handleEndReservationClick(row.id),
+                            callbackOnCancel: () => null
+                        })
+                    }
+                    }>{t("button.end")}</Button>
+                    : null
                 );
             }
         });
@@ -180,4 +256,5 @@ function ActiveBookings(props) {
         </div>
     )
 }
+
 export default withNamespaces()(ActiveBookings);

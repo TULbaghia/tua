@@ -29,13 +29,18 @@ import {GuardedRoute, GuardProvider} from 'react-router-guards';
 import OtherUserInfo from "./components/OtherUserInfo";
 import ModifyHotelForm from "./components/ModifyHotel/ModifyHotelForm";
 import ReportGeneratorForm from "./components/RaportGenerating/ReportGeneratorForm";
+import CityList from "./components/city/CitiesList";
 import HotelList from "./components/HotelList";
 import AssignManager from "./components/AssignManager";
 import ActiveBookings from "./components/ActiveBookings";
 import AddHotelForm from "./components/AddHotel/AddHotelForm";
 import ArchiveBookings from "./components/ArchiveBookings";
 import AddCityForm from "./components/AddCity/AddCityForm";
+import ModifyCityForm from "./components/ModifyCity/ModifyCityForm";
+import HotelInfo from './components/HotelInfo/HotelInfo';
 import AddBoxForm from "./components/AddBox/AddBoxForm";
+import ModifyBoxForm from "./components/ModifyBox/ModifyBoxForm";
+import UnassignManager from "./components/UnassignManager";
 import BoxList from "./components/Box/BoxList";
 
 library.add(fab, faSignInAlt, faUserPlus);
@@ -154,13 +159,13 @@ function App() {
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
-                            <GuardedRoute exact path="/accounts/userInfo" component={OtherUserInfo}
-                                          meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/activeReservations" component={ActiveBookings}
                                           meta={{auth: true, clientManager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/addHotel" component={AddHotelForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels" component={HotelList} meta={{}}/>
                             <GuardedRoute exact path="/hotels/assignManager" component={AssignManager}
+                                          meta={{auth: true, admin: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/hotels/unassignManager" component={UnassignManager}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/editOwnHotel" component={ModifyHotelForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
@@ -172,7 +177,13 @@ function App() {
                                           meta={{auth: true, clientManager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/cities/add" component={AddCityForm}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/cities" component={CityList}
+                                          meta={{auth: true, all: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/cities/editCity" component={ModifyCityForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/hotels/hotelInfo" component={HotelInfo} meta={{}}/>
                             <GuardedRoute exact path="/boxes/add" component={AddBoxForm}
+                                          meta={{auth: true, manager: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/boxes/modify" component={ModifyBoxForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/boxes" component={BoxList}
                                           meta={{auth: true, clientManager: true, logged, currentRole}}/>

@@ -244,6 +244,11 @@
   "exception.role_exception.account_not_confirmed": "Cannot edit role of unconfirmed account",
   "dataRefresh": "Data has been refreshed",
 
+  "exception.database_query_exception.concurrent_operation": "Error encountered during operation execution",
+
+  "cities.list.bread_crumb": "List of cities",
+  "cities.list.header": "Cities list",
+
   "hotelName": "Name",
   "address": "Address",
   "city": "City",
@@ -261,7 +266,6 @@
   "assignManager.success": "Manager assigned successfully",
   "exception.hotel.has_manager": "This manager have been already assigned",
   "emptyListManager": "No unassigned managers",
-  "exception.database_query_exception.concurrent_operation": "Error encountered during operation execution",
 
   "editOwnHotel.navbar.title" : "Modify hotel",
   "generateReport.navbar.title" : "Generate report",
@@ -331,19 +335,42 @@
   "addCity.error.name_required": "Name is required",
   "addCity.error.description_required": "Description required",
   "addCity.success": "City has been successfully added",
+
   "exception.city.name_invalid": "City name is already in use",
+
+  "exception.delete.city.has_hotels": "Cannot delete city with hotels assigned",
+  "city.delete.success": "Successfully deleted city",
+  "exception.not_found_exception.city_not_found": "City does not exist or has been deleted",
+
+  "modifyCity.title": "Edit city",
+  "modifyCity.modify.info": "You are editing: ",
+  "modifyCity.modify.name": "Name",
+  "modifyCity.modify.description": "Description",
+  "modifyCity.success": "Changed city data",
+  "exception.city.name_already_exists": "This city name already exists",
+  "validation.city.description.size": "City description length is incorrect",
+  "validation.hotel.description.pattern": "City description does not meet pattern requirements",
+  "validation.city.name.size": "City name length is incorrect",
+  "validation.city.name.pattern": "City name does not meet pattern requirements",
+  "modifyCity.error.name_required": "City name is required",
+  "modifyCity.error.description_required": "City description is required",
+  "location": "Location",
+  "descriptionHotel": "About",
+  "comments": "Comments",
+  "hiddenComment": "Due to inappropriate content the comment has been hidden",
+  "averageRating": "Average rating:",
+  "hotelInfo": "Hotel info",
 
   "addBox.navbar.title" : "Add new box",
   "boxList.navbar.title" : "Box list",
 
   "addBox.title": "Box addition",
-  "addBox.price" : "Price",
-  "addBox.description" : "Description",
-  "addBox.animalType" : "Animal type",
+  "box.description" : "Description",
+  "animalType" : "Animal type",
   "addBox.success": "Box has been successfully added",
 
-  "addBox.error.price_required": "Box price is required",
-  "addBox.error.description_required": "Box description is required",
+  "box.error.price_required": "Box price is required",
+  "box.error.description_required": "Box description is required",
 
   "DOG": "Dog",
   "CAT":  "Cat",
@@ -354,5 +381,33 @@
   "TURTLE": "Turtle",
 
   "addBox": "Add box",
-  "search.box": "Search box..."
+  "search.box": "Search box...",
+
+  "reservationCancel.success": "Booking has been successfully canceled",
+  "exception.booking.cancelled_booking" : "Booking have been already cancelled",
+  "exception.booking.finished_booking": "Booking have been already finished",
+  "exception.booking.in_progress_booking": "Booking is in progress",
+  "exception.booking.time_exceeded": "Time limit for canceling booking has been exceeded",
+  "exception.booking.access_denied": "Access has been denied",
+
+  "modifyBox.title": "Box modification",
+  "modifyBox.success": "Box has been successfully modified",
+  "modifyBox.modify.info": "You are editing: ",
+
+  "exception.box.access_denied": "No permission to edit this resource",
+  "hide.button": "Hide",
+  "show.button": "Show",
+  "change.comment.visibility.success": "Comment visibility has been changed successfully",
+  "deleteManager": "Unassign manager",
+  "unassignManager.success": "Manager unassigned successfully",
+  "unassignManager": "Unassign manager",
+  "emptyListManagerUnassign": "There is no managers assigned to the hotel",
+
+  "choose.animal.type": "Choose animal type",
+  "filter.button": "Filter",
+  "rating.minimal": "Minimal rating",
+  "rating.maximal": "Maximal rating",
+  "text.animal.type": "Animal type",
+
+  "booking.ending.success": "Reservation has been ended successfully"
 }

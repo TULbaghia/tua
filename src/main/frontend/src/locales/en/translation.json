@@ -399,5 +399,7 @@
   "filter.button": "Filter",
   "rating.minimal": "Minimal rating",
   "rating.maximal": "Maximal rating",
-  "text.animal.type": "Animal type"
+  "text.animal.type": "Animal type",
+
+  "booking.ending.success": "Reservation has been ended successfully"
 }

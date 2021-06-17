@@ -403,5 +403,7 @@
   "deleteManager": "Usuń managera",
   "unassignManager.success": "Manager został usunięty pomyślnie",
   "unassignManager": "Usuń managera z hotelu",
-  "emptyListManagerUnassign": "Brak przypisanych managerów"
+  "emptyListManagerUnassign": "Brak przypisanych managerów",
+
+  "booking.ending.success": "Rezerwacja została zakończona pomyślnie"
 }

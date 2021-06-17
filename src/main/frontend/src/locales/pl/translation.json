@@ -414,5 +414,8 @@
   "sort.by.rating.ascending": "Oceną rosnąco",
   "sort.by.rating.descending": "Oceną malejąco",
   "sort.alphabetically": "Alfabetycznie",
-  "sort.by": "Sortuj"
+  "sort.by": "Sortuj",
+
+  "addCity.send.form": "Dodaj",
+  "currency": "zł"
 }

@@ -82,7 +82,7 @@ export const validateUserEmail = (data) => {
 export const validateHotelName = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 2, 31));
-    errors.push(patternValidator(data, /^[A-ZĆŁÓŚŹŻ\s]{1}[a-ząęćńóśłźż]+$/));
+    errors.push(patternValidator(data, /^[A-ZĆŁÓŚŹŻ\s]{1}[A-Za-ząęćńóśłźż \-]+$/));
     return errors.filter(err => err !== undefined);
 }
 

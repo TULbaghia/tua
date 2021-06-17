@@ -306,8 +306,8 @@
   "reportGenerator.title" : "Hotel report generating",
   "reportGenerator.action" : "Generate report",
   "reportGenerator.table.title" : "Bookings from given period",
-  "reportGenerator.from" : "From",
-  "reportGenerator.to" : "To",
+  "reportGenerator.from" : "From date",
+  "reportGenerator.to" : "To date",
   "reportGenerator.table.price" : "Price",
   "reportGenerator.table.rating" : "Rating",
   "reportGenerator.table.owner_login" : "Owner login",
@@ -326,7 +326,7 @@
   "addRating": "Add rating",
   "button.end": "End",
 
-  "addCity.title" : "City addition",
+  "addCity.title" : "Adding city",
   "addCity.action" : "Add city",
   "addCity.name" : "City name",
   "addCity.description" : "City description",
@@ -411,5 +411,8 @@
   "sort.by.rating.ascending": "Rating ascending",
   "sort.by.rating.descending": "Rating descending",
   "sort.alphabetically": "Alphabetically",
-  "sort.by": "Sort by"
+  "sort.by": "Sort by",
+
+  "addCity.send.form": "Add",
+  "currency": "PLN"
 }

@@ -168,9 +168,6 @@ function NavigationBar(props) {
                                     <LinkContainer to="/cities">
                                         <Nav.Link>{t('cityList')}</Nav.Link>
                                     </LinkContainer>
-                                    <LinkContainer to="/cities/add">
-                                        <Nav.Link>{t('addCity.action')}</Nav.Link>
-                                    </LinkContainer>
                                 </>
                             )}
                             {currentRole === rolesConstant.manager && (

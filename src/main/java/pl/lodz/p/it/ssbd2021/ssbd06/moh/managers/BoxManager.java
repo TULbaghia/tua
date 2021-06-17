@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Manager odpowiadający za zarządzanie klatkami.
@@ -45,8 +47,8 @@ public class BoxManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return encja klatki
      */
-    Box get(Long id) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public Box get(Long id) throws AppBaseException {
+        return Optional.ofNullable(boxFacade.find(id)).orElseThrow(NotFoundException::boxNotFound);
     }
 
     /**
@@ -76,23 +78,24 @@ public class BoxManager {
     /**
      * Modyfikuje klatkę
      *
-     * @param boxDto dto z danymi klatki
+     * @param box encja z danymi klatki
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("updateBox")
-    void updateBox(BoxDto boxDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void updateBox(Box box) throws AppBaseException {
+        box.setModifiedBy(accountFacade.findByLogin(getLogin()));
+        boxFacade.edit(box);
     }
 
     /**
      * Usuwa klatkę
      *
-     * @param boxId identyfikator klatki
+     * @param box identyfikator klatki
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("deleteBox")
-    void deleteBox(Long boxId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void deleteBox(Box box) throws AppBaseException {
+        boxFacade.remove(box);
     }
 
     /**

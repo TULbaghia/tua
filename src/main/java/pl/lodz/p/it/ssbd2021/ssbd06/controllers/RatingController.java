@@ -1,9 +1,10 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.RatingEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
@@ -34,12 +35,13 @@ public class RatingController extends AbstractController {
      * Zwraca ocenę hotelu
      *
      * @param id identyfikator oceny
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return obiekt dto oceny hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @GET
     @Path("/get/{id}")
     @PermitAll
+    @Operation(operationId = "getRating", summary = "getRating")
     public Response get(@NotNull @PathParam("id") Long id) throws AppBaseException {
         RatingDto ratingDto = repeat(() -> ratingEndpoint.get(id), ratingEndpoint);
         return Response.ok()
@@ -52,18 +54,20 @@ public class RatingController extends AbstractController {
      * Zwraca listę ocen hotelu
      *
      * @param hotelId identyfikator hotelu
-     * @throws AppBaseException podczas błędu związanego ze zwracaniem listy ocen hotelu
      * @return lista ocen hotelu
+     * @throws AppBaseException podczas błędu związanego ze zwracaniem listy ocen hotelu
      */
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getAllRatingsList", summary = "getAllRatingsList")
     public List<RatingDto> getAll(@PathParam("id") Long hotelId) throws AppBaseException {
         return repeat(() -> ratingEndpoint.getAll(hotelId), ratingEndpoint);
     }
 
     /**
      * Zwraca ocenę o podanym id
+     *
      * @param ratingId id oceny
      * @return ocena
      * @throws AppBaseException podczas błędu związanego z bazą danych
@@ -72,6 +76,7 @@ public class RatingController extends AbstractController {
     @RolesAllowed("getHotelRating")
     @Path("/rating/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getHotelRating", summary = "getHotelRating")
     public Response getRating(@PathParam("id") Long ratingId) throws AppBaseException {
         RatingDto ratingDto = repeat(() -> ratingEndpoint.getRating(ratingId), ratingEndpoint);
         return Response.ok()
@@ -89,6 +94,7 @@ public class RatingController extends AbstractController {
     @POST
     @RolesAllowed("addHotelRating")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "addRating", summary = "addRating")
     public void addRating(@NotNull @Valid NewRatingDto newRatingDto) throws AppBaseException {
         repeat(() -> ratingEndpoint.addRating(newRatingDto), ratingEndpoint);
     }
@@ -96,13 +102,15 @@ public class RatingController extends AbstractController {
     /**
      * Modyfikuje ocenę
      *
-     * @param ratingDto dto z danymi oceny
+     * @param updateRatingDto dto z danymi oceny
      * @throws AppBaseException podczas błędu związanego z aktualizacją oceny hotelu
      */
     @PUT
     @RolesAllowed("updateHotelRating")
-    public void updateRating(RatingDto ratingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @Operation(operationId = "updateRating", summary = "updateRating")
+    @EtagValidatorFilterBinding
+    public void updateRating(UpdateRatingDto updateRatingDto) throws AppBaseException {
+        repeat(() -> ratingEndpoint.updateRating(updateRatingDto), ratingEndpoint);
     }
 
     /**
@@ -115,6 +123,7 @@ public class RatingController extends AbstractController {
     @RolesAllowed("deleteHotelRating")
     @Path("/{id}")
     @EtagValidatorFilterBinding
+    @Operation(operationId = "deleteRating", summary = "deleteRating")
     public void deleteRating(@NotNull @PathParam("id") Long ratingId) throws AppBaseException {
         repeat(() -> ratingEndpoint.deleteRating(ratingId), ratingEndpoint);
     }
@@ -127,7 +136,8 @@ public class RatingController extends AbstractController {
      */
     @PATCH
     @RolesAllowed("hideHotelRating")
-    @Path("/{ratingId}")
+    @Path("/changeVisibility/{ratingId}")
+    @Operation(operationId = "changeVisibility", summary = "changeVisibility")
     public void changeVisibility(@PathParam("ratingId") Long ratingId) throws AppBaseException {
         repeat(() -> ratingEndpoint.changeVisibility(ratingId), ratingEndpoint);
     }

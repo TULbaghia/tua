@@ -13,7 +13,7 @@ import {
 } from "./Utils/Notification/NotificationProvider";
 import {useHistory, useLocation} from "react-router";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
-import { useThemeColor } from './Utils/ThemeColor/ThemeColorProvider';
+import {useThemeColor} from './Utils/ThemeColor/ThemeColorProvider';
 import {rolesConstant} from "../Constants";
 import axios from "axios";
 import hotelPhoto from "../images/hotel.jpg";
@@ -26,6 +26,10 @@ import hotelPhoto7 from "../images/hotel7.jpg";
 import hotelPhoto8 from "../images/hotel8.jpg";
 import hotelPhoto9 from "../images/hotel9.jpg";
 import hotelPhoto10 from "../images/hotel10.jpg";
+import Select from 'react-select';
+import {animalTypes, queryBuilder} from "./Utils/HotelsView/AnimalTypes";
+import {sortingTypes} from "./Utils/HotelsView/SortingTypes";
+import i18n from "i18next";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -35,7 +39,6 @@ const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     </>
 );
 
-
 function HotelList(props) {
     const {t, i18n} = props
     const history = useHistory()
@@ -43,7 +46,11 @@ function HotelList(props) {
     const [filterText, setFilterText] = React.useState('');
     const themeColor = useThemeColor()
     const [etag, setETag] = useState();
-    const [searchTerm, setSearchTerm] = React.useState('')
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const [selectedValue, setSelectedValue] = useState([]);
+    const [sortSelectedValue, setSortSelectedValue] = useState();
+    const [minRatingValue, setMinRatingValue] = useState(1);
+    const [maxRatingValue, setMaxRatingValue] = useState(5);
     const [data, setData] = useState([
         {
             id: "",
@@ -62,81 +69,110 @@ function HotelList(props) {
         return item.name && item.name.toLowerCase().includes(filterText.toLowerCase());
     });
 
-    const rand = () => {
-        const min = 1;
-        const max = 10;
-        const rand = min + Math.floor(Math.random() * (max - min));
-        switch(rand) {
-            case 1:
-                return hotelPhoto;
-            case 2:
-                return hotelPhoto2;
-            case 3:
-                return hotelPhoto3;
-            case 4:
-                return hotelPhoto4;
-            case 5:
-                return hotelPhoto5;
-            case 6:
-                return hotelPhoto6;
-            case 7:
-                return hotelPhoto7;
-            case 8:
-                return hotelPhoto8;
-            case 9:
-                return hotelPhoto9;
-            case 10:
-                return hotelPhoto10;
-            default:
-                return hotelPhoto;
-        }
-    }
-
     const HotelCard = ({hotel}) => (
         <Col xs={12} md={6} lg={3} key={hotel.id}>
             {themeColor === "light" ? (
-                <Card style={{width: '16rem', background: '#f5f5f5', marginTop: '2rem'}}>
-                    <Card.Img variant="top" src={hotel.image ? (hotel.image) : (rand())}/>
-                    <Card.Body>
-                        <Card.Title>{hotel.name}</Card.Title>
-                        <Card.Text>{hotel.cityName}</Card.Text>
-                        <Button className="btn-sm" onClick={event => {
-                            history.push('/hotels/hotelInfo?id=' + hotel.id);
-                        }}>{t('details')}</Button>
-                    </Card.Body>
+                <Card style={{width: '16rem', background: '#f5f5f5', marginRight: '20rem', marginTop: '2rem'}}>
+                    <Card.Img variant="top" src={hotel.image ? (hotel.image) : (hotelPhoto)}/>
+                    {hotel.name ? (
+                        <Card.Body>
+                            <Card.Title>{hotel.name}</Card.Title>
+                            <Card.Text>{hotel.cityName}</Card.Text>
+                            <Button className="btn-sm" onClick={event => {
+                                history.push('/hotels/hotelInfo?id=' + hotel.id);
+                            }}>{t('details')}</Button>
+                        </Card.Body>
+                    ) : (
+                        <Card.Body>
+                            <Card.Title>{t('emptyListHotel')}</Card.Title>
+                        </Card.Body>
+                    )}
                 </Card>
             ) : (
-                <Card style={{width: '16rem', background: '#2b2b2b', marginTop: '2rem'}}>
-                    <Card.Img variant="top" src={hotel.image ? (hotel.image) : (rand())}/>
-                    <Card.Body>
-                        <Card.Title>{hotel.name}</Card.Title>
-                        <Card.Text>{hotel.cityName}</Card.Text>
-                        <Button className="btn-sm" onClick={event => {
-                            history.push('/hotels/hotelInfo?id=' + hotel.id);
-                        }}>{t('details')}</Button>
-                    </Card.Body>
+                <Card style={{width: '16rem', background: '#2b2b2b', marginRight: '20rem', marginTop: '2rem'}}>
+                    <Card.Img variant="top" src={hotel.image ? (hotel.image) : (hotelPhoto)}/>
+                    {hotel.name ? (
+                        <Card.Body>
+                            <Card.Title>{hotel.name}</Card.Title>
+                            <Card.Text>{hotel.cityName}</Card.Text>
+                            <Button className="btn-sm" onClick={event => {
+                                history.push('/hotels/hotelInfo?id=' + hotel.id);
+                            }}>{t('details')}</Button>
+                        </Card.Body>
+                    ) : (
+                        <Card.Body>
+                            <Card.Title>{t('emptyListHotel')}</Card.Title>
+                        </Card.Body>
+                    )}
                 </Card>
             )}
         </Col>
     )
 
-    const getHotelData = async (id) => {
-        const response = await api.getHotel(id,{
-            method: "GET",
-            headers: {
-                Authorization: token,
-            }})
-        return response;
-    };
-
     const handleSearchTermChange = (event) => {
         setSearchTerm(event.target.value)
         if (event.target.value !== '') {
             fetchSearchedData(event.target.value)
+            setSortSelectedValue('')
         }
         else {
             fetchData()
         }
+    }
+
+    const handleSelectedValueChange = (e) => {
+        setSelectedValue(Array.isArray(e) ? e.map(x => x.value) : []);
+    }
+
+    const handleSelectedSortValueChange = (e) => {
+        setSortSelectedValue(e);
+        sortHotelData(e.value - 1)
+    }
+
+    const sortHotelData = (property) => {
+        const types = [
+            'name',
+            'rating'
+        ];
+        let sorted
+        if (property === 0) {
+            const sortProperty = types[property];
+            sorted = [...data].sort((a, b) => {
+                if (a.name < b[sortProperty]) return -1;
+                if (a[sortProperty] > b[sortProperty]) return 1;
+                return 0;
+            })
+        }
+        else if (property === 1) {
+            const sortProperty = types[property];
+            sorted = [...data].sort((a, b) => b[sortProperty] - a[sortProperty])
+        }
+        else {
+            const sortProperty = types[property - 1]
+            sorted = [...data].sort((a, b) => a[sortProperty] - b[sortProperty])
+        }
+        setData(sorted);
+    }
+
+    const handleFilterClick = () => {
+        let query = queryBuilder(minRatingValue, maxRatingValue, selectedValue)
+
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/hotels/filter` + query)
+            .then(res => {
+                setData(res.data)
+                setSortSelectedValue('')
+            })
+            .catch(err => {
+                ResponseErrorHandler(err, dispatchNotificationDanger)
+            })
+    }
+
+    const handleMinValueChange = (e) => {
+        setMinRatingValue(e.target.value)
+    }
+
+    const handleMaxValueChange = (e) => {
+        setMaxRatingValue(e.target.value)
     }
 
     const fetchSearchedData = (query) => {
@@ -153,39 +189,6 @@ function HotelList(props) {
             }
         });
     }
-
-    const guestColumns = [
-        {
-            name: t('hotelName'),
-            selector: 'name',
-            width: "10rem"
-        },
-        {
-            name: t('address'),
-            selector: 'address',
-            width: "10rem"
-        },
-        {
-            name: t('city'),
-            selector: 'cityName',
-            width: "10rem"
-        },
-        {
-            name: t('rating'),
-            selector: 'rating'
-        },
-        {
-            name: t('details'),
-            selector: 'details',
-            cell: row => {
-                return(
-                    <Button className="btn-sm" onClick={event => {
-                        history.push('/hotels/hotelInfo?id=' + row.id);
-                    }}>{t('details')}</Button>
-                )
-            }
-        },
-    ];
 
     const managerColumns = [
         {
@@ -273,6 +276,17 @@ function HotelList(props) {
                 )
             },
         },
+        {
+            name: t('deleteManager'),
+            selector: 'delete',
+            cell: row => {
+                return(
+                    <Button className="btn-sm" onClick={event => {
+                        history.push('/hotels/unassignManager?id=' + row.id);
+                    }}>{t("delete")}</Button>
+                )
+            }
+        },
     ];
 
     useEffect(() => {
@@ -283,6 +297,7 @@ function HotelList(props) {
         getAllHotels().then(r => {
             console.log(r);
             setData(r.data);
+            setSortSelectedValue('')
         }).catch(r => {
             if (r.response != null) {
                 if (r.response.status === 403) {
@@ -296,11 +311,10 @@ function HotelList(props) {
     }
 
     const getAllHotels = async () => {
-        return await api.getAllHotels({headers: {Authorization: token}})
+        return await api.getAllHotelList({headers: {Authorization: token}})
     }
 
     const subHeaderComponentMemo = React.useMemo(() => {
-
         return <FilterComponent onFilter={e => {
             setFilterText(e.target.value);
         }} filterText={filterText} placeholderText={t('filterPhase')}/>;
@@ -330,7 +344,9 @@ function HotelList(props) {
             )}
             <div className="floating-box">
                 <div>
-                    <h1 className="float-left">{t('hotelList')}</h1>
+                    <h1>{t('hotelList')}</h1>
+                </div>
+                <div className="d-flex flex-row-reverse">
                     <Button className="btn-secondary float-right m-2" onClick={event => {
                         getAllHotels().then(res => {
                             setData(res.data);
@@ -351,9 +367,65 @@ function HotelList(props) {
                         placeholder={t("search.hotel")}
                         value={searchTerm}
                         onChange={handleSearchTermChange}
+                        style={themeColor === "light" ? ({backgroundColor: "#f8f9fa"}) : ({color: "#f8f9fa", backgroundColor: "#424242"})}
                     />
+                    <Select
+                        className="align-self-center w-25"
+                        placeholder='...'
+                        value={sortSelectedValue}
+                        options={sortingTypes}
+                        onChange={handleSelectedSortValueChange}
+                    />
+                    <h4
+                        className="float-right align-self-center">
+                        {t('sort.by')}
+                    </h4>
                 </div>
-                {token === null || token === '' ? (
+                <div className="d-flex flex-row-reverse">
+                    <Button
+                        onClick={handleFilterClick}
+                        className="btn-secondary float-right m-2">
+                        {t('filter.button')}
+                    </Button>
+                    <Select
+                        className="float-right dropdown align-self-center w-25"
+                        placeholder={t("choose.animal.type")}
+                        value={animalTypes.filter(obj => selectedValue.includes(obj.value))}
+                        options={animalTypes}
+                        onChange={handleSelectedValueChange}
+                        isMulti
+                        isClearable
+                    />
+                    <h4
+                        className="float-right align-self-center">
+                        {t('text.animal.type')}
+                    </h4>
+                    <input
+                        className="input float-right m-2"
+                        type="number"
+                        step="0.1"
+                        min='1'
+                        max='5'
+                        placeholder={t('rating.maximal')}
+                        value={maxRatingValue}
+                        onChange={handleMaxValueChange}
+                    />
+                    <input
+                        className="input float-right m-2"
+                        type="number"
+                        step='0.1'
+                        min='1'
+                        max='5'
+                        placeholder={t('rating.minimal')}
+                        value={minRatingValue}
+                        onChange={handleMinValueChange}
+                    />
+                    <h4
+                        className="float-right align-self-center">
+                        {t('rating')}
+                    </h4>
+                </div>
+                {(token === null || token === '') &&
                     <div style={{height: '35rem', display: 'flex', flex: '1', flexDirection: 'row', width: '75rem', overflowY: 'scroll'}}>
                         <div className='row-wrapper' style={{padding: '1rem'}}>
                             <Row>
@@ -363,34 +435,38 @@ function HotelList(props) {
                             </Row>
                         </div>
                     </div>
-                ) : ( null )}
-                {token !== null && token !== '' && currentRole === rolesConstant.client ? (
-                    <DataTable className={"rounded-0"}
-                               noDataComponent={i18n.t('table.no.result')}
-                               columns={guestColumns}
-                               data={filteredItems}
-                               subHeader
-                               theme={themeColor}
-                    />
-                ) : ( null )}
-                {token !== null && token !== '' && currentRole === rolesConstant.manager ? (
+                }
+                {(token !== null && token !== '' && currentRole === rolesConstant.client) &&
+                    <div style={{height: '35rem', display: 'flex', flex: '1', flexDirection: 'row', width: '75rem', overflowY: 'scroll'}}>
+                        <div className='row-wrapper' style={{padding: '1rem'}}>
+                            <Row>
+                                {data.map(hotel => (
+                                    <HotelCard key={hotel.id} hotel={hotel}/>
+                                ))}
+                            </Row>
+                        </div>
+                    </div>
+                }
+                {(token !== null && token !== '' && currentRole === rolesConstant.manager) &&
                     <DataTable className={"rounded-0"}
                                noDataComponent={i18n.t('table.no.result')}
                                columns={managerColumns}
                                data={filteredItems}
                                subHeader
                                theme={themeColor}
+                               subHeaderComponent={subHeaderComponentMemo}
                     />
-                ) : ( null )}
-                {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
+                }
+                {(token !== null && token !== '' && currentRole === rolesConstant.admin) &&
                     <DataTable className={"rounded-0"}
                                noDataComponent={i18n.t('table.no.result')}
                                columns={adminColumns}
                                data={filteredItems}
                                subHeader
                                theme={themeColor}
+                               subHeaderComponent={subHeaderComponentMemo}
                     />
-                ) : ( null )}
+                }
             </div>
         </div>
     )

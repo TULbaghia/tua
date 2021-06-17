@@ -7,6 +7,9 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BookingException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
@@ -19,6 +22,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
+import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -28,17 +32,20 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
 import javax.security.enterprise.SecurityContext;
+import java.util.ArrayList;
 import java.util.Date;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * Manager odpowiadający za zarządzanie rezerwacjami.
  */
+@DeclareRoles("Client")
 @Stateless
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -138,7 +145,7 @@ public class BookingManager {
      * @param bookingId identyfikator rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed("cancelReservation")
+    @RolesAllowed({"cancelReservation"})
     public void cancelBooking(Long bookingId) throws AppBaseException {
         Booking booking = bookingFacade.find(bookingId);
         if (booking.getStatus().equals(BookingStatus.PENDING)) {
@@ -179,8 +186,18 @@ public class BookingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("endReservation")
-    void endBooking(Long bookingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void endBooking(Long bookingId) throws AppBaseException {
+        Booking booking = bookingFacade.find(bookingId);
+        if (booking.getStatus().equals(BookingStatus.IN_PROGRESS)) {
+            booking.setStatus(BookingStatus.FINISHED);
+            bookingFacade.edit(booking);
+        } else if (booking.getStatus().equals(BookingStatus.FINISHED)) {
+            throw BookingException.bookingAlreadyFinished();
+        } else if (booking.getStatus().equals(BookingStatus.PENDING)) {
+            throw BookingException.bookingNotStartedYet();
+        } else if (booking.getStatus().equals(BookingStatus.CANCELLED)) {
+            throw BookingException.bookingCancelledBeforeStart();
+        }
     }
 
     /**
@@ -201,7 +218,7 @@ public class BookingManager {
      * @return lista rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed({"getAllActiveReservations", "Client"})
+    @RolesAllowed({"getAllActiveReservations"})
     public List<Booking> showActiveBooking() throws AppBaseException {
         String callerName = securityContext.getCallerPrincipal().getName();
         if (securityContext.isCallerInRole("Client")) {
@@ -225,7 +242,7 @@ public class BookingManager {
      * @return lista rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed({"getAllArchiveReservations", "Client"})
+    @RolesAllowed({"getAllArchiveReservations"})
     public List<Booking> showEndedBooking() throws AppBaseException {
         String callerName = securityContext.getCallerPrincipal().getName();
         if (securityContext.isCallerInRole("Client")) {

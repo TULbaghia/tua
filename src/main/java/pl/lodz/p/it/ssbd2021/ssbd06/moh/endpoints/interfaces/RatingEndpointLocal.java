@@ -1,10 +1,9 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces;
 
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
 import javax.annotation.security.PermitAll;
@@ -22,8 +21,8 @@ public interface RatingEndpointLocal extends CallingClass {
      * Zwraca ocenę hotelu
      *
      * @param id identyfikator oceny
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return obiekt oceny hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PermitAll
     RatingDto get(Long id) throws AppBaseException;
@@ -32,14 +31,15 @@ public interface RatingEndpointLocal extends CallingClass {
      * Zwraca listę ocen hotelu
      *
      * @param hotelId identyfikator hotelu
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return lista ocen hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PermitAll
     List<RatingDto> getAll(Long hotelId) throws AppBaseException;
 
     /**
      * Zwraca ocenę o podanym id
+     *
      * @param ratingId id oceny
      * @return ocena
      * @throws AppBaseException podczas błędu związanego z bazą danych
@@ -59,11 +59,11 @@ public interface RatingEndpointLocal extends CallingClass {
     /**
      * Modyfikuje ocenę
      *
-     * @param ratingDto dto z danymi oceny
+     * @param updateRatingDto dto z danymi oceny
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("updateHotelRating")
-    void updateRating(RatingDto ratingDto) throws AppBaseException;
+    void updateRating(UpdateRatingDto updateRatingDto) throws AppBaseException;
 
     /**
      * Usuwa ocenę hotelu

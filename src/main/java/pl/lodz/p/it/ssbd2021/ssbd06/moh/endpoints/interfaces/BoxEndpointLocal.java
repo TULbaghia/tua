@@ -34,6 +34,14 @@ public interface BoxEndpointLocal extends CallingClass {
     List<BoxDto> getAll() throws AppBaseException;
 
     /**
+     * @param loginManger login menagera hotelu dla którego chcemy zwrócić listę klatek
+     * @return lista klatek
+     * @throws AppBaseException w momencie wystąpienia błędu
+     */
+    @RolesAllowed("getAllBoxes")
+    List<BoxDto> getAllBoxesInHotel(String loginManger) throws AppBaseException;
+
+    /**
      * @param hotelId identyfikator hotelu dla którego chcemy zwrócić listę klatek
      * @return lista klatek
      * @throws AppBaseException w momencie wystąpienia błędu
@@ -42,7 +50,8 @@ public interface BoxEndpointLocal extends CallingClass {
     List<BoxDto> getAllBoxesInHotel(Long hotelId) throws AppBaseException;
 
     /**
-     * @param hotelId identyfikator hotelu dla którego chcemy zwrócić listę klatek
+     * @param hotelId identyfikator hotelu dla którego chcemy pobrać listę klatek
+     * @param animalType typ zwierzęcia dla którego chcemy pobrać klatki
      * @return lista klatek
      * @throws AppBaseException w momencie wystąpienia błędu
      */
@@ -65,7 +74,7 @@ public interface BoxEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("updateBox")
-    void updateBox(BoxDto boxDto) throws AppBaseException;
+    void updateBox(UpdateBoxDto boxDto) throws AppBaseException;
 
     /**
      * Usuwa klatkę

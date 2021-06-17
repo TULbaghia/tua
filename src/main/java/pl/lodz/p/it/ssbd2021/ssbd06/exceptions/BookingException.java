@@ -1,9 +1,10 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
 
+
 /**
  * Reprezentuje błąd dotyczący encji Booking
  */
-public class BookingException extends AppBaseException{
+public class BookingException extends AppBaseException {
     private static final String NOT_ENOUGH_BOXES = "exception.boxes.not_enough";
     private static final String BOXES_NOT_AVAILABLE = "exception.boxes.not_available";
     private static final String CANCELLED_BOOKING = "exception.booking.cancelled_booking";
@@ -11,6 +12,7 @@ public class BookingException extends AppBaseException{
     private static final String IN_PROGRESS_BOOKING_CANCEL = "exception.booking.in_progress_booking";
     private static final String TIME_EXCEEDED = "exception.booking.time_exceeded";
     private static final String ACCESS_DENIED = "exception.booking.access_denied";
+    private static final String NOT_STARTED_BOOKING = "exception.booking.not_started_booking";
 
     protected BookingException(String message, Throwable cause) {
         super(message, cause);
@@ -71,5 +73,32 @@ public class BookingException extends AppBaseException{
      */
     public static BookingException accessDenied() {
         return new BookingException(ACCESS_DENIED);
+    }
+
+    /**
+     * Tworzy wyjątek występujący podczas próby zakończenia zakończonej już rezerwacji
+     *
+     * @return wyjątek BookingException.
+     */
+    public static BookingException bookingAlreadyFinished() {
+        return new BookingException(FINISHED_BOOKING_CANCEL);
+    }
+
+    /**
+     * Tworzy wyjątek występujący podczas próby zakończenia nierozpoczętej rezerwacji
+     *
+     * @return wyjątek BookingException.
+     */
+    public static BookingException bookingNotStartedYet() {
+        return new BookingException(NOT_STARTED_BOOKING);
+    }
+
+    /**
+     * Tworzy wyjątek występujący podczas próby zakończenia anulowanej rezerwacji
+     *
+     * @return wyjątek BookingException.
+     */
+    public static BookingException bookingCancelledBeforeStart() {
+        return new BookingException(CANCELLED_BOOKING);
     }
 }

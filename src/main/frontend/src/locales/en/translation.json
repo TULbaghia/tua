@@ -267,6 +267,7 @@
   "exception.hotel.has_manager": "This manager have been already assigned",
   "emptyListManager": "No unassigned managers",
   "search.hotel": "Search hotel...",
+  "emptyListHotel": "No hotels to display",
 
   "editOwnHotel.navbar.title" : "Modify hotel",
   "generateReport.navbar.title" : "Generate report",
@@ -299,13 +300,14 @@
   "addHotel.error.name_required": "Name is required",
   "addHotel.error.city_required": "City is required",
   "addHotel.error.description_required": "Hotel description is required",
+  "addHotel.form.add": "Add hotel",
 
   "reportGenerator.time_label" : "Time",
   "reportGenerator.title" : "Hotel report generating",
   "reportGenerator.action" : "Generate report",
   "reportGenerator.table.title" : "Bookings from given period",
-  "reportGenerator.from" : "From",
-  "reportGenerator.to" : "To",
+  "reportGenerator.from" : "From date",
+  "reportGenerator.to" : "To date",
   "reportGenerator.table.price" : "Price",
   "reportGenerator.table.rating" : "Rating",
   "reportGenerator.table.owner_login" : "Owner login",
@@ -314,7 +316,7 @@
   "reservationStart": "Reservation start",
   "reservationEnd": "Reservation end",
   "price": "Price",
-  "bookingStatus": "Stan rezerwacji",
+  "bookingStatus": "Booking status",
   "pendingBookingStatus": "Pending",
   "cancelledBookingStatus": "Cancelled",
   "in_progressBookingStatus": "In progress",
@@ -324,13 +326,14 @@
   "addRating": "Add rating",
   "button.end": "End",
 
-  "addCity.title" : "City addition",
+  "addCity.title" : "Adding city",
   "addCity.action" : "Add city",
   "addCity.name" : "City name",
   "addCity.description" : "City description",
   "addCity.error.name_required": "Name is required",
   "addCity.error.description_required": "Description required",
   "addCity.success": "City has been successfully added",
+
   "exception.city.name_invalid": "City name is already in use",
 
   "exception.delete.city.has_hotels": "Cannot delete city with hotels assigned",
@@ -350,7 +353,7 @@
   "modifyCity.error.name_required": "City name is required",
   "modifyCity.error.description_required": "City description is required",
   "location": "Location",
-  "description": "About",
+  "descriptionHotel": "About",
   "comments": "Comments",
   "hiddenComment": "Due to inappropriate content the comment has been hidden",
   "averageRating": "Average rating:",
@@ -359,13 +362,12 @@
   "addBox.navbar.title" : "Add new box",
 
   "addBox.title": "Box addition",
-  "addBox.price" : "Price",
-  "addBox.description" : "Description",
-  "addBox.animalType" : "Animal type",
+  "box.description" : "Description",
+  "animalType" : "Animal type",
   "addBox.success": "Box has been successfully added",
 
-  "addBox.error.price_required": "Box price is required",
-  "addBox.error.description_required": "Box description is required",
+  "box.error.price_required": "Box price is required",
+  "box.error.description_required": "Box description is required",
 
   "DOG": "Dog",
   "CAT":  "Cat",
@@ -381,6 +383,38 @@
   "exception.booking.in_progress_booking": "Booking is in progress",
   "exception.booking.time_exceeded": "Time limit for canceling booking has been exceeded",
   "exception.booking.access_denied": "Access has been denied",
+
+  "exception.not_found_exception.rating_not_found": "This rating does not exists",
+  "comment.success.delete": "Comment removed",
+
+  "modifyBox.title": "Box modification",
+  "modifyBox.success": "Box has been successfully modified",
+  "modifyBox.modify.info": "You are editing: ",
+
+  "exception.box.access_denied": "No permission to edit this resource",
+  "hide.button": "Hide",
+  "show.button": "Show",
+  "change.comment.visibility.success": "Comment visibility has been changed successfully",
+  "deleteManager": "Unassign manager",
+  "unassignManager.success": "Manager unassigned successfully",
+  "unassignManager": "Unassign manager",
+  "emptyListManagerUnassign": "There is no managers assigned to the hotel",
+
+  "choose.animal.type": "Choose animal type",
+  "filter.button": "Filter",
+  "rating.minimal": "Minimal rating",
+  "rating.maximal": "Maximal rating",
+  "text.animal.type": "Animal type",
+
+  "booking.ending.success": "Reservation has been ended successfully",
+
+  "sort.by.rating.ascending": "Rating ascending",
+  "sort.by.rating.descending": "Rating descending",
+  "sort.alphabetically": "Alphabetically",
+  "sort.by": "Sort by",
+
+  "addCity.send.form": "Add",
+  "currency": "PLN",
 
   "booking.form.bread_crumb": "Add booking",
   "booking.form.title": "Add booking",

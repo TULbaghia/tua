@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -48,12 +49,28 @@ public interface HotelEndpointLocal extends CallingClass {
 
     /**
      * MOH.7, MOH.28 Zwraca listę hoteli po przefiltrowaniu
-     *
-     * @return lista hoteli
-     * @throws AppBaseException podczas błędu związanego z bazą danych
+     * @param fromRating dolny przedział oceny hotelu
+     * @param toRating górny przedział oceny hotelu
+     * @param dog wartość logiczna określająca AnimalType.DOG
+     * @param cat wartość logiczna określająca AnimalType.CAT
+     * @param rodent wartość logiczna określająca AnimalType.RODENT
+     * @param bird wartość logiczna określająca AnimalType.BIRD
+     * @param rabbit wartość logiczna określająca AnimalType.RABBIT
+     * @param lizard wartość logiczna określająca AnimalType.LIZARD
+     * @param turtle wartość logiczna określająca AnimalType.TURTLE
+     * @return
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @PermitAll
-    List<HotelDto> getAllFilter(String... option) throws AppBaseException;
+    List<HotelDto> getAllFilter(BigDecimal fromRating,
+                                BigDecimal toRating,
+                                boolean dog,
+                                boolean cat,
+                                boolean rodent,
+                                boolean bird,
+                                boolean rabbit,
+                                boolean lizard,
+                                boolean turtle) throws AppBaseException;
 
     /**
      * Dodaje hotel
@@ -139,4 +156,5 @@ public interface HotelEndpointLocal extends CallingClass {
      */
     @RolesAllowed("getOtherHotelInfo")
     HotelDto getOtherHotelInfo(Long id) throws AppBaseException;
+
 }

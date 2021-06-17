@@ -4,7 +4,7 @@ import {validatorFactory, ValidatorType} from "../../Validation/Validators";
 export const AddBoxValidationSchema = values => {
     const errors = {};
     if (!values.price) {
-        errors.price = i18n.t('addBox.error.price_required');
+        errors.price = i18n.t('box.error.price_required');
     } else {
         validatorFactory(values.price, ValidatorType.PRICE).forEach(x => {
             errors.price = x;
@@ -12,7 +12,7 @@ export const AddBoxValidationSchema = values => {
     }
 
     if (!values.description) {
-        errors.description = i18n.t('addBox.error.description_required');
+        errors.description = i18n.t('box.error.description_required');
     } else {
         validatorFactory(values.description, ValidatorType.BOX_DESCRIPTION).forEach(x => {
             errors.description = x;

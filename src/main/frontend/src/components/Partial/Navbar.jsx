@@ -168,9 +168,6 @@ function NavigationBar(props) {
                                     <LinkContainer to="/cities">
                                         <Nav.Link>{t('cityList')}</Nav.Link>
                                     </LinkContainer>
-                                    <LinkContainer to="/cities/add">
-                                        <Nav.Link>{t('addCity.action')}</Nav.Link>
-                                    </LinkContainer>
                                 </>
                             )}
                             {currentRole === rolesConstant.manager && (
@@ -262,9 +259,6 @@ function NavigationBar(props) {
                             </LinkContainer>
                             <LinkContainer to="/hotels">
                                 <Nav.Link>{t('hotels')}</Nav.Link>
-                            </LinkContainer>
-                            <LinkContainer to="/regulations">
-                                <Nav.Link>{t('regulations')}</Nav.Link>
                             </LinkContainer>
                         </Nav>
                         <Nav className="navbar-right">

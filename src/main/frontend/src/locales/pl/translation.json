@@ -269,6 +269,7 @@
   "assignManager.success": "Manager przypisany pomyślnie",
   "exception.hotel.has_manager": "Ten manager został już przypisany",
   "search.hotel": "Wyszukaj hotel...",
+  "emptyListHotel": "Brak hoteli do wyświetlenia",
 
   "modifyHotel.title" : "Modyfikacja danych hotelu",
   "modifyHotel.action" : "Modyfikuj hotel",
@@ -298,6 +299,7 @@
   "addHotel.error.name_required": "Nazwa jest wymagana",
   "addHotel.error.city_required": "Miasto jest wymagane",
   "addHotel.error.description_required": "Opis jest wymagany",
+  "addHotel.form.add": "Dodaj hotel",
 
   "reportGenerator.time_label" : "Czas",
   "reportGenerator.title" : "Raport działalności hotelu",
@@ -337,6 +339,7 @@
   "addCity.success": "Miasto zostało pomyślnie dodane",
   "exception.city.name_invalid": "Nazwa miasta jest już w użyciu",
 
+
   "exception.delete.city.has_hotels": "Nie można usunąć miasta do którego są przypisane hotele",
   "city.delete.success": "Pomyślnie usunięto miasto",
   "exception.not_found_exception.city_not_found": "Miasto nie istnieje lub zostało usunięte",
@@ -353,7 +356,7 @@
   "modifyCity.error.name_required": "Nazwa miasta jest wymagana",
   "modifyCity.error.description_required": "Opis miasta jest wymagany",
   "location": "Lokalizacja",
-  "description": "O nas",
+  "descriptionHotel": "O nas",
   "comments": "Komentarze",
   "hiddenComment": "Ze względu na nieodpowiednią treść, komentarz został ukryty",
   "averageRating": "Średnia ocen:",
@@ -362,11 +365,12 @@
   "addBox.navbar.title" : "Dodaj nowy box",
 
   "addBox.title": "Dodawanie boxu",
-  "addBox.price" : "Cena",
-  "addBox.description" : "Opis",
-  "addBox.animalType" : "Zwierzę",
+  "box.description" : "Opis",
+  "animalType" : "Zwierzę",
   "addBox.success": "Box został pomyślnie dodany",
 
+  "box.error.price_required": "Podanie ceny jest wymagane",
+  "box.error.description_required": "Opis jest wymagany",
   "reservationCancel.success": "Pomyślnie anulowano rezerwację",
   "exception.booking.cancelled_booking" : "Rezerwacja jest już anulowana",
   "exception.booking.finished_booking": "Rezerwacja jest zakończona",
@@ -383,6 +387,37 @@
   "RABBIT": "Królik",
   "LIZARD": "Jaszczurka",
   "TURTLE": "Żółw",
+  "exception.not_found_exception.rating_not_found": "Taka ocena nie istnieje",
+  "comment.success.delete": "Komentarz został usunięty",
+
+  "choose.animal.type": "Wybierz typ zwierzęcia",
+  "filter.button": "Filtruj",
+  "rating.minimal": "Minimalna ocena",
+  "rating.maximal": "Maksymalna ocena",
+  "text.animal.type": "Rodzaj zwierzęcia",
+
+  "modifyBox.title": "Modyfikacja boxa",
+  "modifyBox.success": "Box został pomyślnie zmodyfikowany",
+  "modifyBox.modify.info": "Modyfikujesz: ",
+
+  "exception.box.access_denied": "Brak uprawnień do modyfikacji zasobu",
+  "hide.button": "Ukryj",
+  "show.button": "Pokaż",
+  "change.comment.visibility.success": "Widoczność komentarza została zmieniona",
+  "deleteManager": "Usuń managera",
+  "unassignManager.success": "Manager został usunięty pomyślnie",
+  "unassignManager": "Usuń managera z hotelu",
+  "emptyListManagerUnassign": "Brak przypisanych managerów",
+
+  "booking.ending.success": "Rezerwacja została zakończona pomyślnie",
+
+  "sort.by.rating.ascending": "Oceną rosnąco",
+  "sort.by.rating.descending": "Oceną malejąco",
+  "sort.alphabetically": "Alfabetycznie",
+  "sort.by": "Sortuj",
+
+  "addCity.send.form": "Dodaj",
+  "currency": "ZŁ",
 
   "booking.form.bread_crumb": "Dokonaj rezerwacji",
   "booking.form.title": "Nowa rezerwacja",

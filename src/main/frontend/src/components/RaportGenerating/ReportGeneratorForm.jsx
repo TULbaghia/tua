@@ -32,7 +32,7 @@ function ReportGeneratorForm() {
             dateTo: "",
             status: "",
             price: "",
-            rating: "",
+            rating: null,
             ownerLogin: "",
         }
     ];
@@ -51,7 +51,6 @@ function ReportGeneratorForm() {
                 Authorization: token,
             }
         }).then(res => {
-            debugger
             setBookings(res.data.bookings);
             if (res.data.count !== 0) {
                 dispatchNotificationSuccess({message: i18n.t('reportGenerator.success')})
@@ -73,7 +72,7 @@ function ReportGeneratorForm() {
                 <li className="breadcrumb-item"><Link to="/">{i18n.t('managerDashboard')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{i18n.t('reportGenerator.title')}</li>
             </BreadCrumb>
-            <div className="floating-box">
+            <div className="floating-box form-floating-box">
                 <Container>
                     <Row className="text-center">
                         <Col className="mb-sm-3">
@@ -81,12 +80,15 @@ function ReportGeneratorForm() {
                         </Col>
                     </Row>
                     <Row className="text-center">
-                        <Col className="d-inline-block d-sm-flex justify-content-center">
+                        <Col className="d-flex justify-content-center">
                             <DatePickerCustom setPickDate={setStartDate}
                                               pickDate={startDate}
+                                              setEndDate={setEndDate}
+                                              currentEndDate={endDate}
                                               label={i18n.t('reportGenerator.from')}/>
                             <DatePickerCustom setPickDate={setEndDate}
                                               pickDate={endDate}
+                                              minDate={startDate}
                                               label={i18n.t('reportGenerator.to')}/>
                         </Col>
                     </Row>
@@ -102,7 +104,7 @@ function ReportGeneratorForm() {
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
+                        <Col className="d-inline-block my-3">
                             <ReportsTable bookings={bookings}/>
                         </Col>
                     </Row>

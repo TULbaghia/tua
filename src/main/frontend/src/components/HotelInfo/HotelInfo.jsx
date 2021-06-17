@@ -15,14 +15,27 @@ import BreadCrumb from "../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import {rolesConstant} from "../../Constants";
 import {useLocale} from "../LoginContext";
+import {v4} from "uuid";
+import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
+import {
+    useNotificationDangerAndInfinity,
+    useNotificationSuccessAndShort
+} from "../Utils/Notification/NotificationProvider";
+import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
+import {Button} from "react-bootstrap";
+import {Form} from "formik";
+
 
 
 function Home(props) {
     const {t, i18n} = props
     const location = useLocation();
-    const {currentRole} = useLocale();
+    const {token, setToken, currentRole} = useLocale();
     const history = useHistory();
     const parsedQuery = queryString.parse(location.search);
+    const dispatchDialog = useDialogPermanentChange();
+    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
+    const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const [hotelData, setHotelData] = useState({
         address: "",
         cityName: "",
@@ -33,14 +46,6 @@ function Home(props) {
     });
 
     const [ratingData, setRatingData] = useState([
-        {
-            id: "",
-            comment: "",
-            createdBy: "",
-            hidden: "",
-            rate: "",
-            creationDate: ""
-        }
     ]);
 
     React.useEffect(() => {
@@ -82,11 +87,45 @@ function Home(props) {
     }
 
     const getRatingInfo = async () => {
-        return await api.getAllRatings(parsedQuery.id);
+        return await api.getAllRatingsList(parsedQuery.id);
     }
 
     const sortRatingData = () => {
         ratingData.sort((a, b) => a.id - b.id);
+    }
+
+    const getHotelData = async (id) => {
+        const response = await api.getHotel(id,{
+            method: "GET",
+            headers: {
+                Authorization: token,
+            }})
+        return response;
+    };
+
+    const deleteHotel = () => (
+        getHotelData(parseInt(parsedQuery.id)).then(res => {
+                api.deleteHotel(parseInt(parsedQuery.id), {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: token,
+                        "If-Match": res.headers.etag
+                    }
+                }).then((res) => {
+                    dispatchNotificationSuccess({message: i18n.t('hotelDelete.success')})
+                }).catch(err => {
+                    ResponseErrorHandler(err, dispatchNotificationDanger);
+                });
+            }
+        )
+    )
+
+    const handleDeleteHotel = () => {
+        dispatchDialog({
+            callbackOnSave: () => {
+                deleteHotel()
+            },
+        })
     }
 
     return (
@@ -119,7 +158,7 @@ function Home(props) {
                     </div>
                     <div className={"col-md-8 col-sm-6 col-4"}>
                         <Tabs defaultActiveKey="description" transition={false} id="tab">
-                            <Tab eventKey="description" title={t('description')}>
+                            <Tab eventKey="description" title={t('descriptionHotel')}>
                                 <div className={"text-justify mt-2"}>
                                     {hotelData.description}
                                 </div>
@@ -136,6 +175,14 @@ function Home(props) {
                                     </ListGroup.Item>
                                 </ListGroup>
                             </Tab>
+                            {currentRole === rolesConstant.admin && (
+                                <Tab eventKey="delete" title={t('delete')} tabClassName={"ml-auto"}>
+                                    <Button className="btn btn-lg btn-primary btn-block mb-3"
+                                            type="submit"
+                                            style={{backgroundColor: "#7749F8"}}
+                                            onClick={() => handleDeleteHotel()}>{t("delete")}</Button>
+                                </Tab>
+                            )}
                         </Tabs>
                     </div>
                 </div>
@@ -158,7 +205,7 @@ function Home(props) {
                 <div className={"row"}>
                     <div className={"col-md-12 mt-3"}>
                         {ratingData.length > 0 && ratingData.map((item) => (
-                            <RatingComponent rate={item.rate} login={item.createdBy} content={item.comment}
+                            <RatingComponent key={v4()} triggerRefresh={handleRatingDataFetch} id={item.id} rate={item.rate} login={item.createdBy} content={item.comment}
                                              hidden={item.hidden} date={dateConverter(item.creationDate.slice(0, -5))}/>
                         ))}
                     </div>

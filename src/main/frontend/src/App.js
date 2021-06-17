@@ -37,20 +37,26 @@ import AddHotelForm from "./components/AddHotel/AddHotelForm";
 import ArchiveBookings from "./components/ArchiveBookings";
 import AddCityForm from "./components/AddCity/AddCityForm";
 import ModifyCityForm from "./components/ModifyCity/ModifyCityForm";
-import HotelInfo from './components/HotelInfo/HotelInfo';
 import AddBoxForm from "./components/AddBox/AddBoxForm";
 import BookingForm from './components/bookings/BookingForm';
+import ModifyBoxForm from "./components/ModifyBox/ModifyBoxForm";
+import UnassignManager from "./components/UnassignManager";
+import HotelInfo from './components/HotelInfo/HotelInfo';
+
 
 library.add(fab, faSignInAlt, faUserPlus);
 
 function App() {
-
     const {token, currentRole, setCurrentRole, setUsername} = useLocale();
     const [roles, setRoles] = useState();
     const GuardProvider = require('react-router-guards').GuardProvider;
     const GuardedRoute = require('react-router-guards').GuardedRoute;
 
     useEffect(() => {
+        tokenDecode();
+    }, [token])
+
+    const tokenDecode = () => {
         if (token) {
             const decodeJwt = jwt_decode(token);
             const roles = decodeJwt['roles'].split(',');
@@ -62,7 +68,7 @@ function App() {
             setUsername(login)
             localStorage.setItem('username', login)
         }
-    }, [token])
+    }
 
     const divStyle = () => {
         switch (currentRole) {
@@ -81,6 +87,9 @@ function App() {
         if (to.meta.logged !== undefined && to.meta.logged !== null && to.meta.logged === true && to.meta.auth === false) {
             next.redirect('/errors/forbidden');
             return;
+        }
+        if(to.meta.currentRole == null) {
+            next();
         }
         if (to.meta.auth) {
             if (to.meta.logged) {
@@ -164,6 +173,8 @@ function App() {
                             <GuardedRoute exact path="/hotels" component={HotelList} meta={{}}/>
                             <GuardedRoute exact path="/hotels/assignManager" component={AssignManager}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/hotels/unassignManager" component={UnassignManager}
+                                          meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/editOwnHotel" component={ModifyHotelForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/editOtherHotel" component={ModifyHotelForm}
@@ -181,6 +192,9 @@ function App() {
                             <GuardedRoute exact path="/boxes/add" component={AddBoxForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/reservation" component={BookingForm} meta={{auth: true, client: true, logged, currentRole }}/>
+                            <GuardedRoute exact path="/boxes/modify" component={ModifyBoxForm}
+                                          meta={{auth: true, manager: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/hotels/hotelInfo" component={HotelInfo} meta={{}}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

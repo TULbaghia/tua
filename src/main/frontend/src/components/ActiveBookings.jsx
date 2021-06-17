@@ -13,6 +13,7 @@ import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import {useThemeColor} from './Utils/ThemeColor/ThemeColorProvider';
 import {dateConverter} from "../i18n";
 import {rolesConstant} from "../Constants";
+import axios from "axios";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -29,6 +30,7 @@ function ActiveBookings(props) {
     const {token, setToken, currentRole, setCurrentRole} = useLocale();
     const [filterText, setFilterText] = React.useState('');
     const themeColor = useThemeColor()
+    const [etag, setETag] = useState()
     const [data, setData] = useState([
         {
             id: 0,
@@ -46,6 +48,35 @@ function ActiveBookings(props) {
     const filteredItems = data.filter(item => {
         return item.id && item.id.toString().includes(filterText);
     });
+
+    const handleEndReservationClick = (id) => {
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/${id}`, {
+            headers: {
+                "Authorization": token
+            }
+        })
+            .then(res => {
+                setETag(res.headers.etag)
+                endReservation(id, res.headers.etag)
+            })
+    }
+
+    const endReservation = (id, eTag) => {
+        axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/end/${id}`, {},
+            {
+                headers: {
+                    "Authorization": token,
+                    "If-Match": eTag
+                }
+            })
+            .then (() => {
+                fetchData()
+                dispatchNotificationSuccess({message: i18n.t('booking.ending.success')})
+            })
+            .catch(err => {
+                ResponseErrorHandler(err, dispatchNotificationDanger)
+            })
+    }
 
     const getReservationData = async (id) => {
         return await api.get(id, {
@@ -110,6 +141,9 @@ function ActiveBookings(props) {
             name: t('price'),
             selector: 'price',
             sortable: true,
+            cell: row => {
+                return row.price + " " + t('currency');
+            }
         },
         {
             name: t('bookingStatus'),
@@ -145,10 +179,16 @@ function ActiveBookings(props) {
         columns.push({
             name: t('endReservation'),
             cell: row => {
-                return (
-                    <Button className="btn-sm" onClick={event => {
-                        console.log("reservation: " + row.id + " ended");
-                    }}>{t("button.end")}</Button>
+                return(
+                    row.bookingStatus === "IN_PROGRESS" ?
+                    <Button className="btn-sm" onClick={() => {
+                        dispatchDialog({
+                            callbackOnSave: () => handleEndReservationClick(row.id),
+                            callbackOnCancel: () => null
+                        })
+                    }
+                    }>{t("button.end")}</Button>
+                    : null
                 );
             }
         });

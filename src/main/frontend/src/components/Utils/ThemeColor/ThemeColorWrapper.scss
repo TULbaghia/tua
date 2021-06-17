@@ -45,7 +45,9 @@
   }
 }
 
-form input.form-control {
+form input.form-control,
+form textarea.form-control,
+form select.form-control {
   background-color: var(--light);
   color: var(--dark);
   &:focus {

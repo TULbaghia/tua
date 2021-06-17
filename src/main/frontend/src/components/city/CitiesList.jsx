@@ -4,16 +4,16 @@ import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
 import {Button, Form} from "react-bootstrap";
-import {useLocale} from "./../LoginContext";
+import {useLocale} from "../LoginContext";
 import {api} from "../../Api"
-import {useDialogPermanentChange} from "./../Utils/CriticalOperations/CriticalOperationProvider";
+import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
 import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
-} from "./../Utils/Notification/NotificationProvider";
+} from "../Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
-import {ResponseErrorHandler} from "./../Validation/ResponseErrorHandler";
-import { useThemeColor } from './../Utils/ThemeColor/ThemeColorProvider';
+import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
+import { useThemeColor } from '../Utils/ThemeColor/ThemeColorProvider';
 import {rolesConstant} from "../../Constants";
 
 
@@ -48,38 +48,14 @@ function CitiesList(props) {
 
     const columns = [
         {
-            name: 'Name',
+            name: t('city'),
             selector: 'name',
             sortable: true,
             width: "10rem"
         },
-        {
-            name: t('edit'),
-            selector: 'edit',
-            cell: row => {
-                return (
-                    <Button className="btn-sm" onClick={event => {
-                        // todo 
-                        // history.push('/editOtherAccount?login=' + row.login);
-                    }}>{t("edit")}</Button>
-                )
-            },
-        },
-        {
-            name: t('details'),
-            selector: 'details',
-            cell: row => {
-                return(
-                    <Button className="btn-sm" onClick={event => {
-                        // todo
-                        // history.push('/accounts/userInfo?login=' + row.login);
-                    }}>{t('details')}</Button>
-                )
-            }
-        },
     ];
 
-    if(currentRole == rolesConstant.admin){
+    if(currentRole === rolesConstant.admin){
         columns.push({
             name: t('delete'),
             selector: 'delete',
@@ -93,7 +69,34 @@ function CitiesList(props) {
                 )
             }
         })
+
+        columns.push({
+                name: t('edit'),
+                selector: 'edit',
+                cell: row => {
+                    return (
+                        <Button className="btn-sm" onClick={event => {
+                            history.push('/cities/editCity?id=' + row.id);
+                        }}>{t("edit")}</Button>
+                    )
+                },
+        });
     }
+
+    columns.push(
+        {
+            name: t('details'),
+            selector: 'details',
+            cell: row => {
+                return(
+                    <Button className="btn-sm" onClick={event => {
+                        // todo
+                        // history.push('/accounts/userInfo?login=' + row.login);
+                    }}>{t('details')}</Button>
+                )
+            }
+        },
+    );
 
     function deleteCity(id){
         api.getCity(id, {method: 'GET',  headers: {Authorization: token}})
@@ -101,7 +104,7 @@ function CitiesList(props) {
             console.log("etag")
             console.log(res)
             console.log(res.headers.etag)
-            api.deleteCity(id, null, {headers: {
+            api.deleteCity(id, {headers: {
                 Authorization: token,
                 "If-Match": res.headers.etag
             }}).then(res => {
@@ -166,6 +169,11 @@ function CitiesList(props) {
                             ResponseErrorHandler(err, dispatchNotificationDanger)
                         })
                     }}>{t("refresh")}</Button>
+                    {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
+                        <Button className="btn-primary float-right m-2" onClick={event => {
+                            history.push('/cities/add');
+                        }}>{t('addCity.action')}</Button>
+                    ) : ( null )}
                 </div>
                 <DataTable className={"rounded-0"}
                     noDataComponent={i18n.t('table.no.result')}

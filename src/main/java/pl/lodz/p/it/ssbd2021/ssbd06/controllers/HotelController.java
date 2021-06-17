@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
@@ -15,8 +16,10 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.math.BigDecimal;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Kontroler odpowiadający za zarządzanie hotelami.
@@ -40,6 +43,7 @@ public class HotelController extends AbstractController {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getHotel", summary = "getHotel")
     public HotelDto get(@PathParam("id") Long id) throws AppBaseException {
         return repeat(() -> hotelEndpoint.get(id), hotelEndpoint);
     }
@@ -52,6 +56,7 @@ public class HotelController extends AbstractController {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getAllHotelsList", summary = "getAllHotelsList")
     public List<HotelDto> getAll() throws AppBaseException {
         return repeat(() -> hotelEndpoint.getAll(), hotelEndpoint);
     }
@@ -65,6 +70,7 @@ public class HotelController extends AbstractController {
      */
     @GET
     @Path("/look/{option}")
+    @Operation(operationId = "lookForHotel", summary = "lookForHotel")
     public List<HotelDto> lookForHotel(@PathParam("option") String option) throws AppBaseException {
         return repeat(() -> hotelEndpoint.lookForHotel(option), hotelEndpoint);
     }
@@ -77,8 +83,46 @@ public class HotelController extends AbstractController {
      */
     @GET
     @Path("/filter/{option}")
+    @Operation(operationId = "filterAllHotels", summary = "filterAllHotels")
     public List<HotelDto> getAllFilter(@PathParam("option") String option) throws AppBaseException {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Zwraca listę hoteli po przefiltrowaniu
+     * @param fromRating dolny przedział oceny hotelu
+     * @param toRating górny przedział oceny hotelu
+     * @param dogType wartość logiczna określająca czy hotel przyjmuje psy
+     * @param catType wartość logiczna określająca czy hotel przyjmuje koty
+     * @param rodentType wartość logiczna określająca czy hotel przyjmuje gryzonie
+     * @param birdType wartość logiczna określająca czy hotel przyjmuje ptaki
+     * @param rabbitType wartość logiczna określająca czy hotel przyjmuje króliki
+     * @param lizardType wartość logiczna określająca czy hotel przyjmuje jaszczurki
+     * @param turtleType wartość logiczna określająca czy hotel przyjmuje żółwie
+     * @return lista hoteli
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @GET
+    @Path("/filter")
+    public List<HotelDto> getFilteredHotels(@QueryParam(value = "fromRating") Double fromRating,
+                                            @QueryParam(value = "toRating") Double toRating,
+                                            @QueryParam(value = "dogType") String dogType,
+                                            @QueryParam(value = "catType") String catType,
+                                            @QueryParam(value = "rodentType") String rodentType,
+                                            @QueryParam(value = "birdType") String birdType,
+                                            @QueryParam(value = "rabbitType") String rabbitType,
+                                            @QueryParam(value = "lizardType") String lizardType,
+                                            @QueryParam(value = "turtleType") String turtleType) throws AppBaseException {
+        BigDecimal fromValue = BigDecimal.valueOf(Objects.requireNonNullElse(fromRating, 1.0));
+        BigDecimal toValue = BigDecimal.valueOf(Objects.requireNonNullElse(toRating, 5.0));
+        boolean isDog = Boolean.parseBoolean(Objects.requireNonNullElse(dogType, "false"));
+        boolean isCat = Boolean.parseBoolean(Objects.requireNonNullElse(catType, "false"));
+        boolean isRodent = Boolean.parseBoolean(Objects.requireNonNullElse(rodentType, "false"));
+        boolean isBird = Boolean.parseBoolean(Objects.requireNonNullElse(birdType, "false"));
+        boolean isRabbit = Boolean.parseBoolean(Objects.requireNonNullElse(rabbitType, "false"));
+        boolean isLizard = Boolean.parseBoolean(Objects.requireNonNullElse(lizardType, "false"));
+        boolean isTurtle = Boolean.parseBoolean(Objects.requireNonNullElse(turtleType, "false"));
+        return repeat(() -> hotelEndpoint.getAllFilter(fromValue, toValue, isDog, isCat, isRodent, isBird, isRabbit, isLizard, isTurtle), hotelEndpoint);
     }
 
     /**
@@ -89,6 +133,7 @@ public class HotelController extends AbstractController {
      */
     @POST
     @RolesAllowed("addHotel")
+    @Operation(operationId = "addHotel", summary = "addHotel")
     public void addHotel(@Valid NewHotelDto hotelDto) throws AppBaseException {
         repeat(() -> hotelEndpoint.addHotel(hotelDto), hotelEndpoint);
     }
@@ -101,6 +146,7 @@ public class HotelController extends AbstractController {
      */
     @DELETE
     @RolesAllowed("deleteHotel")
+    @Operation(operationId = "deleteHotel", summary = "deleteHotel")
     public void deleteHotel(Long hotelId) throws AppBaseException {
         repeat(() -> hotelEndpoint.deleteHotel(hotelId), hotelEndpoint);
     }
@@ -115,6 +161,7 @@ public class HotelController extends AbstractController {
     @PATCH
     @RolesAllowed("addManagerToHotel")
     @Path("/add/{managerLogin}/{hotelId}")
+    @Operation(operationId = "addManagerToHotel", summary = "addManagerToHotel")
     public void addManagerToHotel(@PathParam("hotelId") Long hotelId, @PathParam("managerLogin") String managerLogin)
             throws AppBaseException {
         repeat(() -> hotelEndpoint.addManagerToHotel(hotelId, managerLogin), hotelEndpoint);
@@ -130,6 +177,7 @@ public class HotelController extends AbstractController {
     @RolesAllowed("deleteManagerFromHotel")
     @EtagValidatorFilterBinding
     @Path("/remove/{managerLogin}")
+    @Operation(operationId = "deleteManagerFromHotel", summary = "deleteManagerFromHotel")
     public void deleteManagerFromHotel(@PathParam("managerLogin") String managerLogin) throws AppBaseException {
         repeat(() -> hotelEndpoint.deleteManagerFromHotel(managerLogin), hotelEndpoint);
     }
@@ -145,6 +193,7 @@ public class HotelController extends AbstractController {
     @RolesAllowed("updateOwnHotel")
     @EtagValidatorFilterBinding
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "updateOwnHotel", summary = "updateOwnHotel")
     public void updateOwnHotel(@Valid UpdateHotelDto hotelDto) throws AppBaseException {
         repeat(() -> hotelEndpoint.updateOwnHotel(hotelDto), hotelEndpoint);
     }
@@ -162,6 +211,7 @@ public class HotelController extends AbstractController {
     @RolesAllowed("updateOtherHotel")
     @EtagValidatorFilterBinding
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "updateOtherHotel", summary = "updateOtherHotel")
     public void updateOtherHotel(@PathParam("id") Long id, @Valid UpdateHotelDto hotelDto) throws AppBaseException {
         repeat(() -> hotelEndpoint.updateOtherHotel(id, hotelDto), hotelEndpoint);
     }
@@ -176,6 +226,7 @@ public class HotelController extends AbstractController {
     @RolesAllowed("getOwnHotelInfo")
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getOwnHotelInfo", summary = "getOwnHotelInfo")
     public Response getOwnHotelInfo() throws AppBaseException {
         HotelDto hotelDto = repeat(() -> hotelEndpoint.getOwnHotelInfo(), hotelEndpoint);
         return Response.ok()
@@ -195,6 +246,7 @@ public class HotelController extends AbstractController {
     @RolesAllowed("getOtherHotelInfo")
     @Path("/info/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(operationId = "getOtherHotelInfo", summary = "getOtherHotelInfo")
     public Response getOtherHotelInfo(@PathParam("id") Long id) throws AppBaseException {
         HotelDto hotelDto = repeat(() -> hotelEndpoint.getOtherHotelInfo(id), hotelEndpoint);
         return Response.ok()
@@ -213,6 +265,7 @@ public class HotelController extends AbstractController {
     @GET
     @RolesAllowed("generateReport")
     @Path("/raport/{from}/{to}")
+    @Operation(operationId = "generateReport", summary = "generateReport")
     public GenerateReportDto generateReport(@PathParam("from") Long from, @PathParam("to") Long to)
             throws AppBaseException {
         return hotelEndpoint.generateReport(from, to);

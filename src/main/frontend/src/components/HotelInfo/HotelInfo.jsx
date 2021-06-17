@@ -143,11 +143,13 @@ function Home(props) {
                                     </ListGroup.Item>
                                 </ListGroup>
                             </Tab>
-                            <Tab eventKey="boxlist" title={t('boxList.navbar.title')}>
-                                <div className={"text-justify mt-2"}>
-                                    {hotelData.description}
-                                </div>
-                            </Tab>
+                            {(currentRole === rolesConstant.manager || currentRole === rolesConstant.client) && (
+                                <Tab eventKey="boxlist" title={t('boxList.navbar.title')}>
+                                    <div className={"text-justify mt-2"}>
+                                        {hotelData.description}
+                                    </div>
+                                </Tab>
+                            )}
                         </Tabs>
                     </div>
                 </div>

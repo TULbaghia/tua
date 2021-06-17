@@ -43,7 +43,7 @@ function BoxItem(props) {
                 </Card.Text>
                 {isManager() ? (
                     <>
-                        <Button id={v4()} onClick={() => onModify(box.id)}
+                        <Button id={v4()} onClick={() => onModify(box.id)} className={"card-button ml-0"}
                                 variant="warning">{i18n.t('button.edit')}</Button>
                         <Button id={v4()} onClick={() => onDelete(box.id)} className={"card-button"}
                                 variant="danger">{i18n.t('button.delete')}</Button>

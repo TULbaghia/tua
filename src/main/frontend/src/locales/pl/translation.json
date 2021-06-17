@@ -358,7 +358,6 @@
   "comments": "Komentarze",
   "hiddenComment": "Ze względu na nieodpowiednią treść, komentarz został ukryty",
   "averageRating": "Średnia ocen:",
-  "hotelInfo": "Dane hotelu",
 
   "addBox.navbar.title" : "Dodaj nowy box",
 
@@ -390,5 +389,9 @@
   "modifyBox.success": "Box został pomyślnie zmodyfikowany",
   "modifyBox.modify.info": "Modyfikujesz: ",
 
-  "exception.box.access_denied": "Brak uprawnień do modyfikacji zasobu"
+  "exception.box.access_denied": "Brak uprawnień do modyfikacji zasobu",
+  "hotelInfo": "Dane hotelu",
+  "hide.button": "Ukryj",
+  "show.button": "Pokaż",
+  "change.comment.visibility.success": "Widoczność komentarza została zmieniona"
 }

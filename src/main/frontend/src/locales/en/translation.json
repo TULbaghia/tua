@@ -386,5 +386,8 @@
   "modifyBox.success": "Box has been successfully modified",
   "modifyBox.modify.info": "You are editing: ",
 
-  "exception.box.access_denied": "No permission to edit this resource"
+  "exception.box.access_denied": "No permission to edit this resource",
+  "hide.button": "Hide",
+  "show.button": "Show",
+  "change.comment.visibility.success": "Comment visibility has been changed successfully"
 }

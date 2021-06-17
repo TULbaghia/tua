@@ -2,17 +2,12 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRatingMapper;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.RatingException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRatingMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRatingMapper;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.RatingEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.RatingManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
@@ -28,7 +23,6 @@ import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Endpoint odpowiadający za zarządzanie ocenami hoteli.
@@ -64,10 +58,9 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
     @RolesAllowed("getHotelRating")
     public RatingDto getRating(Long ratingId) throws AppBaseException {
         Rating rating = ratingManager.getRating(ratingId);
-        if(getLogin().equals(rating.getBooking().getAccount().getLogin()) || securityContext.isCallerInRole("Admin")) {
+        if (getLogin().equals(rating.getBooking().getAccount().getLogin()) || securityContext.isCallerInRole("Admin")) {
             return Mappers.getMapper(IRatingMapper.class).toRatingDto(rating);
-        }
-        else {
+        } else {
             throw RatingException.accessDenied();
         }
     }
@@ -102,7 +95,7 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
         Rating rating = ratingManager.getRating(ratingId);
 
         RatingDto ratingIntegrity = Mappers.getMapper(IRatingMapper.class).toRatingDto(rating);
-        if(!verifyIntegrity(ratingIntegrity)){
+        if (!verifyIntegrity(ratingIntegrity)) {
             throw AppOptimisticLockException.optimisticLockException();
         }
 

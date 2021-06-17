@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.enums.RatingVisibility;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.RatingEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
@@ -127,7 +126,7 @@ public class RatingController extends AbstractController {
      */
     @PATCH
     @RolesAllowed("hideHotelRating")
-    @Path("/{ratingId}")
+    @Path("/changeVisibility/{ratingId}")
     public void changeVisibility(@PathParam("ratingId") Long ratingId) throws AppBaseException {
         repeat(() -> ratingEndpoint.changeVisibility(ratingId), ratingEndpoint);
     }

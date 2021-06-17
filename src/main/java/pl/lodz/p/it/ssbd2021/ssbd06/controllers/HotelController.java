@@ -100,7 +100,8 @@ public class HotelController extends AbstractController {
      */
     @DELETE
     @RolesAllowed("deleteHotel")
-    public void deleteHotel(Long hotelId) throws AppBaseException {
+    @Path("/{id}")
+    public void deleteHotel(@PathParam("id") Long hotelId) throws AppBaseException {
         repeat(() -> hotelEndpoint.deleteHotel(hotelId), hotelEndpoint);
     }
 

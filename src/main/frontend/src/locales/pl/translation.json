@@ -269,6 +269,7 @@
   "assignManager.success": "Manager przypisany pomyślnie",
   "exception.hotel.has_manager": "Ten manager został już przypisany",
   "search.hotel": "Wyszukaj hotel...",
+  "emptyListHotel": "Brak hoteli do wyświetlenia",
 
   "modifyHotel.title" : "Modyfikacja danych hotelu",
   "modifyHotel.action" : "Modyfikuj hotel",

@@ -26,6 +26,8 @@ import hotelPhoto7 from "../images/hotel7.jpg";
 import hotelPhoto8 from "../images/hotel8.jpg";
 import hotelPhoto9 from "../images/hotel9.jpg";
 import hotelPhoto10 from "../images/hotel10.jpg";
+import Select from 'react-select';
+import {animalTypes, queryBuilder} from "./Utils/AnimalTypes/AnimalTypes";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -43,7 +45,10 @@ function HotelList(props) {
     const [filterText, setFilterText] = React.useState('');
     const themeColor = useThemeColor()
     const [etag, setETag] = useState();
-    const [searchTerm, setSearchTerm] = React.useState('')
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const [selectedValue, setSelectedValue] = useState([]);
+    const [minRatingValue, setMinRatingValue] = useState(1);
+    const [maxRatingValue, setMaxRatingValue] = useState(5);
     const [data, setData] = useState([
         {
             id: "",
@@ -137,6 +142,30 @@ function HotelList(props) {
         else {
             fetchData()
         }
+    }
+
+    const handleSelectedValueChange = (e) => {
+        setSelectedValue(Array.isArray(e) ? e.map(x => x.value) : []);
+    }
+
+    const handleFilterClick = () => {
+        let query = queryBuilder(minRatingValue, maxRatingValue, selectedValue)
+
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/hotels/filter` + query)
+            .then(res => {
+                setData(res.data)
+            })
+            .catch(err => {
+                ResponseErrorHandler(err, dispatchNotificationDanger)
+            })
+    }
+
+    const handleMinValueChange = (e) => {
+        setMinRatingValue(e.target.value)
+    }
+
+    const handleMaxValueChange = (e) => {
+        setMaxRatingValue(e.target.value)
     }
 
     const fetchSearchedData = (query) => {
@@ -341,7 +370,9 @@ function HotelList(props) {
             )}
             <div className="floating-box">
                 <div>
-                    <h1 className="float-left">{t('hotelList')}</h1>
+                    <h1>{t('hotelList')}</h1>
+                </div>
+                <div className="d-flex flex-row-reverse">
                     <Button className="btn-secondary float-right m-2" onClick={event => {
                         getAllHotels().then(res => {
                             setData(res.data);
@@ -363,6 +394,50 @@ function HotelList(props) {
                         value={searchTerm}
                         onChange={handleSearchTermChange}
                     />
+                </div>
+                <div className="d-flex flex-row-reverse">
+                    <Button
+                        onClick={handleFilterClick}
+                        className="btn-secondary float-right m-2">
+                        {t('filter.button')}
+                    </Button>
+                    <Select
+                        className="float-right dropdown align-self-center"
+                        placeholder={t("choose.animal.type")}
+                        value={animalTypes.filter(obj => selectedValue.includes(obj.value))}
+                        options={animalTypes}
+                        onChange={handleSelectedValueChange}
+                        isMulti
+                        isClearable
+                    />
+                    <h4
+                        className="float-right align-self-center">
+                        {t('text.animal.type')}
+                    </h4>
+                    <input
+                        className="input float-right m-2"
+                        type="number"
+                        step="0.1"
+                        min='1'
+                        max='5'
+                        placeholder={t('rating.maximal')}
+                        value={maxRatingValue}
+                        onChange={handleMaxValueChange}
+                    />
+                    <input
+                        className="input float-right m-2"
+                        type="number"
+                        step='0.1'
+                        min='1'
+                        max='5'
+                        placeholder={t('rating.minimal')}
+                        value={minRatingValue}
+                        onChange={handleMinValueChange}
+                    />
+                    <h4
+                        className="float-right align-self-center">
+                        {t('rating')}
+                    </h4>
                 </div>
                 {token === null || token === '' ? (
                     <div style={{height: '35rem', display: 'flex', flex: '1', flexDirection: 'row', width: '75rem', overflowY: 'scroll'}}>

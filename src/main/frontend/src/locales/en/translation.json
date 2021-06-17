@@ -393,5 +393,11 @@
   "deleteManager": "Unassign manager",
   "unassignManager.success": "Manager unassigned successfully",
   "unassignManager": "Unassign manager",
-  "emptyListManagerUnassign": "There is no managers assigned to the hotel"
+  "emptyListManagerUnassign": "There is no managers assigned to the hotel",
+
+  "choose.animal.type": "Choose animal type",
+  "filter.button": "Filter",
+  "rating.minimal": "Minimal rating",
+  "rating.maximal": "Maximal rating",
+  "text.animal.type": "Animal type"
 }

@@ -386,12 +386,17 @@
   "LIZARD": "Jaszczurka",
   "TURTLE": "Żółw",
 
+  "choose.animal.type": "Wybierz typ zwierzęcia",
+  "filter.button": "Filtruj",
+  "rating.minimal": "Minimalna ocena",
+  "rating.maximal": "Maksymalna ocena",
+  "text.animal.type": "Rodzaj zwierzęcia",
+
   "modifyBox.title": "Modyfikacja boxa",
   "modifyBox.success": "Box został pomyślnie zmodyfikowany",
   "modifyBox.modify.info": "Modyfikujesz: ",
 
   "exception.box.access_denied": "Brak uprawnień do modyfikacji zasobu",
-  "hotelInfo": "Dane hotelu",
   "hide.button": "Ukryj",
   "show.button": "Pokaż",
   "change.comment.visibility.success": "Widoczność komentarza została zmieniona",

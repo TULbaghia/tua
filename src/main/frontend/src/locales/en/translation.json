@@ -314,7 +314,7 @@
   "reservationStart": "Reservation start",
   "reservationEnd": "Reservation end",
   "price": "Price",
-  "bookingStatus": "Stan rezerwacji",
+  "bookingStatus": "Booking status",
   "pendingBookingStatus": "Pending",
   "cancelledBookingStatus": "Cancelled",
   "in_progressBookingStatus": "In progress",
@@ -401,5 +401,6 @@
   "rating.maximal": "Maximal rating",
   "text.animal.type": "Animal type",
 
-  "booking.ending.success": "Reservation has been ended successfully"
+  "booking.ending.success": "Reservation has been ended successfully",
+  "currency": "PLN"
 }

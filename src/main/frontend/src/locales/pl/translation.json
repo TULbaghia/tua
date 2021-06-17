@@ -405,5 +405,6 @@
   "unassignManager": "Usuń managera z hotelu",
   "emptyListManagerUnassign": "Brak przypisanych managerów",
 
-  "booking.ending.success": "Rezerwacja została zakończona pomyślnie"
+  "booking.ending.success": "Rezerwacja została zakończona pomyślnie",
+  "currency": "ZŁ"
 }

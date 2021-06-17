@@ -45,13 +45,16 @@ import UnassignManager from "./components/UnassignManager";
 library.add(fab, faSignInAlt, faUserPlus);
 
 function App() {
-
     const {token, currentRole, setCurrentRole, setUsername} = useLocale();
     const [roles, setRoles] = useState();
     const GuardProvider = require('react-router-guards').GuardProvider;
     const GuardedRoute = require('react-router-guards').GuardedRoute;
 
     useEffect(() => {
+        tokenDecode();
+    }, [token])
+
+    const tokenDecode = () => {
         if (token) {
             const decodeJwt = jwt_decode(token);
             const roles = decodeJwt['roles'].split(',');
@@ -63,7 +66,7 @@ function App() {
             setUsername(login)
             localStorage.setItem('username', login)
         }
-    }, [token])
+    }
 
     const divStyle = () => {
         switch (currentRole) {
@@ -82,6 +85,9 @@ function App() {
         if (to.meta.logged !== undefined && to.meta.logged !== null && to.meta.logged === true && to.meta.auth === false) {
             next.redirect('/errors/forbidden');
             return;
+        }
+        if(to.meta.currentRole == null) {
+            next();
         }
         if (to.meta.auth) {
             if (to.meta.logged) {

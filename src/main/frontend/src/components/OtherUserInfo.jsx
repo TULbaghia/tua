@@ -32,7 +32,6 @@ function OtherUserInfo(props) {
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
 
     React.useEffect(() => {
-        document.title = t('animalHotel');
         handleDataFetch();
     }, []);
 

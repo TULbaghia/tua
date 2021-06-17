@@ -16,7 +16,6 @@ function AppUsersPage(props) {
     const dispatchDangerError = useNotificationDangerAndInfinity();
     
     useEffect(() => {
-        document.title = t('animalHotel');
        if (token) {
            getUserLanguage(token, i18n, () => dispatchThemeChangeAfterLogin(token), dispatchDangerError);
        }

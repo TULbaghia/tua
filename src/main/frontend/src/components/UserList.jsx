@@ -135,7 +135,6 @@ function UserList(props) {
     ];
 
     useEffect(() => {
-        document.title = t('animalHotel');
         fetchData();
     }, []);
 

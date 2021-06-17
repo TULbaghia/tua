@@ -2,14 +2,9 @@ import {Link} from "react-router-dom";
 import styles from "../../css/floatingbox.css"
 import hamster from "../../images/xhamster_internal.png"
 import {withNamespaces} from "react-i18next";
-import {useEffect} from "react";
 
 function InternalError(props) {
     const {t, i18n} = props
-
-    useEffect(() => {
-        document.title = t('animalHotel');
-    }, [])
 
     return(
         <div className="floating-box">

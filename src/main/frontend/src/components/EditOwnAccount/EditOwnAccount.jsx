@@ -38,7 +38,6 @@ function EditOwnAccount() {
     const recaptchaRef3 = React.createRef();
 
     React.useEffect(() => {
-        document.title = i18n.t('animalHotel');
         if (token) {
             getEtag()
                 .then(r => setETag(r))

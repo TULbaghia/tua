@@ -1,7 +1,7 @@
 import {withNamespaces} from "react-i18next";
 import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {api} from "../Api";
 import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
@@ -15,9 +15,6 @@ function PasswordReset(props) {
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
 
-    useEffect(() => {
-        document.title = t('animalHotel');
-    }, [])
 
     const handleSend = e => {
         e.preventDefault()

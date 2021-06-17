@@ -106,7 +106,6 @@ function ArchiveBookings(props) {
     }
 
     useEffect(() => {
-        document.title = t('animalHotel');
         fetchData();
     }, []);
 

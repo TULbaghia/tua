@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {useHistory} from "react-router";
 import {useLocale} from "../LoginContext";
 import {withNamespaces} from 'react-i18next';
@@ -30,10 +30,6 @@ function Login(props) {
 
     const dispatch = useNotificationCustom();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
-
-    useEffect(() => {
-        document.title = t('animalHotel');
-    }, [])
 
     const handleRefreshBox = () => {
         dispatch({

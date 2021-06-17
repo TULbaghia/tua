@@ -116,7 +116,6 @@ function CitiesList(props) {
 
     useEffect(() => {
         fetchData();
-        document.title = t('animalHotel');
     }, []);
 
     const fetchData = () => {

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {useHistory} from "react-router";
 import {Link, useParams} from "react-router-dom";
 import { withNamespaces } from 'react-i18next';
@@ -16,10 +16,6 @@ function AccountActivate() {
     let {code} = useParams();
     const conf = new Configuration()
     const api = new DefaultApi(conf)
-
-    useEffect(() => {
-        document.title = i18n.t('animalHotel');
-    }, [])
 
     const handleConfirmation = () => (
         dispatchCriticalDialog({

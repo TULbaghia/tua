@@ -52,12 +52,10 @@ function LanguageSwitcher(props) {
 
     const handleClickPl = () => {
         setLanguage(i18n, "pl")
-        document.title = t('animalHotel')
     }
 
     const handleClickEn = () => {
         setLanguage(i18n, "en")
-        document.title = t('animalHotel')
     }
 
     const handleClickLoggedPl = () => {

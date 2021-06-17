@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {withNamespaces} from "react-i18next";
 import {Button, Container, Form} from "react-bootstrap";
 import "../css/UserInfo.css";
@@ -82,8 +82,7 @@ function AssignManager(props) {
         },
     ];
 
-    useEffect(() => {
-        document.title = t('animalHotel');
+    React.useEffect(() => {
         handleDataFetch();
     }, []);
 

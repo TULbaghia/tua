@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {withNamespaces} from "react-i18next";
 import {useHistory} from "react-router";
 
@@ -6,10 +6,6 @@ import {useHistory} from "react-router";
 function ConfirmedAccount(props) {
     const {t,i18n} = props
     const history = useHistory();
-
-    useEffect(() => {
-        document.title = t('animalHotel');
-    }, [])
 
     return (
         <div className="container">

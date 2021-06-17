@@ -12,7 +12,6 @@ export default function Input({type, field, form, handleChange, fieldName}) {
                 className="form-control my-2"
                 type={type}
                 required
-                autoFocus={true}
             />
             <span className="custom-asterisk">*</span>
         </div>

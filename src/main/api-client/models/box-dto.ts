@@ -19,6 +19,12 @@
 export interface BoxDto {
     /**
      * 
+     * @type {number}
+     * @memberof BoxDto
+     */
+    id?: any;
+    /**
+     *
      * @type {any}
      * @memberof BoxDto
      */
@@ -28,29 +34,17 @@ export interface BoxDto {
      * @type {string}
      * @memberof BoxDto
      */
-    animalType?: any;
+    description?: any;
     /**
      * 
      * @type {string}
      * @memberof BoxDto
      */
-    description?: any;
-    /**
-     * 
-     * @type {number}
-     * @memberof BoxDto
-     */
-    id?: any;
+    animalType?: any;
     /**
      * 
      * @type {number}
      * @memberof BoxDto
      */
     hotelId?: any;
-    /**
-     * 
-     * @type {number}
-     * @memberof BoxDto
-     */
-    version?: any;
 }

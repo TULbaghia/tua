@@ -28,11 +28,11 @@ export interface NewBookingDto {
      * @type {any}
      * @memberof NewBookingDto
      */
-    dateTo?: any;
+    dateFrom?: any;
     /**
      * 
      * @type {any}
      * @memberof NewBookingDto
      */
-    dateFrom?: any;
+    dateTo?: any;
 }

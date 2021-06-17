@@ -22,9 +22,9 @@ export interface NewHotelDto {
      * @type {string}
      * @memberof NewHotelDto
      */
-    image?: any;
+    name?: any;
     /**
-     * 
+     *
      * @type {string}
      * @memberof NewHotelDto
      */
@@ -34,7 +34,7 @@ export interface NewHotelDto {
      * @type {string}
      * @memberof NewHotelDto
      */
-    name?: any;
+    image?: any;
     /**
      * 
      * @type {string}
@@ -42,7 +42,7 @@ export interface NewHotelDto {
      */
     description?: any;
     /**
-     * 
+     *
      * @type {number}
      * @memberof NewHotelDto
      */

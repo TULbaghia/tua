@@ -22,11 +22,11 @@ export interface LoginDataDto {
      * @type {string}
      * @memberof LoginDataDto
      */
-    password?: any;
+    login?: any;
     /**
      * 
      * @type {string}
      * @memberof LoginDataDto
      */
-    login?: any;
+    password?: any;
 }

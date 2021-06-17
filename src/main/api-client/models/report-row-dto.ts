@@ -19,24 +19,6 @@
 export interface ReportRowDto {
     /**
      * 
-     * @type {any}
-     * @memberof ReportRowDto
-     */
-    price?: any;
-    /**
-     * 
-     * @type {number}
-     * @memberof ReportRowDto
-     */
-    dateTo?: any;
-    /**
-     * 
-     * @type {number}
-     * @memberof ReportRowDto
-     */
-    rating?: any;
-    /**
-     * 
      * @type {number}
      * @memberof ReportRowDto
      */
@@ -49,10 +31,28 @@ export interface ReportRowDto {
     dateFrom?: any;
     /**
      * 
+     * @type {number}
+     * @memberof ReportRowDto
+     */
+    dateTo?: any;
+    /**
+     * 
      * @type {string}
      * @memberof ReportRowDto
      */
     status?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ReportRowDto
+     */
+    price?: any;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportRowDto
+     */
+    rating?: any;
     /**
      * 
      * @type {string}

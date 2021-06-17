@@ -382,6 +382,9 @@
   "exception.booking.time_exceeded": "Time limit for canceling booking has been exceeded",
   "exception.booking.access_denied": "Access has been denied",
 
+  "exception.not_found_exception.rating_not_found": "This rating does not exists",
+  "comment.success.delete": "Comment removed",
+
   "modifyBox.title": "Box modification",
   "modifyBox.success": "Box has been successfully modified",
   "modifyBox.modify.info": "You are editing: ",

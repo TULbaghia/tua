@@ -2,36 +2,58 @@ import React, {useEffect, useState} from "react";
 import {Rating} from "@material-ui/lab";
 import {Button, Card} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faEllipsisV} from '@fortawesome/free-solid-svg-icons'
+import {faEllipsisV, faTrash} from '@fortawesome/free-solid-svg-icons'
 import i18n from '../../i18n';
 import {api} from "../../Api";
+import {useLocale} from "../LoginContext";
+import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
 } from "../Utils/Notification/NotificationProvider";
-import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
+import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
 import axios from "axios";
-import {useLocale} from "../LoginContext";
 
-export default function RatingComponent({id, rate, login, content, date, hidden}) {
-
-    const dispatchNotificationSuccess = useNotificationSuccessAndShort();
-    const dispatchNotificationDanger = useNotificationDangerAndInfinity();
-    const [etag, setETag] = useState()
-    const {token, currentRole} = useLocale()
+export default function RatingComponent({id, rate, login, content, date, hidden, triggerRefresh}) {
+    const dangerNotifier = useNotificationDangerAndInfinity();
+    const successNotifier = useNotificationSuccessAndShort();
+    const confirmDialog = useDialogPermanentChange();
+    const {token, username, currentRole} = useLocale();
+    const [etag, setEtag] = useState();
     const [hiddenValue, setHiddenValue] = useState()
 
     useEffect(() => {
         setHiddenValue(hidden)
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/ratings/rating/${id}`, {
+        if (username === login || currentRole === 'ADMIN') {
+            api.getHotelRating(id, {
+                headers: {
+                    Authorization: token,
+                }
+            }).then((res) => {
+                setEtag(res.headers.etag);
+            }).catch((e) => ResponseErrorHandler(e, dangerNotifier));
+        }
+    }, [token]);
+
+    const deleteComment = (evt) => {
+        api.deleteRating(id,{
             headers: {
-                "Authorization": token,
+                Authorization: token,
+                "If-Match": etag
             }
-        })
-            .then(res => {
-                setETag(res.headers.etag)
+        }).then((res) => {
+            successNotifier({
+                message: i18n.t("comment.success.delete")
             })
-    })
+            triggerRefresh()
+        }).catch((e) => ResponseErrorHandler(e, dangerNotifier));
+    }
+    
+    const deleteDialog = (evt) => {
+        confirmDialog({
+            callbackOnSave: (evt) => deleteComment(evt)
+        })
+    }
 
     const handleChangeVisibilityClick = (id) => {
         axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/ratings/changeVisibility/${id}`, {}, {
@@ -42,12 +64,13 @@ export default function RatingComponent({id, rate, login, content, date, hidden}
         })
             .then(() => {
                 setHiddenValue(!hiddenValue)
-                dispatchNotificationSuccess({message: i18n.t('change.comment.visibility.success')})
+                successNotifier({message: i18n.t('change.comment.visibility.success')})
             })
             .catch(err => {
-                ResponseErrorHandler(err, dispatchNotificationDanger)
+                ResponseErrorHandler(err, dangerNotifier)
             })
     }
+    
     return (
         <>
             <Card className="mb-4">
@@ -58,14 +81,18 @@ export default function RatingComponent({id, rate, login, content, date, hidden}
                         readOnly
                         precision={0.5}
                     />
-                    {currentRole === 'ADMIN' ?
-                        <Button className="btn-sm float-right mr-2"
-                                onClick={() => handleChangeVisibilityClick(id)}>
-                            {hiddenValue ? i18n.t('show.button') : i18n.t('hide.button')}
-                        </Button>
-                        : null
-                    }
-                    <FontAwesomeIcon className={"float-right mr-2"} icon={faEllipsisV} size={"lg"}/></Card.Header>
+                    <div>
+                        {currentRole === 'ADMIN' ?
+                            <Button className="btn-sm float-right mr-2"
+                                    onClick={() => handleChangeVisibilityClick(id)}>
+                                {hiddenValue ? i18n.t('show.button') : i18n.t('hide.button')}
+                            </Button>
+                            : null
+                        }
+                        <FontAwesomeIcon className={"mr-3"} icon={faEllipsisV} size={"1x"}/>
+                        { etag && username === login ? <FontAwesomeIcon onClick={deleteDialog} className={"mr-2"} style={{cursor: "pointer"}} icon={faTrash} size={"1x"}/> : '' }
+                    </div>
+                    </Card.Header>
                 <Card.Body>
                     <Card.Text className={"text-justify"}>
                         {hiddenValue ? i18n.t('hiddenComment') : content}

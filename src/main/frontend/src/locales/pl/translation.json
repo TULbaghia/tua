@@ -385,6 +385,8 @@
   "RABBIT": "Królik",
   "LIZARD": "Jaszczurka",
   "TURTLE": "Żółw",
+  "exception.not_found_exception.rating_not_found": "Taka ocena nie istnieje",
+  "comment.success.delete": "Komentarz został usunięty",
 
   "choose.animal.type": "Wybierz typ zwierzęcia",
   "filter.button": "Filtruj",

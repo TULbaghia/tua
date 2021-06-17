@@ -19,10 +19,16 @@
 export interface HotelDto {
     /**
      * 
+     * @type {number}
+     * @memberof HotelDto
+     */
+    id?: any;
+    /**
+     *
      * @type {string}
      * @memberof HotelDto
      */
-    image?: any;
+    name?: any;
     /**
      * 
      * @type {string}
@@ -37,12 +43,6 @@ export interface HotelDto {
     cityName?: any;
     /**
      * 
-     * @type {string}
-     * @memberof HotelDto
-     */
-    name?: any;
-    /**
-     * 
      * @type {any}
      * @memberof HotelDto
      */
@@ -52,13 +52,13 @@ export interface HotelDto {
      * @type {string}
      * @memberof HotelDto
      */
-    description?: any;
+    image?: any;
     /**
-     * 
-     * @type {number}
+     *
+     * @type {string}
      * @memberof HotelDto
      */
-    id?: any;
+    description?: any;
     /**
      * 
      * @type {number}

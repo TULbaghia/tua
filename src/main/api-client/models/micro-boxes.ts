@@ -22,11 +22,11 @@ export interface MicroBoxes {
      * @type {number}
      * @memberof MicroBoxes
      */
-    number?: any;
+    id?: any;
     /**
      * 
      * @type {number}
      * @memberof MicroBoxes
      */
-    id?: any;
+    number?: any;
 }

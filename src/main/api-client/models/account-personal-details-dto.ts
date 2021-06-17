@@ -28,11 +28,11 @@ export interface AccountPersonalDetailsDto {
      * @type {string}
      * @memberof AccountPersonalDetailsDto
      */
-    contactNumber?: any;
+    lastname?: any;
     /**
      * 
      * @type {string}
      * @memberof AccountPersonalDetailsDto
      */
-    lastname?: any;
+    contactNumber?: any;
 }

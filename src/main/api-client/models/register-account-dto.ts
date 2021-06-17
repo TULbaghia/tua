@@ -22,24 +22,6 @@ export interface RegisterAccountDto {
      * @type {string}
      * @memberof RegisterAccountDto
      */
-    password?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterAccountDto
-     */
-    firstname?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterAccountDto
-     */
-    contactNumber?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterAccountDto
-     */
     login?: any;
     /**
      * 
@@ -52,5 +34,23 @@ export interface RegisterAccountDto {
      * @type {string}
      * @memberof RegisterAccountDto
      */
+    password?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAccountDto
+     */
+    firstname?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAccountDto
+     */
     lastname?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterAccountDto
+     */
+    contactNumber?: any;
 }

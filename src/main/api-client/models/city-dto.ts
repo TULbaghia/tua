@@ -19,6 +19,12 @@
 export interface CityDto {
     /**
      * 
+     * @type {number}
+     * @memberof CityDto
+     */
+    id?: any;
+    /**
+     * 
      * @type {string}
      * @memberof CityDto
      */
@@ -29,12 +35,6 @@ export interface CityDto {
      * @memberof CityDto
      */
     description?: any;
-    /**
-     * 
-     * @type {number}
-     * @memberof CityDto
-     */
-    id?: any;
     /**
      * 
      * @type {number}

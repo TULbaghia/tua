@@ -15,6 +15,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
+import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 /**
  * Manager odpowiadający za zarządzanie rezerwacjami.
  */
+@DeclareRoles("Client")
 @Stateless
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -106,7 +108,7 @@ public class BookingManager {
      * @param bookingId identyfikator rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed("cancelReservation")
+    @RolesAllowed({"cancelReservation"})
     public void cancelBooking(Long bookingId) throws AppBaseException {
         Booking booking = bookingFacade.find(bookingId);
         if (booking.getStatus().equals(BookingStatus.PENDING)) {
@@ -179,7 +181,7 @@ public class BookingManager {
      * @return lista rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed({"getAllActiveReservations", "Client"})
+    @RolesAllowed({"getAllActiveReservations"})
     public List<Booking> showActiveBooking() throws AppBaseException {
         String callerName = securityContext.getCallerPrincipal().getName();
         if (securityContext.isCallerInRole("Client")) {
@@ -203,7 +205,7 @@ public class BookingManager {
      * @return lista rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed({"getAllArchiveReservations", "Client"})
+    @RolesAllowed({"getAllArchiveReservations"})
     public List<Booking> showEndedBooking() throws AppBaseException {
         String callerName = securityContext.getCallerPrincipal().getName();
         if (securityContext.isCallerInRole("Client")) {

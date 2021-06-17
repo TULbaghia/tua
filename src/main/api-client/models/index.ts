@@ -20,5 +20,5 @@ export * from './password-reset-dto';
 export * from './rating-dto';
 export * from './register-account-dto';
 export * from './report-row-dto';
-export * from './update-box-dto';
+export * from './report-row-dto';
 export * from './update-hotel-dto';

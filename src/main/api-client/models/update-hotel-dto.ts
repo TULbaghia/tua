@@ -22,7 +22,7 @@ export interface UpdateHotelDto {
      * @type {string}
      * @memberof UpdateHotelDto
      */
-    image?: any;
+    name?: any;
     /**
      * 
      * @type {string}
@@ -31,20 +31,20 @@ export interface UpdateHotelDto {
     address?: any;
     /**
      * 
+     * @type {number}
+     * @memberof UpdateHotelDto
+     */
+    cityId?: any;
+    /**
+     *
      * @type {string}
      * @memberof UpdateHotelDto
      */
-    name?: any;
+    image?: any;
     /**
      * 
      * @type {string}
      * @memberof UpdateHotelDto
      */
     description?: any;
-    /**
-     * 
-     * @type {number}
-     * @memberof UpdateHotelDto
-     */
-    cityId?: any;
 }

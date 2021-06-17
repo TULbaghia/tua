@@ -22,13 +22,19 @@ export interface BookingDto {
      * @type {number}
      * @memberof BookingDto
      */
+    id?: any;
+    /**
+     * 
+     * @type {number}
+     * @memberof BookingDto
+     */
     accountId?: any;
     /**
      * 
      * @type {any}
      * @memberof BookingDto
      */
-    price?: any;
+    dateFrom?: any;
     /**
      * 
      * @type {any}
@@ -43,16 +49,10 @@ export interface BookingDto {
     bookingStatus?: any;
     /**
      * 
-     * @type {number}
-     * @memberof BookingDto
-     */
-    id?: any;
-    /**
-     * 
      * @type {any}
      * @memberof BookingDto
      */
-    dateFrom?: any;
+    price?: any;
     /**
      * 
      * @type {number}

@@ -13,6 +13,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.RatingManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
@@ -27,6 +28,7 @@ import java.util.List;
 /**
  * Endpoint odpowiadający za zarządzanie ocenami hoteli.
  */
+@DeclareRoles("Admin")
 @Stateful
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -55,7 +57,7 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
     }
 
     @Override
-    @RolesAllowed("getHotelRating")
+    @RolesAllowed({"getHotelRating"})
     public RatingDto getRating(Long ratingId) throws AppBaseException {
         Rating rating = ratingManager.getRating(ratingId);
         if (getLogin().equals(rating.getBooking().getAccount().getLogin()) || securityContext.isCallerInRole("Admin")) {

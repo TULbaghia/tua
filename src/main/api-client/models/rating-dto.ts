@@ -19,10 +19,10 @@
 export interface RatingDto {
     /**
      * 
-     * @type {boolean}
+     * @type {number}
      * @memberof RatingDto
      */
-    hidden?: any;
+    id?: any;
     /**
      * 
      * @type {number}
@@ -46,17 +46,23 @@ export interface RatingDto {
      * @type {number}
      * @memberof RatingDto
      */
-    id?: any;
+    bookingId?: any;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RatingDto
+     */
+    hidden?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof RatingDto
+     */
+    creationDate?: any;
     /**
      * 
      * @type {number}
      * @memberof RatingDto
      */
     version?: any;
-    /**
-     * 
-     * @type {number}
-     * @memberof RatingDto
-     */
-    bookingId?: any;
 }

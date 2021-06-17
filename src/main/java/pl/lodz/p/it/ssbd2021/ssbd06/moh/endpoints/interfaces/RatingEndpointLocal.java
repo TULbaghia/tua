@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
 import javax.annotation.security.PermitAll;
@@ -58,11 +59,11 @@ public interface RatingEndpointLocal extends CallingClass {
     /**
      * Modyfikuje ocenę
      *
-     * @param ratingDto dto z danymi oceny
+     * @param updateRatingDto dto z danymi oceny
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("updateHotelRating")
-    void updateRating(RatingDto ratingDto) throws AppBaseException;
+    void updateRating(UpdateRatingDto updateRatingDto) throws AppBaseException;
 
     /**
      * Usuwa ocenę hotelu

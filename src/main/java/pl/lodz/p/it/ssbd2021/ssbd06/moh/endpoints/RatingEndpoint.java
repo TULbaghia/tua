@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.RatingException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRatingMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.RatingEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.RatingManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
@@ -75,8 +76,16 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
 
     @Override
     @RolesAllowed("updateHotelRating")
-    public void updateRating(RatingDto ratingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void updateRating(UpdateRatingDto updateRatingDto) throws AppBaseException {
+        Rating rating = ratingManager.getRating(updateRatingDto.getId());
+        if (!getLogin().equals(rating.getCreatedBy().getLogin())) {
+            throw RatingException.accessDenied();
+        }
+        RatingDto ratingIntegrity = Mappers.getMapper(IRatingMapper.class).toRatingDto(rating);
+        if (!verifyIntegrity(ratingIntegrity)) {
+            throw AppOptimisticLockException.optimisticLockException();
+        }
+        ratingManager.updateRating(updateRatingDto);
     }
 
     @Override

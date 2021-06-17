@@ -4,6 +4,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.RatingDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.RatingEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
@@ -34,8 +35,8 @@ public class RatingController extends AbstractController {
      * Zwraca ocenę hotelu
      *
      * @param id identyfikator oceny
-     * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return obiekt dto oceny hotelu
+     * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @GET
     @Path("/get/{id}")
@@ -53,8 +54,8 @@ public class RatingController extends AbstractController {
      * Zwraca listę ocen hotelu
      *
      * @param hotelId identyfikator hotelu
-     * @throws AppBaseException podczas błędu związanego ze zwracaniem listy ocen hotelu
      * @return lista ocen hotelu
+     * @throws AppBaseException podczas błędu związanego ze zwracaniem listy ocen hotelu
      */
     @GET
     @Path("/{id}")
@@ -66,6 +67,7 @@ public class RatingController extends AbstractController {
 
     /**
      * Zwraca ocenę o podanym id
+     *
      * @param ratingId id oceny
      * @return ocena
      * @throws AppBaseException podczas błędu związanego z bazą danych
@@ -100,14 +102,15 @@ public class RatingController extends AbstractController {
     /**
      * Modyfikuje ocenę
      *
-     * @param ratingDto dto z danymi oceny
+     * @param updateRatingDto dto z danymi oceny
      * @throws AppBaseException podczas błędu związanego z aktualizacją oceny hotelu
      */
     @PUT
     @RolesAllowed("updateHotelRating")
     @Operation(operationId = "updateRating", summary = "updateRating")
-    public void updateRating(RatingDto ratingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @EtagValidatorFilterBinding
+    public void updateRating(UpdateRatingDto updateRatingDto) throws AppBaseException {
+        repeat(() -> ratingEndpoint.updateRating(updateRatingDto), ratingEndpoint);
     }
 
     /**

@@ -16,6 +16,7 @@ import {
 } from "../Utils/Notification/NotificationProvider";
 import {useHistory, useLocation} from "react-router";
 import queryString from "query-string";
+import {api} from "../../Api";
 
 function BoxList(props) {
 
@@ -108,7 +109,36 @@ function BoxList(props) {
     };
 
     const handleDelete = (boxId) => {
-        setBoxes(boxes.filter((b) => b.id !== boxId))
+        dispatchDialog({
+            callbackOnSave: () => {
+                getBox(boxId).then(res => {
+                    deleteBox(boxId, res.headers.etag).then(res => {
+                        dispatchNotificationSuccess({message: i18n.t('box.delete.success')})
+                    }).catch(err => {
+                        dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+                    }).finally(() => decideFetch(true));
+                }).catch(err => {
+                    dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+                }).finally(() => decideFetch(true))
+            }
+        })
+    };
+
+    const getBox = (id) => {
+        return api.getBox(id, {
+            headers: {
+                Authorization: token
+            }
+        });
+    };
+
+    const deleteBox = (id, etag) => {
+        return api.deleteBox(id, {
+            headers: {
+                Authorization: token,
+                "If-Match": etag
+            }
+        });
     };
 
     return (

@@ -409,5 +409,10 @@
   "rating.maximal": "Maximal rating",
   "text.animal.type": "Animal type",
 
-  "booking.ending.success": "Reservation has been ended successfully"
+  "booking.ending.success": "Reservation has been ended successfully",
+
+  "exception.not_found_exception.box_not_found": "Box does not exist or has been deleted",
+  "box.delete.success": "Successfully deleted box",
+  "exception.box.box_in_used": "Box is beeing used",
+  "exception.box.box_is_pending": "Box is reserved"
 }

@@ -411,5 +411,10 @@
   "unassignManager": "Usuń managera z hotelu",
   "emptyListManagerUnassign": "Brak przypisanych managerów",
 
-  "booking.ending.success": "Rezerwacja została zakończona pomyślnie"
+  "booking.ending.success": "Rezerwacja została zakończona pomyślnie",
+
+  "exception.not_found_exception.box_not_found": "Box nie istniał lub został usunięty",
+  "box.delete.success": "Box został pomyślnie usunięty",
+  "exception.box.box_in_used": "Box jest aktualnie używany",
+  "exception.box.box_is_pending": "Box jest zarezerwowany"
 }

@@ -220,4 +220,21 @@ public class BookingManager {
                     .collect(Collectors.toList());
         }
     }
+
+    /**
+     * Wyświetla listę archiwalnych rezerwacji bez oceny dotyczących klienta i związanych z danym hotelem.
+     *
+     * @param hotelId id hotelu
+     * @return lista rezerwacji
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @RolesAllowed("getEndedBookingsForHotel")
+    public List<Booking> showUnratedEndedBookingsForHotel(Long hotelId) throws AppBaseException {
+        String callerName = securityContext.getCallerPrincipal().getName();
+        return bookingFacade.findAllArchived().stream()
+                .filter(b -> b.getAccount().getLogin().equals(callerName)
+                        && b.getBookingLineList().stream().anyMatch(bl -> bl.getBox().getHotel().getId().equals(hotelId))
+                        && b.getRating() == null)
+                .collect(Collectors.toList());
+    }
 }

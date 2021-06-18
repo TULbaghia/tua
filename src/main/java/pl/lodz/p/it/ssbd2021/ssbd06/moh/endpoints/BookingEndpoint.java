@@ -124,6 +124,19 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
         return result;
     }
 
+    @Override
+    @RolesAllowed("getEndedBookingsForHotel")
+    public List<BookingDto> showUnratedEndedBookingsForHotel(Long hotelId) throws AppBaseException {
+        List<Booking> endedBookings = bookingManager.showUnratedEndedBookingsForHotel(hotelId);
+        List<BookingDto> result = new ArrayList<>(endedBookings.size());
+        for (Booking booking : endedBookings) {
+            BookingDto bookingDto = Mappers.getMapper(IBookingMapper.class).toBookingDto(booking);
+            bookingDto.setBookingStatus(booking.getStatus().toString());
+            result.add(bookingDto);
+        }
+        return result;
+    }
+
     /**
      * Sprawdza czy użytkownik jest managerem w hotelu powiązanym z rezerwacją i ma aktywną rolę
      *

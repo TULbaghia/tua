@@ -100,4 +100,13 @@ public interface BookingEndpointLocal extends CallingClass {
      */
     @RolesAllowed("getAllArchiveReservations")
     List<BookingDto> showEndedBooking() throws AppBaseException;
+
+    /**
+     * Wyświetla listę archiwalnych rezerwacji bez oceny dotyczących klienta i związanych z danym hotelem.
+     * @param hotelId id hotelu
+     * @return lista zakończonych rezerwacji
+     * @throws AppBaseException podczas błędu związanego z bazą danych
+     */
+    @RolesAllowed("getEndedBookingsForHotel")
+    List<BookingDto> showUnratedEndedBookingsForHotel(Long hotelId) throws AppBaseException;
 }

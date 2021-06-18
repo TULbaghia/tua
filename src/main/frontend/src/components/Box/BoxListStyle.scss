@@ -19,7 +19,7 @@
 
   @include media-breakpoint-down(sm) {
     margin-left: 0rem;
-    margin-top: 0.2rem;
+    //margin-top: 0.2rem;
   }
 
   @include media-breakpoint-down(xs) {
@@ -49,4 +49,17 @@
   box-shadow: 0 0 0.3rem 0.1rem rgba(0, 0, 0, 0.5);
   padding: 2.6rem;
   border-radius: 1.2rem;
+}
+
+#box-list {
+  nav {
+    margin-left:-15px !important;
+    margin-right:-15px !important;
+  }
+  @media (max-width: 415px) {
+    .card-button {
+      margin: 0.5rem auto !important;
+      display: block;
+    }
+  }
 }

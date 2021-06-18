@@ -142,7 +142,7 @@ function BoxList(props) {
     };
 
     return (
-        <div id={"box-list"} className={"container"}>
+        <div id={"box-list"} className={"container-fluid"}>
 
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{i18n.t('mainPage')}</Link></li>
@@ -157,58 +157,57 @@ function BoxList(props) {
                 )}
                 <li className="breadcrumb-item active" aria-current="page">{i18n.t('boxList.navbar.title')}</li>
             </BreadCrumb>
+            <div className={"row"}>
+                <div className={"box-grid container mb-5"}>
 
-            <div style={{position: "absolute"}} className={"box-grid"}>
-
-                <div className={"row"}>
-                    <h1 className="col-md-6">{i18n.t('boxList.navbar.title')}</h1>
-                    <div className={"col-md-6"}>
-                        <Button className="btn-secondary float-right m-2" onClick={event => {
-                            decideFetch(true);
-                            setSearchTerm('');
-                        }}>
-                            {i18n.t("refresh")}
-                        </Button>
-                        {token !== null && token !== '' && currentRole === rolesConstant.manager ? (
-                            <Button className="btn-primary float-right m-2" onClick={event => {
-                                history.push('/boxes/add');
-                            }}>{i18n.t("addBox")}</Button>
-                        ) : (<></>)}
-                        <input
-                            className="input float-right m-2"
-                            type="text"
-                            placeholder={i18n.t("search.box")}
-                            value={searchTerm}
-                            onKeyUp={handleSearchBox}
-                            onChange={handleSearchBox}
-                        />
+                    <div className={"row"}>
+                        <h1 className="col-md-6">{i18n.t('boxList.navbar.title')}</h1>
+                        <div className={"col-lg-6 col-12  d-flex flex-wrap flex-sm-nowrap justify-content-around justify-content-sm-start flex-row-reverse align-content-center"}>
+                            <Button className="btn-secondary float-right m-2" onClick={event => {
+                                decideFetch(true);
+                                setSearchTerm('');
+                            }}>
+                                {i18n.t("refresh")}
+                            </Button>
+                            {token !== null && token !== '' && currentRole === rolesConstant.manager ? (
+                                <Button className="btn-primary float-right m-2" onClick={event => {
+                                    history.push('/boxes/add');
+                                }}>{i18n.t("addBox")}</Button>
+                            ) : (<></>)}
+                            <input
+                                className="input float-right m-2 w-100"
+                                type="text"
+                                placeholder={i18n.t("search.box")}
+                                value={searchTerm}
+                                onKeyUp={handleSearchBox}
+                                onChange={handleSearchBox}
+                            />
+                        </div>
                     </div>
-                </div>
 
-                <div style={{
-                    maxHeight: '35rem',
-                    display: 'flex',
-                    flex: '1',
-                    flexDirection: 'row',
-                    overflowY: 'scroll'
-                }}>
-                    <div className='row-wrapper' style={{padding: '1rem'}}>
-                        <div className={"row"} style={{display: "flex"}}>
-                            {boxes.length === 0 ? (<div>{i18n.t('table.no.result')}</div>) : (
-                                <>
-                                    {boxes.map((box) => (
-                                        <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
-                                            <BoxItem
-                                                key={box.id}
-                                                onDelete={handleDelete}
-                                                onModify={handleModify}
-                                                box={box}
-                                                isManager={handleIsManager}
-                                            />
-                                        </div>
-                                    ))}
-                                </>
-                            )}
+                    <div style={{
+                        display: 'flex',
+                        flex: '1',
+                        flexDirection: 'row',
+                    }}>
+                        <div className='row-wrapper w-100' style={{padding: '1rem'}}>
+                            <div className={"row"} style={{display: "flex"}}>
+                                {boxes.length === 0 ? (<div>{i18n.t('table.no.result')}</div>) : (
+                                    <>
+                                        {boxes.map((box) => (
+                                            <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
+                                                <BoxItem
+                                                    key={box.id}
+                                                    onDelete={handleDelete}
+                                                    onModify={handleModify}
+                                                    box={box}
+                                                    isManager={handleIsManager}
+                                                />
+                                            </div>
+                                        ))}
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

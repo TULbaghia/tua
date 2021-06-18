@@ -390,7 +390,7 @@
   "LIZARD": "Jaszczurka",
   "TURTLE": "Żółw",
 
-  "addBox": "Add box",
+  "addBox": "Dodaj box",
 
   "choose.animal.type": "Wybierz typ zwierzęcia",
   "filter.button": "Filtruj",
@@ -416,5 +416,6 @@
   "exception.not_found_exception.box_not_found": "Box nie istniał lub został usunięty",
   "box.delete.success": "Box został pomyślnie usunięty",
   "exception.box.box_in_used": "Box jest aktualnie używany",
-  "exception.box.box_is_pending": "Box jest zarezerwowany"
+  "exception.box.box_is_pending": "Box jest zarezerwowany",
+  "search.box": "Wyszukaj box..."
 }

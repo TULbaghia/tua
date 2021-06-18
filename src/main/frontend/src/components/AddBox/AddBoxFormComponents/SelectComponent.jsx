@@ -13,7 +13,7 @@ export const SelectComponent = ({values, label, name, handleChange, entryValue})
     <>
         <h6 className="mt-3 mb-0">{label}</h6>
         <div className="d-flex w-100">
-            <Field className="custom-select my-2" as="select"
+            <Field className="custom-select my-2 form-control" as="select"
                    name={name}
                    onChange={handleChange}>
                 {selectPredicate(values, y => y === entryValue)}

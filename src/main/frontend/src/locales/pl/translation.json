@@ -417,5 +417,7 @@
   "sort.by": "Sortuj",
 
   "addCity.send.form": "Dodaj",
-  "currency": "ZŁ"
+  "currency": "ZŁ",
+  "rate.update": "Zaktualizuj opinię",
+  "comment.success.update" : "Komentarz został zaktualizowany"
 }

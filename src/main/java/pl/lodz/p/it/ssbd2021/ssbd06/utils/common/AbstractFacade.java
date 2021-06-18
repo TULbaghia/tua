@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.utils.common;
 
 import org.hibernate.exception.ConstraintViolationException;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
@@ -13,7 +14,9 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public abstract class AbstractFacade<T extends AbstractEntity> {
@@ -106,7 +109,7 @@ public abstract class AbstractFacade<T extends AbstractEntity> {
         try {
             CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
             cq.select(cq.from(entityClass));
-            return getEntityManager().createQuery(cq).getResultList();
+            return getEntityManager().createQuery(cq).getResultStream().sorted(Comparator.comparing(T::getId).reversed()).collect(Collectors.toList());
         } catch (PersistenceException e) {
             throw DatabaseQueryException.databaseQueryException(e.getCause());
         }

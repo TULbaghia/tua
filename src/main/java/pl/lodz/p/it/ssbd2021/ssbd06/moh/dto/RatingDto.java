@@ -21,6 +21,7 @@ public class RatingDto implements Signable {
     private boolean hidden;
     private String createdBy;
     private Date creationDate;
+    private Date modificationDate;
 
     private Long version;
 

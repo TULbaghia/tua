@@ -43,3 +43,7 @@
     color: var(--dark);
     border-color: var(--darkList);
 }
+
+#tab-tab-boxlist {
+    margin-left: auto;
+}

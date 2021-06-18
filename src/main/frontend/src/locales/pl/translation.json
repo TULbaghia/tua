@@ -327,6 +327,9 @@
   "cancelReservation": "Anuluj rezerwację",
   "endReservation": "Zakończ rezerwację",
   "button.end": "Zakończ",
+  "button.edit": "Edytuj",
+  "button.delete": "Usuń",
+  "box.price": "Cena",
 
   "addRating": "Dodaj ocenę",
 
@@ -363,6 +366,7 @@
   "hotelInfo": "Dane hotelu",
 
   "addBox.navbar.title" : "Dodaj nowy box",
+  "boxList.navbar.title" : "Lista boxów",
 
   "addBox.title": "Dodawanie boxu",
   "box.description" : "Opis",
@@ -390,6 +394,8 @@
   "exception.not_found_exception.rating_not_found": "Taka ocena nie istnieje",
   "comment.success.delete": "Komentarz został usunięty",
 
+  "addBox": "Dodaj box",
+
   "choose.animal.type": "Wybierz typ zwierzęcia",
   "filter.button": "Filtruj",
   "rating.minimal": "Minimalna ocena",
@@ -410,6 +416,7 @@
   "emptyListManagerUnassign": "Brak przypisanych managerów",
 
   "booking.ending.success": "Rezerwacja została zakończona pomyślnie",
+  "search.box": "Wyszukaj box...",
 
   "sort.by.rating.ascending": "Oceną rosnąco",
   "sort.by.rating.descending": "Oceną malejąco",

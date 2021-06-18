@@ -41,7 +41,7 @@ import AddBoxForm from "./components/AddBox/AddBoxForm";
 import ModifyBoxForm from "./components/ModifyBox/ModifyBoxForm";
 import UnassignManager from "./components/UnassignManager";
 import HotelInfo from './components/HotelInfo/HotelInfo';
-
+import BoxList from "./components/Box/BoxList";
 
 library.add(fab, faSignInAlt, faUserPlus);
 
@@ -63,6 +63,7 @@ function App() {
             setRoles(roles);
             if (localStorage.getItem('currentRole') === null) {
                 setCurrentRole(roles[0])
+                localStorage.setItem('currentRole', roles[0])
             }
             setUsername(login)
             localStorage.setItem('username', login)
@@ -191,6 +192,8 @@ function App() {
                             <GuardedRoute exact path="/boxes/modify" component={ModifyBoxForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/hotelInfo" component={HotelInfo} meta={{}}/>
+                            <GuardedRoute exact path="/boxes" component={BoxList}
+                                          meta={{auth: true, clientManager: true, logged, currentRole}}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

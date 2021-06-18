@@ -323,8 +323,12 @@
   "finishedBookingStatus": "Finished",
   "cancelReservation": "Cancel reservation",
   "endReservation": "End reservation",
-  "addRating": "Add rating",
   "button.end": "End",
+  "button.edit": "Modify",
+  "button.delete": "Delete",
+  "box.price": "Price",
+
+  "addRating": "Add rating",
 
   "addCity.title" : "Adding city",
   "addCity.action" : "Add city",
@@ -360,6 +364,7 @@
   "hotelInfo": "Hotel info",
 
   "addBox.navbar.title" : "Add new box",
+  "boxList.navbar.title" : "Box list",
 
   "addBox.title": "Box addition",
   "box.description" : "Description",
@@ -376,6 +381,9 @@
   "RABBIT": "Rabbit",
   "LIZARD": "Lizard",
   "TURTLE": "Turtle",
+
+  "addBox": "Add box",
+  "search.box": "Search box...",
 
   "reservationCancel.success": "Booking has been successfully canceled",
   "exception.booking.cancelled_booking" : "Booking have been already cancelled",

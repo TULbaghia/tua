@@ -430,6 +430,7 @@
   "booking.description": "Description",
   "booking.book": "Add",
   "exception.boxes.not_enough": "Not enough boxes to fulfill the booking",
+  "exception.boxes.not_available": "Selected boxes are not available",
 
   "hotel": "Hotel"
 }

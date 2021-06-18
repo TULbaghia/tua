@@ -433,6 +433,7 @@
   "booking.description": "Opis",
   "booking.book": "Zarezerwuj",
   "exception.boxes.not_enough": "Nie wystarczająca liczba boxów aby zreazliować rezerwacje w wybranym okresie",
+  "exception.boxes.not_available": "Wybrane boxy nie są dostępne",
 
   "hotel": "Hotel"
 }

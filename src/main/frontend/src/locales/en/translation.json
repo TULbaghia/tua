@@ -426,7 +426,7 @@
   "booking.search_boxes": "Search",
   "booking.create_reservation": "Book",
   "booking.date_cannot_refer_to_past": "Date cannot refer to past",
-  "booking.cancellation_limit_info": "Booking can be cancelled within two days after creation",
+  "booking.cancellation_limit_info": "Booking can be cancelled 24 hours after booking and 48 hours before reservation starts",
   "booking.description": "Description",
   "booking.book": "Add",
   "exception.boxes.not_enough": "Not enough boxes to fulfill the booking",

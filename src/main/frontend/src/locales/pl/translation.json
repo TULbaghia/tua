@@ -429,7 +429,7 @@
   "booking.search_boxes": "Wyszukaj",
   "booking.create_reservation": "Rezerwuj",
   "booking.date_cannot_refer_to_past": "Data nie może być z przeszłości",
-  "booking.cancellation_limit_info": "Rezerwacja może być anulowana w przeciągu dwóch dni od złożenia zamówienia",
+  "booking.cancellation_limit_info": "Rezerwacja może być anulowana 24 godziny po dokonaniu rezerwacji oraz 48 godzin przed rozpoczęciem rezerwacji",
   "booking.description": "Opis",
   "booking.book": "Zarezerwuj",
   "exception.boxes.not_enough": "Nie wystarczająca liczba boxów aby zreazliować rezerwacje w wybranym okresie",

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import cat from "../../images/cat.png"
 import {withNamespaces} from "react-i18next";
 import queryString from "query-string";
-import "../../css/floatingbox.css";
+import "../../css/HotelInfo.css";
 import {useHistory, useLocation} from "react-router";
 import {ListGroup, Tab, Tabs} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -49,10 +49,14 @@ function Home(props) {
     ]);
 
     React.useEffect(() => {
+        refreshData()
+    }, []);
+
+    const refreshData = () => {
         handleHotelDataFetch();
         handleRatingDataFetch();
         sortRatingData();
-    }, []);
+    }
 
     const handleHotelDataFetch = () => {
         getHotelInfo().then(res => {
@@ -199,14 +203,14 @@ function Home(props) {
                             readOnly
                             precision={0.5}
                         />
-                        <span className={"ml-3"}>[{hotelData.rating}]</span>
+                        <span className={"ml-3"}>[{hotelData.rating !== undefined ? hotelData.rating : t("ratings.noRatings")}]</span>
                     </div>
                 </div>
                 <div className={"row"}>
                     <div className={"col-md-12 mt-3"}>
                         {ratingData.length > 0 && ratingData.map((item) => (
-                            <RatingComponent key={v4()} triggerRefresh={handleRatingDataFetch} id={item.id} rate={item.rate} login={item.createdBy} content={item.comment}
-                                             hidden={item.hidden} date={dateConverter(item.creationDate.slice(0, -5))}/>
+                            <RatingComponent key={v4()} triggerRefresh={refreshData} id={item.id} rate={item.rate} login={item.createdBy} content={item.comment}
+                                             hidden={item.hidden} date={dateConverter(item.creationDate.slice(0, -5))} modificationDate={item.modificationDate}/>
                         ))}
                     </div>
                 </div>

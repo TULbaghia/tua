@@ -418,6 +418,9 @@
 
   "addCity.send.form": "Dodaj",
   "currency": "ZŁ",
+  "rate.update": "Zaktualizuj opinię",
+  "comment.success.update" : "Komentarz został zaktualizowany",
+  "ratings.noRatings" : "Brak ocen",
 
   "booking.form.bread_crumb": "Dokonaj rezerwacji",
   "booking.form.title": "Nowa rezerwacja",

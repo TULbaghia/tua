@@ -415,6 +415,9 @@
 
   "addCity.send.form": "Add",
   "currency": "PLN",
+  "rate.update": "Update opinion",
+  "comment.success.update" : "Comment updated",
+  "ratings.noRatings" : "No ratings",
 
   "booking.form.bread_crumb": "Add booking",
   "booking.form.title": "Add booking",

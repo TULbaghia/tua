@@ -1,0 +1,32 @@
+#hotelInfo {
+    background: var(--light);
+    color: var(--dark);
+    box-shadow: 0 0 0.3rem 0.1rem rgba(0, 0, 0, 0.5);
+    border-radius: 1.2rem;
+}
+
+.list-group-item {
+    background: var(--light);
+    color: var(--dark);
+    border-color: var(--darkList);
+}
+
+.card-header {
+    background: var(--lightList);
+    color: var(--dark);
+    border-color: var(--darkList);
+}
+
+.card-body {
+    background: var(--light);
+    color: var(--dark);
+}
+
+.card-footer {
+    background: var(--lightList);
+    color: var(--dark);
+    border-color: var(--darkList);
+}
+.star > span > label {
+    display: unset;
+}

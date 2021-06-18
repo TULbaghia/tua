@@ -416,5 +416,6 @@
   "addCity.send.form": "Add",
   "currency": "PLN",
   "rate.update": "Update opinion",
-  "comment.success.update" : "Comment updated"
+  "comment.success.update" : "Comment updated",
+  "ratings.noRatings" : "No ratings"
 }

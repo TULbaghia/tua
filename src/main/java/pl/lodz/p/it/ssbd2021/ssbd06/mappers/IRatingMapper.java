@@ -20,6 +20,7 @@ public interface IRatingMapper {
      */
     @Mapping(target = "createdBy", expression = "java(rating.getCreatedBy().getLogin())")
     @Mapping(target = "bookingId", expression = "java(rating.getBooking().getId())")
+    @Mapping(target = "comment", expression = "java(rating.isHidden() ? null : rating.getComment())")
     RatingDto toRatingDto(Rating rating);
 
     /**

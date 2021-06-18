@@ -203,7 +203,7 @@ function Home(props) {
                             readOnly
                             precision={0.5}
                         />
-                        <span className={"ml-3"}>[{hotelData.rating}]</span>
+                        <span className={"ml-3"}>[{hotelData.rating !== undefined ? hotelData.rating : t("ratings.noRatings")}]</span>
                     </div>
                 </div>
                 <div className={"row"}>

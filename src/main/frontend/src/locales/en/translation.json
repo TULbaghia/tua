@@ -416,5 +416,11 @@
   "addCity.send.form": "Add",
   "currency": "PLN",
   "rate.update": "Update opinion",
-  "comment.success.update" : "Comment updated"
+  "comment.success.update" : "Comment updated",
+  "add.new.comment": "Add new comment",
+  "add.new.rating": "Add new rating",
+  "add.rating": "Add rating",
+  "booking": "Booking",
+  "comment.success.create": "Comment created",
+  "exception.rating_exception.rating_already_exists": "There is already a rating for this booking!"
 }

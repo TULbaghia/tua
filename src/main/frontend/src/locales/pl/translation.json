@@ -419,5 +419,12 @@
   "addCity.send.form": "Dodaj",
   "currency": "ZŁ",
   "rate.update": "Zaktualizuj opinię",
-  "comment.success.update" : "Komentarz został zaktualizowany"
+  "comment.success.update" : "Komentarz został zaktualizowany",
+  "add.new.comment": "Dodaj nowy komentarz",
+  "add.new.rating": "Dodaj nową opinie",
+  "add.rating": "Dodaj opinie",
+  "booking": "Rezerwacja",
+  "comment.success.create": "Komentarz został utworzony",
+  "exception.rating_exception.rating_already_exists": "Istnieje już ocena dla tej rezerwacji!"
+
 }

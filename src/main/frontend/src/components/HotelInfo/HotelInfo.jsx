@@ -24,6 +24,8 @@ import {
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import {Button} from "react-bootstrap";
 import {Form} from "formik";
+import NewRatingComponent from "./NewRatingComponent";
+import axios from "axios";
 
 
 
@@ -36,6 +38,7 @@ function Home(props) {
     const dispatchDialog = useDialogPermanentChange();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
+    const [userBookings, setUserBookings] = useState([])
     const [hotelData, setHotelData] = useState({
         address: "",
         cityName: "",
@@ -55,6 +58,7 @@ function Home(props) {
     const refreshData = () => {
         handleHotelDataFetch();
         handleRatingDataFetch();
+        handleUsersBookingsDataFetch();
         sortRatingData();
     }
 
@@ -69,6 +73,29 @@ function Home(props) {
                 }
             }
         });
+    }
+
+    const handleUsersBookingsDataFetch = () => {
+        console.log("boookingsFetch")
+        if(currentRole === rolesConstant.client) {
+            getUsersBookings().then(res => {
+                console.log(res.data);
+                setUserBookings(res.data)
+            }).catch(err => {
+                if (err.response != null) {
+                    if (err.response.status === 500) {
+                        history.push("/errors/internal");
+                    }
+                }
+            })
+        }
+    }
+
+    const getUsersBookings = async () => {
+        let id = parsedQuery.id;
+        return await axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/ended/` + id, {headers: {
+                Authorization: token,
+            }})
     }
 
     const getHotelInfo = async () => {
@@ -212,6 +239,10 @@ function Home(props) {
                             <RatingComponent key={v4()} triggerRefresh={refreshData} id={item.id} rate={item.rate} login={item.createdBy} content={item.comment}
                                              hidden={item.hidden} date={dateConverter(item.creationDate.slice(0, -5))} modificationDate={item.modificationDate}/>
                         ))}
+                        {(currentRole === rolesConstant.client) &&
+                            <NewRatingComponent triggerRefresh={refreshData} placeholder={t('add.new.comment')} header={t('add.new.rating')}
+                            buttonText={t('add.rating')} bookings={userBookings}/>
+                        }
                     </div>
                 </div>
             </div>

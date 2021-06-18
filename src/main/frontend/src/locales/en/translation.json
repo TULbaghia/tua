@@ -414,5 +414,7 @@
   "sort.by": "Sort by",
 
   "addCity.send.form": "Add",
-  "currency": "PLN"
+  "currency": "PLN",
+  "rate.update": "Update opinion",
+  "comment.success.update" : "Comment updated"
 }

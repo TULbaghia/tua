@@ -1,26 +1,27 @@
 import React, {useEffect, useState} from "react";
 import {Rating} from "@material-ui/lab";
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import {Button, Card} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faEllipsisV, faTrash} from '@fortawesome/free-solid-svg-icons'
-import i18n from '../../i18n';
+import {faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
+import i18n, {dateConverter} from '../../i18n';
 import {api} from "../../Api";
 import {useLocale} from "../LoginContext";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
-import {
-    useNotificationDangerAndInfinity,
-    useNotificationSuccessAndShort
-} from "../Utils/Notification/NotificationProvider";
+import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "../Utils/Notification/NotificationProvider";
 import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
 import axios from "axios";
 
-export default function RatingComponent({id, rate, login, content, date, hidden, triggerRefresh}) {
+export default function RatingComponent({id, rate, login, content, date, modificationDate, hidden, triggerRefresh}) {
     const dangerNotifier = useNotificationDangerAndInfinity();
     const successNotifier = useNotificationSuccessAndShort();
     const confirmDialog = useDialogPermanentChange();
     const {token, username, currentRole} = useLocale();
     const [etag, setEtag] = useState();
     const [hiddenValue, setHiddenValue] = useState()
+    const [editMode, setEditMode] = useState(false)
+    const [newRate, setNewRate] = useState(rate)
+    const [newContent, setNewContent] = useState(content)
 
     useEffect(() => {
         setHiddenValue(hidden)
@@ -36,7 +37,7 @@ export default function RatingComponent({id, rate, login, content, date, hidden,
     }, [token]);
 
     const deleteComment = (evt) => {
-        api.deleteRating(id,{
+        api.deleteRating(id, {
             headers: {
                 Authorization: token,
                 "If-Match": etag
@@ -48,10 +49,30 @@ export default function RatingComponent({id, rate, login, content, date, hidden,
             triggerRefresh()
         }).catch((e) => ResponseErrorHandler(e, dangerNotifier));
     }
-    
+
     const deleteDialog = (evt) => {
         confirmDialog({
             callbackOnSave: (evt) => deleteComment(evt)
+        })
+    }
+
+    const updateComment = (evt) => {
+        api.updateRating({id: id, rate: newRate, comment: newContent}, {
+            headers: {
+                Authorization: token,
+                "If-Match": etag
+            }
+        }).then((res) => {
+            successNotifier({
+                message: i18n.t("comment.success.update")
+            })
+            triggerRefresh()
+        }).catch((e) => ResponseErrorHandler(e, dangerNotifier));
+    }
+
+    const updateDialog = (evt) => {
+        confirmDialog({
+            callbackOnSave: (evt) => updateComment(evt)
         })
     }
 
@@ -70,16 +91,24 @@ export default function RatingComponent({id, rate, login, content, date, hidden,
                 ResponseErrorHandler(err, dangerNotifier)
             })
     }
-    
+
+    const handleChangeContent = (event) => {
+        setNewContent(event.target.value);
+    }
+
     return (
         <>
             <Card className="mb-4">
                 <Card.Header className={"d-flex justify-content-between text-left p-1 align-items-center"}>
-                    <Rating
-                        size={"large"}
-                        value={rate}
-                        readOnly
-                        precision={0.5}
+                    <Rating className={"star"}
+                            size={"large"}
+                            defaultValue={rate}
+                            readOnly={!editMode}
+                            precision={1}
+                            emptyIcon={editMode ? <StarBorderIcon fontSize="inherit"/> : ''}
+                            onChange={(event, newValue) => {
+                                setNewRate(newValue);
+                            }}
                     />
                     <div>
                         {currentRole === 'ADMIN' ?
@@ -89,17 +118,27 @@ export default function RatingComponent({id, rate, login, content, date, hidden,
                             </Button>
                             : null
                         }
-                        <FontAwesomeIcon className={"mr-3"} icon={faEllipsisV} size={"1x"}/>
-                        { etag && username === login ? <FontAwesomeIcon onClick={deleteDialog} className={"mr-2"} style={{cursor: "pointer"}} icon={faTrash} size={"1x"}/> : '' }
+                        {username === login ?
+                            <FontAwesomeIcon onClick={() => {
+                                setEditMode(!editMode)
+                            }} className={"mr-2"} style={{cursor: "pointer"}} icon={faEdit} size={"1x"}/> : ''}
+                        {etag && username === login ?
+                            <FontAwesomeIcon onClick={deleteDialog} className={"mr-2"} style={{cursor: "pointer"}} icon={faTrash}
+                                             size={"1x"}/> : ''}
                     </div>
-                    </Card.Header>
+                </Card.Header>
                 <Card.Body>
                     <Card.Text className={"text-justify"}>
-                        {hiddenValue ? i18n.t('hiddenComment') : content}
+                        {hiddenValue ? i18n.t('hiddenComment') : ''}
+                        {editMode && !hiddenValue ?
+                            <div><textarea className={"w-100"} onChange={handleChangeContent} defaultValue={content}/></div> : ''}
+                        {!editMode && !hiddenValue ? content : ''}
                     </Card.Text>
                 </Card.Body>
-                <Card.Footer className={"p-2"}><span className={"float-right text-muted"}>{date}</span><span
-                    className={"float-right mr-2"}>{login}</span></Card.Footer>
+                <Card.Footer className={"p-2"}>{editMode ? <span className={"float-left"}><Button onClick={updateDialog}
+                                                                                                  className="btn-sm">{i18n.t('rate.update')}</Button></span> : ''}
+                    <span className={"float-right text-muted"}>{!modificationDate ? date : dateConverter(modificationDate.slice(0, -5))}</span><span
+                        className={"float-right mr-2"}>{login}</span></Card.Footer>
             </Card>
         </>
     )

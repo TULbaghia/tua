@@ -60,7 +60,7 @@
   "exception.account_not_confirmed.account_not_confirmed": "Account has not been confirmed yet",
   "exception.account_not_enabled.account_not_enabled": "Account is disabled",
   "exception.account_same_password.account_same_password": "Current password and new password must different",
-  "exception.app_optimistic_lock.optimistic_lock": "Optimistic lock error",
+  "exception.app_optimistic_lock.optimistic_lock": "Resource has been modified",
   "exception.auth_validation.invalid_credentials": "Invalid login credentials",
   "exception.code.code_expired": "Code validity period expired",
   "exception.code.code_invalid": "Code is invalid",

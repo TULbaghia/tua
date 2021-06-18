@@ -15,7 +15,7 @@ import {
     useNotificationSuccessAndShort
 } from "../Utils/Notification/NotificationProvider";
 import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
-import {getBox, modifyBox} from "./ModifyBoxApiUtil";
+import {deleteBox, getBox, modifyBox} from "./ModifyBoxApiUtil";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import queryString from "query-string";
 import {v4} from "uuid";
@@ -74,6 +74,19 @@ function ModifyBoxForm() {
         });
         setSubmitting(false);
     }
+
+    const handleDelete = (boxId) => {
+        dispatchDialog({
+            callbackOnSave: () => {
+                deleteBox(boxId, etag, token).then(res => {
+                    dispatchNotificationSuccess({message: i18n.t('box.delete.success')});
+                    history.push("/boxes");
+                }).catch(err => {
+                    dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+                })
+            }
+        })
+    };
 
     return (
         <div id="modify-box-form">
@@ -142,6 +155,13 @@ function ModifyBoxForm() {
                             </Form>
                         )}
                     </Formik>
+                    <Row className="text-center justify-content-center d-block">
+                        <button className="btn w-75 btn-lg btn-danger mt-3"
+                                onClick={(e) => handleDelete(boxId)}
+                                type="submit">
+                            {i18n.t("delete")}
+                        </button>
+                    </Row>
                 </Container>
             </div>
         </div>

@@ -21,3 +21,12 @@ export const modifyBox = ({values, token, etag}) => {
         }
     });
 };
+
+export const deleteBox = (id, etag, token) => {
+    return api.deleteBox(id, {
+        headers: {
+            Authorization: token,
+            "If-Match": etag
+        }
+    });
+};

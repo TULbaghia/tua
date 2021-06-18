@@ -9,14 +9,12 @@ import {Link} from "react-router-dom";
 import {rolesConstant} from "../../Constants";
 import i18n from "i18next";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
-import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
 import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
 } from "../Utils/Notification/NotificationProvider";
 import {useHistory, useLocation} from "react-router";
 import queryString from "query-string";
-import {api} from "../../Api";
 
 function BoxList(props) {
 
@@ -25,7 +23,6 @@ function BoxList(props) {
     const history = useHistory();
     const location = useLocation();
 
-    const dispatchDialog = useDialogPermanentChange();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
 
@@ -108,39 +105,6 @@ function BoxList(props) {
         history.push("/boxes/modify?id=" + boxId)
     };
 
-    const handleDelete = (boxId) => {
-        dispatchDialog({
-            callbackOnSave: () => {
-                getBox(boxId).then(res => {
-                    deleteBox(boxId, res.headers.etag).then(res => {
-                        dispatchNotificationSuccess({message: i18n.t('box.delete.success')})
-                    }).catch(err => {
-                        dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-                    }).finally(() => decideFetch(true));
-                }).catch(err => {
-                    dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-                }).finally(() => decideFetch(true))
-            }
-        })
-    };
-
-    const getBox = (id) => {
-        return api.getBox(id, {
-            headers: {
-                Authorization: token
-            }
-        });
-    };
-
-    const deleteBox = (id, etag) => {
-        return api.deleteBox(id, {
-            headers: {
-                Authorization: token,
-                "If-Match": etag
-            }
-        });
-    };
-
     return (
         <div id={"box-list"} className={"container-fluid"}>
 
@@ -198,7 +162,6 @@ function BoxList(props) {
                                             <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
                                                 <BoxItem
                                                     key={box.id}
-                                                    onDelete={handleDelete}
                                                     onModify={handleModify}
                                                     box={box}
                                                     isManager={handleIsManager}

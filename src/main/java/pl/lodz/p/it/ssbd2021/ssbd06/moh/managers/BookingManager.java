@@ -32,13 +32,12 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
 import javax.security.enterprise.SecurityContext;
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -109,19 +108,41 @@ public class BookingManager {
      */
     @RolesAllowed("bookReservation")
     public void addBooking(NewBookingDto bookingDto, String username) throws AppBaseException {
+        Date dateFrom = bookingDto.getDateFrom();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateFrom);
+        cal.set(Calendar.HOUR, 14);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+        dateFrom = cal.getTime();
+        Date dateTo = bookingDto.getDateTo();
+        cal = Calendar.getInstance();
+        cal.setTime(dateTo);
+        cal.set(Calendar.HOUR, 12);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+        dateTo = cal.getTime();
+        if(dateFrom.after(dateTo)){
+            throw BookingException.invalidDateRange();
+        }
+
         Account account = accountFacade.findByLogin(username);
 
-        List<Box> availableBoxes = boxFacade.getAvailableBoxesByIdListAndHotelId(bookingDto.getHotelId(), bookingDto.getBoxes(), bookingDto.getDateFrom(), bookingDto.getDateTo());
+        List<Box> availableBoxes = boxFacade.getAvailableBoxesByIdListAndHotelId(bookingDto.getHotelId(), bookingDto.getBoxes(), dateFrom, dateTo);
 
         // not enough boxes to fulfill the booking or booking has been sent without any boxes
         if(availableBoxes.size() != bookingDto.getBoxes().size()){
             throw BookingException.notEnoughBoxesOfSpecifiedType();
         }
 
-        Booking booking = new Booking(bookingDto.getDateFrom(), bookingDto.getDateTo(), BigDecimal.valueOf(0), account, BookingStatus.PENDING);
+        Booking booking = new Booking(dateFrom, dateTo, BigDecimal.valueOf(0), account, BookingStatus.PENDING);
 
         BigDecimal price = BigDecimal.ZERO;
-        long bookingDurationDays = Duration.between(booking.getDateFrom().toInstant(), booking.getDateTo().toInstant()).toDays();
+        long bookingDurationDays = Duration.between(dateFrom.toInstant(), dateTo.toInstant()).toDays();
 
         for (Box box : availableBoxes) {
             if(bookingDto.getBoxes().stream().noneMatch(x -> Objects.equals(x, box.getId()))){

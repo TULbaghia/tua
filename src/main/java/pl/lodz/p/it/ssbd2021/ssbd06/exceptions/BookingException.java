@@ -13,6 +13,7 @@ public class BookingException extends AppBaseException {
     private static final String TIME_EXCEEDED = "exception.booking.time_exceeded";
     private static final String ACCESS_DENIED = "exception.booking.access_denied";
     private static final String NOT_STARTED_BOOKING = "exception.booking.not_started_booking";
+    private static final String INVALID_DATE_RANGE = "exception.booking.invalid_date_range";
 
     protected BookingException(String message, Throwable cause) {
         super(message, cause);
@@ -28,6 +29,10 @@ public class BookingException extends AppBaseException {
 
     public static BookingException boxesNotAvailable() {
         return new BookingException(BOXES_NOT_AVAILABLE);
+    }
+
+    public static BookingException invalidDateRange() {
+        return new BookingException(INVALID_DATE_RANGE);
     }
 
     /**

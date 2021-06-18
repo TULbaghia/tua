@@ -45,7 +45,7 @@ export const useDialog = () => {
     }
 };
 
-export const useDialogPermanentChange = ({title = "dialog.permanent_change.title", message = "dialog.permanent_change.message"}) => {
+export const useDialogPermanentChange = () => {
     const dispatch = useContext(CriticalOperation);
 
     return ({callbackOnSave = (() => {}), callbackOnCancel = (() => {}), ...props}) => {
@@ -53,8 +53,8 @@ export const useDialogPermanentChange = ({title = "dialog.permanent_change.title
             type: "ADD_DIALOG",
             payload: {
                 id: v4(),
-                title: i18n.t(title),
-                message: i18n.t(message),
+                title: i18n.t("dialog.permanent_change.title"),
+                message: i18n.t("dialog.permanent_change.message"),
                 callbackOnSave: callbackOnSave,
                 callbackOnCancel: callbackOnCancel,
                 ...props
@@ -62,5 +62,6 @@ export const useDialogPermanentChange = ({title = "dialog.permanent_change.title
         });
     }
 };
+
 
 export default CriticalOperationProvider;

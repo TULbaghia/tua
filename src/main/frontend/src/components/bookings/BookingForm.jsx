@@ -24,10 +24,11 @@ import { useEffect } from "react";
 import DataTable from "react-data-table-component"
 import {Checkbox, Button} from "react-bootstrap";
 import {useDialogPermanentChange} from "./../Utils/CriticalOperations/CriticalOperationProvider";
+import { da } from "date-fns/locale";
 
 
 
-function SignUp(props) {
+function BookingForm(props) {
   const { t, i18n } = props;
   const dispatchNotificationDanger = useNotificationDangerAndInfinity();
   const dispatchNotificationWarning = useNotificationWarningAndLong();
@@ -37,8 +38,7 @@ function SignUp(props) {
   const { token, setToken } = useLocale();
   const [ hotels, setHotels] = useState([])
   const [ boxes, setBoxes] = useState([])
-  const [selectedBoxes, setSelectedBoxes] = useState([])
-  const dispatchCriticalDialog = useDialogPermanentChange({message:"booking.cancellation_limit_info"});
+  const dispatchCriticalDialog = useDialogPermanentChange();
 
   const themeColor = useThemeColor();
 
@@ -57,10 +57,13 @@ function SignUp(props) {
 
   const columns = [
     {
-        name: t('addBox.animalType'),
+        name: t('animalType'),
         selector: 'animalType',
         sortable: true,
-        width: "10rem"
+        width: "10rem",
+        cell: row => {
+          return t(row.animalType);
+      }
     },
     {
       name: t('booking.description'),
@@ -72,25 +75,11 @@ function SignUp(props) {
     name: t('price'),
     selector: 'price',
     sortable: false,
-    width: "10rem"
-},
-    {
-        name: t('booking.book'),
-        cell: row => {
-            return(
-                <input type="checkbox" onChange={e => {
-                  console.log(e.target.checked)
-                  const index = selectedBoxes.indexOf(row.id)
-                  if(index === -1 && e.target.checked){
-                    selectedBoxes.push(row.id)
-                  }else if(!e.target.checked){
-                    selectedBoxes.splice(index, 1)
-                    setSelectedBoxes(selectedBoxes)
-                  }
-                }}/>
-            )
-        }
-    },
+    width: "10rem",
+    cell: row => {
+      return row.price + " " + t('currency');
+  }
+}
 ];
 
   const animalTypes = [
@@ -136,17 +125,23 @@ function SignUp(props) {
 
   console.log(initialValues)
 
+  function getDateString(date){
+    console.log(date)
+    return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+  }
+
   function fetchBoxes(hotelId, dateFrom, dateTo){
-    api.getAvailableBoxesBetween(hotelId, dateFrom.toISOString().split('T')[0], dateTo.toISOString().split('T')[0], {headers: {Authorization: token}}).then(res => {
+    api.getAvailableBoxesBetween(hotelId, getDateString(dateFrom), getDateString(dateTo), {headers: {Authorization: token}}).then(res => {
       setBoxes(res.data)
     })
   }
 
   function onSubmit(values, { resetForm }) {
     setSubmitting(true);
-    const dto = {...values, boxes: selectedBoxes};
+    const dto = {...values};
 
     dispatchCriticalDialog({
+      message: i18n.t("booking.cancellation_limit_info"),
       callbackOnSave: () => createReservation(dto, resetForm),
       callbackOnCancel: () => {
         setSubmitting(false)
@@ -183,15 +178,15 @@ function SignUp(props) {
     if(values.dateTo < now){
       errors.dateTo = t("booking.date_cannot_refer_to_past")
     }
-    if(selectedBoxes.length === 0){
-      errors.boxes = "boxes at least one element"
+    if(values.boxes.length === 0){
+      errors.boxes = t("booking.form.error.no_boxes")
     }
     return errors;
   }
 
   return (
     <Formik {...{ initialValues, validate, onSubmit, submitting }}>
-      {({ values, errors, touched }) => (
+      {({ values, errors, touched, setFieldValue }) => (
         <div className="container">
           <BreadCrumb>
             <li className="breadcrumb-item">
@@ -226,18 +221,18 @@ function SignUp(props) {
 
               <div className="col-md-12">
                 <label htmlFor="dateFrom">{t('booking.form.date_from')}</label>
+                <DatePickerField name="dateFrom" />
                 {errors && touched && errors.dateFrom && (
                   <div style={{ color: "red" }}>{errors.dateFrom}</div>
                 )}
-                <DatePickerField name="dateFrom" />
               </div>
 
               <div className="col-md-12">
                 <label htmlFor="dateTo">{t('booking.form.date_to')}</label>
+                <DatePickerField name="dateTo" />
                 {errors && touched && errors.dateTo && (
                   <div style={{ color: "red" }}>{errors.dateTo}</div>
                 )}
-                <DatePickerField name="dateTo" />
               </div>
 
               <div className="col-12 my-3">
@@ -257,8 +252,16 @@ function SignUp(props) {
                     columns={columns}
                     noHeader={true}
                     data={boxes}
+                    selectableRows
                     theme={themeColor}
+                    onSelectedRowsChange={(state) => {
+                      const ids = state.selectedRows.map(x => x.id)
+                      setFieldValue('boxes', ids)
+                    }}
                 />
+              {errors && touched && errors.boxes && (
+                <div style={{ color: "red" }}>{errors.boxes}</div>
+              )}
               </div>
 
               <div className="col-12 d-flex justify-content-center my-3">
@@ -278,4 +281,4 @@ function SignUp(props) {
   );
 }
 
-export default withNamespaces()(SignUp);
+export default withNamespaces()(BookingForm);

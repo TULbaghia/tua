@@ -177,9 +177,9 @@ public class EmailSender {
      */
     public void sendCreateReservationEmail(Account account, Long reservationId) throws AppBaseException {
         String lang = account.getLanguage();
-        String cancelReservationContent = emailConfig.getContentForType(lang, Config.MailType.CREATE_RESERVATION, account.getLogin(), reservationId.toString());
-        String cancelReservationSubject = emailConfig.getSubjectForType(lang, Config.MailType.CREATE_RESERVATION);
-        sendEmail(account.getEmail(), cancelReservationSubject, cancelReservationContent);
+        String createReservationContent = emailConfig.getContentForType(lang, Config.MailType.CREATE_RESERVATION, account.getLogin(), reservationId.toString());
+        String createReservationSubject = emailConfig.getSubjectForType(lang, Config.MailType.CREATE_RESERVATION);
+        sendEmail(account.getEmail(), createReservationSubject, createReservationContent);
     }
 
     /**

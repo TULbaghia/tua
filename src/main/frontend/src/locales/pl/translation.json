@@ -490,6 +490,8 @@
   "bookingDetails.success.cancel": "Rezerwacja została anulowana",
   "bookingDetails.success.in_progress": "Rezerwacja została rozpoczeta",
   "bookingDetails.success.finish": "Rezerwacja została zakończona",
+  "bookingDetails.header.comment": "Komentarz",
+  "bookingDetails.rating.refresh": "Odświeżono opinię rezerwacji",
 
   "bookingDetails.header.reservationDetail": "Szczegóły rezerwacji",
 

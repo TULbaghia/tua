@@ -21,6 +21,7 @@ import {withNamespaces} from "react-i18next";
 import './ReservationDetailWrapper.scss';
 import ReservationStateHandler from "./Partial/ReservationStateHandler";
 import {rolesConstant} from "../../Constants";
+import ReservationCommentHandler from "./Partial/ReservationCommentHandler";
 
 function ReservationDetail(props) {
     const {id} = useParams();
@@ -146,6 +147,9 @@ function ReservationDetail(props) {
                         <ReservationStateHandler reservation={reservation} refreshComponent={fetchData}/>
                     </Col>
                 </Row>
+                { reservation.bookingStatus === "FINISHED" &&
+                <ReservationCommentHandler reservation={reservation} refreshComponent={() => fetchData(true)}/>
+                }
                 <Row className={"d-flex"}>
                     <Col md={6} className={"d-flex mt-4"}>
                         <Card className={"flex-grow-1"}>

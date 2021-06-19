@@ -59,7 +59,8 @@ public interface IBookingMapper {
             @Mapping(target = "renterLogin", source = "account.login"),
             @Mapping(target = "renterId", source = "account.id"),
             @Mapping(target = "bookingStatus", source = "status"),
-            @Mapping(target = "bookingLine", source = "bookingLineList", qualifiedByName = {"mapBookingLineToDto"})
+            @Mapping(target = "bookingLine", source = "bookingLineList", qualifiedByName = {"mapBookingLineToDto"}),
+            @Mapping(target = "ratingId", expression = "java(booking.getRating() == null ? null : booking.getRating().getId())"),
     })
     DetailBookingDto toDetailBookingDto(Booking booking);
 

@@ -67,3 +67,11 @@ export const apiEndBooking = ({id, token, ETag, dispatchDanger}) => {
         }
     })
 }
+
+export const apiGetRating = ({id, token}) => {
+    return api.getRating(id, {
+        headers: {
+            Authorization: token
+        }
+    });
+}

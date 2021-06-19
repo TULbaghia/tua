@@ -31,6 +31,8 @@ public class DetailBookingDto implements Signable {
 
     private Set<DetailBooking_LineDto> bookingLine;
 
+    private Long ratingId;
+
     private Long version;
 
     @Override

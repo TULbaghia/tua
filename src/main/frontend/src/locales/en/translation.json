@@ -487,6 +487,8 @@
   "bookingDetails.success.cancel": "Booking has been cancelled",
   "bookingDetails.success.in_progress": "Booking has been started",
   "bookingDetails.success.finish": "Booking has been finished",
+  "bookingDetails.header.comment": "Comment",
+  "bookingDetails.rating.refresh": "Rating has been refreshed",
 
   "bookingDetails.header.reservationDetail": "Booking details",
   "booking.ending.success": "Reservation has been ended successfully",

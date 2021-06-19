@@ -186,6 +186,9 @@ function Home(props) {
                                     </ListGroup.Item>
                                 </ListGroup>
                             </Tab>
+                            {(currentRole === rolesConstant.manager || currentRole === rolesConstant.client) && (
+                                <Tab eventKey="boxlist" title={t('boxList.navbar.title')}/>
+                            )}
                             {currentRole === rolesConstant.admin && (
                                 <Tab eventKey="delete" title={t('delete')} tabClassName={"ml-auto"}>
                                     <Button className="btn btn-lg btn-primary btn-block mb-3"
@@ -193,9 +196,6 @@ function Home(props) {
                                             style={{backgroundColor: "#7749F8"}}
                                             onClick={() => handleDeleteHotel()}>{t("delete")}</Button>
                                 </Tab>
-                            )}
-                            {(currentRole === rolesConstant.manager || currentRole === rolesConstant.client) && (
-                                <Tab eventKey="boxlist" title={t('boxList.navbar.title')}/>
                             )}
                         </Tabs>
                     </div>

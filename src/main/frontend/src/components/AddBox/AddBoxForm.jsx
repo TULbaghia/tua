@@ -35,7 +35,7 @@ function AddBoxForm() {
             callbackOnSave: () => {
                 addBox({values, token}).then(res => {
                     dispatchNotificationSuccess({message: i18n.t('addBox.success')});
-                    history.push("/");
+                    history.push("/boxes");
                 }).catch(err => {
                     ResponseErrorHandler(err, dispatchNotificationDanger);
                 });
@@ -71,24 +71,24 @@ function AddBoxForm() {
                         description: "",
                         animalType: "",
                     }}
-                    enableReinitialize
-                    validate={AddBoxValidationSchema}
-                    onSubmit={(values, {setSubmitting}) => handleAddBox(values, setSubmitting)}>
+                            enableReinitialize
+                            validate={AddBoxValidationSchema}
+                            onSubmit={(values, {setSubmitting}) => handleAddBox(values, setSubmitting)}>
                         {({isSubmitting, handleChange}) => (
                             <Form>
                                 <Row>
                                     <Col>
                                         <SelectComponent name="animalType"
-                                                        entryValue={animalTypes[0]}
-                                                        label={i18n.t('animalType')}
-                                                        values={animalTypes}
-                                                        handleChange={handleChange}/>
+                                                         entryValue={animalTypes[0]}
+                                                         label={i18n.t('animalType')}
+                                                         values={animalTypes}
+                                                         handleChange={handleChange}/>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
                                         <FieldComponent name="price"
-                                                        label={i18n.t('price')}
+                                                        label={i18n.t('price') + " (" + i18n.t('currency') + ")"}
                                                         placeholder={i18n.t('price')}
                                                         handleChange={handleChange}/>
                                     </Col>
@@ -116,4 +116,5 @@ function AddBoxForm() {
         </div>
     )
 }
+
 export default withNamespaces()(AddBoxForm)

@@ -368,7 +368,7 @@
   "addBox.navbar.title" : "Dodaj nowy box",
   "boxList.navbar.title" : "Lista boxów",
 
-  "addBox.title": "Dodawanie boxu",
+  "addBox.title": "Tworzenie boxu",
   "box.description" : "Opis",
   "animalType" : "Zwierzę",
   "addBox.success": "Box został pomyślnie dodany",
@@ -423,9 +423,9 @@
   "sort.by": "Sortuj",
 
   "addCity.send.form": "Dodaj",
-  "currency": "ZŁ",
   "rate.update": "Zaktualizuj opinię",
   "comment.success.update" : "Komentarz został zaktualizowany",
   "ratings.noRatings" : "Brak ocen",
-  "search.box": "Wyszukaj box..."
+  "search.box": "Wyszukaj box...",
+  "currency": "ZŁ"
 }

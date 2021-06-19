@@ -32,9 +32,9 @@ function BoxList(props) {
     const hotelIdFromUrl = queryString.parse(location.search).id;
 
     const decideFetch = (refresh = false) => {
-        if (hotelIdFromUrl !== undefined && (currentRole === rolesConstant.manager || currentRole === rolesConstant.client)) {
+        if (handleIsHotelIdInUrl() && (currentRole === rolesConstant.manager || currentRole === rolesConstant.client)) {
             fetchHotelDataById(refresh);
-        } else if (hotelIdFromUrl === undefined && currentRole === rolesConstant.manager) {
+        } else if (!handleIsHotelIdInUrl() && currentRole === rolesConstant.manager) {
             fetchHotelData(refresh);
         }
     }
@@ -103,6 +103,10 @@ function BoxList(props) {
         return currentRole === rolesConstant.manager;
     }
 
+    const handleIsHotelIdInUrl = () => {
+        return hotelIdFromUrl !== undefined;
+    }
+
     const handleModify = (boxId) => {
         history.push("/boxes/modify?id=" + boxId)
     };
@@ -139,13 +143,15 @@ function BoxList(props) {
                             }}>
                                 {i18n.t("refresh")}
                             </Button>
-                            {token !== null && token !== '' && currentRole === rolesConstant.manager ? (
+                            {token !== null && token !== '' &&
+                            currentRole === rolesConstant.manager && !handleIsHotelIdInUrl() ? (
                                 <Button className="btn-primary float-right m-2" onClick={event => {
                                     history.push('/boxes/add');
                                 }}>{i18n.t("addBox")}</Button>
                             ) : (<></>)}
                             <input
                                 className="input float-right m-2 w-100"
+                                style={{backgroundColor: "var(--light)", color: "var(--dark)"}}
                                 type="text"
                                 placeholder={i18n.t("search.box")}
                                 value={searchTerm}
@@ -172,6 +178,7 @@ function BoxList(props) {
                                                     onModify={handleModify}
                                                     box={box}
                                                     isManager={handleIsManager}
+                                                    isIdInUrl={handleIsHotelIdInUrl}
                                                 />
                                             </div>
                                         ))}

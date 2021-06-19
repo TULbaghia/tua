@@ -366,7 +366,7 @@
   "addBox.navbar.title" : "Add new box",
   "boxList.navbar.title" : "Box list",
 
-  "addBox.title": "Box addition",
+  "addBox.title": "Creating box",
   "box.description" : "Description",
   "animalType" : "Animal type",
   "addBox.success": "Box has been successfully added",

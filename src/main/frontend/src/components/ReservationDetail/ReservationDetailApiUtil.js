@@ -1,5 +1,6 @@
 import {api} from "../../Api";
 import {rolesConstant} from "../../Constants";
+import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 
 export const getReservation = ({id, token}) => {
     return api.getBooking(id, {
@@ -38,4 +39,31 @@ export const getRenter = ({login, token, currentRole}) => {
             Authorization: token
         }
     });
+}
+
+export const apiCancelBooking = ({id, token, ETag, dispatchDanger}) => {
+    return api.cancelBooking(id, {
+        headers: {
+            Authorization: token,
+            "If-Match": ETag,
+        }
+    });
+}
+
+export const apiInProgressBooking = ({id, token, ETag, dispatchDanger}) => {
+    return api.cancelBooking(id, {
+        headers: {
+            Authorization: token,
+            "If-Match": ETag,
+        }
+    });
+}
+
+export const apiEndBooking = ({id, token, ETag, dispatchDanger}) => {
+    return api.endBooking(id, {
+        headers: {
+            Authorization: token,
+            "If-Match": ETag,
+        }
+    })
 }

@@ -19,6 +19,8 @@ import {faCreditCard, faHotel, faUser} from "@fortawesome/free-solid-svg-icons";
 import {dateConverter} from "../../i18n";
 import {withNamespaces} from "react-i18next";
 import './ReservationDetailWrapper.scss';
+import ReservationStateHandler from "./Partial/ReservationStateHandler";
+import {rolesConstant} from "../../Constants";
 
 function ReservationDetail(props) {
     const {id} = useParams();
@@ -37,33 +39,53 @@ function ReservationDetail(props) {
     })
     const [renter, setRenter] = useState({})
 
-    const fetchData = async (showInfo = false) => {
+    const fetchData = async (showInfo = false, reservationRef = true, hotelRef = true, renterRef = true) => {
+        if (reservationRef) setReservation({
+            bookingLine: [],
+            bookingStatus: "",
+            creationDate: "",
+            dateFrom: "",
+            dateTo: ""
+        });
+        if (hotelRef) setHotel({})
+        if (renterRef) setRenter({});
         try {
-            const responseReservation = await getReservation({id, token});
+            let reservationE = reservation;
+            if (reservationRef) {
+                const responseReservation = await getReservation({id, token});
 
-            const durationFrom = new Date(responseReservation.data.dateFrom.slice(0, -5));
-            const durationTo = new Date(responseReservation.data.dateTo.slice(0, -5));
-            const differenceInTime = durationTo.getTime() - durationFrom.getTime();
-            const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+                const durationFrom = new Date(responseReservation.data.dateFrom.slice(0, -5));
+                const durationTo = new Date(responseReservation.data.dateTo.slice(0, -5));
+                const differenceInTime = durationTo.getTime() - durationFrom.getTime();
+                const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
 
-            const reservation = {...responseReservation.data, ETag: responseReservation.headers.etag, differenceInDays};
+                reservationE = {
+                    ...responseReservation.data,
+                    ETag: responseReservation.headers.etag,
+                    differenceInDays
+                };
 
-            for (const x of reservation.bookingLine) {
-                let response = await getBox({id: x.id, token});
-                x.box = {...response.data, ETag: response.headers.etag};
+                for (const x of reservationE.bookingLine) {
+                    let response = await getBox({id: x.boxId, token});
+                    x.box = {...response.data, ETag: response.headers.etag};
+                }
+
+                setReservation(reservationE)
             }
 
-            setReservation(reservation)
-
-            getRenter({login: reservation.renterLogin, token, currentRole}).then(res => {
-                setRenter({...res.data, ETag: res.headers.etag})
-            }).catch(err => ResponseErrorHandler(err, dispatchError));
-
-            const hotelId = reservation.bookingLine.map(x => x.box.hotelId)
-            if (hotelId.length > 0) {
-                getHotel({id: hotelId[0], token}).then(res => {
-                    setHotel({...res.data, ETag: res.headers.etag});
+            if (renterRef) {
+                getRenter({login: reservationE.renterLogin, token, currentRole}).then(res => {
+                    setRenter({...res.data, ETag: res.headers.etag})
                 }).catch(err => ResponseErrorHandler(err, dispatchError));
+            }
+
+            if (hotelRef) {
+                const hotelId = reservationE.bookingLine.map(x => x.box.hotelId)
+                if (hotelId.length > 0) {
+                    getHotel({id: hotelId[0], token}).then(res => {
+                        setHotel({...res.data, ETag: res.headers.etag});
+                    }).catch(err => ResponseErrorHandler(err, dispatchError));
+                }
             }
 
             if (showInfo) {
@@ -121,7 +143,7 @@ function ReservationDetail(props) {
                     <Col xs={12}
                          className={"d-flex flex-wrap flex-lg-nowrap justify-content-center justify-content-md-between"}>
                         <h2 className={"text-center"}>{i18n.t("bookingDetails.header.title")}{id}</h2>
-                        <Button onClick={() => fetchData(true)}>{i18n.t("refresh")}</Button>
+                        <ReservationStateHandler reservation={reservation} refreshComponent={fetchData}/>
                     </Col>
                 </Row>
                 <Row className={"d-flex"}>
@@ -192,7 +214,7 @@ function ReservationDetail(props) {
                                         className={"font-weight-bold"}>{i18n.t("bookingDetails.renter.contactNumber")}</div>
                                     <div className={"ml-3"}>{renter.contactNumber}</div>
                                 </div>
-                                <div>
+                                <div style={{display: (currentRole === rolesConstant.manager ? "block" : "none")}}>
                                     <div className={"font-weight-bold"}>{i18n.t("bookingDetails.renter.enabled")}</div>
                                     <div
                                         className={"ml-3"}>{i18n.t("bookingDetails.renter.enabled." + (renter.enabled ? "yes" : "no"))}</div>

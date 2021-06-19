@@ -57,6 +57,7 @@ public interface IBookingMapper {
      */
     @Mappings({
             @Mapping(target = "renterLogin", source = "account.login"),
+            @Mapping(target = "renterId", source = "account.id"),
             @Mapping(target = "bookingStatus", source = "status"),
             @Mapping(target = "bookingLine", source = "bookingLineList", qualifiedByName = {"mapBookingLineToDto"})
     })
@@ -83,5 +84,8 @@ public interface IBookingMapper {
      * @param bookingLine obiekt klasy BookingLine
      * @return zmapowany obiekt klasy DetailBooking_LineDto
      */
+    @Mappings({
+            @Mapping(target = "boxId", source = "box.id")
+    })
     DetailBooking_LineDto toDetailBookingLineDto(BookingLine bookingLine);
 }

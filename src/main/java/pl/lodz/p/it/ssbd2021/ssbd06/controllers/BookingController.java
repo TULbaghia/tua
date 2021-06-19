@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.DetailBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BookingEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
@@ -41,7 +42,7 @@ public class BookingController extends AbstractController {
     @Path("/{id}")
     @Operation(operationId = "getBooking", summary = "getBooking")
     public Response get(@PathParam("id") Long id) throws AppBaseException {
-        BookingDto bookingDto = repeat(() -> bookingEndpoint.get(id), bookingEndpoint);
+        DetailBookingDto bookingDto = repeat(() -> bookingEndpoint.get(id), bookingEndpoint);
         return Response.ok()
                 .entity(bookingDto)
                 .header("ETag", messageSigner.sign(bookingDto))

@@ -17,19 +17,9 @@ import {useThemeColor} from './Utils/ThemeColor/ThemeColorProvider';
 import {rolesConstant} from "../Constants";
 import axios from "axios";
 import hotelPhoto from "../images/hotel.jpg";
-import hotelPhoto2 from "../images/hotel2.jpg";
-import hotelPhoto3 from "../images/hotel3.jpg";
-import hotelPhoto4 from "../images/hotel4.jpg";
-import hotelPhoto5 from "../images/hotel5.jpg";
-import hotelPhoto6 from "../images/hotel6.jpg";
-import hotelPhoto7 from "../images/hotel7.jpg";
-import hotelPhoto8 from "../images/hotel8.jpg";
-import hotelPhoto9 from "../images/hotel9.jpg";
-import hotelPhoto10 from "../images/hotel10.jpg";
 import Select from 'react-select';
 import {animalTypes, queryBuilder} from "./Utils/HotelsView/AnimalTypes";
 import {sortingTypes} from "./Utils/HotelsView/SortingTypes";
-import i18n from "i18next";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -311,7 +301,7 @@ function HotelList(props) {
     }
 
     const getAllHotels = async () => {
-        return await api.getAllHotelList({headers: {Authorization: token}})
+        return await api.getAllHotelsList({headers: {Authorization: token}})
     }
 
     const subHeaderComponentMemo = React.useMemo(() => {

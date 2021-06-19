@@ -13,3 +13,14 @@ body.modal-open {
     transform: unset !important;
   }
 }
+
+.floating-no-absolute {
+  box-shadow: 0 0 0.3rem 0.1rem rgba(0, 0, 0, 0.5);
+  border-radius: 1.2rem;
+}
+
+.darkify,
+.floating-no-absolute {
+  background: var(--light);
+  color: var(--dark);
+}

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import {HashRouter, Route, Switch} from 'react-router-dom';
 import './App.scss';
 import NavigationBar from "./components/Partial/Navbar";
 import {library} from "@fortawesome/fontawesome-svg-core";
@@ -41,6 +41,7 @@ import AddBoxForm from "./components/AddBox/AddBoxForm";
 import ModifyBoxForm from "./components/ModifyBox/ModifyBoxForm";
 import UnassignManager from "./components/UnassignManager";
 import HotelInfo from './components/HotelInfo/HotelInfo';
+import ReservationDetail from "./components/ReservationDetail/ReservationDetail";
 
 
 library.add(fab, faSignInAlt, faUserPlus);
@@ -191,6 +192,7 @@ function App() {
                             <GuardedRoute exact path="/boxes/modify" component={ModifyBoxForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/hotelInfo" component={HotelInfo} meta={{}}/>
+                            <GuardedRoute exact path="/reservation/details/:id" component={ReservationDetail} meta={{auth: true, clientManager: true, logged, currentRole}}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </GuardProvider>

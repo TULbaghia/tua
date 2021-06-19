@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.DetailBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
@@ -23,7 +24,7 @@ public interface BookingEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return rezerwacja
      */
-    BookingDto get(Long id) throws AppBaseException;
+    DetailBookingDto get(Long id) throws AppBaseException;
 
     /**
      * Zwraca listę rezerwacji w zależności od roli:

@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BookingException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IBookingMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.DetailBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.BookingEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.BookingManager;
@@ -36,10 +37,10 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     private BookingManager bookingManager;
 
     @Override
-    public BookingDto get(Long id) throws AppBaseException {
+    public DetailBookingDto get(Long id) throws AppBaseException {
         Booking booking = bookingManager.get(id);
         if (getLogin().equals(booking.getAccount().getLogin()) || isManagerInHotelConnectedToBooking(booking)) {
-            return Mappers.getMapper(IBookingMapper.class).toBookingDto(booking);
+            return Mappers.getMapper(IBookingMapper.class).toDetailBookingDto(booking);
         } else {
             throw BookingException.accessDenied();
         }

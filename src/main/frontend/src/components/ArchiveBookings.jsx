@@ -94,6 +94,16 @@ function ArchiveBookings(props) {
                 );
             }
         },
+        {
+            name: t('bookingDetails'),
+            cell: row => {
+                return (
+                    <Button className="btn-sm" onClick={event => {
+                        history.push("/reservation/details/" + row.id + "?ref=archive");
+                    }}>{t("bookingDetails.text")}</Button>
+                );
+            }
+        },
     ];
     if (currentRole === rolesConstant.client) {
         columns.push({

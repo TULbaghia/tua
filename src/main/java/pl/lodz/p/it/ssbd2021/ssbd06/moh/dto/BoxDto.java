@@ -24,6 +24,6 @@ public class BoxDto implements Signable {
 
     @Override
     public String getMessageToSign() {
-        return String.format("%d;%d;%s", id, hotelId, animalType);
+        return String.format("%d;%d;%d;%s", id, hotelId, version, animalType);
     }
 }

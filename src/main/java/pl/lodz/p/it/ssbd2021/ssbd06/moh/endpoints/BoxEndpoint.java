@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Role;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
@@ -65,7 +64,8 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
         List<Box> boxes = boxManager.getAll();
         List<BoxDto> result = new ArrayList<>();
         for(Box box : boxes) {
-            if(box.getHotel().getId().equals(hotelManager.findHotelByManagerLogin(loginManger).getId())) {
+            if(box.getHotel().getId().equals(hotelManager.findHotelByManagerLogin(loginManger).getId())
+                    && !box.isDelete()) {
                 result.add(Mappers.getMapper(IBoxMapper.class).toBoxDto(box));
             }
         }
@@ -78,7 +78,7 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
         List<Box> boxes = boxManager.getAll();
         List<BoxDto> result = new ArrayList<>();
         for(Box box : boxes) {
-            if(box.getHotel().getId().equals(hotelId)) {
+            if(box.getHotel().getId().equals(hotelId) && !box.isDelete()) {
                 result.add(Mappers.getMapper(IBoxMapper.class).toBoxDto(box));
             }
         }
@@ -121,10 +121,12 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
         boolean canModify = box.getHotel().getManagerDataList()
                 .stream()
                 .filter(Role::isEnabled).anyMatch(x -> x.getAccount().getLogin().equals(getLogin()));
-        if(canModify) {
+        if(canModify && !box.isDelete()) {
             boxManager.updateBox(box);
-        } else {
+        } else if (!canModify) {
             throw BoxException.accessDenied();
+        } else if (box.isDelete()) {
+            throw BoxException.boxIsDeleted();
         }
     }
 

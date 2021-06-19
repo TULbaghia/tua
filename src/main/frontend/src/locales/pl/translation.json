@@ -417,5 +417,8 @@
   "box.delete.success": "Box został pomyślnie usunięty",
   "exception.box.box_in_used": "Box jest aktualnie używany",
   "exception.box.box_is_pending": "Box jest zarezerwowany",
-  "search.box": "Wyszukaj box..."
+  "exception.box.box_is_deleted": "Box został usunięty",
+  "search.box": "Wyszukaj box...",
+
+  "validation.animaltype.pattern": "Zły typ zwierzęcia"
 }

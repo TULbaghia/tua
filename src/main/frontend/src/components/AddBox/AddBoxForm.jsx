@@ -56,6 +56,9 @@ function AddBoxForm() {
                 <li className="breadcrumb-item">
                     <Link to="/">{i18n.t('managerDashboard')}</Link>
                 </li>
+                <li className="breadcrumb-item active">
+                    <Link to="/boxes">{i18n.t('boxList.navbar.title')}</Link>
+                </li>
                 <li className="breadcrumb-item active" aria-current="page">
                     {i18n.t('addBox.title')}
                 </li>
@@ -69,7 +72,7 @@ function AddBoxForm() {
                     <Formik initialValues={{
                         price: "",
                         description: "",
-                        animalType: "",
+                        animalType: animals[0],
                     }}
                     enableReinitialize
                     validate={AddBoxValidationSchema}

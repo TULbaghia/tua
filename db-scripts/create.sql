@@ -223,6 +223,7 @@ create table box
     animal_type       integer       not null,
     price_per_day     numeric(8, 2) not null,
     description       varchar(31)   not null,
+    delete            boolean       not null,
     created_by        bigint        not null,
     modified_by       bigint,
     hotel_id          bigint        not null,

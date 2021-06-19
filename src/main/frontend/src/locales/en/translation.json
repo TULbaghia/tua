@@ -414,5 +414,8 @@
   "exception.not_found_exception.box_not_found": "Box does not exist or has been deleted",
   "box.delete.success": "Successfully deleted box",
   "exception.box.box_in_used": "Box is beeing used",
-  "exception.box.box_is_pending": "Box is reserved"
+  "exception.box.box_is_pending": "Box is reserved",
+  "exception.box.box_is_deleted": "Box was deleted",
+
+  "validation.animaltype.pattern": "Wrong animal type"
 }

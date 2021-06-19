@@ -130,7 +130,7 @@
   "repeatNewPassword": "Powtórz nowe hasło",
   "passwordsNotMatch": "Hasła nie są takie same",
   "exception.passwords_dont_match.passwords_dont_match": "Wprowadzone dane są niepoprawne",
-  "exception.app_optimistic_lock.optimistic_lock": "Błąd blokady optymistycznej",
+  "exception.app_optimistic_lock.optimistic_lock": "Zasób został zmodyfikowany",
   "error.rest.validation": "Wprowadzone dane są niepoprawne",
   "exception.account.email_exists": "Wprowadzone dane są niepoprawne",
   "exception.email_exception.email_not_sent": "Wystąpił błąd podczas wysyłania maila",

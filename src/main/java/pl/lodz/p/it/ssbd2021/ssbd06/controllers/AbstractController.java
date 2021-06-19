@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.TransactionException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
@@ -35,7 +36,7 @@ public abstract class AbstractController {
             try {
                 executor.run();
                 rollback = callingClass.isLastTransactionRollback();
-            } catch (EJBTransactionRolledbackException e) {
+            } catch (EJBTransactionRolledbackException | DatabaseQueryException e) {
                 rollback = true;
             }
             if (callMethodCounter > 0) {
@@ -68,7 +69,7 @@ public abstract class AbstractController {
             try {
                 result = executor.run();
                 rollback = callingClass.isLastTransactionRollback();
-            } catch (EJBTransactionRolledbackException e) {
+            } catch (EJBTransactionRolledbackException | DatabaseQueryException e) {
                 rollback = true;
             }
             if (callMethodCounter > 0) {

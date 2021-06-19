@@ -269,4 +269,22 @@ public class HotelController extends AbstractController {
             throws AppBaseException {
         return hotelEndpoint.generateReport(from, to);
     }
+
+    /**
+     * Zwraca hotel związany z daną rezerwacją.
+     *
+     * @param id id rezerwacji
+     * @return odpowiedź z danymi hotelu i wartością Etag.
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
+     */
+    @GET
+    @RolesAllowed("getHotelForBooking")
+    @Path("/hotel/booking/{id}")
+    public Response getHotelForBooking(@PathParam("id") Long id) throws AppBaseException {
+        HotelDto hotelDto = repeat(() -> hotelEndpoint.getHotelForBooking(id), hotelEndpoint);
+        return Response.ok()
+                .entity(hotelDto)
+                .header("ETag", messageSigner.sign(hotelDto))
+                .build();
+    }
 }

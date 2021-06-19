@@ -160,6 +160,9 @@
     <security-role>
         <role-name>getHotelRating</role-name>
     </security-role>
+    <security-role>
+        <role-name>getHotelForBooking</role-name>
+    </security-role>
 
     <security-role>
         <role-name>bookReservation</role-name>

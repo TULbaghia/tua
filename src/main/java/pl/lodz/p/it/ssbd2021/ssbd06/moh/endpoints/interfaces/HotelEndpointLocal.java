@@ -157,4 +157,13 @@ public interface HotelEndpointLocal extends CallingClass {
     @RolesAllowed("getOtherHotelInfo")
     HotelDto getOtherHotelInfo(Long id) throws AppBaseException;
 
+    /**
+     * Zwraca dane hotelu dla rezerwacji o danym id.
+     *
+     * @param id id rezerwacji
+     * @return obiekt transferowy z danymi hotelu
+     * @throws AppBaseException podczas wystąpienia problemu z bazą danych
+     */
+    @RolesAllowed("getHotelForBooking")
+    HotelDto getHotelForBooking(Long id) throws AppBaseException;
 }

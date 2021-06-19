@@ -216,6 +216,13 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     }
 
     @Override
+    @RolesAllowed("getHotelForBooking")
+    public HotelDto getHotelForBooking(Long id) throws AppBaseException {
+        Hotel hotel = hotelManager.getHotelForBooking(id);
+        return Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
+    }
+
+    @Override
     @RolesAllowed("generateReport")
     public GenerateReportDto generateReport(Long from, Long to) throws AppBaseException {
         IBookingMapper im = Mappers.getMapper(IBookingMapper.class);

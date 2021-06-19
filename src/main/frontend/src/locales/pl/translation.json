@@ -327,6 +327,9 @@
   "cancelReservation": "Anuluj rezerwację",
   "endReservation": "Zakończ rezerwację",
   "button.end": "Zakończ",
+  "button.edit": "Edytuj",
+  "button.delete": "Usuń",
+  "box.price": "Cena",
 
   "addRating": "Dodaj ocenę",
 
@@ -363,6 +366,7 @@
   "hotelInfo": "Dane hotelu",
 
   "addBox.navbar.title" : "Dodaj nowy box",
+  "boxList.navbar.title" : "Lista boxów",
 
   "addBox.title": "Dodawanie boxu",
   "box.description" : "Opis",
@@ -389,6 +393,8 @@
   "TURTLE": "Żółw",
   "exception.not_found_exception.rating_not_found": "Taka ocena nie istnieje",
   "comment.success.delete": "Komentarz został usunięty",
+
+  "addBox": "Dodaj box",
 
   "choose.animal.type": "Wybierz typ zwierzęcia",
   "filter.button": "Filtruj",
@@ -420,5 +426,6 @@
   "currency": "ZŁ",
   "rate.update": "Zaktualizuj opinię",
   "comment.success.update" : "Komentarz został zaktualizowany",
-  "ratings.noRatings" : "Brak ocen"
+  "ratings.noRatings" : "Brak ocen",
+  "search.box": "Wyszukaj box..."
 }

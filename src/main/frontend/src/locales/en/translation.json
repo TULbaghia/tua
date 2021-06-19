@@ -266,7 +266,6 @@
   "assignManager.success": "Manager assigned successfully",
   "exception.hotel.has_manager": "This manager have been already assigned",
   "emptyListManager": "No unassigned managers",
-  "search.hotel": "Search hotel...",
   "emptyListHotel": "No hotels to display",
 
   "editOwnHotel.navbar.title" : "Modify hotel",
@@ -323,8 +322,13 @@
   "finishedBookingStatus": "Finished",
   "cancelReservation": "Cancel reservation",
   "endReservation": "End reservation",
-  "addRating": "Add rating",
   "button.end": "End",
+  "button.edit": "Modify",
+  "button.delete": "Delete",
+  "box.price": "Price",
+
+  "search.hotel": "Search hotel...",
+  "addRating": "Add rating",
 
   "addCity.title" : "Adding city",
   "addCity.action" : "Add city",
@@ -360,6 +364,7 @@
   "hotelInfo": "Hotel info",
 
   "addBox.navbar.title" : "Add new box",
+  "boxList.navbar.title" : "Box list",
 
   "addBox.title": "Box addition",
   "box.description" : "Description",
@@ -376,6 +381,9 @@
   "RABBIT": "Rabbit",
   "LIZARD": "Lizard",
   "TURTLE": "Turtle",
+
+  "addBox": "Add box",
+  "search.box": "Search box...",
 
   "reservationCancel.success": "Booking has been successfully canceled",
   "exception.booking.cancelled_booking" : "Booking have been already cancelled",

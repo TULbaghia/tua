@@ -51,7 +51,7 @@ export const apiCancelBooking = ({id, token, ETag, dispatchDanger}) => {
 }
 
 export const apiInProgressBooking = ({id, token, ETag, dispatchDanger}) => {
-    return api.cancelBooking(id, {
+    return api.inProgressBooking(id, {
         headers: {
             Authorization: token,
             "If-Match": ETag,

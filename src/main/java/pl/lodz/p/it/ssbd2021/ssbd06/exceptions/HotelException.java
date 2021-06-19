@@ -9,6 +9,7 @@ public class HotelException extends AppBaseException {
     private static final String HOTEL_HAS_MANAGER = "exception.hotel.has_manager";
     private static final String HOTEL_NAME_INVALID = "exception.hotel.name_invalid";
     private static final String NO_HOTEL_ASSIGNED = "exception.hotel.no_hotel_assigned";
+    private static final String NO_HOTEL_FOR_BOOKING = "exception.hotel.no_hotel_for_booking";
 
     private HotelException(String message, Throwable cause) {
         super(message, cause);
@@ -62,6 +63,10 @@ public class HotelException extends AppBaseException {
      */
     public static AppBaseException noHotelAssigned() {
         return new HotelException(NO_HOTEL_ASSIGNED);
+    }
+
+    public static AppBaseException noHotelForBooking() {
+        return new HotelException(NO_HOTEL_FOR_BOOKING);
     }
 }
 

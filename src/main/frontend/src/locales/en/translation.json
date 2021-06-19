@@ -422,7 +422,6 @@
   "addCity.send.form": "Add",
   "currency": "PLN",
   "rate.update": "Update opinion",
-  "comment.success.update" : "Comment updated",
   "ratings.noRatings" : "No ratings",
 
   "booking.form.bread_crumb": "Add booking",
@@ -492,5 +491,14 @@
   "exception.box.box_is_pending": "Box is reserved",
   "exception.box.box_is_deleted": "Box was deleted",
 
-  "validation.animaltype.pattern": "Wrong animal type"
+  "validation.animaltype.pattern": "Wrong animal type",
+  "comment.success.update" : "Comment updated",
+  "add.new.comment": "Add new comment",
+  "add.new.rating": "Add new rating",
+  "add.rating": "Add rating",
+  "booking": "Booking",
+  "comment.success.create": "Comment created",
+  "exception.rating_exception.rating_already_exists": "There is already a rating for this booking!",
+  "exception.hotel.no_hotel_for_booking": "Cannot find hotel for this booking!",
+  "exception.rating.already_rated" : "Booking is already rated"
 }

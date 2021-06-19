@@ -221,6 +221,11 @@
     </security-role-mapping>
 
     <security-role-mapping>
+        <role-name>getEndedBookingsForHotel</role-name>
+        <group-name>CLIENT</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
         <role-name>getReservation</role-name>
         <group-name>CLIENT</group-name>
         <group-name>MANAGER</group-name>
@@ -284,5 +289,12 @@
     <security-role-mapping>
         <role-name>getOwnHotelInfo</role-name>
         <group-name>MANAGER</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>getHotelForBooking</role-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
+        <group-name>ADMIN</group-name>
     </security-role-mapping>
 </payara-web-app>

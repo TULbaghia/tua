@@ -424,7 +424,6 @@
 
   "addCity.send.form": "Dodaj",
   "rate.update": "Zaktualizuj opinię",
-  "comment.success.update" : "Komentarz został zaktualizowany",
   "ratings.noRatings" : "Brak ocen",
   "currency": "ZŁ",
 
@@ -495,5 +494,14 @@
   "exception.box.box_is_deleted": "Box został usunięty",
   "search.box": "Wyszukaj box...",
 
-  "validation.animaltype.pattern": "Zły typ zwierzęcia"
+  "validation.animaltype.pattern": "Zły typ zwierzęcia",
+  "comment.success.update" : "Komentarz został zaktualizowany",
+  "add.new.comment": "Dodaj nowy komentarz",
+  "add.new.rating": "Dodaj nową opinie",
+  "add.rating": "Dodaj opinie",
+  "booking": "Rezerwacja",
+  "comment.success.create": "Komentarz został utworzony",
+  "exception.rating_exception.rating_already_exists": "Istnieje już ocena dla tej rezerwacji!",
+  "exception.hotel.no_hotel_for_booking": "Nie można odnaleźć hotelu dla tej rezerwacji!",
+  "exception.rating.already_rated" : "Rezerwacja posiada już ocenę"
 }

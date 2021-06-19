@@ -165,4 +165,18 @@ public class BookingController extends AbstractController {
     public List<BookingDto> showEndedBooking() throws AppBaseException {
         return repeat(() -> bookingEndpoint.showEndedBooking(), bookingEndpoint);
     }
+
+
+    /**
+     * Wyświetla listę archiwalnych rezerwacji bez oceny dotyczących klienta i związanych z danym hotelem.
+     * @param hotelId id hotelu
+     * @return lista dto zakończonych rezerwacji
+     * @throws AppBaseException podczas błędu związanego z pobieraniem zakończonych rezerwacji
+     */
+    @GET
+    @RolesAllowed("getEndedBookingsForHotel")
+    @Path("/ended/{id}")
+    public List<BookingDto> showUnratedEndedBookingsForHotel(@PathParam("id") Long hotelId) throws AppBaseException {
+        return repeat(() -> bookingEndpoint.showUnratedEndedBookingsForHotel(hotelId), bookingEndpoint);
+    }
 }

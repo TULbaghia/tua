@@ -135,6 +135,12 @@ export const validateBoxDescription = (data) => {
     return errors.filter(err => err !== undefined);
 }
 
+export  const validateRatingComment = (data) => {
+    let errors = [];
+    errors.push(sizeValidator(data, 4, 255));
+    return errors.filter(err => err !== undefined);
+}
+
 export const ValidatorType = {
     CONTACT_NUMBER: "CONTACT_NUMBER",
     FIRSTNAME: "FIRSTNAME",
@@ -151,7 +157,8 @@ export const ValidatorType = {
     CITY_NAME: "CITY_NAME",
     CITY_DESCRIPTION: "CITY_DESCRIPTION",
     PRICE: "PRICE",
-    BOX_DESCRIPTION: "BOX_DESCRIPTION"
+    BOX_DESCRIPTION: "BOX_DESCRIPTION",
+    RATING_COMMENT: "RATING_COMMENT"
 };
 
 export const validatorFactory = (data, validatorType) => {
@@ -188,6 +195,8 @@ export const validatorFactory = (data, validatorType) => {
             return validatePrice(data);
         case ValidatorType.BOX_DESCRIPTION:
             return validateBoxDescription(data);
+        case ValidatorType.RATING_COMMENT:
+            return validateRatingComment(data);
         default:
             return [];
     }

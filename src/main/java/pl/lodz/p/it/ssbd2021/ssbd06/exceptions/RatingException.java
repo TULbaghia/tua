@@ -9,9 +9,14 @@ public class RatingException extends AppBaseException {
     private static final String BOOKING_NOT_EXISTS = "exception.rating_exception.booking_not_exists";
     private static final String BOOKING_NOT_FINISHED = "exception.rating_exception.booking_not_finished";
     private static final String ACCESS_DENIED = "exception.rating.access_denied";
+    private static final String ALREADY_RATED = "exception.rating.already_rated";
 
     private RatingException(String message) {
         super(message);
+    }
+
+    private RatingException(String message, Throwable cause) {
+        super(message, cause);
     }
 
     /**
@@ -57,6 +62,15 @@ public class RatingException extends AppBaseException {
      */
     public static RatingException accessDenied(){
         return new RatingException(ACCESS_DENIED);
+    }
+
+    /**
+     * Wyjątek reprezentuje błąd związany z próbą dostępu do zabronionego zasobu.
+     *
+     * @return wyjątek RatingException
+     */
+    public static RatingException bookingAlreadyRated(Throwable cause){
+        return new RatingException(ALREADY_RATED, cause);
     }
 
 }

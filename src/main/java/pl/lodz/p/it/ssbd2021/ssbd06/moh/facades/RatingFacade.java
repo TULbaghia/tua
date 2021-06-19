@@ -1,5 +1,12 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.facades;
 
+import org.hibernate.exception.ConstraintViolationException;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.*;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
+
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -7,14 +14,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
-
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
-
 import java.util.List;
 
 @Stateless
@@ -37,7 +36,14 @@ public class RatingFacade extends AbstractFacade<Rating> {
     @PermitAll
     @Override
     public void create(Rating entity) throws AppBaseException {
-        super.create(entity);
+        try {
+            super.create(entity);
+        } catch (ConstraintViolationException e) {
+            if (e.getCause().getMessage().contains(Rating.BOOKING_ID_CONSTRAINT)) {
+                throw RatingException.bookingAlreadyRated(e);
+            }
+            throw DatabaseQueryException.databaseQueryException(e.getCause());
+        }
     }
 
     @PermitAll
@@ -84,6 +90,7 @@ public class RatingFacade extends AbstractFacade<Rating> {
 
     /**
      * Zwraca wszystkie oceny dla hotelu o danym id.
+     *
      * @param hotelId id hotelu
      * @return Lista ocen
      * @throws AppBaseException gdy nie udało się przeprowadzić operacji pobrania ocen

@@ -14,8 +14,12 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
+import static pl.lodz.p.it.ssbd2021.ssbd06.entities.Rating.BOOKING_ID_CONSTRAINT;
+
+
 @Entity
-@Table(name = "rating", indexes = {
+@Table(name = "rating", uniqueConstraints = {@UniqueConstraint(name = BOOKING_ID_CONSTRAINT, columnNames = {"booking_id"})},
+        indexes = {
         @Index(name = "ix_rating_booking_id", columnList = "booking_id"),
         @Index(name = "ix_rating_created_by", columnList = "created_by"),
         @Index(name = "ix_rating_modified_by", columnList = "modified_by"),
@@ -31,6 +35,8 @@ import java.io.Serializable;
 public class Rating extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    public static final String BOOKING_ID_CONSTRAINT = "uk_rating_booking_id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_rating_id")

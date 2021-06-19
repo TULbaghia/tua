@@ -315,4 +315,19 @@ public class HotelManager {
         }
         return true;
     }
+
+    /**
+     * Zwraca hotel związany z daną rezerwacją.
+     *
+     * @param id identyfikator rezerwacji
+     * @return hotel
+     */
+    @RolesAllowed("getHotelForBooking")
+    public Hotel getHotelForBooking(Long id) throws AppBaseException {
+        return hotelFacade.findAll().
+                stream()
+                .filter(hotel -> hotel.getBoxList().stream()
+                        .anyMatch(b -> b.getBookingLineList().stream()
+                                .anyMatch(x -> x.getBooking().getId().equals(id)))).findFirst().orElseThrow(HotelException::noHotelForBooking);
+    }
 }

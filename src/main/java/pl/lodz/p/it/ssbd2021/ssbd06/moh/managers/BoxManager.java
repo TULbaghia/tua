@@ -15,9 +15,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Manager odpowiadający za zarządzanie klatkami.
@@ -104,5 +102,26 @@ public class BoxManager {
      */
     private String getLogin() {
         return servletRequest.getUserPrincipal().getName();
+    }
+
+    @RolesAllowed("getAllBoxes")
+    public List<Box> getAvailableBoxesBetween(Long hotelId, Date dateFrom, Date dateTo) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateFrom);
+        cal.set(Calendar.HOUR, 14);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+        dateFrom = cal.getTime();
+        cal = Calendar.getInstance();
+        cal.setTime(dateTo);
+        cal.set(Calendar.HOUR, 12);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+        dateTo = cal.getTime();
+        return new ArrayList<>(boxFacade.getAvailableBoxesByHotelIdAndBetween(hotelId, dateFrom, dateTo));
     }
 }

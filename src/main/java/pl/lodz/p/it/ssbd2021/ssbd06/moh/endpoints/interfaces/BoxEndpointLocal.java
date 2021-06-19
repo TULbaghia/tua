@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,4 +84,6 @@ public interface BoxEndpointLocal extends CallingClass {
      */
     @RolesAllowed("deleteBox")
     void deleteBox(Long boxId) throws AppBaseException;
+
+    List<BoxDto> getAvailableBoxesBetween(Long hotelId, Date date, Date date1);
 }

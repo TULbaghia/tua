@@ -13,6 +13,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
@@ -85,8 +86,9 @@ public class BookingController extends AbstractController {
     @POST
     @RolesAllowed("bookReservation")
     @Operation(operationId = "addBooking", summary = "addBooking")
+    @Consumes({MediaType.APPLICATION_JSON})
     public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> bookingEndpoint.addBooking(bookingDto), bookingEndpoint);
     }
 
     /**

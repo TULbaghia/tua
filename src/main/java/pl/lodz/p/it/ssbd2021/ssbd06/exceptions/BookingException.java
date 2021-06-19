@@ -6,12 +6,14 @@ package pl.lodz.p.it.ssbd2021.ssbd06.exceptions;
  */
 public class BookingException extends AppBaseException {
     private static final String NOT_ENOUGH_BOXES = "exception.boxes.not_enough";
+    private static final String BOXES_NOT_AVAILABLE = "exception.boxes.not_available";
     private static final String CANCELLED_BOOKING = "exception.booking.cancelled_booking";
     private static final String FINISHED_BOOKING_CANCEL = "exception.booking.finished_booking";
     private static final String IN_PROGRESS_BOOKING_CANCEL = "exception.booking.in_progress_booking";
     private static final String TIME_EXCEEDED = "exception.booking.time_exceeded";
     private static final String ACCESS_DENIED = "exception.booking.access_denied";
     private static final String NOT_STARTED_BOOKING = "exception.booking.not_started_booking";
+    private static final String INVALID_DATE_RANGE = "exception.booking.invalid_date_range";
 
     protected BookingException(String message, Throwable cause) {
         super(message, cause);
@@ -23,6 +25,14 @@ public class BookingException extends AppBaseException {
 
     public static BookingException notEnoughBoxesOfSpecifiedType() {
         return new BookingException(NOT_ENOUGH_BOXES);
+    }
+
+    public static BookingException boxesNotAvailable() {
+        return new BookingException(BOXES_NOT_AVAILABLE);
+    }
+
+    public static BookingException invalidDateRange() {
+        return new BookingException(INVALID_DATE_RANGE);
     }
 
     /**

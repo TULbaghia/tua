@@ -169,6 +169,20 @@ public class EmailSender {
     }
 
     /**
+     * Wysyła email z powiadomieniem o dokonaniu rezerwacji.
+     *
+     * @param account odbiorca wiadomości.
+     * @param reservationId numer rezerwacji.
+     * @throws AppBaseException wysyłanie wiadomości email nie powiodło się.
+     */
+    public void sendCreateReservationEmail(Account account, Long reservationId) throws AppBaseException {
+        String lang = account.getLanguage();
+        String createReservationContent = emailConfig.getContentForType(lang, Config.MailType.CREATE_RESERVATION, account.getLogin(), reservationId.toString());
+        String createReservationSubject = emailConfig.getSubjectForType(lang, Config.MailType.CREATE_RESERVATION);
+        sendEmail(account.getEmail(), createReservationSubject, createReservationContent);
+    }
+
+    /**
      * Wysyła email z powiadomieniem o anulowaniu rezerwacji.
      *
      * @param account odbiorca wiadomości.

@@ -7,14 +7,18 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import javax.validation.ConstraintViolationException;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -86,5 +90,37 @@ public class BoxFacade extends AbstractFacade<Box> {
     @Override
     public int count() throws AppBaseException {
         return super.count();
+    }
+
+    @PermitAll
+    // todo specific access role ?
+    public List<Box> getAvailableBoxesByTypesAndHotelId(long hotelId, List<AnimalType> types, Date dateFrom, Date dateTo){
+        TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByTypesAndHotelId", Box.class);
+        query.setParameter("hotel_id", hotelId);
+        query.setParameter("types", types);
+        query.setParameter("dateFrom", dateFrom);
+        query.setParameter("dateTo", dateTo);
+        return query.getResultList();
+    }
+
+    @PermitAll
+    // todo specific access role ?
+    public List<Box> getAvailableBoxesByHotelIdAndBetween(long hotelId, Date dateFrom, Date dateTo){
+        TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByTypesByHotelIdAndBetween", Box.class);
+        query.setParameter("hotel_id", hotelId);
+        query.setParameter("dateFrom", dateFrom);
+        query.setParameter("dateTo", dateTo);
+        return query.getResultList();
+    }
+
+    @PermitAll
+    // todo specific access role ?
+    public List<Box> getAvailableBoxesByIdListAndHotelId(long hotelId, List<Long> boxIdList, Date dateFrom, Date dateTo){
+        TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByIdListAndHotelId", Box.class);
+        query.setParameter("hotel_id", hotelId);
+        query.setParameter("boxIdList", boxIdList);
+        query.setParameter("dateFrom", dateFrom);
+        query.setParameter("dateTo", dateTo);
+        return query.getResultList();
     }
 }

@@ -14,6 +14,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.BookingManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -58,7 +59,7 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     @Override
     @RolesAllowed("bookReservation")
     public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        bookingManager.addBooking(bookingDto, getLogin());
     }
 
     @Override

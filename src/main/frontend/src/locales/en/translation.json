@@ -425,5 +425,25 @@
   "currency": "PLN",
   "rate.update": "Update opinion",
   "comment.success.update" : "Comment updated",
-  "ratings.noRatings" : "No ratings"
+  "ratings.noRatings" : "No ratings",
+
+  "booking.form.bread_crumb": "Add booking",
+  "booking.form.title": "Add booking",
+  "booking.form.date_from": "Date from",
+  "booking.form.date_to": "Date to",
+  "booking.form.boxes": "Boxes",
+  "booking.create.success": "Reservation successfully created",
+  "booking.form.error.date_not_earlier": "Date from should be ealier then date to",
+  "booking.form.error.no_boxes": "No boxes selected",
+  "booking.search_boxes": "Search",
+  "booking.create_reservation": "Book",
+  "booking.date_cannot_refer_to_past": "Date cannot refer to past",
+  "booking.cancellation_limit_info": "Booking can be cancelled 24 hours after booking and 48 hours before reservation starts",
+  "booking.description": "Description",
+  "booking.book": "Add",
+  "exception.boxes.not_enough": "Not enough boxes to fulfill the booking",
+  "exception.boxes.not_available": "Selected boxes are not available",
+  "exception.booking.invalid_date_range": "Date from should be ealier then date to",
+
+  "hotel": "Hotel"
 }

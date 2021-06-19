@@ -20,6 +20,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.HotelManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -27,6 +28,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -162,5 +164,16 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
             throw BoxException.boxIsPending();
         }
         boxManager.deleteBox(boxToDelete);
+    }
+
+    @Override
+    @RolesAllowed("getAllBoxes")
+    public List<BoxDto> getAvailableBoxesBetween(Long hotelId, Date dateFrom, Date dateTo) {
+        List<Box> boxes = boxManager.getAvailableBoxesBetween(hotelId, dateFrom, dateTo);
+        List<BoxDto> result = new ArrayList<>();
+        for(Box box : boxes) {
+            result.add(Mappers.getMapper(IBoxMapper.class).toBoxDto(box));
+        }
+        return result;
     }
 }

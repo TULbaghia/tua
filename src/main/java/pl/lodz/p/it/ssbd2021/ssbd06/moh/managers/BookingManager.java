@@ -2,6 +2,10 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
@@ -11,6 +15,9 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BookingException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
@@ -24,9 +31,13 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import javax.security.enterprise.SecurityContext;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,16 +52,14 @@ public class BookingManager {
 
     @Inject
     private BookingFacade bookingFacade;
-
+    @Inject
+    private BoxFacade boxFacade;
     @Inject
     private AccountFacade accountFacade;
-
     @Inject
     private SecurityContext securityContext;
-
     @Inject
     private EmailSender emailSender;
-
     @Inject
     private Config bookingConfig;
 
@@ -98,8 +107,57 @@ public class BookingManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("bookReservation")
-    void addBooking(NewBookingDto bookingDto) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    public void addBooking(NewBookingDto bookingDto, String username) throws AppBaseException {
+        Date dateFrom = bookingDto.getDateFrom();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateFrom);
+        cal.set(Calendar.HOUR, 14);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+        dateFrom = cal.getTime();
+        Date dateTo = bookingDto.getDateTo();
+        cal = Calendar.getInstance();
+        cal.setTime(dateTo);
+        cal.set(Calendar.HOUR, 12);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+        dateTo = cal.getTime();
+        if(dateFrom.after(dateTo)){
+            throw BookingException.invalidDateRange();
+        }
+
+        Account account = accountFacade.findByLogin(username);
+
+        List<Box> availableBoxes = boxFacade.getAvailableBoxesByIdListAndHotelId(bookingDto.getHotelId(), bookingDto.getBoxes(), dateFrom, dateTo);
+
+        // not enough boxes to fulfill the booking or booking has been sent without any boxes
+        if(availableBoxes.size() != bookingDto.getBoxes().size()){
+            throw BookingException.notEnoughBoxesOfSpecifiedType();
+        }
+
+        Booking booking = new Booking(dateFrom, dateTo, BigDecimal.valueOf(0), account, BookingStatus.PENDING);
+
+        BigDecimal price = BigDecimal.ZERO;
+        long bookingDurationDays = Duration.between(dateFrom.toInstant(), dateTo.toInstant()).toDays();
+
+        for (Box box : availableBoxes) {
+            if(bookingDto.getBoxes().stream().noneMatch(x -> Objects.equals(x, box.getId()))){
+                throw BookingException.boxesNotAvailable();
+            }
+            BookingLine bookingLine = new BookingLine(box.getPricePerDay(), booking, box);
+            bookingLine.setCreatedBy(account);
+            booking.getBookingLineList().add(bookingLine);
+            price = price.add(box.getPricePerDay().multiply(BigDecimal.valueOf(bookingDurationDays)));
+        }
+
+        booking.setPrice(price);
+        booking.setCreatedBy(account);
+        bookingFacade.create(booking);
+        emailSender.sendCreateReservationEmail(booking.getAccount(), booking.getId());
     }
 
     /**

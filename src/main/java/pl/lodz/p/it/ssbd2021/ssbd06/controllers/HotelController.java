@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.HotelEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.HotelEndpoint;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;

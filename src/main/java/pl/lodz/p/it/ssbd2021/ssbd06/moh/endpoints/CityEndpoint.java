@@ -1,6 +1,13 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints;
 
 import org.mapstruct.factory.Mappers;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
+import org.mapstruct.factory.Mappers;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IAccountMapper;
+import pl.lodz.p.it.ssbd2021.ssbd06.mappers.ICityMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppOptimisticLockException;
@@ -8,6 +15,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mappers.ICityMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.CityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewCityDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.CityEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.CityManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.AccountDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.CityManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;

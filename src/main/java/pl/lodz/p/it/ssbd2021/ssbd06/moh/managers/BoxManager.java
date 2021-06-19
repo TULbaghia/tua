@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BoxDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
@@ -92,7 +91,9 @@ public class BoxManager {
      */
     @RolesAllowed("deleteBox")
     public void deleteBox(Box box) throws AppBaseException {
-        boxFacade.remove(box);
+        box.setDelete(true);
+        box.setModifiedBy(accountFacade.findByLogin(getLogin()));
+        boxFacade.edit(box);
     }
 
     /**

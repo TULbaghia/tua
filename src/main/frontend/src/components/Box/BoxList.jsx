@@ -9,13 +9,13 @@ import {Link} from "react-router-dom";
 import {rolesConstant} from "../../Constants";
 import i18n from "i18next";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
-import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
 import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
 } from "../Utils/Notification/NotificationProvider";
 import {useHistory, useLocation} from "react-router";
 import queryString from "query-string";
+import {v4} from "uuid";
 
 function BoxList(props) {
 
@@ -24,7 +24,6 @@ function BoxList(props) {
     const history = useHistory();
     const location = useLocation();
 
-    const dispatchDialog = useDialogPermanentChange();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
 
@@ -111,10 +110,6 @@ function BoxList(props) {
         history.push("/boxes/modify?id=" + boxId)
     };
 
-    const handleDelete = (boxId) => {
-        setBoxes(boxes.filter((b) => b.id !== boxId))
-    };
-
     return (
         <div id={"box-list"} className={"container-fluid"}>
 
@@ -171,10 +166,9 @@ function BoxList(props) {
                                 {boxes.length === 0 ? (<div>{i18n.t('table.no.result')}</div>) : (
                                     <>
                                         {boxes.map((box) => (
-                                            <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
+                                            <div key={v4()} style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
                                                 <BoxItem
                                                     key={box.id}
-                                                    onDelete={handleDelete}
                                                     onModify={handleModify}
                                                     box={box}
                                                     isManager={handleIsManager}

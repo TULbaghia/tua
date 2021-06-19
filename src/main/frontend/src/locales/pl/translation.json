@@ -426,7 +426,6 @@
   "rate.update": "Zaktualizuj opinię",
   "comment.success.update" : "Komentarz został zaktualizowany",
   "ratings.noRatings" : "Brak ocen",
-  "search.box": "Wyszukaj box...",
   "currency": "ZŁ",
 
   "booking.form.bread_crumb": "Dokonaj rezerwacji",
@@ -487,5 +486,14 @@
   "bookingDetails.renter.enabled.yes": "Tak",
   "bookingDetails.renter.enabled.no": "Nie",
 
-  "bookingDetails.header.reservationDetail": "Szczegóły rezerwacji"
+  "bookingDetails.header.reservationDetail": "Szczegóły rezerwacji",
+
+  "exception.not_found_exception.box_not_found": "Box nie istniał lub został usunięty",
+  "box.delete.success": "Box został pomyślnie usunięty",
+  "exception.box.box_in_used": "Box jest aktualnie używany",
+  "exception.box.box_is_pending": "Box jest zarezerwowany",
+  "exception.box.box_is_deleted": "Box został usunięty",
+  "search.box": "Wyszukaj box...",
+
+  "validation.animaltype.pattern": "Zły typ zwierzęcia"
 }

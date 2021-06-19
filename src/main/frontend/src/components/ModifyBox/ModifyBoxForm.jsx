@@ -15,7 +15,7 @@ import {
     useNotificationSuccessAndShort
 } from "../Utils/Notification/NotificationProvider";
 import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
-import {getBox, modifyBox} from "./ModifyBoxApiUtil";
+import {deleteBox, getBox, modifyBox} from "./ModifyBoxApiUtil";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import queryString from "query-string";
 import {v4} from "uuid";
@@ -75,6 +75,19 @@ function ModifyBoxForm() {
         setSubmitting(false);
     }
 
+    const handleDelete = (boxId) => {
+        dispatchDialog({
+            callbackOnSave: () => {
+                deleteBox(boxId, etag, token).then(res => {
+                    dispatchNotificationSuccess({message: i18n.t('box.delete.success')});
+                    history.push("/boxes");
+                }).catch(err => {
+                    dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+                })
+            }
+        })
+    };
+
     return (
         <div id="modify-box-form">
             <BreadCrumb>
@@ -83,6 +96,9 @@ function ModifyBoxForm() {
                 </li>
                 <li className="breadcrumb-item">
                     <Link to="/">{i18n.t('managerDashboard')}</Link>
+                </li>
+                <li className="breadcrumb-item active">
+                    <Link to="/boxes">{i18n.t('boxList.navbar.title')}</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                     {i18n.t('modifyBox.title')}
@@ -142,6 +158,13 @@ function ModifyBoxForm() {
                             </Form>
                         )}
                     </Formik>
+                    <Row className="text-center justify-content-center d-block">
+                        <button className="btn w-75 btn-lg btn-danger mt-3"
+                                onClick={(e) => handleDelete(boxId)}
+                                type="submit">
+                            {i18n.t("delete")}
+                        </button>
+                    </Row>
                 </Container>
             </div>
         </div>

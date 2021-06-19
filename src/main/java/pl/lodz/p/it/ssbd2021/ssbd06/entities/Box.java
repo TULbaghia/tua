@@ -92,10 +92,19 @@ public class Box extends AbstractEntity implements Serializable {
     @ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     private Hotel hotel;
 
-    public Box(BigDecimal pricePerDay, Hotel hotel, AnimalType animalType) {
+    @Getter
+    @Setter
+    @NotNull
+    @Basic(optional = false)
+    @Column(name = "delete")
+    private boolean delete = false;
+
+    public Box(BigDecimal pricePerDay, Hotel hotel, AnimalType animalType, String description, boolean delete) {
         this.pricePerDay = pricePerDay;
         this.hotel = hotel;
         this.animalType = animalType;
+        this.description = description;
+        this.delete = delete;
     }
 
     public Long getId() {

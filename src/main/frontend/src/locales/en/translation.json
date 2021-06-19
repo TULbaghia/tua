@@ -414,8 +414,6 @@
   "rating.maximal": "Maximal rating",
   "text.animal.type": "Animal type",
 
-  "booking.ending.success": "Reservation has been ended successfully",
-
   "sort.by.rating.ascending": "Rating ascending",
   "sort.by.rating.descending": "Rating descending",
   "sort.alphabetically": "Alphabetically",
@@ -485,5 +483,14 @@
   "bookingDetails.renter.enabled.yes": "Yes",
   "bookingDetails.renter.enabled.no": "No",
 
-  "bookingDetails.header.reservationDetail": "Booking details"
+  "bookingDetails.header.reservationDetail": "Booking details",
+  "booking.ending.success": "Reservation has been ended successfully",
+
+  "exception.not_found_exception.box_not_found": "Box does not exist or has been deleted",
+  "box.delete.success": "Successfully deleted box",
+  "exception.box.box_in_used": "Box is being used",
+  "exception.box.box_is_pending": "Box is reserved",
+  "exception.box.box_is_deleted": "Box was deleted",
+
+  "validation.animaltype.pattern": "Wrong animal type"
 }

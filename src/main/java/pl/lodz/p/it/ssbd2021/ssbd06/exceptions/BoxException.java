@@ -8,6 +8,7 @@ public class BoxException extends AppBaseException{
     private static final String ACCESS_DENIED = "exception.box.access_denied";
     private static final String BOX_IN_USED = "exception.box.box_in_used";
     private static final String BOX_IS_PENDING = "exception.box.box_is_pending";
+    private static final String BOX_IS_DELETED = "exception.box.box_is_deleted";
 
     protected BoxException(String message, Throwable cause) {
         super(message, cause);
@@ -42,6 +43,15 @@ public class BoxException extends AppBaseException{
      */
     public static BoxException boxIsPending() {
         return new BoxException(BOX_IS_PENDING);
+    }
+
+    /**
+     * Wyjątek związany z faktem, że box został usunięty
+     *
+     * @return wyjątek BoxException
+     */
+    public static BoxException boxIsDeleted() {
+        return new BoxException(BOX_IS_DELETED);
     }
 
 }

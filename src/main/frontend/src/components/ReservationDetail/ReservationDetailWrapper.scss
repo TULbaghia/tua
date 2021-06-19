@@ -1,0 +1,25 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins/breakpoints";
+
+.reservationDetail {
+  & > nav {
+    margin-left: -0rem !important;
+    margin-right: -0rem !important;
+  }
+}
+
+
+#reservationDetailBoxTable {
+  td, th {
+    border: 0;
+  }
+
+  table > tbody > tr:last-child {
+    pointer-events: none;
+  }
+}
+
+.overflow-x-hidden {
+  overflow: hidden;
+}

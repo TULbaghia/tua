@@ -445,5 +445,45 @@
   "exception.boxes.not_available": "Selected boxes are not available",
   "exception.booking.invalid_date_range": "Date from should be ealier then date to",
 
-  "hotel": "Hotel"
+  "hotel": "Hotel",
+
+  "bookingDetails": "Details",
+  "bookingDetails.nav": "Booking details",
+  "bookingDetails.refresh": "Refreshed booking details",
+  "bookingDetails.text": "Details",
+  "bookingDetails.header.title": "Details for order #",
+
+  "bookingDetails.header.hotel": "Hotel",
+  "bookingDetails.hotel.name": "Name:",
+  "bookingDetails.hotel.image": "Image:",
+  "bookingDetails.hotel.address": "Address:",
+  "bookingDetails.hotel.cityName": "City:",
+  "bookingDetails.hotel.description": "Description:",
+
+  "bookingDetails.header.reservation": "Booking",
+  "bookingDetails.reservation.bookingNumber": "Booking number: ",
+  "bookingDetails.reservation.bookingStatus":  "Booking status:",
+  "bookingDetails.reservation.dateFrom": "Start date:",
+  "bookingDetails.reservation.dateTo":  "End date:",
+  "bookingDetails.reservation.creationDate": "Creation date:",
+  "bookingDetails.reservation.price": "Price:",
+  "bookingDetails.reservation.table.id": "#Id",
+  "bookingDetails.reservation.table.type": "Box type",
+  "bookingDetails.reservation.table.pricePerDay":  "Price per day",
+  "bookingDetails.reservation.table.pricePerLine": "Total booking price",
+  "bookingDetails.reservation.table.priceTotal":  "Total booking: ",
+  "bookingDetails.reservation.boxList": "Box list",
+
+  "bookingDetails.header.renter": "Client",
+  "bookingDetails.renter.login":  "Login:",
+  "bookingDetails.renter.firstname": "Firstname:",
+  "bookingDetails.renter.lastname":  "Lastname:",
+  "bookingDetails.renter.personal": "Client: ",
+  "bookingDetails.renter.email": "Email:",
+  "bookingDetails.renter.contactNumber": "Contact number:",
+  "bookingDetails.renter.enabled": "Is enabled:",
+  "bookingDetails.renter.enabled.yes": "Yes",
+  "bookingDetails.renter.enabled.no": "No",
+
+  "bookingDetails.header.reservationDetail": "Booking details"
 }

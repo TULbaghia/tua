@@ -447,5 +447,45 @@
   "exception.boxes.not_available": "Wybrane boxy nie są dostępne",
   "exception.booking.invalid_date_range": "Data rozpoczęcia rezerwacji powinna być wcześniejsza od daty zakończenia",
 
-  "hotel": "Hotel"
+  "hotel": "Hotel",
+
+  "bookingDetails": "Szczegóły",
+  "bookingDetails.nav": "Szczegóły rezerwacji",
+  "bookingDetails.refresh": "Odświeżono szczegóły rezerwacji",
+  "bookingDetails.text": "Szczegóły",
+  "bookingDetails.header.title": "Szczegóły dla rezerwacji #",
+
+  "bookingDetails.header.hotel": "Hotel",
+  "bookingDetails.hotel.name": "Nazwa:",
+  "bookingDetails.hotel.image": "Zdjęcie:",
+  "bookingDetails.hotel.address":  "Adres:",
+  "bookingDetails.hotel.cityName": "Miasto:",
+  "bookingDetails.hotel.description":  "Opis:",
+
+  "bookingDetails.header.reservation": "Rezerwacja",
+  "bookingDetails.reservation.bookingNumber": "Identyfikator rezerwacji: ",
+  "bookingDetails.reservation.bookingStatus":  "Status zamówienia:",
+  "bookingDetails.reservation.dateFrom": "Data rozpoczęcia:",
+  "bookingDetails.reservation.dateTo":  "Data zakończenia:",
+  "bookingDetails.reservation.creationDate": "Data stworzenia:",
+  "bookingDetails.reservation.price": "Koszt:",
+  "bookingDetails.reservation.table.id": "#Id",
+  "bookingDetails.reservation.table.type": "Typ klatki",
+  "bookingDetails.reservation.table.pricePerDay":  "Cena za dzień",
+  "bookingDetails.reservation.table.pricePerLine": "Cena za całość",
+  "bookingDetails.reservation.table.priceTotal":  "Podsumowanie: ",
+  "bookingDetails.reservation.boxList": "Zarezerwowane klatki: ",
+
+  "bookingDetails.header.renter": "Klient",
+  "bookingDetails.renter.login":  "Login:",
+  "bookingDetails.renter.firstname": "Imię:",
+  "bookingDetails.renter.lastname":  "Nazwisko:",
+  "bookingDetails.renter.personal": "Klient: ",
+  "bookingDetails.renter.email": "Email:",
+  "bookingDetails.renter.contactNumber": "Telefon:",
+  "bookingDetails.renter.enabled": "Konto włączone:",
+  "bookingDetails.renter.enabled.yes": "Tak",
+  "bookingDetails.renter.enabled.no": "Nie",
+
+  "bookingDetails.header.reservationDetail": "Szczegóły rezerwacji"
 }

@@ -239,7 +239,7 @@ function Home(props) {
                             <RatingComponent key={v4()} triggerRefresh={refreshData} id={item.id} rate={item.rate} login={item.createdBy} content={item.comment}
                                              hidden={item.hidden} date={dateConverter(item.creationDate.slice(0, -5))} modificationDate={item.modificationDate}/>
                         ))}
-                        {(currentRole === rolesConstant.client) &&
+                        {(currentRole === rolesConstant.client && userBookings.length > 0) &&
                             <NewRatingComponent triggerRefresh={refreshData} placeholder={t('add.new.comment')} header={t('add.new.rating')}
                             buttonText={t('add.rating')} bookings={userBookings}/>
                         }

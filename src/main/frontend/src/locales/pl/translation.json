@@ -425,6 +425,7 @@
   "add.rating": "Dodaj opinie",
   "booking": "Rezerwacja",
   "comment.success.create": "Komentarz został utworzony",
-  "exception.rating_exception.rating_already_exists": "Istnieje już ocena dla tej rezerwacji!"
+  "exception.rating_exception.rating_already_exists": "Istnieje już ocena dla tej rezerwacji!",
+  "exception.hotel.no_hotel_for_booking": "Nie można odnaleźć hotelu dla tej rezerwacji!"
 
 }

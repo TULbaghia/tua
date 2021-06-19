@@ -422,5 +422,6 @@
   "add.rating": "Add rating",
   "booking": "Booking",
   "comment.success.create": "Comment created",
-  "exception.rating_exception.rating_already_exists": "There is already a rating for this booking!"
+  "exception.rating_exception.rating_already_exists": "There is already a rating for this booking!",
+  "exception.hotel.no_hotel_for_booking": "Cannot find hotel for this booking!"
 }

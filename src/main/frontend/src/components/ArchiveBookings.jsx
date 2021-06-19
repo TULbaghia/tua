@@ -16,6 +16,7 @@ import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import { useThemeColor } from './Utils/ThemeColor/ThemeColorProvider';
 import {dateConverter} from "../i18n";
 import {rolesConstant} from "../Constants";
+import axios from "axios";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -32,6 +33,7 @@ function ArchiveBookings(props) {
     const {token, setToken, currentRole, setCurrentRole} = useLocale();
     const [filterText, setFilterText] = React.useState('');
     const themeColor = useThemeColor()
+    const dangerNotifier = useNotificationDangerAndInfinity();
     const [data, setData] = useState([
         {
             id: 0,
@@ -102,10 +104,19 @@ function ArchiveBookings(props) {
                 return(
                     <Button className="btn-sm" disabled={row.bookingStatus !== "FINISHED"} onClick={event => {
                         console.log("rating added to:" +  row.id);
+                        getHotelForBooking(row.id).then(res => {
+                            history.push('/hotels/hotelInfo?id=' + res.data.id)
+                        }).catch((e) => ResponseErrorHandler(e, dangerNotifier));
                     }}>{t("add")}</Button>
                 );
             }
         });
+    }
+
+    const getHotelForBooking = async (bookigId) => {
+        return await axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/hotels/hotel/booking/` + bookigId, {headers: {
+                Authorization: token,
+            }})
     }
 
     useEffect(() => {

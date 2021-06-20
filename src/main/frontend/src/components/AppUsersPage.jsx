@@ -38,7 +38,7 @@ function AppUsersPage(props) {
                     <li className="breadcrumb-item active" aria-current="page">{t('userDashboard')}</li>)}
             </BreadCrumb>
             <div className={"pt-0 pt-sm-4 pl-0 pl-sm-3"}>
-                <div className="greeting mt-0 mt-sm-5 ml-0 ml-sm-5" style={{fontSize: "4rem", textShadow: "3px 3px #333"}}>{t('welcome')}, {username}</div>
+                <div className="greeting mt-0 mt-sm-5 ml-0 ml-sm-5 text-white" style={{fontSize: "4rem", textShadow: "3px 3px #333"}}>{t('welcome')}, {username}</div>
             </div>
         </Container>
     );

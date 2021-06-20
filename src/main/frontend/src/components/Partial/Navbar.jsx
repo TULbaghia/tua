@@ -205,11 +205,11 @@ function NavigationBar(props) {
                                     <LinkContainer to="/reservation">
                                         <Nav.Link>{t('reservation')}</Nav.Link>
                                     </LinkContainer>
-                                    <LinkContainer to="/archiveReservations">
-                                        <Nav.Link>{t('archiveReservations')}</Nav.Link>
-                                    </LinkContainer>
                                     <LinkContainer to="/activeReservations">
                                         <Nav.Link>{t('activeReservations')}</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/archiveReservations">
+                                        <Nav.Link>{t('archiveReservations')}</Nav.Link>
                                     </LinkContainer>
                                 </>
                             )}

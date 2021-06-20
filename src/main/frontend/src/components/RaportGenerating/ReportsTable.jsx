@@ -5,7 +5,6 @@ import moment from "moment";
 import {useThemeColor} from "../Utils/ThemeColor/ThemeColorProvider";
 
 function ReportsTable({bookings}) {
-    const [sortDir, setSortDir] = useState("asc");
     const themeColor = useThemeColor()
 
     const momentHelper = () => {
@@ -55,12 +54,7 @@ function ReportsTable({bookings}) {
             selector: 'rating',
             sortable: true,
             width: "10rem",
-            sortFunction: (a, b) => {
-                if (a.rating === undefined || b.rating === undefined) {
-                    return sortDir === 'asc' ? -1 : 1;
-                }
-                return a.rating - b.rating;
-            }
+            sortFunction: (a, b) => (a.rating - b.rating)
         },
         {
             name: i18n.t('reportGenerator.table.owner_login'),
@@ -76,8 +70,6 @@ function ReportsTable({bookings}) {
                    noDataComponent={i18n.t('table.no.result')}
                    data={bookings}
                    columns={columns}
-                   defaultSortField={"rating"}
-                   onSort={(column, sortDirection) => setSortDir(sortDirection)}
                    theme={themeColor}/>
     );
 }

@@ -315,7 +315,9 @@ public class HotelManager {
 
     @PermitAll
     public boolean checkHotelNameContainsString(Hotel hotel, String text){
-        return hotel.getName().toLowerCase().contains(text.toLowerCase()) || hotel.getAddress().toLowerCase().contains(text.toLowerCase());
+        return hotel.getName().toLowerCase().contains(text.toLowerCase())
+                || hotel.getAddress().toLowerCase().contains(text.toLowerCase())
+                || hotel.getCity().getName().toLowerCase().contains(text.toLowerCase());
     }
 
     /**

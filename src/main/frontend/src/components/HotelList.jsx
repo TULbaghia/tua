@@ -39,8 +39,8 @@ function HotelList(props) {
     const [searchTerm, setSearchTerm] = React.useState('');
     const [selectedValue, setSelectedValue] = useState([]);
     const [sortSelectedValue, setSortSelectedValue] = useState();
-    const [minRatingValue, setMinRatingValue] = useState(1);
-    const [maxRatingValue, setMaxRatingValue] = useState(5);
+    const [minRatingValue, setMinRatingValue] = useState();
+    const [maxRatingValue, setMaxRatingValue] = useState();
     const [data, setData] = useState([
         {
             id: "",

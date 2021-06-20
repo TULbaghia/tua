@@ -31,7 +31,9 @@ export const animalTypes = [
 ]
 
 export function queryBuilder(minVal, maxVal, animalTypes){
-    let query = '?fromRating=' + minVal + '&toRating=' + maxVal
+    let query = '?'
+    if (minVal !== undefined) query += '&fromRating=' + minVal
+    if (maxVal !== undefined) query += '&toRating=' + maxVal
     if (animalTypes.indexOf(1)> -1) query += '&dogType=true'
     if (animalTypes.indexOf(2)> -1) query += '&catType=true'
     if (animalTypes.indexOf(3)> -1) query += '&rodentType=true'

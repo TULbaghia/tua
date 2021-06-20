@@ -398,8 +398,8 @@
 
   "choose.animal.type": "Wybierz typ zwierzęcia",
   "filter.button": "Filtruj",
-  "rating.minimal": "Minimalna ocena",
-  "rating.maximal": "Maksymalna ocena",
+  "rating.minimal": "Min",
+  "rating.maximal": "Maks",
   "text.animal.type": "Rodzaj zwierzęcia",
 
   "modifyBox.title": "Modyfikacja boxa",

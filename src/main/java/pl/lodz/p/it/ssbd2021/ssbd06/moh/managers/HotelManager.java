@@ -26,11 +26,7 @@ import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -108,9 +104,8 @@ public class HotelManager {
                     .stream()
                     .filter(hotel -> {
                         try {
-                            return hotel.getRating() != null
-                                    && hotel.getRating().compareTo(fromRating) >= 0
-                                    && hotel.getRating().compareTo(toRating) <= 0
+                            return Objects.requireNonNullElse(hotel.getRating(), BigDecimal.ONE).compareTo(fromRating) >= 0
+                                    && Objects.requireNonNullElse(hotel.getRating(), BigDecimal.valueOf(5.0)).compareTo(toRating) <= 0
                                     && checkHotelPetTypeListAllowed(animalTypes, hotel.getId());
                         } catch (AppBaseException e) {
                             e.printStackTrace();

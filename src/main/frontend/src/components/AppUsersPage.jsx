@@ -7,7 +7,7 @@ import {rolesConstant} from "../Constants";
 import {getUserLanguage} from "./Partial/Navbar";
 import {useDispatchThemeColorAfterLogin} from "./Utils/ThemeColor/ThemeColorProvider";
 import {useNotificationDangerAndInfinity} from "./Utils/Notification/NotificationProvider";
-import {Container} from "@material-ui/core";
+import {Container} from "react-bootstrap";
 
 function AppUsersPage(props) {
     const {t, i18n} = props
@@ -23,7 +23,7 @@ function AppUsersPage(props) {
     }, []);
 
     return (
-        <Container fluid className="mb-2 container-fluid">
+        <Container fluid className="mb-2">
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">

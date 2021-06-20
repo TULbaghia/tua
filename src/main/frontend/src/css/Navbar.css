@@ -8,12 +8,8 @@
     flex-direction: row;
     align-items: center;
     padding: 10px 4px;
-    right: 170px;
-    top: 10px;
     font-style: normal;
     font-weight: normal;
-    font-size: 1rem;
-    line-height: 14px;
     color: var(--purple);
     border: 1px solid var(--purple);
     box-sizing: border-box;

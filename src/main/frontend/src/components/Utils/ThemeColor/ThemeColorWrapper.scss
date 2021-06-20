@@ -72,3 +72,12 @@ form select.form-control {
 .text-dark {
   color: var(--dark) !important;
 }
+
+.main-navbar,
+.bottom-navbar {
+  .dropdown-menu.show > .dropdown-item {
+    &:hover {
+      color: #343a40 !important;
+    }
+  }
+}

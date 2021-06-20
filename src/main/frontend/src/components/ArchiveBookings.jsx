@@ -173,7 +173,7 @@ function ArchiveBookings(props) {
             </BreadCrumb>
             <Container>
                 <Row>
-                    <Col xs={12} sm={12} md={11} lg={9} xl={8} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                    <Col xs={12} sm={12} md={12} lg={10} xl={8} className={"floating-no-absolute py-4 mx-auto mb-2"}>
                         <div className="">
                             <div>
                                 <h1 className="float-left">{t('archiveReservations')}</h1>

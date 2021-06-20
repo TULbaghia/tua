@@ -17,14 +17,14 @@ function Home(props) {
                     <Carousel.Item interval={5000}>
                         <img className="img-fluid" src={dog} alt="First slide"/>
                         <Carousel.Caption className={"d-flex mb-5 align-items-center pb-4 pb-sm-4 pb-md-5"}>
-                            <h2 className={"d-flex align-content-center mr-3"}>{t('landingPageTitle')}</h2>
-                            <img src={logo} className="" style={{maxHeight: "80px"}}/>
+                            <h1 className={"d-flex align-content-center mr-3"}>{t('landingPageTitle')}</h1>
+                            <img src={logo} className="" style={{maxHeight: "80px"}} alt={""}/>
                         </Carousel.Caption>
                     </Carousel.Item>
                 </Carousel>
             </Row>
             <Row>
-                <div className={"darkify pb-3 mb-n2 homeGrid px-3"}>
+                <div className={"darkify pb-3 mb-n2 homeGrid px-3"} style={{minHeight: "500px"}}>
                     <div className={"text-center h3 my-4 d-flex justify-content-center align-items-start textLeft"}>{t('landingPageLeft')}</div>
                     <div className={"text-center h3 my-4 d-flex justify-content-center align-items-start textRight"}>{t('landingPageRight')}</div>
                     <div className={"d-flex justify-content-center align-items-start imageLeft"}>

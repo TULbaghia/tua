@@ -89,7 +89,7 @@ function LanguageSwitcher(props) {
     return (
         <>
             <Dropdown>
-                <DropdownToggle id="dropdown-basic" className="dropButton" variant="Info">
+                <DropdownToggle id="dropdown-basic" className="dropButton pl-0 pl-lg-2 pr-0 pr-lg-2" variant="Info">
                     <span style={{marginRight: "10px"}}>{i18n.t("language")} [{i18n.language.substring(0, 2).toUpperCase()}]</span>
                 </DropdownToggle>
 
@@ -149,14 +149,19 @@ function NavigationBar(props) {
                 //------------------------LOGGED USER VIEW----------------------------
                 <Navbar expand="lg" className="main-navbar" style={divStyle()}>
                     <Navbar.Brand>
-                        <div className="name">{t('animalHotel')}</div>
+                        <div className="name d-flex flex-wrap justify-content-start align-items-center position-relative mr-3" style={{width: "min-content"}}>
+                            <LinkContainer to="/">
+                                <h4 className={"cursor-pointer"}>Purrfecti<img src={"/favicon.ico"} className={"img-fluid"} style={{maxHeight: "20px"}}/>n</h4>
+                            </LinkContainer>
+                            <sub className={"small position-absolute mb-0"} style={{fontSize: ".7rem", bottom: "5px", left: "1px"}}>{t('animalHotel')}</sub>
+                        </div>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mr-auto">
-                            <LinkContainer to="/">
-                                <Nav.Link>{t('mainPage')}</Nav.Link>
-                            </LinkContainer>
+                        <Nav className="mr-auto d-flex align-items-start align-items-lg-center">
+                            {/*<LinkContainer to="/">*/}
+                            {/*    <Nav.Link>{t('mainPage')}</Nav.Link>*/}
+                            {/*</LinkContainer>*/}
                             <LinkContainer to="/hotels">
                                 <Nav.Link>{t('hotels')}</Nav.Link>
                             </LinkContainer>
@@ -172,8 +177,8 @@ function NavigationBar(props) {
                             )}
                             {currentRole === rolesConstant.manager && (
                                 <>
-                                    <Dropdown className="d-flex">
-                                        <DropdownToggle id="dropdown-basic" className="dropButton" variant="Info">
+                                    <Dropdown className="">
+                                        <DropdownToggle id="dropdown-basic" className="dropButton pl-0 pl-lg-2 pr-0 pr-lg-2" variant="Info">
                                             <span style={{marginRight: "10px"}}>{t('myHotel')}</span>
                                         </DropdownToggle>
 
@@ -190,10 +195,10 @@ function NavigationBar(props) {
                                         </Dropdown.Menu>
                                     </Dropdown>
                                     <LinkContainer to="/activeReservations">
-                                        <Nav.Link>{t('activeReservations')}</Nav.Link>
+                                        <Nav.Link>{t('menu.activeReservations')}</Nav.Link>
                                     </LinkContainer>
                                     <LinkContainer to="/archiveReservations">
-                                        <Nav.Link>{t('archiveReservations')}</Nav.Link>
+                                        <Nav.Link>{t('menu.archiveReservations')}</Nav.Link>
                                     </LinkContainer>
                                 </>
                             )}
@@ -205,39 +210,33 @@ function NavigationBar(props) {
                                     <LinkContainer to="/reservation">
                                         <Nav.Link>{t('reservation')}</Nav.Link>
                                     </LinkContainer>
-                                    <LinkContainer to="/archiveReservations">
-                                        <Nav.Link>{t('archiveReservations')}</Nav.Link>
-                                    </LinkContainer>
                                     <LinkContainer to="/activeReservations">
-                                        <Nav.Link>{t('activeReservations')}</Nav.Link>
+                                        <Nav.Link>{t('menu.activeReservations')}</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/archiveReservations">
+                                        <Nav.Link>{t('menu.archiveReservations')}</Nav.Link>
                                     </LinkContainer>
                                 </>
                             )}
                         </Nav>
-                        <Nav className="navbar-right">
+                        <Nav className="navbar-right d-flex align-items-start align-items-lg-center">
                             <ThemeColorSwitcher/>
                             <LanguageSwitcher t={t} i18n={i18n}/>
                             <Dropdown alignRight={true}>
-                                <Dropdown.Toggle id="dropdown-basic" className="dropButton" variant="Info">
+                                <Dropdown.Toggle id="dropdown-basic" className="dropButton pl-0 pl-lg-2 pr-0 pr-lg-2" variant="Info">
                                     <FontAwesomeIcon icon="user"/>
                                     {' '}{username}{' '}
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    <li>
-                                        <a href="#/action-1" className="item">
-                                            <LinkContainer to="/myAccount">
-                                                <Nav.Link>{t('myAccount')}</Nav.Link>
-                                            </LinkContainer>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#/action-3" className="item">
-                                            <LinkContainer to="/">
-                                                <Nav.Link onSelect={handleLogout}>{t('signOut')}</Nav.Link>
-                                            </LinkContainer>
-                                        </a>
-                                    </li>
+                                    <Dropdown.Item>
+                                        <LinkContainer to="/myAccount"><span>{t('myAccount')}</span></LinkContainer>
+                                    </Dropdown.Item>
+                                    <Dropdown.Item onSelect={handleLogout}>
+                                        <LinkContainer to="/">
+                                            <span>{t('signOut')}</span>
+                                        </LinkContainer>
+                                    </Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Nav>
@@ -247,13 +246,16 @@ function NavigationBar(props) {
                 //------------------------GUEST VIEW----------------------------
                 <Navbar expand="lg" className="main-navbar" style={divStyle()}>
                     <Navbar.Brand>
-                        <LinkContainer to="/">
-                            <div className="name"><span className={"text-dark"}>{t('animalHotel')}</span></div>
-                        </LinkContainer>
+                        <div className="name d-flex flex-wrap justify-content-start align-items-center position-relative mr-3" style={{width: "min-content"}}>
+                            <LinkContainer to="/">
+                                <h4 className={"cursor-pointer"}>Purrfecti<img src={"/favicon.ico"} className={"img-fluid"} style={{maxHeight: "20px"}}/>n</h4>
+                            </LinkContainer>
+                            <sub className={"small position-absolute mb-0"} style={{fontSize: ".7rem", bottom: "5px", left: "1px"}}>{t('animalHotel')}</sub>
+                        </div>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mr-auto">
+                    <Navbar.Collapse id="basic-navbar-nav d-flex align-items-center align-content-center">
+                        <Nav className="mr-auto d-flex align-items-center align-content-center">
                             <LinkContainer to="/">
                                 <Nav.Link>{t('mainPage')}</Nav.Link>
                             </LinkContainer>
@@ -261,21 +263,23 @@ function NavigationBar(props) {
                                 <Nav.Link>{t('hotels')}</Nav.Link>
                             </LinkContainer>
                         </Nav>
-                        <Nav className="navbar-right">
+                        <Nav className="navbar-right d-flex align-items-center align-content-center">
                             <ThemeColorSwitcher/>
                             <LanguageSwitcher t={t} i18n={i18n}/>
-                            <LinkContainer to="/signUp">
-                                <Nav.Link className="signUp">
-                                    <FontAwesomeIcon className="signUpIcon" icon="user-plus"/>
-                                    <div className="signUpText">{t('signUp')}</div>
-                                </Nav.Link>
-                            </LinkContainer>
-                            <LinkContainer to="/login">
-                                <Nav.Link className="login">
-                                    <FontAwesomeIcon className="loginIcon" icon="sign-in-alt"/>
-                                    <div className="loginText">{t('signIn')}</div>
-                                </Nav.Link>
-                            </LinkContainer>
+                            <div className={"d-flex flex-nowrap flex-md-wrap mt-2 mt-md-0 mb-2 mb-md-0"}>
+                                <LinkContainer to="/signUp">
+                                    <Nav.Link className="signUp">
+                                        <FontAwesomeIcon className="signUpIcon" icon="user-plus"/>
+                                        <div className="signUpText">{t('signUp')}</div>
+                                    </Nav.Link>
+                                </LinkContainer>
+                                <LinkContainer to="/login">
+                                    <Nav.Link className="login">
+                                        <FontAwesomeIcon className="loginIcon" icon="sign-in-alt"/>
+                                        <div className="loginText">{t('signIn')}</div>
+                                    </Nav.Link>
+                                </LinkContainer>
+                            </div>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>

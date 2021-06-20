@@ -1,11 +1,8 @@
 /**** LANDING PAGE ****/
 .footer {
   background-color: var(--purple);
-  position: fixed;
   bottom: 0;
   height: 40px;
-  width: 100%;
-  display: flex;
 }
 
 .roleMenu{

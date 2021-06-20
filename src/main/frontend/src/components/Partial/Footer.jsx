@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Dropdown, DropdownButton} from "react-bootstrap";
+import {Col, Dropdown} from "react-bootstrap";
 import {withNamespaces} from "react-i18next";
 import userIcon from "../../assets/userRole.svg"
 import {useLocale} from "../LoginContext";
@@ -53,10 +53,10 @@ function AccessLevelSwitcher(props) {
     }
 
     return (
-        <div style={{display: "flex"}}>
-            <img alt="userIcon" src={userIcon} style={{marginRight: "1rem"}}/>
+        <div className={"d-flex ml-3"}>
+            <img alt="userIcon" src={userIcon} className={"mr-2"}/>
             <Dropdown onSelect={handleSelect}>
-                <DropdownToggle id="dropdown-basic" key='up' drop='up' className="roleMenu">
+                <DropdownToggle id="dropdown-basic" key='up' drop='up' className="roleMenu text-white" style={{backgroundColor: "transparent"}}>
                     {i18n.t('roleChange')}
                 </DropdownToggle>
                 <DropdownMenu>
@@ -70,17 +70,22 @@ function AccessLevelSwitcher(props) {
 }
 
 function Footer(props) {
-    const {token} = useLocale();
+    const {token, currentRole} = useLocale();
     const {roles, divStyle} = props;
 
     return (
-        <div className="footer" style={ divStyle() }>
-            {token !== null && token !== '' ? (
-                <div style={{marginLeft: "10rem", width: "10%"}}>
-                    <AccessLevelSwitcher levels={roles}/>
-                </div>
-            ) : null
-            }
+        <div className={"container-fluid footer position-fixed b-0 d-flex bottom-navbar"} style={ divStyle() }>
+            <div className={"row"}>
+                <Col xs={12} className={"d-flex align-items-center flex-wrap flex-row"}>
+                    <div>
+                        {token !== null && token !== '' ? <div><AccessLevelSwitcher levels={roles}/></div> : ""}
+                    </div>
+                    <div className={"text-white d-none d-sm-flex"}>
+                        {token !== null && token !== '' ? <span className={"px-2"}>|</span> : ""}
+                        &copy; SSBD202106
+                    </div>
+                </Col>
+            </div>
         </div>
     );
 }

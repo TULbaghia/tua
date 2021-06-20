@@ -98,15 +98,17 @@ public class HotelManager {
      */
     @PermitAll
     public List<HotelDto> getAllFilter(BigDecimal fromRating,
-                             BigDecimal toRating,
-                             List<AnimalType> animalTypes) throws AppBaseException {
+                                       BigDecimal toRating,
+                                       List<AnimalType> animalTypes,
+                                       String searchQuery) throws AppBaseException {
             List<Hotel> hotels = getAll()
                     .stream()
                     .filter(hotel -> {
                         try {
-                            return Objects.requireNonNullElse(hotel.getRating(), BigDecimal.ONE).compareTo(fromRating) >= 0
-                                    && Objects.requireNonNullElse(hotel.getRating(), BigDecimal.valueOf(5.0)).compareTo(toRating) <= 0
-                                    && checkHotelPetTypeListAllowed(animalTypes, hotel.getId());
+                            return Objects.requireNonNullElse(hotel.getRating(), BigDecimal.valueOf(5.0)).compareTo(fromRating) >= 0
+                                    && Objects.requireNonNullElse(hotel.getRating(), BigDecimal.ONE).compareTo(toRating) <= 0
+                                    && checkHotelPetTypeListAllowed(animalTypes, hotel.getId())
+                                    && checkHotelNameContainsString(hotel, searchQuery);
                         } catch (AppBaseException e) {
                             e.printStackTrace();
                             return false;
@@ -309,6 +311,11 @@ public class HotelManager {
             }
         }
         return true;
+    }
+
+    @PermitAll
+    public boolean checkHotelNameContainsString(Hotel hotel, String text){
+        return hotel.getName().toLowerCase().contains(text.toLowerCase()) || hotel.getAddress().toLowerCase().contains(text.toLowerCase());
     }
 
     /**

@@ -101,6 +101,9 @@ function HotelList(props) {
 
     const handleSearchTermChange = (event) => {
         setSearchTerm(event.target.value)
+        setMinRatingValue('')
+        setMaxRatingValue('')
+        setSelectedValue([])
         if (event.target.value !== '') {
             fetchSearchedData(event.target.value)
             setSortSelectedValue('')
@@ -157,7 +160,7 @@ function HotelList(props) {
     }
 
     const handleFilterClick = () => {
-        let query = queryBuilder(minRatingValue, maxRatingValue, selectedValue)
+        let query = queryBuilder(minRatingValue, maxRatingValue, selectedValue, searchTerm)
 
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/hotels/filter` + query)
             .then(res => {

@@ -112,7 +112,8 @@ public class HotelController extends AbstractController {
                                             @QueryParam(value = "birdType") String birdType,
                                             @QueryParam(value = "rabbitType") String rabbitType,
                                             @QueryParam(value = "lizardType") String lizardType,
-                                            @QueryParam(value = "turtleType") String turtleType) throws AppBaseException {
+                                            @QueryParam(value = "turtleType") String turtleType,
+                                            @QueryParam(value = "searchQuery") String searchQuery) throws AppBaseException {
         BigDecimal fromValue = BigDecimal.valueOf(Objects.requireNonNullElse(fromRating, 1.0));
         BigDecimal toValue = BigDecimal.valueOf(Objects.requireNonNullElse(toRating, 5.0));
         boolean isDog = Boolean.parseBoolean(Objects.requireNonNullElse(dogType, "false"));
@@ -122,7 +123,8 @@ public class HotelController extends AbstractController {
         boolean isRabbit = Boolean.parseBoolean(Objects.requireNonNullElse(rabbitType, "false"));
         boolean isLizard = Boolean.parseBoolean(Objects.requireNonNullElse(lizardType, "false"));
         boolean isTurtle = Boolean.parseBoolean(Objects.requireNonNullElse(turtleType, "false"));
-        return repeat(() -> hotelEndpoint.getAllFilter(fromValue, toValue, isDog, isCat, isRodent, isBird, isRabbit, isLizard, isTurtle), hotelEndpoint);
+        String searchText = Objects.requireNonNullElse(searchQuery, "");
+        return repeat(() -> hotelEndpoint.getAllFilter(fromValue, toValue, isDog, isCat, isRodent, isBird, isRabbit, isLizard, isTurtle, searchText), hotelEndpoint);
     }
 
     /**

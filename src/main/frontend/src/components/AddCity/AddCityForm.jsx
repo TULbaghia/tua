@@ -43,7 +43,7 @@ function AddCityForm() {
     }
 
     return (
-        <div id="add-city-container" className={""}>
+        <div id="add-city-container" className={"container-fluid"}>
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">{i18n.t('mainPage')}</Link>

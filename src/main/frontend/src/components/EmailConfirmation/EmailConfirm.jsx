@@ -45,7 +45,7 @@ function EmailConfirm() {
     }
 
     return (
-        <div className={""}>
+        <div className={"container-fluid"}>
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{i18n.t('mainPage')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{i18n.t('emailConfirm.title')}</li>

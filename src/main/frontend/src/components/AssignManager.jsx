@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {withNamespaces} from "react-i18next";
-import {Button, Container, Form} from "react-bootstrap";
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import "../css/UserInfo.css";
 import {useLocale} from "./LoginContext";
 
@@ -55,19 +55,16 @@ function AssignManager(props) {
             name: 'Login',
             selector: 'login',
             sortable: true,
-            width: "15rem"
         },
         {
             name: t('name'),
             selector: 'firstname',
             sortable: true,
-            width: "15rem"
         },
         {
             name: t('surname'),
             selector: 'lastname',
             sortable: true,
-            width: "15rem"
         },
         {
             name: t('assign'),
@@ -87,11 +84,12 @@ function AssignManager(props) {
     }, []);
 
     const getManagerData = async (login) => {
-        const response = await api.getManagerData(login,{
+        const response = await api.getManagerData(login, {
             method: "GET",
             headers: {
                 Authorization: token,
-            }})
+            }
+        })
         return response;
     };
 
@@ -119,7 +117,10 @@ function AssignManager(props) {
 
     const handleAssignManagerConfirmation = (login, setSubmitting) => (
         dispatchCriticalDialog({
-            callbackOnSave: () => {handleAssignManagerSubmit(login); history.push("/hotels")},
+            callbackOnSave: () => {
+                handleAssignManagerSubmit(login);
+                history.push("/hotels")
+            },
             callbackOnCancel: () => setSubmitting(false)
         })
     )
@@ -148,36 +149,40 @@ function AssignManager(props) {
     }, [filterText]);
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/">{t('adminDashboard')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/hotels">{t('hotelList')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('assignManager')}</li>
             </BreadCrumb>
-            <Container className="main-wrapper floating-box">
-                <div>
-                    <h1 className="float-left">{t("assignTitle")}</h1>
-                    <Button className="btn-secondary float-right m-2" onClick={event => {
-                        getAllManagers().then(res => {
-                            setData(res.data);
-                            setFilterText('')
-                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
-                        }).catch(err => {
-                            ResponseErrorHandler(err, dispatchNotificationDanger)
-                        })
-                    }}>{t("refresh")}</Button>
-                </div>
-                {data.length == 0 ?
-                    <div className="float-left">{t("emptyListManager")}</div>
-                : <DataTable className={"rounded-0"}
-                             noDataComponent={i18n.t('table.no.result')}
-                             columns={columns}
-                             data={filteredItems}
-                             subHeader
-                             theme={themeColor}
-                             subHeaderComponent={subHeaderComponentMemo}
-                    /> }
+            <Container className="">
+                <Row>
+                    <Col xs={12} sm={12} md={12} lg={11} xl={10} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div>
+                            <h1 className="float-left">{t("assignTitle")}</h1>
+                            <Button className="btn-secondary float-right m-2" onClick={event => {
+                                getAllManagers().then(res => {
+                                    setData(res.data);
+                                    setFilterText('')
+                                    dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                                }).catch(err => {
+                                    ResponseErrorHandler(err, dispatchNotificationDanger)
+                                })
+                            }}>{t("refresh")}</Button>
+                        </div>
+                        {data.length == 0 ?
+                            <div className="float-left">{t("emptyListManager")}</div>
+                            : <DataTable className={"rounded-0"}
+                                         noDataComponent={i18n.t('table.no.result')}
+                                         columns={columns}
+                                         data={filteredItems}
+                                         subHeader
+                                         theme={themeColor}
+                                         subHeaderComponent={subHeaderComponentMemo}
+                            />}
+                    </Col>
+                </Row>
             </Container>
         </div>
     );

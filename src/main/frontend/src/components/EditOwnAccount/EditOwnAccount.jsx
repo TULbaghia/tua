@@ -149,7 +149,7 @@ function EditOwnAccount() {
     };
 
     return (
-        <div className={""}>
+        <div className={"container-fluid"}>
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{i18n.t('mainPage')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/myAccount">{i18n.t('accountInfo')}</Link></li>

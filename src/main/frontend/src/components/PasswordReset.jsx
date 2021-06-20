@@ -3,8 +3,12 @@ import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useState} from "react";
 import {api} from "../Api";
-import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
+import {
+    useNotificationDangerAndInfinity,
+    useNotificationSuccessAndShort
+} from "./Utils/Notification/NotificationProvider";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
+import {Col, Container, Row} from "react-bootstrap";
 
 function PasswordReset(props) {
     const {t, i18n} = props
@@ -40,40 +44,46 @@ function PasswordReset(props) {
 
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/login">{t('logging')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('passwordResetting')}</li>
             </BreadCrumb>
 
-            <div className="floating-box" style={{minWidth: "30rem"}}>
-                <h1 className="h3">{t('passwordResettingForm')}</h1>
+            <Container>
+                <Row>
+                    <Col xs={12} sm={10} md={7} lg={6} xl={5} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div>
+                            <h1 className="h3">{t('passwordResettingForm')}</h1>
 
-                <form>
-                    <div className="input-group mb-3" style={{marginTop: "3rem"}}>
-                        <div className="input-group-prepend" style={{marginBottom: "2.5rem"}}>
-                            <span className="input-group-text" id="basic-addon1">@</span>
+                            <form>
+                                <div className="input-group mb-3" style={{marginTop: "3rem"}}>
+                                    <div className="input-group-prepend" style={{marginBottom: "2.5rem"}}>
+                                        <span className="input-group-text" id="basic-addon1">@</span>
+                                    </div>
+                                    <input type="text" className="form-control" placeholder="E-mail" aria-label="E-mail"
+                                           onChange={event => setEmail(event.target.value)}
+                                           aria-describedby="basic-addon1"/>
+                                    <span style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</span>
+                                </div>
+
+                                {!isSubmitted ?
+                                    <button className="btn btn-lg btn-primary btn-block" onClick={handleSend}
+                                            style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
+                                        {t('send')}
+                                    </button>
+                                    :
+                                    <button className="btn btn-lg btn-primary btn-block" onClick={handleSendAgain}
+                                            style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
+                                        {t('sendAgain')}
+                                    </button>
+                                }
+                            </form>
                         </div>
-                        <input type="text" className="form-control" placeholder="E-mail" aria-label="E-mail"
-                               onChange={event => setEmail(event.target.value)}
-                               aria-describedby="basic-addon1"/>
-                        <span style={{color: "#7749F8", display: "inline-block", margin: "0.2rem"}}>*</span>
-                    </div>
-
-                    {!isSubmitted ?
-                        <button className="btn btn-lg btn-primary btn-block" onClick={handleSend}
-                                style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
-                            {t('send')}
-                        </button>
-                        :
-                        <button className="btn btn-lg btn-primary btn-block" onClick={handleSendAgain}
-                                style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
-                            {t('sendAgain')}
-                        </button>
-                    }
-                </form>
-            </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

@@ -180,7 +180,7 @@ function BookingForm(props) {
     }
 
     return (
-        <div className={""}>
+        <div className={"container-fluid"}>
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">{t("mainPage")}</Link>

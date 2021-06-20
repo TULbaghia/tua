@@ -7,6 +7,7 @@ import {rolesConstant} from "../Constants";
 import {getUserLanguage} from "./Partial/Navbar";
 import {useDispatchThemeColorAfterLogin} from "./Utils/ThemeColor/ThemeColorProvider";
 import {useNotificationDangerAndInfinity} from "./Utils/Notification/NotificationProvider";
+import {Container} from "@material-ui/core";
 
 function AppUsersPage(props) {
     const {t, i18n} = props
@@ -14,15 +15,15 @@ function AppUsersPage(props) {
     const {currentRole, username} = useLocale();
     const dispatchThemeChangeAfterLogin = useDispatchThemeColorAfterLogin()
     const dispatchDangerError = useNotificationDangerAndInfinity();
-    
+
     useEffect(() => {
-       if (token) {
-           getUserLanguage(token, i18n, () => dispatchThemeChangeAfterLogin(token), dispatchDangerError);
-       }
+        if (token) {
+            getUserLanguage(token, i18n, () => dispatchThemeChangeAfterLogin(token), dispatchDangerError);
+        }
     }, []);
 
     return (
-        <div className="Home">
+        <Container fluid className="mb-2 container-fluid">
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">
@@ -36,10 +37,10 @@ function AppUsersPage(props) {
                 {currentRole === rolesConstant.client && (
                     <li className="breadcrumb-item active" aria-current="page">{t('userDashboard')}</li>)}
             </BreadCrumb>
-            <div>
-                <div className="greeting">{t('welcome')}, {username}</div>
+            <div className={"pt-0 pt-sm-4 pl-0 pl-sm-3"}>
+                <div className="greeting mt-0 mt-sm-5 ml-0 ml-sm-5" style={{fontSize: "4rem", textShadow: "3px 3px #333"}}>{t('welcome')}, {username}</div>
             </div>
-        </div>
+        </Container>
     );
 }
 

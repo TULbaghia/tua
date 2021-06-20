@@ -6,7 +6,7 @@ import {Col, Container, Row} from "react-bootstrap";
 function Forbidden(props) {
     const {t, i18n} = props
     return (
-        <div className={"mt-3"}>
+        <div className={"container-fluid mt-3"}>
             <Container>
                 <Row>
                     <Col xs={12} sm={11} md={9} lg={7} className={"floating-no-absolute py-4 mx-auto mb-2"}>

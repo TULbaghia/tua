@@ -17,7 +17,6 @@ import 'moment/locale/pl';
 import 'moment/locale/en-gb';
 import {ModifyCityValidationSchema} from "./ModifyCityFormComponents/ValidationSchema";
 import {getCity, modifyCity} from "./ModifyCityApiUtil";
-import {rolesConstant} from "../../Constants";
 import queryString from "query-string";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import TextAreaComponent from "./ModifyCityFormComponents/TextAreaComponent";
@@ -71,16 +70,16 @@ function ModifyCityForm() {
                         falseSubmitting();
                         history.push("/cities");
                     }).catch(err => {
-                        ResponseErrorHandler(err, dispatchNotificationDanger)
-                        falseSubmitting()
-                    });
+                    ResponseErrorHandler(err, dispatchNotificationDanger)
+                    falseSubmitting()
+                });
             },
             callbackOnCancel: falseSubmitting
         });
     }
 
     return (
-        <div id="modify-city-form">
+        <div id="modify-city-form" className={"mb-2 container-fluid"}>
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">{i18n.t('mainPage')}</Link>
@@ -99,51 +98,57 @@ function ModifyCityForm() {
                     {i18n.t('modifyCity.title')}
                 </li>
             </BreadCrumb>
-            <div className="defloatify floating-box">
-                <Container>
-                    <Row className="text-center justify-content-center d-block">
-                        <h1 className="mb-3">{i18n.t('modifyCity.title')}</h1>
-                        <h5>{i18n.t('modifyCity.modify.info')}{city.name}</h5>
-                        <button className="mt-3 w-25 btn-background-custom btn btn-primary"
-                                onClick={(e) => handleFetch()}
-                                type="submit">
-                            {i18n.t("refresh")}
-                        </button>
-                        <p className="mt-2 obligatory-fields">
-                            {i18n.t('obligatoryFields')}
-                        </p>
-                    </Row>
-                    <Formik
-                        initialValues={{...city}}
-                        enableReinitialize
-                        validate={ModifyCityValidationSchema}
-                        onSubmit={(values, {setSubmitting}) => handleCityModify(values, setSubmitting)}>
-                        {({isSubmitting, handleChange}) => (
-                            <Form>
-                                <Row>
-                                    <Col sm={12}>
-                                        <FieldComponent name="name"
-                                                        label={i18n.t('modifyCity.modify.name')}
-                                                        handleChange={handleChange}/>
-
-                                        <TextAreaComponent name="description"
-                                                           obligatory
-                                                           label={i18n.t('modifyCity.modify.description')}
-                                                           handleChange={handleChange}/>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <button className="btn-background-custom btn btn-lg btn-primary mt-3"
-                                            type="submit"
-                                            disabled={isSubmitting}>
-                                        {i18n.t('send')}
+            <Container>
+                <Row>
+                    <Col xs={12} sm={8} md={7} lg={6} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div>
+                            <div>
+                                <Row className="text-center justify-content-center d-block">
+                                    <h1 className="mb-3">{i18n.t('modifyCity.title')}</h1>
+                                    <h5>{i18n.t('modifyCity.modify.info')}{city.name}</h5>
+                                    <button className="mt-3 w-25 btn-background-custom btn btn-primary"
+                                            onClick={(e) => handleFetch()}
+                                            type="submit">
+                                        {i18n.t("refresh")}
                                     </button>
+                                    <p className="mt-2 obligatory-fields">
+                                        {i18n.t('obligatoryFields')}
+                                    </p>
                                 </Row>
-                            </Form>
-                        )}
-                    </Formik>
-                </Container>
-            </div>
+                                <Formik
+                                    initialValues={{...city}}
+                                    enableReinitialize
+                                    validate={ModifyCityValidationSchema}
+                                    onSubmit={(values, {setSubmitting}) => handleCityModify(values, setSubmitting)}>
+                                    {({isSubmitting, handleChange}) => (
+                                        <Form>
+                                            <Row>
+                                                <Col sm={12}>
+                                                    <FieldComponent name="name"
+                                                                    label={i18n.t('modifyCity.modify.name')}
+                                                                    handleChange={handleChange}/>
+
+                                                    <TextAreaComponent name="description"
+                                                                       obligatory
+                                                                       label={i18n.t('modifyCity.modify.description')}
+                                                                       handleChange={handleChange}/>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <button className="btn-background-custom btn btn-lg btn-primary mt-3"
+                                                        type="submit"
+                                                        disabled={isSubmitting}>
+                                                    {i18n.t('send')}
+                                                </button>
+                                            </Row>
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

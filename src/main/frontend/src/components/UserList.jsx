@@ -3,7 +3,7 @@ import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
-import {Button, Form, FormCheck} from "react-bootstrap";
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import {useLocale} from "./LoginContext";
 import {api} from "../Api";
 import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
@@ -13,7 +13,7 @@ import {
 } from "./Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
-import { useThemeColor } from './Utils/ThemeColor/ThemeColorProvider';
+import {useThemeColor} from './Utils/ThemeColor/ThemeColorProvider';
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -53,25 +53,21 @@ function UserList(props) {
             name: 'Login',
             selector: 'login',
             sortable: true,
-            width: "10rem"
         },
         {
             name: 'E-mail',
             selector: 'email',
             sortable: true,
-            width: "10rem"
         },
         {
             name: t('name'),
             selector: 'firstname',
             sortable: true,
-            width: "10rem"
         },
         {
             name: t('surname'),
             selector: 'lastname',
             sortable: true,
-            width: "10rem"
         },
         {
             name: t('unlocked'),
@@ -125,7 +121,7 @@ function UserList(props) {
             name: t('details'),
             selector: 'details',
             cell: row => {
-                return(
+                return (
                     <Button className="btn-sm" onClick={event => {
                         history.push('/accounts/userInfo?login=' + row.login);
                     }}>{t('details')}</Button>
@@ -165,14 +161,15 @@ function UserList(props) {
             method: "GET",
             headers: {
                 Authorization: token,
-            }})
+            }
+        })
         return response;
     };
 
     const blockAccount = (login) => {
         getUserData(login).then(res => {
             let userData = data.filter(x => x.login === login)[0];
-            if(res.data.enabled !== userData.enabled) {
+            if (res.data.enabled !== userData.enabled) {
                 dispatchNotificationDanger({message: i18n.t("exception.database_query_exception.concurrent_operation")})
             } else {
                 api.blockAccount(login, {headers: {Authorization: token, "If-Match": res.headers.etag}}).then(res => {
@@ -194,7 +191,7 @@ function UserList(props) {
     const unblockAccount = (login) => {
         getUserData(login).then(res => {
             let userData = data.filter(x => x.login === login)[0];
-            if(res.data.enabled !== userData.enabled) {
+            if (res.data.enabled !== userData.enabled) {
                 dispatchNotificationDanger({message: i18n.t("exception.database_query_exception.concurrent_operation")})
             } else {
                 api.unblockAccount(login, {headers: {Authorization: token, "If-Match": res.headers.etag}}).then(res => {
@@ -221,35 +218,42 @@ function UserList(props) {
     }, [filterText]);
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/">{t('adminDashboard')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('accountList')}</li>
             </BreadCrumb>
-            <div className="floating-box">
-                <div>
-                    <h1 className="float-left">{t('userList')}</h1>
-                    <Button className="btn-secondary float-right m-2" onClick={event => {
-                        getAllAccounts().then(res => {
-                            setData(res.data);
-                            setFilterText('')
-                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
-                        }).catch(err => {
-                            ResponseErrorHandler(err, dispatchNotificationDanger)
-                        })
-                    }}>{t("refresh")}</Button>
-                </div>
-                <DataTable className={"rounded-0"}
-                    noDataComponent={i18n.t('table.no.result')}
-                    columns={columns}
-                    data={filteredItems}
-                    subHeader
-                    theme={themeColor}
-                    subHeaderComponent={subHeaderComponentMemo}
-                />
-            </div>
+            <Container>
+                <Row>
+                    <Col xs={12} sm={12} md={12} lg={12} xl={12} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div>
+                            <div>
+                                <h1 className="float-left">{t('userList')}</h1>
+                                <Button className="btn-secondary float-right m-2" onClick={event => {
+                                    getAllAccounts().then(res => {
+                                        setData(res.data);
+                                        setFilterText('')
+                                        dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                                    }).catch(err => {
+                                        ResponseErrorHandler(err, dispatchNotificationDanger)
+                                    })
+                                }}>{t("refresh")}</Button>
+                            </div>
+                            <DataTable className={"rounded-0"}
+                                       noDataComponent={i18n.t('table.no.result')}
+                                       columns={columns}
+                                       data={filteredItems}
+                                       subHeader
+                                       theme={themeColor}
+                                       subHeaderComponent={subHeaderComponentMemo}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }
+
 export default withNamespaces()(UserList);

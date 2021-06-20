@@ -4,14 +4,14 @@ import {useLocale} from "../LoginContext";
 import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
-import {api, buildApi} from "../../Api";
+import {buildApi} from "../../Api";
 import {Form, Formik} from 'formik';
 import "../../css/Login.css"
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
 import {
-    useNotificationSuccessAndShort,
+    useNotificationCustom,
     useNotificationDangerAndInfinity,
-    useNotificationCustom
+    useNotificationSuccessAndShort
 } from "../Utils/Notification/NotificationProvider";
 import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import axios from "axios";
@@ -19,6 +19,7 @@ import jwt_decode from "jwt-decode";
 import LoginFieldComponent from "./LoginFieldComponent";
 import FieldComponent from "../PasswordReset/FieldComponent";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
+import {Col, Container, Row} from "react-bootstrap";
 
 const REFRESH_TIME = 60 * 1000;
 
@@ -73,7 +74,8 @@ function Login(props) {
             history.push("/userPage")
             schedule();
         } catch (ex) {
-            ResponseErrorHandler(ex, dispatchDangerNotification,true, (e)=>{}, true)
+            ResponseErrorHandler(ex, dispatchDangerNotification, true, (e) => {
+            }, true)
             setSubmitting(false);
         }
     }
@@ -97,59 +99,65 @@ function Login(props) {
     }
 
     return (
-        <div className="container">
+        <div className="mb-2 container-fluid">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('logging')}</li>
             </BreadCrumb>
-            <div className="floating-box">
-                <h1 className="h3">{t('logging')}</h1>
-                <Formik initialValues={{login: '', password: ''}}
-                        validate={values => {
-                            const errors = {};
+            <Container>
+                <Row>
+                    <Col xs={12} sm={8} md={7} lg={6} xl={5} className={"floating-no-absolute py-4 mx-auto mb-2 px-4"}>
+                        <div className="">
+                            <h1 className="h3">{t('logging')}</h1>
+                            <Formik initialValues={{login: '', password: ''}}
+                                    validate={values => {
+                                        const errors = {};
 
-                            if (!values.login) {
-                                errors.login = t('LoginForm.error.login.required');
-                            } else {
-                                validatorFactory(values.login, ValidatorType.LOGIN).forEach(x => {
-                                    errors.login = x;
-                                })
-                            }
+                                        if (!values.login) {
+                                            errors.login = t('LoginForm.error.login.required');
+                                        } else {
+                                            validatorFactory(values.login, ValidatorType.LOGIN).forEach(x => {
+                                                errors.login = x;
+                                            })
+                                        }
 
-                            if (!values.password) {
-                                errors.password = t('LoginForm.error.password.required');
-                            } else {
-                                validatorFactory(values.password, ValidatorType.PASSWORD).forEach(x => {
-                                    errors.password = x;
-                                })
-                            }
+                                        if (!values.password) {
+                                            errors.password = t('LoginForm.error.password.required');
+                                        } else {
+                                            validatorFactory(values.password, ValidatorType.PASSWORD).forEach(x => {
+                                                errors.password = x;
+                                            })
+                                        }
 
-                            return errors;
-                        }}
-                        onSubmit={(values, {setSubmitting}) => {
-                            handleSubmit(values, setSubmitting);
-                        }}>
+                                        return errors;
+                                    }}
+                                    onSubmit={(values, {setSubmitting}) => {
+                                        handleSubmit(values, setSubmitting);
+                                    }}>
 
-                    {({isSubmitting, handleChange}) => (
-                        <Form className={{alignItems: "center"}}>
-                            <LoginFieldComponent name="login" placeholder={t('login')}
-                                                 handleChange={handleChange}/>
-                            <FieldComponent name="password" placeholder={t('password')}
-                                            handleChange={handleChange}/>
-                            <button className="btn btn-lg btn-primary btn-block mt-2"
-                                    type="submit" disabled={isSubmitting}
-                                    style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
-                                {t('signIn')}
-                            </button>
-                            <button className="btn btn-lg btn-primary btn-block mt-2" type="button"
-                                    onClick={() => history.push("/login/password-reset")}
-                                    style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
-                                {t('passwordReset')}
-                            </button>
-                        </Form>
-                    )}
-                </Formik>
-            </div>
+                                {({isSubmitting, handleChange}) => (
+                                    <Form id={"loginFormPage"} className={"align-items-center"}>
+                                        <LoginFieldComponent name="login" placeholder={t('login')}
+                                                             handleChange={handleChange}/>
+                                        <FieldComponent name="password" placeholder={t('password')}
+                                                        handleChange={handleChange}/>
+                                        <button className="btn btn-lg btn-primary btn-block mt-2"
+                                                type="submit" disabled={isSubmitting}
+                                                style={{backgroundColor: "#7749F8", margin: "auto"}}>
+                                            {t('signIn')}
+                                        </button>
+                                        <button className="btn btn-lg btn-primary btn-block mt-2" type="button"
+                                                onClick={() => history.push("/login/password-reset")}
+                                                style={{backgroundColor: "#7749F8", margin: "auto"}}>
+                                            {t('passwordReset')}
+                                        </button>
+                                    </Form>
+                                )}
+                            </Formik>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     );
 }

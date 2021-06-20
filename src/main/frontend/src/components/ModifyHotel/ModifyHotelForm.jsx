@@ -105,7 +105,7 @@ function ModifyHotelForm() {
     }
 
     return (
-        <div id="modify-hotel-form">
+        <div id="modify-hotel-form" className={"mb-2 container-fluid"}>
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">{i18n.t('mainPage')}</Link>
@@ -119,70 +119,76 @@ function ModifyHotelForm() {
                     {i18n.t('modifyHotel.title')}
                 </li>
             </BreadCrumb>
-            <div className="floating-box form-floating-box">
-                <Container>
-                    <Row className="text-center justify-content-center d-block">
-                        <h1 className="mb-3">{i18n.t('modifyHotel.title')}</h1>
-                        <h5>{i18n.t('modifyHotel.modify.info')}{hotel.name}</h5>
-                        <button className="my-3 w-25 btn-background-custom btn btn-primary"
-                                onClick={(e) => handleFetch(false)}
-                                type="submit">
-                            {i18n.t("refresh")}
-                        </button>
-                        <p className="obligatory-fields">
-                            {i18n.t('obligatoryFields')}
-                        </p>
-                    </Row>
-                    <Formik
-                        initialValues={{
-                            name: hotel.name,
-                            address: hotel.address,
-                            city: cities.filter(x => x.name === hotel.cityName).map(x => x.id)[0],
-                            image: hotel.image,
-                            description: hotel.description,
-                        }}
-                        enableReinitialize
-                        validate={ModifyHotelValidationSchema}
-                        onSubmit={(values, {setSubmitting}) => handleHotelModify(values, setSubmitting)}>
-                        {({isSubmitting, handleChange}) => (
-                            <Form>
-                                <Row>
-                                    <Col sm={6}>
-                                        <FieldComponent name="name"
-                                                        label={i18n.t('modifyHotel.modify.name')}
-                                                        handleChange={handleChange}/>
-                                        <FieldComponent name="address"
-                                                        label={i18n.t('modifyHotel.modify.address')}
-                                                        handleChange={handleChange}/>
-                                        <SelectComponent name="city"
-                                                         entryValue={hotel.cityName}
-                                                         label={i18n.t('modifyHotel.modify.city')}
-                                                         values={cities}
-                                                         handleChange={handleChange}/>
-                                    </Col>
-                                    <Col sm={6}>
-                                        <TextAreaComponent name="description"
-                                                           obligatory
-                                                           label={i18n.t('modifyHotel.modify.description')}
-                                                           handleChange={handleChange}/>
-                                        <TextAreaComponent name="image"
-                                                           placeholder="/static/media/example.jpg"
-                                                           label={i18n.t('modifyHotel.modify.image')}
-                                                           handleChange={handleChange}/>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <button className="btn-background-custom btn btn-lg btn-primary mt-3"
-                                            type="submit"
-                                            disabled={isSubmitting}>
-                                        {i18n.t('send')}
+            <Container>
+                <Row>
+                    <Col xs={12} sm={12} md={12} lg={10} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div className="">
+                            <div>
+                                <Row className="text-center justify-content-center d-block">
+                                    <h1 className="mb-3">{i18n.t('modifyHotel.title')}</h1>
+                                    <h5>{i18n.t('modifyHotel.modify.info')}{hotel.name}</h5>
+                                    <button className="my-3 w-25 btn-background-custom btn btn-primary"
+                                            onClick={(e) => handleFetch(false)}
+                                            type="submit">
+                                        {i18n.t("refresh")}
                                     </button>
+                                    <p className="obligatory-fields">
+                                        {i18n.t('obligatoryFields')}
+                                    </p>
                                 </Row>
-                            </Form>
-                        )}
-                    </Formik>
-                </Container>
-            </div>
+                                <Formik
+                                    initialValues={{
+                                        name: hotel.name,
+                                        address: hotel.address,
+                                        city: cities.filter(x => x.name === hotel.cityName).map(x => x.id)[0],
+                                        image: hotel.image,
+                                        description: hotel.description,
+                                    }}
+                                    enableReinitialize
+                                    validate={ModifyHotelValidationSchema}
+                                    onSubmit={(values, {setSubmitting}) => handleHotelModify(values, setSubmitting)}>
+                                    {({isSubmitting, handleChange}) => (
+                                        <Form>
+                                            <Row>
+                                                <Col sm={6}>
+                                                    <FieldComponent name="name"
+                                                                    label={i18n.t('modifyHotel.modify.name')}
+                                                                    handleChange={handleChange}/>
+                                                    <FieldComponent name="address"
+                                                                    label={i18n.t('modifyHotel.modify.address')}
+                                                                    handleChange={handleChange}/>
+                                                    <SelectComponent name="city"
+                                                                     entryValue={hotel.cityName}
+                                                                     label={i18n.t('modifyHotel.modify.city')}
+                                                                     values={cities}
+                                                                     handleChange={handleChange}/>
+                                                </Col>
+                                                <Col sm={6}>
+                                                    <TextAreaComponent name="description"
+                                                                       obligatory
+                                                                       label={i18n.t('modifyHotel.modify.description')}
+                                                                       handleChange={handleChange}/>
+                                                    <TextAreaComponent name="image"
+                                                                       placeholder="/static/media/example.jpg"
+                                                                       label={i18n.t('modifyHotel.modify.image')}
+                                                                       handleChange={handleChange}/>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <button className="btn-background-custom btn btn-lg btn-primary mt-3"
+                                                        type="submit"
+                                                        disabled={isSubmitting}>
+                                                    {i18n.t('send')}
+                                                </button>
+                                            </Row>
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

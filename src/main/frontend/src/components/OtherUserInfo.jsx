@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {withNamespaces} from "react-i18next";
-import {Button, Container} from "react-bootstrap";
+import {Button, Col, Container, Row} from "react-bootstrap";
 import "../css/UserInfo.css";
 import {useLocale} from "./LoginContext";
 import BreadCrumb from "./Partial/BreadCrumb";
@@ -91,7 +91,7 @@ function OtherUserInfo(props) {
     }
 
     return (
-        <div className="container">
+        <div className="container-fluid mb-2">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/">{t('adminDashboard')}</Link></li>
@@ -99,65 +99,69 @@ function OtherUserInfo(props) {
                     to="/accounts">{t('accountList')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('otherUserDetailsTitle')}</li>
             </BreadCrumb>
-            <Container className="main-wrapper floating-box">
-                <h1>{t("otherUserDetailsTitle")}</h1>
-                <table>
-                    <thead/>
-                    <tbody>
-                    <tr>
-                        <td>{t("userDetailsFirstname")}</td>
-                        <td>{data.firstname}</td>
-                    </tr>
-                    <tr>
-                        <td>{t("userDetailsLastname")}</td>
-                        <td>{data.lastname}</td>
-                    </tr>
-                    <tr>
-                        <td>{t("userDetailsEmail")}</td>
-                        <td>{data.email}</td>
-                    </tr>
-                    <tr>
-                        <td>{t("userDetailsLogin")}</td>
-                        <td>{data.login}</td>
-                    </tr>
-                    <tr>
-                        <td>{t("userDetailsContactNumber")}</td>
-                        <td>{data.contactNumber}</td>
-                    </tr>
-                    <tr>
-                        <td>{t("userDetailsRoles")}</td>
-                        <td>{roles.split(", ").map(role => t(role)).join(", ")}</td>
-                    </tr>
-                    <tr>
-                        <td>{t("lastSuccessfulLoginAddress")}</td>
-                        <td>{data.lastSuccessfulLoginIpAddress}</td>
-                    </tr>
-                    <tr>
-                        <td>{t("lastSuccessfulLoginDate")}</td>
-                        <td>{data.lastSuccessfulLoginDate}</td>
-                    </tr>
-                    <tr>
-                        <td>{t("lastFailedLoginIpAddress")}</td>
-                        <td>{data.lastFailedLoginIpAddress}</td>
-                    </tr>
-                    <tr>
-                        <td>{t("lastFailedLoginDate")}</td>
-                        <td>{data.lastFailedLoginDate}</td>
-                    </tr>
-                    <tr>
-                        <td>{t("language")}</td>
-                        <td>{data.language}</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div className="main-wrapper-actions-container">
-                    <Button className="btn-primary" onClick={event => {
-                        history.push('/editOtherAccount?login=' + parsedQuery.login)
-                    }}>{t("userDetailsEditBtn")}</Button>
-                    <Button className="btn-primary" onClick={event => {
-                        handleDataFetch(false)
-                    }}>{t("refresh")}</Button>
-                </div>
+            <Container>
+                <Row>
+                    <Col xs={12} sm={12} md={10} lg={8} xl={7} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <h1>{t("otherUserDetailsTitle")}</h1>
+                        <table className={"table w-100"}>
+                            <thead/>
+                            <tbody>
+                            <tr>
+                                <td>{t("userDetailsFirstname")}</td>
+                                <td>{data.firstname}</td>
+                            </tr>
+                            <tr>
+                                <td>{t("userDetailsLastname")}</td>
+                                <td>{data.lastname}</td>
+                            </tr>
+                            <tr>
+                                <td>{t("userDetailsEmail")}</td>
+                                <td>{data.email}</td>
+                            </tr>
+                            <tr>
+                                <td>{t("userDetailsLogin")}</td>
+                                <td>{data.login}</td>
+                            </tr>
+                            <tr>
+                                <td>{t("userDetailsContactNumber")}</td>
+                                <td>{data.contactNumber}</td>
+                            </tr>
+                            <tr>
+                                <td>{t("userDetailsRoles")}</td>
+                                <td>{roles.split(", ").map(role => t(role)).join(", ")}</td>
+                            </tr>
+                            <tr>
+                                <td>{t("lastSuccessfulLoginAddress")}</td>
+                                <td>{data.lastSuccessfulLoginIpAddress}</td>
+                            </tr>
+                            <tr>
+                                <td>{t("lastSuccessfulLoginDate")}</td>
+                                <td>{data.lastSuccessfulLoginDate}</td>
+                            </tr>
+                            <tr>
+                                <td>{t("lastFailedLoginIpAddress")}</td>
+                                <td>{data.lastFailedLoginIpAddress}</td>
+                            </tr>
+                            <tr>
+                                <td>{t("lastFailedLoginDate")}</td>
+                                <td>{data.lastFailedLoginDate}</td>
+                            </tr>
+                            <tr>
+                                <td>{t("language")}</td>
+                                <td>{data.language}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div className="main-wrapper-actions-container">
+                            <Button className="btn-primary" onClick={event => {
+                                history.push('/editOtherAccount?login=' + parsedQuery.login)
+                            }}>{t("userDetailsEditBtn")}</Button>
+                            <Button className="btn-primary" onClick={event => {
+                                handleDataFetch(false)
+                            }}>{t("refresh")}</Button>
+                        </div>
+                    </Col>
+                </Row>
             </Container>
         </div>
     );

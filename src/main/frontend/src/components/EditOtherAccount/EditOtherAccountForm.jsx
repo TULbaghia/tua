@@ -267,7 +267,7 @@ function BookingForm({t, i18n}) {
     }
 
     return (
-        <div className="">
+        <div className="container-fluid">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/userPage">{t('adminDashboard')}</Link></li>

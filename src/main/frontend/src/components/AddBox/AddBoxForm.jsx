@@ -48,7 +48,7 @@ function AddBoxForm() {
     }
 
     return (
-        <div id="add-box-form" className={"mb-5"}>
+        <div id="add-box-form" className={"mb-5 container-fluid"}>
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">{i18n.t('mainPage')}</Link>

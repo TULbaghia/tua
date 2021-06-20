@@ -14,6 +14,7 @@ import {
 import {dateConverter} from "../../../i18n";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faComment, faCreditCard} from "@fortawesome/free-solid-svg-icons";
+import {rolesConstant} from "../../../Constants";
 
 function ReservationCommentHandler({reservation, refreshComponent, ...props}) {
     const {token, currentRole} = useLocale();
@@ -42,7 +43,7 @@ function ReservationCommentHandler({reservation, refreshComponent, ...props}) {
     }, [reservation.ratingId]);
 
     return (
-        <Row className={"mt-4"}>
+        <Row className={ ( reservation.ratingId == null && currentRole === rolesConstant.manager ? "" : "mt-4") }>
             <Col xs={12}>
                 {reservation.ratingId != null && rating.id &&
                 <div className={"mb-n3"}>
@@ -53,7 +54,7 @@ function ReservationCommentHandler({reservation, refreshComponent, ...props}) {
                                      triggerRefresh={refreshComponent}/>
                 </div>
                 }
-                {reservation.ratingId == null &&
+                {reservation.ratingId == null && currentRole === rolesConstant.client &&
                     <Card className={"mb-1"}>
                         <Card.Header>
                             <FontAwesomeIcon icon={faComment} size={"1x"} className={"mr-2"}/>

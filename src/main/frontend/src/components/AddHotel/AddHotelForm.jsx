@@ -67,7 +67,7 @@ function AddHotelForm() {
     }
 
     return (
-        <div id="add-hotel-form" className={""}>
+        <div id="add-hotel-form" className={"container-fluid"}>
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">{i18n.t('mainPage')}</Link>

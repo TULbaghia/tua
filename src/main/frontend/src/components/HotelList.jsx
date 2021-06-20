@@ -3,7 +3,7 @@ import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
-import {Button, Card, Col, Form, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {useLocale} from "./LoginContext";
 import {api} from "../Api";
 import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
@@ -11,7 +11,7 @@ import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
 } from "./Utils/Notification/NotificationProvider";
-import {useHistory, useLocation} from "react-router";
+import {useHistory} from "react-router";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import {useThemeColor} from './Utils/ThemeColor/ThemeColorProvider';
 import {rolesConstant} from "../Constants";
@@ -104,8 +104,7 @@ function HotelList(props) {
         if (event.target.value !== '') {
             fetchSearchedData(event.target.value)
             setSortSelectedValue('')
-        }
-        else {
+        } else {
             fetchData()
         }
     }
@@ -132,12 +131,10 @@ function HotelList(props) {
                 if (a[sortProperty] > b[sortProperty]) return 1;
                 return 0;
             })
-        }
-        else if (property === 1) {
+        } else if (property === 1) {
             const sortProperty = types[property];
             sorted = [...data].sort((a, b) => b[sortProperty] - a[sortProperty])
-        }
-        else {
+        } else {
             const sortProperty = types[property - 1]
             sorted = [...data].sort((a, b) => a[sortProperty] - b[sortProperty])
         }
@@ -204,7 +201,7 @@ function HotelList(props) {
             name: t('details'),
             selector: 'details',
             cell: row => {
-                return(
+                return (
                     <Button className="btn-sm" onClick={event => {
                         history.push('/hotels/hotelInfo?id=' + row.id);
                     }}>{t('details')}</Button>
@@ -248,7 +245,7 @@ function HotelList(props) {
             name: t('details'),
             selector: 'details',
             cell: row => {
-                return(
+                return (
                     <Button className="btn-sm" onClick={event => {
                         history.push('/hotels/hotelInfo?id=' + row.id);
                     }}>{t('details')}</Button>
@@ -270,7 +267,7 @@ function HotelList(props) {
             name: t('deleteManager'),
             selector: 'delete',
             cell: row => {
-                return(
+                return (
                     <Button className="btn-sm" onClick={event => {
                         history.push('/hotels/unassignManager?id=' + row.id);
                     }}>{t("delete")}</Button>
@@ -311,7 +308,7 @@ function HotelList(props) {
     }, [filterText]);
 
     return (
-        <div className="container">
+        <div className="container-fluid mb-2">
             {token !== null && token !== '' ? (
                 <BreadCrumb>
                     <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
@@ -332,133 +329,157 @@ function HotelList(props) {
                     <li className="breadcrumb-item active" aria-current="page">{t('hotelList')}</li>
                 </BreadCrumb>
             )}
-            <div className="floating-box">
-                <div>
-                    <h1>{t('hotelList')}</h1>
-                </div>
-                <div className="d-flex flex-row-reverse">
-                    <Button className="btn-secondary float-right m-2" onClick={event => {
-                        getAllHotels().then(res => {
-                            setData(res.data);
-                            setFilterText('')
-                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
-                        }).catch(err => {
-                            ResponseErrorHandler(err, dispatchNotificationDanger)
-                        })
-                    }}>{t("refresh")}</Button>
-                    {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
-                        <Button className="btn-primary float-right m-2" onClick={event => {
-                            history.push('/hotels/addHotel');
-                        }}>{t("addHotel")}</Button>
-                    ) : ( null )}
-                    <input
-                        className="input float-right m-2"
-                        type="text"
-                        placeholder={t("search.hotel")}
-                        value={searchTerm}
-                        onChange={handleSearchTermChange}
-                        style={themeColor === "light" ? ({backgroundColor: "#f8f9fa"}) : ({color: "#f8f9fa", backgroundColor: "#424242"})}
-                    />
-                    <Select
-                        className="align-self-center w-25"
-                        placeholder='...'
-                        value={sortSelectedValue}
-                        options={sortingTypes}
-                        onChange={handleSelectedSortValueChange}
-                    />
-                    <h4
-                        className="float-right align-self-center">
-                        {t('sort.by')}
-                    </h4>
-                </div>
-                <div className="d-flex flex-row-reverse">
-                    <Button
-                        onClick={handleFilterClick}
-                        className="btn-secondary float-right m-2">
-                        {t('filter.button')}
-                    </Button>
-                    <Select
-                        className="float-right dropdown align-self-center w-25"
-                        placeholder={t("choose.animal.type")}
-                        value={animalTypes.filter(obj => selectedValue.includes(obj.value))}
-                        options={animalTypes}
-                        onChange={handleSelectedValueChange}
-                        isMulti
-                        isClearable
-                    />
-                    <h4
-                        className="float-right align-self-center">
-                        {t('text.animal.type')}
-                    </h4>
-                    <input
-                        className="input float-right m-2"
-                        type="number"
-                        step="0.1"
-                        min='1'
-                        max='5'
-                        placeholder={t('rating.maximal')}
-                        value={maxRatingValue}
-                        onChange={handleMaxValueChange}
-                    />
-                    <input
-                        className="input float-right m-2"
-                        type="number"
-                        step='0.1'
-                        min='1'
-                        max='5'
-                        placeholder={t('rating.minimal')}
-                        value={minRatingValue}
-                        onChange={handleMinValueChange}
-                    />
-                    <h4
-                        className="float-right align-self-center">
-                        {t('rating')}
-                    </h4>
-                </div>
-                {(token === null || token === '') &&
-                    <div style={{height: '35rem', display: 'flex', flex: '1', flexDirection: 'row', width: '75rem', overflowY: 'scroll'}}>
-                        <div className='row-wrapper' style={{padding: '1rem'}}>
-                            <Row>
-                                {data.map(hotel => (
-                                    <HotelCard key={hotel.id} hotel={hotel}/>
-                                ))}
-                            </Row>
+            <Container>
+                <Row>
+                    <Col xs={12} sm={12} md={12} lg={12} xl={12} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div>
+                            <div>
+                                <h1>{t('hotelList')}</h1>
+                            </div>
+                            <div className="d-flex flex-row-reverse">
+                                <Button className="btn-secondary float-right m-2" onClick={event => {
+                                    getAllHotels().then(res => {
+                                        setData(res.data);
+                                        setFilterText('')
+                                        dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                                    }).catch(err => {
+                                        ResponseErrorHandler(err, dispatchNotificationDanger)
+                                    })
+                                }}>{t("refresh")}</Button>
+                                {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
+                                    <Button className="btn-primary float-right m-2" onClick={event => {
+                                        history.push('/hotels/addHotel');
+                                    }}>{t("addHotel")}</Button>
+                                ) : (null)}
+                                <input
+                                    className="input float-right m-2"
+                                    type="text"
+                                    placeholder={t("search.hotel")}
+                                    value={searchTerm}
+                                    onChange={handleSearchTermChange}
+                                    style={themeColor === "light" ? ({backgroundColor: "#f8f9fa"}) : ({
+                                        color: "#f8f9fa",
+                                        backgroundColor: "#424242"
+                                    })}
+                                />
+                                <Select
+                                    className="align-self-center w-25"
+                                    placeholder='...'
+                                    value={sortSelectedValue}
+                                    options={sortingTypes}
+                                    onChange={handleSelectedSortValueChange}
+                                />
+                                <h4
+                                    className="float-right align-self-center">
+                                    {t('sort.by')}
+                                </h4>
+                            </div>
+                            <div className="d-flex flex-row-reverse">
+                                <Button
+                                    onClick={handleFilterClick}
+                                    className="btn-secondary float-right m-2">
+                                    {t('filter.button')}
+                                </Button>
+                                <Select
+                                    className="float-right dropdown align-self-center w-25"
+                                    placeholder={t("choose.animal.type")}
+                                    value={animalTypes.filter(obj => selectedValue.includes(obj.value))}
+                                    options={animalTypes}
+                                    onChange={handleSelectedValueChange}
+                                    isMulti
+                                    isClearable
+                                />
+                                <h4
+                                    className="float-right align-self-center">
+                                    {t('text.animal.type')}
+                                </h4>
+                                <input
+                                    className="input float-right m-2"
+                                    type="number"
+                                    step="0.1"
+                                    min='1'
+                                    max='5'
+                                    placeholder={t('rating.maximal')}
+                                    value={maxRatingValue}
+                                    onChange={handleMaxValueChange}
+                                />
+                                <input
+                                    className="input float-right m-2"
+                                    type="number"
+                                    step='0.1'
+                                    min='1'
+                                    max='5'
+                                    placeholder={t('rating.minimal')}
+                                    value={minRatingValue}
+                                    onChange={handleMinValueChange}
+                                />
+                                <h4
+                                    className="float-right align-self-center">
+                                    {t('rating')}
+                                </h4>
+                            </div>
+                            {(token === null || token === '') &&
+                            <div style={{
+                                height: '35rem',
+                                display: 'flex',
+                                flex: '1',
+                                flexDirection: 'row',
+                                width: '100%',
+                                overflowY: 'scroll'
+                            }}>
+                                <div className='row-wrapper' style={{padding: '1rem'}}>
+                                    <Row>
+                                        {data.map(hotel => (
+                                            <HotelCard key={hotel.id} hotel={hotel}/>
+                                        ))}
+                                    </Row>
+                                </div>
+                            </div>
+                            }
+                            {(token !== null && token !== '' && currentRole === rolesConstant.client) &&
+                            <div style={{
+                                height: '35rem',
+                                display: 'flex',
+                                flex: '1',
+                                flexDirection: 'row',
+                                width: '100%',
+                                overflowY: 'scroll'
+                            }}>
+                                <div className='row-wrapper' style={{padding: '1rem'}}>
+                                    <Row>
+                                        {data.map(hotel => (
+                                            <HotelCard key={hotel.id} hotel={hotel}/>
+                                        ))}
+                                    </Row>
+                                </div>
+                            </div>
+                            }
+                            {(token !== null && token !== '' && currentRole === rolesConstant.manager) &&
+                            <DataTable className={"rounded-0"}
+                                       noDataComponent={i18n.t('table.no.result')}
+                                       columns={managerColumns}
+                                       data={filteredItems}
+                                       subHeader
+                                       theme={themeColor}
+                                       subHeaderComponent={subHeaderComponentMemo}
+                            />
+                            }
+                            {(token !== null && token !== '' && currentRole === rolesConstant.admin) &&
+                            <DataTable className={"rounded-0"}
+                                       noDataComponent={i18n.t('table.no.result')}
+                                       columns={adminColumns}
+                                       data={filteredItems}
+                                       subHeader
+                                       theme={themeColor}
+                                       subHeaderComponent={subHeaderComponentMemo}
+                            />
+                            }
                         </div>
-                    </div>
-                }
-                {(token !== null && token !== '' && currentRole === rolesConstant.client) &&
-                    <div style={{height: '35rem', display: 'flex', flex: '1', flexDirection: 'row', width: '75rem', overflowY: 'scroll'}}>
-                        <div className='row-wrapper' style={{padding: '1rem'}}>
-                            <Row>
-                                {data.map(hotel => (
-                                    <HotelCard key={hotel.id} hotel={hotel}/>
-                                ))}
-                            </Row>
-                        </div>
-                    </div>
-                }
-                {(token !== null && token !== '' && currentRole === rolesConstant.manager) &&
-                    <DataTable className={"rounded-0"}
-                               noDataComponent={i18n.t('table.no.result')}
-                               columns={managerColumns}
-                               data={filteredItems}
-                               subHeader
-                               theme={themeColor}
-                               subHeaderComponent={subHeaderComponentMemo}
-                    />
-                }
-                {(token !== null && token !== '' && currentRole === rolesConstant.admin) &&
-                    <DataTable className={"rounded-0"}
-                               noDataComponent={i18n.t('table.no.result')}
-                               columns={adminColumns}
-                               data={filteredItems}
-                               subHeader
-                               theme={themeColor}
-                               subHeaderComponent={subHeaderComponentMemo}
-                    />
-                }
-            </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }
+
 export default withNamespaces()(HotelList);

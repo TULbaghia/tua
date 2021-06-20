@@ -226,7 +226,7 @@ create table box
     delete            boolean       not null,
     created_by        bigint        not null,
     modified_by       bigint,
-    hotel_id          bigint        not null,
+    hotel_id          bigint,
     constraint pk_box_id
         primary key (id),
     constraint fk_box_account_created_by

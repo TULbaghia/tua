@@ -503,5 +503,6 @@
   "comment.success.create": "Komentarz został utworzony",
   "exception.rating_exception.rating_already_exists": "Istnieje już ocena dla tej rezerwacji!",
   "exception.hotel.no_hotel_for_booking": "Nie można odnaleźć hotelu dla tej rezerwacji!",
-  "exception.rating.already_rated" : "Rezerwacja posiada już ocenę"
+  "exception.rating.already_rated" : "Rezerwacja posiada już ocenę",
+  "exception.not_found_exception.hotel_not_found" : "Nie znaleziono hotelu"
 }

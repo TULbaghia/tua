@@ -30,7 +30,7 @@ import OtherUserInfo from "./components/OtherUserInfo";
 import ModifyHotelForm from "./components/ModifyHotel/ModifyHotelForm";
 import ReportGeneratorForm from "./components/RaportGenerating/ReportGeneratorForm";
 import CityList from "./components/city/CitiesList";
-import HotelList from "./components/HotelList";
+import HotelList from "./components/HotelList/HotelList";
 import AssignManager from "./components/AssignManager";
 import ActiveBookings from "./components/ActiveBookings";
 import AddHotelForm from "./components/AddHotel/AddHotelForm";

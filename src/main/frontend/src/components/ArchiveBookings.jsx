@@ -100,7 +100,7 @@ function ArchiveBookings(props) {
             name: t('bookingDetails'),
             cell: row => {
                 return (
-                    <Button className="btn-sm" onClick={event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         history.push("/reservation/details/" + row.id + "?ref=archive");
                     }}>{t("bookingDetails.text")}</Button>
                 );
@@ -112,7 +112,7 @@ function ArchiveBookings(props) {
             name: t('addRating'),
             cell: row => {
                 return(
-                    <Button className="btn-sm" disabled={row.bookingStatus !== "FINISHED"} onClick={event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} disabled={row.bookingStatus !== "FINISHED"} onClick={event => {
                         console.log("rating added to:" +  row.id);
                         getHotelForBooking(row.id).then(res => {
                             history.push('/hotels/hotelInfo?id=' + res.data.id)

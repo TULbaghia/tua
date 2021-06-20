@@ -1,0 +1,31 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins/breakpoints";
+
+.hotel-item {
+  background: var(--light);
+  color: var(--dark);
+  align-self: stretch;
+  margin-top: 1rem;
+}
+.hotel-item-body {
+  border-radius: inherit;
+}
+
+#hotel-list {
+  height: 100%;
+  position: relative;
+}
+
+#hotel-list {
+  nav {
+    margin-left:-15px !important;
+    margin-right:-15px !important;
+  }
+  @media (max-width: 415px) {
+    .hotel-item {
+      margin: 0.5rem auto !important;
+      display: block;
+    }
+  }
+}

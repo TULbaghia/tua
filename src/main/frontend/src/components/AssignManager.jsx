@@ -37,6 +37,7 @@ function AssignManager(props) {
             lastname: ""
         }
     ]);
+    const [hotelData, setHotelData] = useState("");
     const location = useLocation();
     const parsedQuery = queryString.parse(location.search);
     const dispatchCriticalDialog = useDialogPermanentChange();
@@ -55,35 +56,37 @@ function AssignManager(props) {
             name: 'Login',
             selector: 'login',
             sortable: true,
-            width: "15rem"
+            width: "16rem"
         },
         {
             name: t('name'),
             selector: 'firstname',
             sortable: true,
-            width: "15rem"
+            width: "16rem"
         },
         {
             name: t('surname'),
             selector: 'lastname',
             sortable: true,
-            width: "15rem"
+            width: "16rem"
         },
         {
             name: t('assign'),
             selector: 'assign',
             cell: row => {
                 return (
-                    <Button className="btn-sm" onClick={event => {
-                        handleAssignManagerConfirmation(row.login, parseInt(parsedQuery.id));
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
+                        handleAssignManagerConfirmation(row.login);
                     }}>{t("assign")}</Button>
                 )
             },
+            width: "8rem"
         },
     ];
 
     React.useEffect(() => {
         handleDataFetch();
+        getHotelName();
     }, []);
 
     const getManagerData = async (login) => {
@@ -117,16 +120,15 @@ function AssignManager(props) {
         return await api.getAllManagersList({headers: {Authorization: token}})
     }
 
-    const handleAssignManagerConfirmation = (login, setSubmitting) => (
+    const handleAssignManagerConfirmation = (login) => (
         dispatchCriticalDialog({
             callbackOnSave: () => {handleAssignManagerSubmit(login); history.push("/hotels")},
-            callbackOnCancel: () => setSubmitting(false)
         })
     )
 
     const handleAssignManagerSubmit = (login) => {
         getManagerData(login).then(res => {
-            api.addManagerToHotel(parseInt(parsedQuery.id), login, {
+            api.addManagerToHotel(parsedQuery.id, login, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: token,
@@ -138,6 +140,12 @@ function AssignManager(props) {
                 ResponseErrorHandler(err, dispatchNotificationDanger);
             })
         })
+    }
+
+    const getHotelName = () => {
+        api.getHotel(parsedQuery.id).then(res => {
+            setHotelData(res.data.name);
+        });
     }
 
     const subHeaderComponentMemo = React.useMemo(() => {
@@ -157,7 +165,7 @@ function AssignManager(props) {
             </BreadCrumb>
             <Container className="main-wrapper floating-box">
                 <div>
-                    <h1 className="float-left">{t("assignTitle")}</h1>
+                    <h1 className="float-left">{t("assignTitle")}: {hotelData}</h1>
                     <Button className="btn-secondary float-right m-2" onClick={event => {
                         getAllManagers().then(res => {
                             setData(res.data);
@@ -170,13 +178,13 @@ function AssignManager(props) {
                 </div>
                 {data.length == 0 ?
                     <div className="float-left">{t("emptyListManager")}</div>
-                : <DataTable className={"rounded-0"}
-                             noDataComponent={i18n.t('table.no.result')}
-                             columns={columns}
-                             data={filteredItems}
-                             subHeader
-                             theme={themeColor}
-                             subHeaderComponent={subHeaderComponentMemo}
+                    : <DataTable className={"rounded-0"}
+                                 noDataComponent={i18n.t('table.no.result')}
+                                 columns={columns}
+                                 data={filteredItems}
+                                 subHeader
+                                 theme={themeColor}
+                                 subHeaderComponent={subHeaderComponentMemo}
                     /> }
             </Container>
         </div>

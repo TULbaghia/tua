@@ -159,7 +159,7 @@ function ActiveBookings(props) {
             name: t('cancelReservation'),
             cell: row => {
                 return (
-                    <Button className="btn-sm"
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}}
                             onClick={event => {
                                 dispatchDialog({
                                     callbackOnSave: () => {
@@ -178,7 +178,7 @@ function ActiveBookings(props) {
             name: t('bookingDetails'),
             cell: row => {
                 return (
-                    <Button className="btn-sm" onClick={event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         history.push("/reservation/details/" + row.id + "?ref=active");
                     }}>{t("bookingDetails.text")}</Button>
                 );
@@ -191,7 +191,7 @@ function ActiveBookings(props) {
             cell: row => {
                 return(
                     row.bookingStatus === "IN_PROGRESS" ?
-                    <Button className="btn-sm" onClick={() => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={() => {
                         dispatchDialog({
                             callbackOnSave: () => handleEndReservationClick(row.id),
                             callbackOnCancel: () => null

@@ -2,8 +2,6 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.*;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.HotelException;
@@ -12,6 +10,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.ManagerDataFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
@@ -24,13 +23,11 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.QueryParam;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +40,9 @@ public class HotelManager {
 
     @Inject
     private HotelFacade hotelFacade;
+
+    @Inject
+    private BoxFacade boxFacade;
 
     @Inject
     private ManagerDataFacade managerDataFacade;
@@ -102,22 +102,22 @@ public class HotelManager {
      */
     @PermitAll
     public List<HotelDto> getAllFilter(BigDecimal fromRating,
-                             BigDecimal toRating,
-                             List<AnimalType> animalTypes) throws AppBaseException {
-            List<Hotel> hotels = getAll()
-                    .stream()
-                    .filter(hotel -> {
-                        try {
-                            return hotel.getRating() != null
-                                    && hotel.getRating().compareTo(fromRating) >= 0
-                                    && hotel.getRating().compareTo(toRating) <= 0
-                                    && checkHotelPetTypeListAllowed(animalTypes, hotel.getId());
-                        } catch (AppBaseException e) {
-                            e.printStackTrace();
-                            return false;
-                        }
-                    })
-                    .collect(Collectors.toList());
+                                       BigDecimal toRating,
+                                       List<AnimalType> animalTypes) throws AppBaseException {
+        List<Hotel> hotels = getAll()
+                .stream()
+                .filter(hotel -> {
+                    try {
+                        return hotel.getRating() != null
+                                && hotel.getRating().compareTo(fromRating) >= 0
+                                && hotel.getRating().compareTo(toRating) <= 0
+                                && checkHotelPetTypeListAllowed(animalTypes, hotel.getId());
+                    } catch (AppBaseException e) {
+                        e.printStackTrace();
+                        return false;
+                    }
+                })
+                .collect(Collectors.toList());
         List<HotelDto> result = new ArrayList<>();
         for (Hotel hotel: hotels) {
             HotelDto hotelDto = Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
@@ -173,6 +173,21 @@ public class HotelManager {
         if (hotel == null) {
             throw HotelException.notExists();
         }
+
+        List<Box> boxList = boxFacade.findAll();
+        for (Box box : boxList) {
+            if (box.getHotel().getId().equals(hotelId)) {
+                box.setHotel(null);
+                box.setDelete(true);
+                boxFacade.edit(box);
+            }
+        }
+
+        List<City> citiesList = cityManager.getAll();
+        for (City city : citiesList) {
+            city.getHotelList().remove(hotel);
+        }
+
         hotelFacade.remove(hotelFacade.find(hotelId));
     }
 

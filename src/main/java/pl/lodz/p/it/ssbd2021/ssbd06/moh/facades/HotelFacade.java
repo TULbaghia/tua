@@ -103,7 +103,15 @@ public class HotelFacade extends AbstractFacade<Hotel> {
     @PermitAll
     @Override
     public Hotel find(Object id) throws AppBaseException {
-        return super.find(id);
+        try {
+            TypedQuery<Hotel> hotelTypedQuery = em.createNamedQuery("Hotel.findById", Hotel.class);
+            hotelTypedQuery.setParameter("id", id);
+            return hotelTypedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw NotFoundException.hotelNotFound(e);
+        } catch (PersistenceException e) {
+            throw DatabaseQueryException.databaseQueryException(e);
+        }
     }
 
     @PermitAll

@@ -128,18 +128,30 @@ function HotelList(props) {
         if (property === 0) {
             const sortProperty = types[property];
             sorted = [...data].sort((a, b) => {
-                if (a.name < b[sortProperty]) return -1;
+                if (a[sortProperty] < b[sortProperty]) return -1;
                 if (a[sortProperty] > b[sortProperty]) return 1;
                 return 0;
             })
         }
         else if (property === 1) {
             const sortProperty = types[property];
-            sorted = [...data].sort((a, b) => b[sortProperty] - a[sortProperty])
+            sorted = [...data].sort((a, b) => {
+                if (a[sortProperty] === undefined) return 1;
+                if (b[sortProperty] === undefined) return -1;
+                if (b[sortProperty] < a[sortProperty]) return -1;
+                if (b[sortProperty] > a[sortProperty]) return 1;
+                return 0;
+            })
         }
-        else {
+        else if (property === 2){
             const sortProperty = types[property - 1]
-            sorted = [...data].sort((a, b) => a[sortProperty] - b[sortProperty])
+            sorted = [...data].sort((a, b) => {
+                if (b[sortProperty] > a[sortProperty]) return -1;
+                if (b[sortProperty] < a[sortProperty]) return 1;
+                if (a[sortProperty] === undefined) return 1;
+                if (b[sortProperty] === undefined) return -1;
+                return 0
+            })
         }
         setData(sorted);
     }

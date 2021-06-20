@@ -4,11 +4,15 @@ import {Link, useParams} from "react-router-dom";
 import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "../Partial/BreadCrumb"
 import {Configuration, DefaultApi} from "ssbd06-api";
-import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "../Utils/Notification/NotificationProvider";
+import {
+    useNotificationDangerAndInfinity,
+    useNotificationSuccessAndShort
+} from "../Utils/Notification/NotificationProvider";
 import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
 import i18n from "../../i18n";
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
 import {dispatchErrors, ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
+import {Col, Container, Row} from "react-bootstrap";
 
 function EmailConfirm() {
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
@@ -41,23 +45,29 @@ function EmailConfirm() {
     }
 
     return (
-        <div className="container">
+        <div className={""}>
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{i18n.t('mainPage')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{i18n.t('emailConfirm.title')}</li>
             </BreadCrumb>
-            <div className="floating-box">
-                <form className="form-signin p-0">
-                    <h3 className="mb-4">{i18n.t('emailConfirm.title')}</h3>
-                    <span>{i18n.t('emailConfirm.info')}</span>
-                    <button className="btn btn-lg btn-primary btn-block mt-5"
-                            type="button"
-                            onClick={() => handleConfirmation()}
-                            style={{backgroundColor: "#7749F8", whiteSpace: 'normal'}}>
-                        {i18n.t('emailConfirm.action')}
-                    </button>
-                </form>
-            </div>
+            <Container>
+                <Row>
+                    <Col xs={12} sm={10} md={7} lg={6} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div className="">
+                            <form className="form-signin p-0">
+                                <h3 className="mb-4">{i18n.t('emailConfirm.title')}</h3>
+                                <span>{i18n.t('emailConfirm.info')}</span>
+                                <button className="btn btn-lg btn-primary btn-block mt-5"
+                                        type="button"
+                                        onClick={() => handleConfirmation()}
+                                        style={{backgroundColor: "#7749F8", whiteSpace: 'normal'}}>
+                                    {i18n.t('emailConfirm.action')}
+                                </button>
+                            </form>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     );
 }

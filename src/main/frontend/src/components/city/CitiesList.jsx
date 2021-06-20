@@ -3,7 +3,7 @@ import BreadCrumb from "./../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
-import {Button, Form} from "react-bootstrap";
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import {useLocale} from "../LoginContext";
 import {api} from "../../Api"
 import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
@@ -13,9 +13,8 @@ import {
 } from "../Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
-import { useThemeColor } from '../Utils/ThemeColor/ThemeColorProvider';
+import {useThemeColor} from '../Utils/ThemeColor/ThemeColorProvider';
 import {rolesConstant} from "../../Constants";
-
 
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
@@ -55,12 +54,12 @@ function CitiesList(props) {
         },
     ];
 
-    if(currentRole === rolesConstant.admin){
+    if (currentRole === rolesConstant.admin) {
         columns.push({
             name: t('delete'),
             selector: 'delete',
             cell: row => {
-                return(
+                return (
                     <Button className="btn-sm" onClick={async event => {
                         dispatchCriticalDialog({
                             callbackOnSave: () => deleteCity(row.id),
@@ -71,15 +70,15 @@ function CitiesList(props) {
         })
 
         columns.push({
-                name: t('edit'),
-                selector: 'edit',
-                cell: row => {
-                    return (
-                        <Button className="btn-sm" onClick={event => {
-                            history.push('/cities/editCity?id=' + row.id);
-                        }}>{t("edit")}</Button>
-                    )
-                },
+            name: t('edit'),
+            selector: 'edit',
+            cell: row => {
+                return (
+                    <Button className="btn-sm" onClick={event => {
+                        history.push('/cities/editCity?id=' + row.id);
+                    }}>{t("edit")}</Button>
+                )
+            },
         });
     }
 
@@ -88,7 +87,7 @@ function CitiesList(props) {
             name: t('details'),
             selector: 'details',
             cell: row => {
-                return(
+                return (
                     <Button className="btn-sm" onClick={event => {
                         // todo
                         // history.push('/accounts/userInfo?login=' + row.login);
@@ -98,22 +97,24 @@ function CitiesList(props) {
         },
     );
 
-    function deleteCity(id){
-        api.getCity(id, {method: 'GET',  headers: {Authorization: token}})
-        .then(res => {
-            console.log("etag")
-            console.log(res)
-            console.log(res.headers.etag)
-            api.deleteCity(id, {headers: {
-                Authorization: token,
-                "If-Match": res.headers.etag
-            }}).then(res => {
-                dispatchNotificationSuccess({message: i18n.t('city.delete.success')})
-            }).catch(err => {
-                dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-            }).finally(() => fetchData());
-        }).catch(err => dispatchNotificationDanger({message: i18n.t(err.response.data.message)}))
-        .finally(() => fetchData());
+    function deleteCity(id) {
+        api.getCity(id, {method: 'GET', headers: {Authorization: token}})
+            .then(res => {
+                console.log("etag")
+                console.log(res)
+                console.log(res.headers.etag)
+                api.deleteCity(id, {
+                    headers: {
+                        Authorization: token,
+                        "If-Match": res.headers.etag
+                    }
+                }).then(res => {
+                    dispatchNotificationSuccess({message: i18n.t('city.delete.success')})
+                }).catch(err => {
+                    dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
+                }).finally(() => fetchData());
+            }).catch(err => dispatchNotificationDanger({message: i18n.t(err.response.data.message)}))
+            .finally(() => fetchData());
     }
 
 
@@ -151,40 +152,47 @@ function CitiesList(props) {
     }, [filterText]);
 
     return (
-        <div className="container">
+        <div className={""}>
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/">{t('adminDashboard')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('cities.list.bread_crumb')}</li>
             </BreadCrumb>
-            <div className="floating-box">
-                <div>
-                    <h1 className="float-left">{t('cities.list.header')}</h1>
-                    <Button className="btn-secondary float-right m-2" onClick={event => {
-                        getAllCities().then(res => {
-                            setData(res.data);
-                            setFilterText('')
-                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
-                        }).catch(err => {
-                            ResponseErrorHandler(err, dispatchNotificationDanger)
-                        })
-                    }}>{t("refresh")}</Button>
-                    {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
-                        <Button className="btn-primary float-right m-2" onClick={event => {
-                            history.push('/cities/add');
-                        }}>{t('addCity.action')}</Button>
-                    ) : ( null )}
-                </div>
-                <DataTable className={"rounded-0"}
-                    noDataComponent={i18n.t('table.no.result')}
-                    columns={columns}
-                    data={filteredItems}
-                    subHeader
-                    theme={themeColor}
-                    subHeaderComponent={subHeaderComponentMemo}
-                />
-            </div>
+            <Container>
+                <Row>
+                    <Col xs={12} sm={12} md={9} lg={8} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div className="">
+                            <div>
+                                <h1 className="float-left">{t('cities.list.header')}</h1>
+                                <Button className="btn-secondary float-right m-2" onClick={event => {
+                                    getAllCities().then(res => {
+                                        setData(res.data);
+                                        setFilterText('')
+                                        dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                                    }).catch(err => {
+                                        ResponseErrorHandler(err, dispatchNotificationDanger)
+                                    })
+                                }}>{t("refresh")}</Button>
+                                {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
+                                    <Button className="btn-primary float-right m-2" onClick={event => {
+                                        history.push('/cities/add');
+                                    }}>{t('addCity.action')}</Button>
+                                ) : (null)}
+                            </div>
+                            <DataTable className={"rounded-0"}
+                                       noDataComponent={i18n.t('table.no.result')}
+                                       columns={columns}
+                                       data={filteredItems}
+                                       subHeader
+                                       theme={themeColor}
+                                       subHeaderComponent={subHeaderComponentMemo}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }
+
 export default withNamespaces()(CitiesList);

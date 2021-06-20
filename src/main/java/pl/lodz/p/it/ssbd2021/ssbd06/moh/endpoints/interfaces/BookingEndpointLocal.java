@@ -78,6 +78,7 @@ public interface BookingEndpointLocal extends CallingClass {
      * @param bookingId identyfikator rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
+    @RolesAllowed("startReservation")
     void startBooking(Long bookingId) throws AppBaseException;
 
     /**

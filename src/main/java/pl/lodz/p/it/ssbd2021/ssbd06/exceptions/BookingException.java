@@ -14,6 +14,7 @@ public class BookingException extends AppBaseException {
     private static final String ACCESS_DENIED = "exception.booking.access_denied";
     private static final String NOT_STARTED_BOOKING = "exception.booking.not_started_booking";
     private static final String INVALID_DATE_RANGE = "exception.booking.invalid_date_range";
+    private static final String TOO_EARLY_TO_START = "exception.booking.too_early";
 
     protected BookingException(String message, Throwable cause) {
         super(message, cause);
@@ -69,6 +70,16 @@ public class BookingException extends AppBaseException {
      */
     public static BookingException timeForCancellationExceeded() {
         return new BookingException(TIME_EXCEEDED);
+    }
+
+    /**
+     * Tworzy wyjątek występujący podczas próby zmiany statusu rezerwacji na IN_PROGRESS, jeśli data początku
+     * rezerwacji jest większa od aktualnej
+     *
+     * @return wyjątek BookingException.
+     */
+    public static BookingException toEarlyToStart() {
+        return new BookingException(TOO_EARLY_TO_START);
     }
 
     /**

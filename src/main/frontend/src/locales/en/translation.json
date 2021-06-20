@@ -508,5 +508,6 @@
   "comment.success.create": "Comment created",
   "exception.rating_exception.rating_already_exists": "There is already a rating for this booking!",
   "exception.hotel.no_hotel_for_booking": "Cannot find hotel for this booking!",
-  "exception.rating.already_rated" : "Booking is already rated"
+  "exception.rating.already_rated" : "Booking is already rated",
+  "exception.booking.too_early" : "Current date is earlier than booking start date"
 }

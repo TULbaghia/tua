@@ -231,6 +231,7 @@ public class RatingManager {
     public void changeVisibility(Long ratingId) throws AppBaseException {
         Rating rating = ratingFacade.find(ratingId);
         rating.setHidden(!rating.isHidden());
+        rating.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
         ratingFacade.edit(rating);
     }
 }

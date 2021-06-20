@@ -59,6 +59,73 @@ function HotelList(props) {
         return item.name && item.name.toLowerCase().includes(filterText.toLowerCase());
     });
 
+    const selectStyles = {
+        option: (styles, state) => {
+            if (themeColor === "dark") {
+                return {
+                    ...styles,
+                    backgroundColor: state.isFocused ? "#424242" : "",
+                    color: state.isFocused ? "#f8f9fa" : "#424242"
+                }
+            }
+            else {
+                return {
+                    ...styles,
+                    backgroundColor: state.isFocused ? "#7749F8FF" : "#f8f9fa",
+                    color: state.isFocused ? "#f8f9fa" : "#424242"
+                }
+            }
+        },
+        multiValue: styles => {
+            if (themeColor === "dark") {
+                return {
+                    ...styles,
+                    backgroundColor: "#a8a4a4",
+                    color: "#f8f9fa",
+
+                }
+            }
+            else {
+                return {
+                    ...styles,
+                    backgroundColor: "#f8f9fa",
+                    color:"#a8a4a4"
+                }
+            }
+        },
+        singleValue: styles => {
+            if (themeColor === "dark") {
+                return {
+                    ...styles,
+                    color: "#f8f9fa",
+
+                }
+            }
+            else {
+                return {
+                    ...styles,
+                    color:"#a8a4a4"
+                }
+            }
+        },
+        control: styles => {
+            if (themeColor === "dark") {
+                return {
+                    ...styles,
+                    backgroundColor: "#424242",
+                    color: "#f8f9fa"
+
+                }
+            }
+            else {
+                return {
+                    ...styles,
+                    backgroundColor: "#f8f9fa"
+                }
+            }
+        }
+    }
+
     const HotelCard = ({hotel}) => (
         <Col xs={12} md={6} lg={3} key={hotel.id}>
             {themeColor === "light" ? (
@@ -379,10 +446,11 @@ function HotelList(props) {
                         placeholder='...'
                         value={sortSelectedValue}
                         options={sortingTypes}
+                        styles={selectStyles}
                         onChange={handleSelectedSortValueChange}
                     />
                     <h4
-                        className="float-right align-self-center">
+                        className="float-right align-self-center mr-1">
                         {t('sort.by')}
                     </h4>
                 </div>
@@ -398,11 +466,13 @@ function HotelList(props) {
                         value={animalTypes.filter(obj => selectedValue.includes(obj.value))}
                         options={animalTypes}
                         onChange={handleSelectedValueChange}
+                        styles={selectStyles}
+                        closeMenuOnSelect={false}
                         isMulti
                         isClearable
                     />
                     <h4
-                        className="float-right align-self-center">
+                        className="float-right align-self-center mr-1">
                         {t('text.animal.type')}
                     </h4>
                     <input
@@ -414,6 +484,7 @@ function HotelList(props) {
                         placeholder={t('rating.maximal')}
                         value={maxRatingValue}
                         onChange={handleMaxValueChange}
+                        style={themeColor === "light" ? ({backgroundColor: "#f8f9fa"}) : ({color: "#f8f9fa", backgroundColor: "#424242"})}
                     />
                     <input
                         className="input float-right m-2"
@@ -424,6 +495,7 @@ function HotelList(props) {
                         placeholder={t('rating.minimal')}
                         value={minRatingValue}
                         onChange={handleMinValueChange}
+                        style={themeColor === "light" ? ({backgroundColor: "#f8f9fa"}) : ({color: "#f8f9fa", backgroundColor: "#424242"})}
                     />
                     <h4
                         className="float-right align-self-center">

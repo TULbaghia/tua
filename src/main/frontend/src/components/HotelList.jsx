@@ -434,7 +434,7 @@ function HotelList(props) {
                         }}>{t("addHotel")}</Button>
                     ) : ( null )}
                     <input
-                        className="input float-right m-2"
+                        className="input float-right m-2 w-25"
                         type="text"
                         placeholder={t("search.hotel")}
                         value={searchTerm}
@@ -484,7 +484,7 @@ function HotelList(props) {
                         placeholder={t('rating.maximal')}
                         value={maxRatingValue}
                         onChange={handleMaxValueChange}
-                        style={themeColor === "light" ? ({backgroundColor: "#f8f9fa"}) : ({color: "#f8f9fa", backgroundColor: "#424242"})}
+                        style={themeColor === "light" ? ({backgroundColor: "#f8f9fa", maxWidth: "10%"}) : ({color: "#f8f9fa", backgroundColor: "#424242", maxWidth: "10%"})}
                     />
                     <input
                         className="input float-right m-2"
@@ -495,7 +495,7 @@ function HotelList(props) {
                         placeholder={t('rating.minimal')}
                         value={minRatingValue}
                         onChange={handleMinValueChange}
-                        style={themeColor === "light" ? ({backgroundColor: "#f8f9fa"}) : ({color: "#f8f9fa", backgroundColor: "#424242"})}
+                        style={themeColor === "light" ? ({backgroundColor: "#f8f9fa", maxWidth: "10%"}) : ({color: "#f8f9fa", backgroundColor: "#424242", maxWidth: "10%"})}
                     />
                     <h4
                         className="float-right align-self-center">

@@ -131,7 +131,7 @@ function ReservationDetail(props) {
     }
 
     return (
-        <Container fluid className={"pb-5 reservationDetail px-0"}>
+        <Container fluid className={"pb-5 reservationDetail"}>
 
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{i18n.t('mainPage')}</Link></li>

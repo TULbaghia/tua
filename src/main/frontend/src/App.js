@@ -189,7 +189,7 @@ function App() {
                             <GuardedRoute exact path="/cities/add" component={AddCityForm}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/cities" component={CityList}
-                                          meta={{auth: true, all: true, logged, currentRole}}/>
+                                          meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/cities/editCity" component={ModifyCityForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels/hotelInfo" component={HotelInfo} meta={{}}/>
                             <GuardedRoute exact path="/boxes/add" component={AddBoxForm}

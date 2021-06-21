@@ -281,7 +281,7 @@ public class BookingManager {
         } else {
             return bookingFacade.findAllActive().stream()
                     .filter(b -> b.getBookingLineList().stream().anyMatch(
-                            bl -> bl.getBox().getHotel().getManagerDataList().stream().anyMatch(
+                            bl -> bl.getBox().getHotel() != null && bl.getBox().getHotel().getManagerDataList().stream().anyMatch(
                                     md -> md.getAccount().getLogin().equals(callerName))))
                     .collect(Collectors.toList());
         }
@@ -305,7 +305,7 @@ public class BookingManager {
         } else {
             return bookingFacade.findAllArchived().stream()
                     .filter(b -> b.getBookingLineList().stream().anyMatch(
-                            bl -> bl.getBox().getHotel().getManagerDataList().stream().anyMatch(
+                            bl -> bl.getBox().getHotel() != null && bl.getBox().getHotel().getManagerDataList().stream().anyMatch(
                                     md -> md.getAccount().getLogin().equals(callerName))))
                     .collect(Collectors.toList());
         }
@@ -324,7 +324,7 @@ public class BookingManager {
         return bookingFacade.findAllArchived().stream()
                 .filter(b -> b.getAccount().getLogin().equals(callerName)
                         &&
-                        b.getBookingLineList().stream().anyMatch(bl -> bl.getBox().getHotel().getId().equals(hotelId))
+                        b.getBookingLineList().stream().anyMatch(bl -> bl.getBox().getHotel() != null && bl.getBox().getHotel().getId().equals(hotelId))
                         && b.getRating() == null)
                 .collect(Collectors.toList());
     }

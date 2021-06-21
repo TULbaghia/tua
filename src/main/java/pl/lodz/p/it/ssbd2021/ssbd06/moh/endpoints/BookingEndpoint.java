@@ -159,6 +159,7 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
         return booking.getBookingLineList()
                 .stream()
                 .limit(1)
+                .filter(x -> x.getBox().getHotel() != null)
                 .map(x -> x.getBox().getHotel().getManagerDataList())
                 .flatMap(Collection::stream)
                 .filter(Role::isEnabled)

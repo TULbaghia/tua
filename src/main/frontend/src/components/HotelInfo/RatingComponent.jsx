@@ -57,7 +57,11 @@ export default function RatingComponent({id, rate, login, content, date, modific
     }
 
     const updateComment = (evt) => {
-        api.updateRating({id: id, rate: newRate, comment: newContent}, {
+        let x = {id: id, rate: newRate}
+        if (newContent !== '') {
+            x.comment = newContent;
+        }
+        api.updateRating(x, {
             headers: {
                 Authorization: token,
                 "If-Match": etag
@@ -86,6 +90,7 @@ export default function RatingComponent({id, rate, login, content, date, modific
             .then(() => {
                 setHiddenValue(!hiddenValue)
                 successNotifier({message: i18n.t('change.comment.visibility.success')})
+                triggerRefresh();
             })
             .catch(err => {
                 ResponseErrorHandler(err, dangerNotifier)

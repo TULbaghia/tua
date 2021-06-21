@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {useHistory, useLocation} from "react-router";
 import {withNamespaces} from "react-i18next";
-import {Configuration, DefaultApi} from "ssbd06-api";
 import {Link, useParams} from "react-router-dom";
 import {Form, Formik} from 'formik';
 import PasswordComponent from "./PasswordComponent";
@@ -23,14 +22,13 @@ import {Button, Col, Container, Row} from "react-bootstrap";
 import {rolesConstant} from "../../Constants";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import queryString from "query-string";
+import {api} from "../../Api";
 
 function BookingForm({t, i18n}) {
     const dispatchNotification = useNotificationCustom();
     const dispatchCriticalDialog = useDialogPermanentChange();
     const history = useHistory();
     let {code} = useParams();
-    const conf = new Configuration()
-    const api = new DefaultApi(conf)
     const {token, setToken} = useLocale();
     const [etag, setETag] = useState();
     const [etagRole, setETagRole] = useState();

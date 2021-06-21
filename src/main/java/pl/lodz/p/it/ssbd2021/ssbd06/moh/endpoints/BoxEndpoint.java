@@ -66,7 +66,7 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
         List<Box> boxes = boxManager.getAll();
         List<BoxDto> result = new ArrayList<>();
         for(Box box : boxes) {
-            if(box.getHotel().getId().equals(hotelManager.findHotelByManagerLogin(loginManger).getId())
+            if(box.getHotel() != null && box.getHotel().getId().equals(hotelManager.findHotelByManagerLogin(loginManger).getId())
                     && !box.isDelete()) {
                 result.add(Mappers.getMapper(IBoxMapper.class).toBoxDto(box));
             }
@@ -80,7 +80,7 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
         List<Box> boxes = boxManager.getAll();
         List<BoxDto> result = new ArrayList<>();
         for(Box box : boxes) {
-            if(box.getHotel().getId().equals(hotelId) && !box.isDelete()) {
+            if(box.getHotel() != null && box.getHotel().getId().equals(hotelId) && !box.isDelete()) {
                 result.add(Mappers.getMapper(IBoxMapper.class).toBoxDto(box));
             }
         }
@@ -93,7 +93,7 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
         List<Box> boxes = boxManager.getAll();
         List<BoxDto> result = new ArrayList<>();
         for(Box box : boxes) {
-            if(box.getHotel().getId().equals(hotelId) && box.getAnimalType().equals(animalType)) {
+            if(box.getHotel() != null && box.getHotel().getId().equals(hotelId) && box.getAnimalType().equals(animalType)) {
                 result.add(Mappers.getMapper(IBoxMapper.class).toBoxDto(box));
             }
         }
@@ -120,6 +120,9 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
         }
 
         Mappers.getMapper(IBoxMapper.class).toBox(boxDto, box);
+        if (box.getHotel() == null) {
+            throw BoxException.boxIsDeleted();
+        }
         boolean canModify = box.getHotel().getManagerDataList()
                 .stream()
                 .filter(Role::isEnabled).anyMatch(x -> x.getAccount().getLogin().equals(getLogin()));
@@ -140,6 +143,10 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
         BoxDto boxIntegrity = Mappers.getMapper(IBoxMapper.class).toBoxDto(boxToDelete);
         if(!verifyIntegrity(boxIntegrity)) {
             throw AppOptimisticLockException.optimisticLockException();
+        }
+
+        if (boxToDelete.getHotel() == null) {
+            throw BoxException.boxIsDeleted();
         }
 
         boolean canDelete = boxToDelete.getHotel().getManagerDataList()

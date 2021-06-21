@@ -1,7 +1,6 @@
 import React from "react";
 import {useHistory} from "react-router";
 import {withNamespaces} from "react-i18next";
-import {Configuration, DefaultApi} from "ssbd06-api";
 import {Link, useParams} from "react-router-dom";
 import {Form, Formik} from 'formik';
 import FieldComponent from "./FieldComponent";
@@ -12,6 +11,7 @@ import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import {dispatchErrors, ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import {validatorFactory, ValidatorType} from "../Validation/Validators";
 import {Col, Container, Row} from "react-bootstrap";
+import {api} from "../../Api";
 
 function PasswordResetForm({t, i18n}) {
     const dispatchNotification = useNotificationCustom();
@@ -19,8 +19,6 @@ function PasswordResetForm({t, i18n}) {
     const dispatchCriticalDialog = useDialogPermanentChange();
     const history = useHistory();
     let {code} = useParams();
-    const conf = new Configuration()
-    const api = new DefaultApi(conf)
 
 
     const handleConfirmation = (values, setSubmitting) => (

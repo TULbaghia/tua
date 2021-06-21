@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.HotelException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
@@ -83,7 +84,7 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
             managerHotelQuery.setParameter("login", login);
             return managerHotelQuery.getSingleResult();
         } catch (NoResultException e) {
-            throw NotFoundException.hotelNotFound(e);
+            throw HotelException.noHotelAssigned();
         } catch (PersistenceException e) {
             throw DatabaseQueryException.databaseQueryException(e);
         }

@@ -213,9 +213,6 @@ function NavigationBar(props) {
                                     <LinkContainer to="/archiveReservations">
                                         <Nav.Link>{t('menu.archiveReservations')}</Nav.Link>
                                     </LinkContainer>
-                                    <LinkContainer to="/archiveReservations">
-                                        <Nav.Link>{t('archiveReservations')}</Nav.Link>
-                                    </LinkContainer>
                                 </>
                             )}
                         </Nav>

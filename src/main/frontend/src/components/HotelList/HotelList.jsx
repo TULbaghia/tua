@@ -100,12 +100,14 @@ function HotelList(props) {
                 return {
                     ...styles,
                     backgroundColor: "#424242",
-                    color: "#f8f9fa"
+                    color: "#f8f9fa",
+                    minWidth: "80px",
                 }
             } else {
                 return {
                     ...styles,
-                    backgroundColor: "#f8f9fa"
+                    backgroundColor: "#f8f9fa",
+                    minWidth: "80px",
                 }
             }
         }
@@ -473,9 +475,7 @@ function HotelList(props) {
                                 <div style={{
                                     display: 'flex',
                                     flex: '1',
-                                    flexDirection: 'row',
-                                    overflowY: "scroll",
-                                    height: '25rem'
+                                    flexDirection: 'row'
                                 }}>
                                     <>
                                         <div className='row-wrapper w-100' style={{padding: '1rem'}}>
@@ -497,8 +497,6 @@ function HotelList(props) {
                                     display: 'flex',
                                     flex: '1',
                                     flexDirection: 'row',
-                                    overflowY: "scroll",
-                                    height: '25rem'
                                 }}>
                                     <>
                                         <div className='row-wrapper w-100' style={{padding: '1rem'}}>

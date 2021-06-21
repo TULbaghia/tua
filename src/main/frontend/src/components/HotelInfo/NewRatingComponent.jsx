@@ -72,7 +72,7 @@ export default function NewRatingComponent({placeholder, header, buttonText, boo
                                         disabled={bookings.length < 1 || isSubmitting || Object.keys(errors).length > 0}>
                             {
                                 bookings.map(item => (
-                                    <Dropdown.Item disabled={isSubmitting} onClick={e => {
+                                    <Dropdown.Item disabled={isSubmitting} className={"dark-text-hover"} onClick={e => {
                                         let newRate = {...values, bookingId: item.id}
                                         if (newRate.comment === "") {
                                             delete newRate.comment;

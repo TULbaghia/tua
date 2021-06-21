@@ -26,7 +26,7 @@
     --hover-gray: #EBE5FC;
 
     --admin-color: #bf293e;
-    --manager-color: #b32199;
+    --manager-color: #48b321;
     --client-color: #946a80;
     --breadcrumb-light: #1d0000;
   }
@@ -39,7 +39,7 @@
     --hover-gray: #EBE5FC;
 
     --admin-color: #bf293e;
-    --manager-color: #b32199;
+    --manager-color: #48b321;
     --client-color: #946a80;
     --breadcrumb-light: #fff;
   }
@@ -80,4 +80,8 @@ form select.form-control {
       color: #343a40 !important;
     }
   }
+}
+
+.dark-text-hover:hover {
+  color: #343a40 !important;
 }

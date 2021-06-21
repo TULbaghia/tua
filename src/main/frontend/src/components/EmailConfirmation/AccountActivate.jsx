@@ -3,20 +3,18 @@ import {useHistory} from "react-router";
 import {Link, useParams} from "react-router-dom";
 import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "../Partial/BreadCrumb"
-import {Configuration, DefaultApi} from "ssbd06-api";
 import {useNotificationCustom} from "../Utils/Notification/NotificationProvider";
 import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
 import {dialogDuration, dialogType} from "../Utils/Notification/Notification";
 import i18n from "../../i18n";
 import {Col, Container, Row} from "react-bootstrap";
+import {api} from "../../Api";
 
 function AccountActivate() {
     const dispatchNotification = useNotificationCustom();
     const dispatchCriticalDialog = useDialogPermanentChange();
     const history = useHistory();
     let {code} = useParams();
-    const conf = new Configuration()
-    const api = new DefaultApi(conf)
 
     const handleConfirmation = () => (
         dispatchCriticalDialog({

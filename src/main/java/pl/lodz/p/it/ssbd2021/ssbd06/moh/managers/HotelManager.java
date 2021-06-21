@@ -175,7 +175,7 @@ public class HotelManager {
 
         List<Box> boxList = boxFacade.findAll();
         for (Box box : boxList) {
-            if (box.getHotel().getId().equals(hotelId)) {
+            if (box.getHotel() != null && box.getHotel().getId().equals(hotelId)) {
                 box.setHotel(null);
                 box.setDelete(true);
                 boxFacade.edit(box);

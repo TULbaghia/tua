@@ -93,7 +93,7 @@ public class RatingManager {
                     .distinct()
                     .findFirst()
                     .orElseThrow(NotFoundException::boxNotFound);
-            if (firstBox.getHotel().getId().equals(hotelId)) {
+            if (firstBox.getHotel() != null && firstBox.getHotel().getId().equals(hotelId)) {
                 ratingsFromGivenHotel.add(rating);
             }
         }
@@ -133,12 +133,13 @@ public class RatingManager {
         rating.setCreatedBy(clientAccount);
         ratingFacade.create(rating);
 
-        Long hotelId = ratedBooking.getBookingLineList().stream().findAny().get().getBox().getHotel().getId();
-        BigDecimal hotelRating = calculateAverageRating(hotelId);
-        Hotel hotel = hotelFacade.find(hotelId);
-        hotel.setRating(hotelRating);
-        hotelFacade.edit(hotel);
-
+        Hotel hotel = ratedBooking.getBookingLineList().stream().findAny().get().getBox().getHotel();
+        if (hotel != null) {
+            BigDecimal hotelRating = calculateAverageRating(hotel.getId());
+            Hotel hotelToUpdate = hotelFacade.find(hotel.getId());
+            hotelToUpdate.setRating(hotelRating);
+            hotelFacade.edit(hotelToUpdate);
+        }
     }
 
     /**

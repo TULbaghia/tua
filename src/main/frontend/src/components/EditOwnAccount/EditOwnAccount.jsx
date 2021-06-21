@@ -5,7 +5,6 @@ import BreadCrumb from "../Partial/BreadCrumb";
 import {withNamespaces} from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 import {Link} from "react-router-dom";
-import {Configuration, DefaultApi} from "ssbd06-api";
 import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort,
@@ -21,6 +20,7 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import {Col, Container, Row} from "react-bootstrap";
+import {api} from "../../Api";
 
 function EditOwnAccount() {
     const history = useHistory();
@@ -32,8 +32,6 @@ function EditOwnAccount() {
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchDialog = useDialogPermanentChange();
 
-    const conf = new Configuration();
-    const api = new DefaultApi(conf);
     const recaptchaRef1 = React.createRef();
     const recaptchaRef2 = React.createRef();
     const recaptchaRef3 = React.createRef();

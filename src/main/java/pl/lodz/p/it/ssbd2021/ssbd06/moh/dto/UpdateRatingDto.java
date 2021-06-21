@@ -19,8 +19,7 @@ public class UpdateRatingDto {
     @NotNull
     @Rating
     private short rate;
-
-    @NotNull
+    
     @Comment
     private String comment;
 }

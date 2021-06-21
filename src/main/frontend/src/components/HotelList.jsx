@@ -243,11 +243,19 @@ function HotelList(props) {
     }
 
     const handleMinValueChange = (e) => {
-        setMinRatingValue(e.target.value)
+        let { value, min, max } = e.target;
+        if (value !== '') {
+            value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+        }
+        setMinRatingValue(value)
     }
 
     const handleMaxValueChange = (e) => {
-        setMaxRatingValue(e.target.value)
+        let { value, min, max } = e.target;
+        if (value !== '') {
+            value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+        }
+        setMaxRatingValue(value)
     }
 
     const fetchSearchedData = (query) => {

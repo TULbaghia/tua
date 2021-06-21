@@ -484,6 +484,14 @@
   "bookingDetails.renter.enabled": "Konto włączone:",
   "bookingDetails.renter.enabled.yes": "Tak",
   "bookingDetails.renter.enabled.no": "Nie",
+  "bookingDetails.buttons.cancel": "Anuluj",
+  "bookingDetails.buttons.in_progress": "W trakcie",
+  "bookingDetails.buttons.end_booking": "Zakończ",
+  "bookingDetails.success.cancel": "Rezerwacja została anulowana",
+  "bookingDetails.success.in_progress": "Rezerwacja została rozpoczęta",
+  "bookingDetails.success.finish": "Rezerwacja została zakończona",
+  "bookingDetails.header.comment": "Komentarz",
+  "bookingDetails.rating.refresh": "Odświeżono opinię rezerwacji",
 
   "bookingDetails.header.reservationDetail": "Szczegóły rezerwacji",
 
@@ -504,6 +512,8 @@
   "exception.rating_exception.rating_already_exists": "Istnieje już ocena dla tej rezerwacji!",
   "exception.hotel.no_hotel_for_booking": "Nie można odnaleźć hotelu dla tej rezerwacji!",
   "exception.rating.already_rated" : "Rezerwacja posiada już ocenę",
+  "exception.booking.too_early" : "Aktualna data jest wcześniejsza niż data rozpoczęcia rezerwacji",
+  "exception.not_found_exception.hotel_not_found" : "Nie znaleziono hotelu"
 
   "city.description": "Opis miasta",
   "btn.close": "Zamknij",

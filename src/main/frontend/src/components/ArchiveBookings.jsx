@@ -3,7 +3,7 @@ import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
-import {Button, Form, FormCheck} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import {useLocale} from "./LoginContext";
 import {api} from "../Api";
 import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
@@ -15,8 +15,6 @@ import {useHistory} from "react-router";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import { useThemeColor } from './Utils/ThemeColor/ThemeColorProvider';
 import {dateConverter} from "../i18n";
-import {rolesConstant} from "../Constants";
-import axios from "axios";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -33,7 +31,6 @@ function ArchiveBookings(props) {
     const {token, setToken, currentRole, setCurrentRole} = useLocale();
     const [filterText, setFilterText] = React.useState('');
     const themeColor = useThemeColor()
-    const dangerNotifier = useNotificationDangerAndInfinity();
     const [data, setData] = useState([
         {
             id: 0,
@@ -45,7 +42,6 @@ function ArchiveBookings(props) {
             bookingStatus: "",
         }
     ]);
-    const dispatchDialog = useDialogPermanentChange();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const filteredItems = data.filter(item => {
@@ -100,34 +96,13 @@ function ArchiveBookings(props) {
             name: t('bookingDetails'),
             cell: row => {
                 return (
-                    <Button className="btn-sm" onClick={event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         history.push("/reservation/details/" + row.id + "?ref=archive");
                     }}>{t("bookingDetails.text")}</Button>
                 );
             }
         },
     ];
-    if (currentRole === rolesConstant.client) {
-        columns.push({
-            name: t('addRating'),
-            cell: row => {
-                return(
-                    <Button className="btn-sm" disabled={row.bookingStatus !== "FINISHED"} onClick={event => {
-                        console.log("rating added to:" +  row.id);
-                        getHotelForBooking(row.id).then(res => {
-                            history.push('/hotels/hotelInfo?id=' + res.data.id)
-                        }).catch((e) => ResponseErrorHandler(e, dangerNotifier));
-                    }}>{t("add")}</Button>
-                );
-            }
-        });
-    }
-
-    const getHotelForBooking = async (bookigId) => {
-        return await axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/hotels/hotel/booking/` + bookigId, {headers: {
-                Authorization: token,
-            }})
-    }
 
     useEffect(() => {
         fetchData();

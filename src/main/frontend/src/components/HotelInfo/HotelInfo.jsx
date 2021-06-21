@@ -4,7 +4,7 @@ import {withNamespaces} from "react-i18next";
 import queryString from "query-string";
 import "../../css/HotelInfo.css";
 import {useHistory, useLocation} from "react-router";
-import {ListGroup, Tab, Tabs} from "react-bootstrap";
+import {Button, ListGroup, Tab, Tabs} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import RatingComponent from "./RatingComponent";
 import {faCity, faMapMarkedAlt} from '@fortawesome/free-solid-svg-icons'
@@ -17,19 +17,13 @@ import {rolesConstant} from "../../Constants";
 import {useLocale} from "../LoginContext";
 import {v4} from "uuid";
 import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
-import {
-    useNotificationDangerAndInfinity,
-    useNotificationSuccessAndShort
-} from "../Utils/Notification/NotificationProvider";
+import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "../Utils/Notification/NotificationProvider";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
-import {Button} from "react-bootstrap";
-import {Form} from "formik";
 import NewRatingComponent from "./NewRatingComponent";
 import axios from "axios";
 
 
-
-function Home(props) {
+function HotelInfo(props) {
     const {t, i18n} = props
     const location = useLocation();
     const {token, setToken, currentRole} = useLocale();
@@ -39,6 +33,7 @@ function Home(props) {
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const [userBookings, setUserBookings] = useState([])
+    const [activeKey, setActiveKey] = useState("description")
     const [hotelData, setHotelData] = useState({
         address: "",
         cityName: "",
@@ -48,8 +43,8 @@ function Home(props) {
         image: "",
     });
 
-    const [ratingData, setRatingData] = useState([
-    ]);
+    const [ratingData, setRatingData] = useState([]);
+    const [hotelEtag, setHotelEtag] = useState();
 
     React.useEffect(() => {
         refreshData()
@@ -88,7 +83,7 @@ function Home(props) {
 
     const handleUsersBookingsDataFetch = () => {
         console.log("boookingsFetch")
-        if(currentRole === rolesConstant.client) {
+        if (currentRole === rolesConstant.client) {
             getUsersBookings().then(res => {
                 console.log(res.data);
                 setUserBookings(res.data)
@@ -104,13 +99,19 @@ function Home(props) {
 
     const getUsersBookings = async () => {
         let id = parsedQuery.id;
-        return await axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/ended/` + id, {headers: {
+        return await axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/ended/` + id, {
+            headers: {
                 Authorization: token,
-            }})
+            }
+        })
     }
 
     const getHotelInfo = async () => {
-        return await api.getHotel(parsedQuery.id);
+        if (currentRole === rolesConstant.admin) {
+            return await getHotelData(parsedQuery.id)
+        } else {
+            return await api.getHotel(parsedQuery.id);
+        }
     }
 
     const handleRatingDataFetch = () => {
@@ -131,6 +132,12 @@ function Home(props) {
     const handleBoxListClick = (key) => {
         if (key === "boxlist") {
             history.push("/boxes?id=" + parsedQuery.id)
+        } else if (key === "refresh") {
+            refreshData();
+            document.querySelector("#tab-tab-refresh").blur();
+            setActiveKey("description")
+        } else {
+            setActiveKey(key)
         }
     }
 
@@ -143,30 +150,33 @@ function Home(props) {
     }
 
     const getHotelData = async (id) => {
-        const response = await api.getHotel(id,{
+        const response = await api.getOtherHotelInfo(id, {
             method: "GET",
             headers: {
                 Authorization: token,
-            }})
+            }
+        }).catch(err => {
+            ResponseErrorHandler(err, dispatchNotificationDanger);
+            history.push("/hotels")
+        });
+        setHotelEtag(response.headers.etag);
         return response;
     };
 
-    const deleteHotel = () => (
-        getHotelData(parseInt(parsedQuery.id)).then(res => {
-                api.deleteHotel(parseInt(parsedQuery.id), {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: token,
-                        "If-Match": res.headers.etag
-                    }
-                }).then((res) => {
-                    dispatchNotificationSuccess({message: i18n.t('hotelDelete.success')})
-                }).catch(err => {
-                    ResponseErrorHandler(err, dispatchNotificationDanger);
-                });
+    const deleteHotel = () => {
+        api.deleteHotel(parsedQuery.id, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+                "If-Match": hotelEtag
             }
-        )
-    )
+        }).then((res) => {
+            dispatchNotificationSuccess({message: i18n.t('hotelDelete.success')});
+            history.push("/hotels");
+        }).catch(err => {
+            ResponseErrorHandler(err, dispatchNotificationDanger);
+        });
+    }
 
     const handleDeleteHotel = () => {
         dispatchDialog({
@@ -201,12 +211,13 @@ function Home(props) {
                     </div>
                 </div>
                 <div className={"row"}>
-                    <div className={"col-md-4 col-sm-6 col-8 mb-3"}>
+                    <div className={"col-md-4 col-sm-12 col-12 col-xs-12 mb-3"}>
                         <img alt="cat" className="img-fluid"
                              src={hotelData.image === undefined ? cat : hotelData.image}/>
                     </div>
-                    <div className={"col-md-8 col-sm-6 col-4"}>
-                        <Tabs defaultActiveKey="description" transition={false} id="tab" onSelect={handleBoxListClick}>
+                    <div className={"col-md-8 col-sm-12 col-12 col-xs-12"}>
+                        <Tabs defaultActiveKey="description" transition={false} id="tab" activeKey={activeKey}
+                              onSelect={handleBoxListClick}>
                             <Tab eventKey="description" title={t('descriptionHotel')}>
                                 <div className={"text-justify mt-2"}>
                                     {hotelData.description}
@@ -224,14 +235,15 @@ function Home(props) {
                                     </ListGroup.Item>
                                 </ListGroup>
                             </Tab>
+                            <Tab eventKey="refresh" tabClassName={"ml-auto"} title={t('refresh')}/>
                             {(currentRole === rolesConstant.manager || currentRole === rolesConstant.client) && (
-                                <Tab eventKey="boxlist" title={t('boxList.navbar.title')}/>
+                                <Tab eventKey="boxlist" tabClassName={"ml-0"} title={t('boxList.navbar.title')}/>
                             )}
                             {currentRole === rolesConstant.admin && (
-                                <Tab eventKey="delete" title={t('delete')} tabClassName={"ml-auto"}>
+                                <Tab eventKey="delete" title={t('delete')}>
                                     <Button className="btn btn-lg btn-primary btn-block mb-3"
                                             type="submit"
-                                            style={{backgroundColor: "#7749F8"}}
+                                            style={{backgroundColor: "#dc3545"}}
                                             onClick={() => handleDeleteHotel()}>{t("delete")}</Button>
                                 </Tab>
                             )}
@@ -239,10 +251,14 @@ function Home(props) {
                     </div>
                 </div>
                 <div className={"row"}>
-                    <div className={"col-md-4 d-flex align-items-center"}>
+                    <div className={"col-md-12 py-2 d-block d-md-none"}>
+                        <hr/>
+                    </div>
+                    <div className={"col-md-4 col-12 d-flex align-items-center"}>
                         <h4 className={"m-0"}>{t('comments')}</h4>
                     </div>
-                    <div className={"col-md-8 d-flex align-items-center justify-content-end"}>
+                    <div
+                        className={"col-md-8 col-12 d-flex mt-2 mt-md-0 align-items-center justify-content-start justify-content-md-end"}>
                         <span className={"mr-3"}>{t('averageRating')}</span>
                         <Rating
                             size={"large"}
@@ -251,18 +267,22 @@ function Home(props) {
                             readOnly
                             precision={0.5}
                         />
-                        <span className={"ml-3"}>[{hotelData.rating !== undefined ? hotelData.rating : t("ratings.noRatings")}]</span>
+                        <span
+                            className={"ml-3"}>[{hotelData.rating !== undefined ? hotelData.rating : t("ratings.noRatings")}]</span>
                     </div>
                 </div>
                 <div className={"row"}>
                     <div className={"col-md-12 mt-3"}>
                         {ratingData.length > 0 && ratingData.map((item) => (
-                            <RatingComponent key={v4()} triggerRefresh={refreshData} id={item.id} rate={item.rate} login={item.createdBy} content={item.comment}
-                                             hidden={item.hidden} date={dateConverter(item.creationDate.slice(0, -5))} modificationDate={item.modificationDate}/>
+                            <RatingComponent key={v4()} triggerRefresh={refreshData} id={item.id} rate={item.rate}
+                                             login={item.createdBy} content={item.comment}
+                                             hidden={item.hidden} date={dateConverter(item.creationDate.slice(0, -5))}
+                                             modificationDate={item.modificationDate}/>
                         ))}
                         {(currentRole === rolesConstant.client && userBookings.length > 0) &&
-                            <NewRatingComponent triggerRefresh={refreshData} placeholder={t('add.new.comment')} header={t('add.new.rating')}
-                            buttonText={t('add.rating')} bookings={userBookings}/>
+                        <NewRatingComponent triggerRefresh={refreshData} placeholder={t('add.new.comment')}
+                                            header={t('add.new.rating')}
+                                            buttonText={t('add.rating')} bookings={userBookings}/>
                         }
                     </div>
                 </div>
@@ -271,4 +291,4 @@ function Home(props) {
     );
 }
 
-export default withNamespaces()(Home);
+export default withNamespaces()(HotelInfo);

@@ -481,6 +481,14 @@
   "bookingDetails.renter.enabled": "Is enabled:",
   "bookingDetails.renter.enabled.yes": "Yes",
   "bookingDetails.renter.enabled.no": "No",
+  "bookingDetails.buttons.cancel": "Cancel",
+  "bookingDetails.buttons.in_progress": "In progress",
+  "bookingDetails.buttons.end_booking": "End booking",
+  "bookingDetails.success.cancel": "Booking has been cancelled",
+  "bookingDetails.success.in_progress": "Booking has been started",
+  "bookingDetails.success.finish": "Booking has been finished",
+  "bookingDetails.header.comment": "Comment",
+  "bookingDetails.rating.refresh": "Rating has been refreshed",
 
   "bookingDetails.header.reservationDetail": "Booking details",
   "booking.ending.success": "Reservation has been ended successfully",
@@ -501,6 +509,8 @@
   "exception.rating_exception.rating_already_exists": "There is already a rating for this booking!",
   "exception.hotel.no_hotel_for_booking": "Cannot find hotel for this booking!",
   "exception.rating.already_rated" : "Booking is already rated",
+  "exception.booking.too_early" : "Current date is earlier than booking start date",
+  "exception.not_found_exception.hotel_not_found" : "Hotel not found"
 
   "city.description": "City's description",
   "btn.close": "Close",

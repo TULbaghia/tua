@@ -140,7 +140,7 @@ function BoxList(props) {
                             </Button>
                             {token !== null && token !== '' &&
                             currentRole === rolesConstant.manager && !handleIsHotelIdInUrl() ? (
-                                <Button className="btn-primary float-right m-2" onClick={event => {
+                                <Button className="btn-primary float-right m-2" style={{backgroundColor: "#7749F8"}} onClick={event => {
                                     history.push('/boxes/add');
                                 }}>{i18n.t("addBox")}</Button>
                             ) : (<></>)}

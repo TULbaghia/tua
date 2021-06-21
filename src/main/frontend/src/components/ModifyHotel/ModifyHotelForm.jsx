@@ -81,20 +81,22 @@ function ModifyHotelForm() {
 
     const handleHotelModify = (values, setSubmitting) => {
         let id = Number(hotel.id);
-        let onSuccess = res => {
-            dispatchNotificationSuccess({message: i18n.t('modifyHotel.success')})
-            history.push("/");
-        }
 
         dispatchDialog({
             callbackOnSave: () => {
                 if (currentRole === rolesConstant.manager) {
                     modifyHotel({values, token, etag})
-                        .then(onSuccess)
+                        .then(res => {
+                            dispatchNotificationSuccess({message: i18n.t('modifyHotel.success')})
+                            history.push("/");
+                        })
                         .catch(err => ResponseErrorHandler(err, dispatchNotificationDanger));
                 } else {
                     modifyOtherHotel({id, values, token, etag})
-                        .then(onSuccess)
+                        .then(res => {
+                            dispatchNotificationSuccess({message: i18n.t('modifyHotel.success')})
+                            history.push("/hotels");
+                        })
                         .catch(err => ResponseErrorHandler(err, dispatchNotificationDanger));
                 }
             },
@@ -115,6 +117,11 @@ function ModifyHotelForm() {
                         {currentRole === rolesConstant.manager ? i18n.t('managerDashboard') : i18n.t('adminDashboard')}
                     </Link>
                 </li>
+                {currentRole === rolesConstant.admin &&
+                    <li className="breadcrumb-item">
+                        <Link to="/hotels">{i18n.t('hotelList')}</Link>
+                    </li>
+                }
                 <li className="breadcrumb-item active" aria-current="page">
                     {i18n.t('modifyHotel.title')}
                 </li>

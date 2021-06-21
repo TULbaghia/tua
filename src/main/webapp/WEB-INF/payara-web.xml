@@ -100,6 +100,7 @@
     <security-role-mapping>
         <role-name>getOtherAccountInfo</role-name>
         <group-name>ADMIN</group-name>
+        <group-name>MANAGER</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
@@ -205,6 +206,11 @@
 
     <security-role-mapping>
         <role-name>endReservation</role-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>startReservation</role-name>
         <group-name>MANAGER</group-name>
     </security-role-mapping>
 

@@ -62,7 +62,7 @@ function CitiesList(props) {
             selector: 'delete',
             cell: row => {
                 return(
-                    <Button className="btn-sm" onClick={async event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={async event => {
                         dispatchCriticalDialog({
                             callbackOnSave: () => deleteCity(row.id),
                         })
@@ -76,7 +76,7 @@ function CitiesList(props) {
                 selector: 'edit',
                 cell: row => {
                     return (
-                        <Button className="btn-sm" onClick={event => {
+                        <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                             history.push('/cities/editCity?id=' + row.id);
                         }}>{t("edit")}</Button>
                     )
@@ -90,7 +90,7 @@ function CitiesList(props) {
             selector: 'details',
             cell: row => {
                 return(
-                    <Button className="btn-sm" onClick={event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         dispatchCityDetailsDialog({
                             title: t('city.description'),
                             message: row.description,
@@ -175,7 +175,7 @@ function CitiesList(props) {
                         })
                     }}>{t("refresh")}</Button>
                     {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
-                        <Button className="btn-primary float-right m-2" onClick={event => {
+                        <Button className="btn-primary float-right m-2" style={{backgroundColor: "#7749F8"}} onClick={event => {
                             history.push('/cities/add');
                         }}>{t('addCity.action')}</Button>
                     ) : ( null )}

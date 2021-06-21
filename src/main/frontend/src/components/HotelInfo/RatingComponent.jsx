@@ -112,7 +112,7 @@ export default function RatingComponent({id, rate, login, content, date, modific
                     />
                     <div>
                         {currentRole === 'ADMIN' ?
-                            <Button className="btn-sm float-right mr-2"
+                            <Button className="btn-sm float-right mr-2" style={{backgroundColor: "#7749F8"}}
                                     onClick={() => handleChangeVisibilityClick(id)}>
                                 {hiddenValue ? i18n.t('show.button') : i18n.t('hide.button')}
                             </Button>

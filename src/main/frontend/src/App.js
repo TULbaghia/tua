@@ -30,7 +30,7 @@ import OtherUserInfo from "./components/OtherUserInfo";
 import ModifyHotelForm from "./components/ModifyHotel/ModifyHotelForm";
 import ReportGeneratorForm from "./components/RaportGenerating/ReportGeneratorForm";
 import CityList from "./components/city/CitiesList";
-import HotelList from "./components/HotelList";
+import HotelList from "./components/HotelList/HotelList";
 import AssignManager from "./components/AssignManager";
 import ActiveBookings from "./components/ActiveBookings";
 import AddHotelForm from "./components/AddHotel/AddHotelForm";
@@ -189,7 +189,7 @@ function App() {
                             <GuardedRoute exact path="/cities/add" component={AddCityForm}
                                           meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/cities" component={CityList}
-                                          meta={{auth: true, all: true, logged, currentRole}}/>
+                                          meta={{auth: true, admin: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/cities/editCity" component={ModifyCityForm} meta={{ auth: true, admin: true, logged, currentRole }}/>
                             <GuardedRoute exact path="/hotels/hotelInfo" component={HotelInfo} meta={{}}/>
                             <GuardedRoute exact path="/boxes/add" component={AddBoxForm}

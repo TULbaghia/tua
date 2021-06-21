@@ -26,6 +26,7 @@ import {v4} from "uuid";
 
 function ModifyCityForm() {
     const location = useLocation();
+    const history = useHistory();
     const {token} = useLocale();
     const [etag, setETag] = useState()
     const [city, setCity] = useState({
@@ -68,6 +69,7 @@ function ModifyCityForm() {
                     .then(response => {
                         dispatchNotificationSuccess({message: i18n.t('modifyCity.success')})
                         falseSubmitting();
+                        history.push("/cities");
                     }).catch(err => {
                         ResponseErrorHandler(err, dispatchNotificationDanger)
                         falseSubmitting()

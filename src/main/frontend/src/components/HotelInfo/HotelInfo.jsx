@@ -136,6 +136,8 @@ function HotelInfo(props) {
             refreshData();
             document.querySelector("#tab-tab-refresh").blur();
             setActiveKey("description")
+        } else if (key === "delete") {
+            handleDeleteHotel();
         } else {
             setActiveKey(key)
         }
@@ -234,14 +236,9 @@ function HotelInfo(props) {
                                 </ListGroup>
                             </Tab>
                             <Tab eventKey="refresh" tabClassName={"ml-auto"} title={t('refresh')}/>
-                                <Tab eventKey="boxlist" tabClassName={"ml-0"} title={t('boxList.navbar.title')}/>
+                            <Tab eventKey="boxlist" tabClassName={"ml-0"} title={t('boxList.navbar.title')}/>
                             {currentRole === rolesConstant.admin && (
-                                <Tab eventKey="delete" title={t('delete')}>
-                                    <Button className="btn btn-lg btn-primary btn-block mb-3"
-                                            type="submit"
-                                            style={{backgroundColor: "#dc3545"}}
-                                            onClick={() => handleDeleteHotel()}>{t("delete")}</Button>
-                                </Tab>
+                                <Tab eventKey="delete" title={t('delete')}/>
                             )}
                         </Tabs>
                     </div>

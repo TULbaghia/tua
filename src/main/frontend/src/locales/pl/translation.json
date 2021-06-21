@@ -513,7 +513,7 @@
   "exception.hotel.no_hotel_for_booking": "Nie można odnaleźć hotelu dla tej rezerwacji!",
   "exception.rating.already_rated" : "Rezerwacja posiada już ocenę",
   "exception.booking.too_early" : "Aktualna data jest wcześniejsza niż data rozpoczęcia rezerwacji",
-  "exception.not_found_exception.hotel_not_found" : "Nie znaleziono hotelu"
+  "exception.not_found_exception.hotel_not_found" : "Nie znaleziono hotelu",
 
   "city.description": "Opis miasta",
   "btn.close": "Zamknij",

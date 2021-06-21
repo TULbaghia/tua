@@ -96,8 +96,18 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     }
 
     @Override
+    @RolesAllowed("startReservation")
     public void startBooking(Long bookingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        Booking booking = bookingManager.get(bookingId);
+        if (isManagerInHotelConnectedToBooking(booking)) {
+            DetailBookingDto bookingIntegrity = Mappers.getMapper(IBookingMapper.class).toDetailBookingDto(booking);
+            if (!verifyIntegrity(bookingIntegrity)) {
+                throw AppOptimisticLockException.optimisticLockException();
+            }
+            bookingManager.startBooking(bookingId);
+        } else {
+            throw BookingException.accessDenied();
+        }
     }
 
     @Override

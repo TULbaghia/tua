@@ -488,7 +488,7 @@
   "bookingDetails.buttons.in_progress": "W trakcie",
   "bookingDetails.buttons.end_booking": "Zakończ",
   "bookingDetails.success.cancel": "Rezerwacja została anulowana",
-  "bookingDetails.success.in_progress": "Rezerwacja została rozpoczeta",
+  "bookingDetails.success.in_progress": "Rezerwacja została rozpoczęta",
   "bookingDetails.success.finish": "Rezerwacja została zakończona",
   "bookingDetails.header.comment": "Komentarz",
   "bookingDetails.rating.refresh": "Odświeżono opinię rezerwacji",
@@ -511,5 +511,6 @@
   "comment.success.create": "Komentarz został utworzony",
   "exception.rating_exception.rating_already_exists": "Istnieje już ocena dla tej rezerwacji!",
   "exception.hotel.no_hotel_for_booking": "Nie można odnaleźć hotelu dla tej rezerwacji!",
-  "exception.rating.already_rated" : "Rezerwacja posiada już ocenę"
+  "exception.rating.already_rated" : "Rezerwacja posiada już ocenę",
+  "exception.booking.too_early" : "Aktualna data jest wcześniejsza niż data rozpoczęcia rezerwacji"
 }

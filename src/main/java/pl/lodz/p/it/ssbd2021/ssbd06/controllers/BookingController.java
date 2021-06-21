@@ -128,10 +128,12 @@ public class BookingController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego rozpoczęciem rezerwacji
      */
     @PATCH
+    @RolesAllowed("startReservation")
+    @EtagValidatorFilterBinding
     @Path("/start/{id}")
     @Operation(operationId = "startBooking", summary = "startBooking")
     public void startBooking(@PathParam("id") Long bookingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        repeat(() -> bookingEndpoint.startBooking(bookingId), bookingEndpoint);
     }
 
     /**

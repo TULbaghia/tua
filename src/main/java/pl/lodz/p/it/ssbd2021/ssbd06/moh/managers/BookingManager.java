@@ -4,17 +4,10 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Booking;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.BookingLine;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Hotel;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BookingException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
@@ -31,14 +24,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
-import javax.security.enterprise.SecurityContext;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.*;
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -126,16 +114,17 @@ public class BookingManager {
         cal.set(Calendar.MILLISECOND, 0);
         cal.setTimeZone(TimeZone.getTimeZone("UTC"));
         dateTo = cal.getTime();
-        if(dateFrom.after(dateTo)){
+        if (dateFrom.after(dateTo)) {
             throw BookingException.invalidDateRange();
         }
 
         Account account = accountFacade.findByLogin(username);
 
-        List<Box> availableBoxes = boxFacade.getAvailableBoxesByIdListAndHotelId(bookingDto.getHotelId(), bookingDto.getBoxes(), dateFrom, dateTo);
+        List<Box> availableBoxes = boxFacade
+                .getAvailableBoxesByIdListAndHotelId(bookingDto.getHotelId(), bookingDto.getBoxes(), dateFrom, dateTo);
 
         // not enough boxes to fulfill the booking or booking has been sent without any boxes
-        if(availableBoxes.size() != bookingDto.getBoxes().size()){
+        if (availableBoxes.size() != bookingDto.getBoxes().size()) {
             throw BookingException.notEnoughBoxesOfSpecifiedType();
         }
 
@@ -145,7 +134,7 @@ public class BookingManager {
         long bookingDurationDays = Duration.between(dateFrom.toInstant(), dateTo.toInstant()).toDays();
 
         for (Box box : availableBoxes) {
-            if(bookingDto.getBoxes().stream().noneMatch(x -> Objects.equals(x, box.getId()))){
+            if (bookingDto.getBoxes().stream().noneMatch(x -> Objects.equals(x, box.getId()))) {
                 throw BookingException.boxesNotAvailable();
             }
             BookingLine bookingLine = new BookingLine(box.getPricePerDay(), booking, box);
@@ -170,10 +159,13 @@ public class BookingManager {
     public void cancelBooking(Long bookingId) throws AppBaseException {
         Booking booking = bookingFacade.find(bookingId);
         if (booking.getStatus().equals(BookingStatus.PENDING)) {
-            if (securityContext.isCallerInRole("Client") && !isBetweenAllowedTimeLimit(booking.getCreationDate(), booking.getDateFrom())) {
+            if (securityContext.isCallerInRole("Client") &&
+                    !isBetweenAllowedTimeLimit(booking.getCreationDate(), booking.getDateFrom())) {
                 throw BookingException.timeForCancellationExceeded();
             }
+            Account modifier = booking.getAccount();
             booking.setStatus(BookingStatus.CANCELLED);
+            booking.setModifiedBy(modifier);
             bookingFacade.edit(booking);
             emailSender.sendCancelReservationEmail(booking.getAccount(), booking.getId());
         } else if (booking.getStatus().equals(BookingStatus.IN_PROGRESS)) {
@@ -189,7 +181,8 @@ public class BookingManager {
      * Sprawdza czy został zachowany dozwolony limit czas na anulowanie rezerwacji -
      * mniej niż 24h od złożenia rezerwacji i więcej niż 48h od rozpoczęcia rezerwacji
      *
-     * @param bookingBeginDate data rozpoczęcia rezerwacji
+     * @param bookingCreationDate data utworzenia rezerwacji
+     * @param bookingBeginDate    data rozpoczęcia rezerwacji
      * @return czy został przekroczony dozwolony czas
      */
     private boolean isBetweenAllowedTimeLimit(Date bookingCreationDate, Date bookingBeginDate) {
@@ -227,8 +220,34 @@ public class BookingManager {
      * @param bookingId identyfikator rezerwacji
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    void startBooking(Long bookingId) throws AppBaseException {
-        throw new UnsupportedOperationException();
+    @RolesAllowed("startReservation")
+    public void startBooking(Long bookingId) throws AppBaseException {
+        Booking booking = bookingFacade.find(bookingId);
+        if (booking.getStatus().equals(BookingStatus.PENDING) && ifReservationCanBeStarted(booking.getDateFrom())) {
+            Account modifier = accountFacade.findByLogin(securityContext.getCallerPrincipal().getName());
+            booking.setStatus(BookingStatus.IN_PROGRESS);
+            booking.setModifiedBy(modifier);
+            bookingFacade.edit(booking);
+        } else if (booking.getStatus().equals(BookingStatus.IN_PROGRESS)) {
+            throw BookingException.inProgressBookingCancellation();
+        } else if (booking.getStatus().equals(BookingStatus.FINISHED)) {
+            throw BookingException.finishedBookingCancellation();
+        } else if (booking.getStatus().equals(BookingStatus.CANCELLED)){
+            throw BookingException.bookingAlreadyCancelled();
+        } else {
+            throw BookingException.toEarlyToStart();
+        }
+    }
+
+    /**
+     * Sprawdza czy aktualna data jest równa lub mniejsza od daty rozpoczęcia rezerwacji
+     *
+     * @param bookingBeginDate data rozpoczęcia rezerwacji
+     * @return czy rezerwacja może zmienić status na w trakcie
+     */
+    private boolean ifReservationCanBeStarted(Date bookingBeginDate) {
+        long actualDateInMillis = new Date().getTime();
+        return bookingBeginDate.getTime() <= actualDateInMillis;
     }
 
     /**
@@ -291,7 +310,8 @@ public class BookingManager {
         String callerName = securityContext.getCallerPrincipal().getName();
         return bookingFacade.findAllArchived().stream()
                 .filter(b -> b.getAccount().getLogin().equals(callerName)
-                        && b.getBookingLineList().stream().anyMatch(bl -> bl.getBox().getHotel().getId().equals(hotelId))
+                        &&
+                        b.getBookingLineList().stream().anyMatch(bl -> bl.getBox().getHotel().getId().equals(hotelId))
                         && b.getRating() == null)
                 .collect(Collectors.toList());
     }

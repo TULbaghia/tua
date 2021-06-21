@@ -37,11 +37,10 @@ function BoxItem(props) {
             <Card.Img className={"p-3"} style={{borderBottom: "1px solid var(--dark)"}} variant="top"
                       src={getIcon(box.animalType)}/>
             <Card.Body className={"card-item-body"}>
-                <Card.Title id={v4()}>{i18n.t('box.price')}: {box.price} {i18n.t('currency')}</Card.Title>
+                <Card.Title id={v4()}>{i18n.t('box.price')}: {box.price ? box.price.toFixed(2) : ''} {i18n.t('currency')}</Card.Title>
                 <Card.Text>
                     {box.description}
                 </Card.Text>
-                {/*{(isManager() &&  !isIdInUrl() && hotelId()) ? (*/}
                 {(managerButtons()) ? (
                     <>
                         <Button id={v4()} onClick={() => onModify(box.id)} className={"btn-block card-button ml-0"}

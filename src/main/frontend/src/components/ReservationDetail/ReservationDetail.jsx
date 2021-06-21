@@ -120,8 +120,8 @@ function ReservationDetail(props) {
             <tr key={v4()}>
                 <td>{bookingLine.id}</td>
                 <td>{i18n.t(bookingLine.box ? bookingLine.box.animalType : "")}</td>
-                <td>{Math.round(bookingLine.pricePerDay * 100) / 100} {i18n.t("currency")}</td>
-                <td>{Math.round(bookingLine.pricePerDay * reservation.differenceInDays * 100) / 100} {i18n.t("currency")}</td>
+                <td>{(Math.round(bookingLine.pricePerDay * 100) / 100).toFixed(2)} {i18n.t("currency")}</td>
+                <td>{(Math.round(bookingLine.pricePerDay * reservation.differenceInDays * 100) / 100).toFixed(2)} {i18n.t("currency")}</td>
             </tr>
         )
     }
@@ -131,7 +131,7 @@ function ReservationDetail(props) {
     }
 
     return (
-        <Container fluid className={"pb-5 reservationDetail px-0"}>
+        <Container fluid className={"pb-5 reservationDetail"}>
 
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{i18n.t('mainPage')}</Link></li>
@@ -189,7 +189,7 @@ function ReservationDetail(props) {
                                     <div
                                         className={"font-weight-bold"}>{i18n.t("bookingDetails.reservation.price")}</div>
                                     <div className={"ml-2"}><Badge
-                                        variant={"info"}>{reservation.price} {i18n.t("currency")}</Badge></div>
+                                        variant={"info"}>{reservation.price ? reservation.price.toFixed(2) : ''} {i18n.t("currency")}</Badge></div>
                                 </div>
                             </Card.Body>
                         </Card>
@@ -281,7 +281,7 @@ function ReservationDetail(props) {
                                                     <td colSpan={3} className={"text-right font-weight-bold"}>
                                                         {i18n.t("bookingDetails.reservation.table.priceTotal")}
                                                     </td>
-                                                    <td className={"font-weight-bold"}>{reservation.price} {i18n.t("currency")}</td>
+                                                    <td className={"font-weight-bold"}>{reservation.price ? reservation.price.toFixed(2) : ''} {i18n.t("currency")}</td>
                                                 </tr>
                                                 </tbody>
                                             </Table>

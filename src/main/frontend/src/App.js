@@ -137,7 +137,7 @@ function App() {
 
     return (
         <HashRouter basename={process.env.REACT_APP_ROUTER_BASE || ''}>
-            <div className="App">
+            <div className="App pb-5">
                 <div>
                     <NavigationBar roles={roles} divStyle={divStyle}/>
                     <GuardProvider guards={[requireRoles]} error={NotFound}>

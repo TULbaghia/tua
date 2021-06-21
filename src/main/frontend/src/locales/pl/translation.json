@@ -1,6 +1,6 @@
 {
   "welcome": "Witaj",
-  "animalHotel": "Hotel dla zwierząt",
+  "animalHotel": "Hotele dla zwierząt",
   "mainPage": "Strona główna",
   "cryingCat": "Kot płaczący",
   "staringCat": "Kot patrzący",
@@ -32,7 +32,7 @@
   "chooseLang": "Wybierz język",
   "pl": "Polski",
   "en": "Angielski",
-  "roleChange": "zmiana roli",
+  "roleChange": "Zmień poziom dostępu",
   "admin": "Administrator",
   "user": "Użytkownik",
   "roleChoice": "WYBÓR ROLI",
@@ -50,7 +50,9 @@
   "signOut": "Wyloguj",
   "myHotel": "Mój hotel",
   "activeReservations": "Lista aktywnych rezerwacji",
+  "menu.activeReservations": "Aktywne rezerwacje",
   "archiveReservations": "Lista archiwalnych rezerwacji",
+  "menu.archiveReservations": "Archiwalne rezerwacje",
   "reservation": "Rezerwacja",
   "cities": "Miasta",
   "userDetailsTitle": "Moje konto",
@@ -519,6 +521,6 @@
   "btn.close": "Zamknij",
   "booking.no_boxes_available": "Brak wolnych boxów w zadanym przedziale czasu",
   "exception.booking.date_from_past": "Nie można utworzyć rezerwacji dla daty z przeszłości",
-  "booking.form.disclaimer_info_hours": "Stworzone rezerwacje obowiązują od godziny 14:00 i konczą się o godzinie 12:00",
-  "booking.form.disclaimer_info_start_date": "Rezerwacje mogą zostać złożone nie wcześniej niż dzień przed"
+  "booking.form.disclaimer_info_hours": "Stworzone rezerwacje obowiązują od godziny 14:00 i kończą się o godzinie 12:00.",
+  "booking.form.disclaimer_info_start_date": "Rezerwacje mogą zostać złożone nie wcześniej niż dzień przed datą rozpoczęcia rezerwacji."
 }

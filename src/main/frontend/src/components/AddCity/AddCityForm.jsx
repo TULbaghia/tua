@@ -43,7 +43,7 @@ function AddCityForm() {
     }
 
     return (
-        <div id="add-city-container">
+        <div id="add-city-container" className={"container-fluid"}>
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">{i18n.t('mainPage')}</Link>
@@ -58,49 +58,53 @@ function AddCityForm() {
                     {i18n.t('addCity.title')}
                 </li>
             </BreadCrumb>
-            <div className="floating-box custom-form-width">
-                <Container>
-                    <Row className="text-center justify-content-center d-block">
-                        <h1 className="mb-3">{i18n.t('addCity.title')}</h1>
-                        <p className="obligatory-fields">{i18n.t('obligatoryFields')}</p>
-                    </Row>
-                    <Formik
-                        initialValues={{
-                            name: "",
-                            description: "",
-                        }}
-                        validate={AddCityValidationSchema}
-                        onSubmit={(values, {setSubmitting}) => handleAddCity(values, setSubmitting)}>
-                        {({isSubmitting, handleChange}) => (
-                            <Form>
-                                <Row>
-                                    <Col>
-                                        <FieldComponent name="name"
-                                                        label={i18n.t('addCity.name')}
-                                                        placeholder={i18n.t('addCity.name')}
-                                                        handleChange={handleChange}/>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <FieldComponent name="description"
-                                                        label={i18n.t('addCity.description')}
-                                                        placeholder={i18n.t('addCity.description')}
-                                                        handleChange={handleChange}/>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <button className="btn-background-custom btn btn-lg btn-primary mt-3"
-                                            type="submit"
-                                            disabled={isSubmitting}>
-                                        {i18n.t('addCity.send.form')}
-                                    </button>
-                                </Row>
-                            </Form>
-                        )}
-                    </Formik>
-                </Container>
-            </div>
+            <Container>
+                <Row>
+                    <Col xs={12} sm={8} md={7} lg={6} className="floating-no-absolute py-4 mx-auto mb-2">
+                        <div>
+                            <Col xs={12} className="text-center justify-content-center d-block">
+                                <h1 className="mb-3">{i18n.t('addCity.title')}</h1>
+                                <p className="obligatory-fields mb-3">{i18n.t('obligatoryFields')}</p>
+                            </Col>
+                            <Formik
+                                initialValues={{
+                                    name: "",
+                                    description: "",
+                                }}
+                                validate={AddCityValidationSchema}
+                                onSubmit={(values, {setSubmitting}) => handleAddCity(values, setSubmitting)}>
+                                {({isSubmitting, handleChange}) => (
+                                    <Form>
+                                        <Row>
+                                            <Col>
+                                                <FieldComponent name="name"
+                                                                label={i18n.t('addCity.name')}
+                                                                placeholder={i18n.t('addCity.name')}
+                                                                handleChange={handleChange}/>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FieldComponent name="description"
+                                                                label={i18n.t('addCity.description')}
+                                                                placeholder={i18n.t('addCity.description')}
+                                                                handleChange={handleChange}/>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <button className="btn-background-custom btn btn-lg btn-primary mt-3"
+                                                    type="submit"
+                                                    disabled={isSubmitting}>
+                                                {i18n.t('addCity.send.form')}
+                                            </button>
+                                        </Row>
+                                    </Form>
+                                )}
+                            </Formik>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

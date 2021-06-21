@@ -95,7 +95,7 @@ function ModifyBoxForm() {
     };
 
     return (
-        <div id="modify-box-form">
+        <div id="modify-box-form" className={"mb-2 container-fluid"}>
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">{i18n.t('mainPage')}</Link>
@@ -110,74 +110,80 @@ function ModifyBoxForm() {
                     {i18n.t('modifyBox.title')}
                 </li>
             </BreadCrumb>
-            <div className={"floating-box"}>
-                <Container>
-                    <Row className="text-center justify-content-center d-block">
-                        <h1 className="mb-3">{i18n.t('modifyBox.title')}</h1>
-                        <h5>{i18n.t('modifyBox.modify.info')}{box.description}</h5>
-                        <button className="mt-3 w-25 btn-background-custom btn btn-primary"
-                                onClick={(e) => handleFetch()}
-                                type="submit">
-                            {i18n.t("refresh")}
-                        </button>
-                        <p className="obligatory-fields">{i18n.t('obligatoryFields')}</p>
-                    </Row>
-                    <Formik
-                        initialValues={{
-                            price: box.price,
-                            description: box.description,
-                            animalType: i18n.t(box.animalType),
-                            id: box.id
-                        }}
-                        enableReinitialize
-                        validate={ModifyBoxValidationSchema}
-                        onSubmit={(values, {setSubmitting}) => handleModifyBox(values, setSubmitting)}>
-                        {({isSubmitting, handleChange}) => (
-                            <Form>
-                                <Row>
-                                    <Col>
-                                        <FieldComponent name="animalType"
-                                                        label={i18n.t('animalType')}
-                                                        placeholder={i18n.t('animalType')}
-                                                        handleChange={handleChange}
-                                                        readonly={true}/>
-                                    </Col>
+            <Container>
+                <Row>
+                    <Col xs={12} sm={11} md={8} lg={7} xl={6} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div>
+                            <div>
+                                <Row className="text-center justify-content-center d-block">
+                                    <h1 className="mb-3">{i18n.t('modifyBox.title')}</h1>
+                                    <h5>{i18n.t('modifyBox.modify.info')}{box.description}</h5>
+                                    <button className="mt-3 w-25 btn-background-custom btn btn-primary"
+                                            onClick={(e) => handleFetch()}
+                                            type="submit">
+                                        {i18n.t("refresh")}
+                                    </button>
+                                    <p className="obligatory-fields">{i18n.t('obligatoryFields')}</p>
                                 </Row>
-                                <Row>
-                                    <Col>
-                                        <FieldComponent name="price"
-                                                        label={i18n.t('price')}
-                                                        placeholder={i18n.t('price')}
-                                                        handleChange={handleChange}/>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <FieldComponent name="description"
-                                                        label={i18n.t('box.description')}
-                                                        placeholder={i18n.t('box.description')}
-                                                        handleChange={handleChange}/>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <button className="btn-background-custom btn btn-lg btn-primary mt-3"
-                                            type="submit"
-                                            disabled={isSubmitting}>
-                                        {i18n.t('edit')}
+                                <Formik
+                                    initialValues={{
+                                        price: box.price ? box.price.toFixed(2) : '',
+                                        description: box.description,
+                                        animalType: i18n.t(box.animalType),
+                                        id: box.id
+                                    }}
+                                    enableReinitialize
+                                    validate={ModifyBoxValidationSchema}
+                                    onSubmit={(values, {setSubmitting}) => handleModifyBox(values, setSubmitting)}>
+                                    {({isSubmitting, handleChange}) => (
+                                        <Form>
+                                            <Row>
+                                                <Col>
+                                                    <FieldComponent name="animalType"
+                                                                    label={i18n.t('animalType')}
+                                                                    placeholder={i18n.t('animalType')}
+                                                                    handleChange={handleChange}
+                                                                    readonly={true}/>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col>
+                                                    <FieldComponent name="price"
+                                                                    label={i18n.t('price')}
+                                                                    placeholder={i18n.t('price')}
+                                                                    handleChange={handleChange}/>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col>
+                                                    <FieldComponent name="description"
+                                                                    label={i18n.t('box.description')}
+                                                                    placeholder={i18n.t('box.description')}
+                                                                    handleChange={handleChange}/>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <button className="btn-background-custom btn btn-lg btn-primary mt-3"
+                                                        type="submit"
+                                                        disabled={isSubmitting}>
+                                                    {i18n.t('edit')}
+                                                </button>
+                                            </Row>
+                                        </Form>
+                                    )}
+                                </Formik>
+                                <Row className="text-center justify-content-center d-block">
+                                    <button className="btn w-75 btn-lg btn-danger mt-3"
+                                            onClick={(e) => handleDelete(boxId)}
+                                            type="submit">
+                                        {i18n.t("delete")}
                                     </button>
                                 </Row>
-                            </Form>
-                        )}
-                    </Formik>
-                    <Row className="text-center justify-content-center d-block">
-                        <button className="btn w-75 btn-lg btn-danger mt-3"
-                                onClick={(e) => handleDelete(boxId)}
-                                type="submit">
-                            {i18n.t("delete")}
-                        </button>
-                    </Row>
-                </Container>
-            </div>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

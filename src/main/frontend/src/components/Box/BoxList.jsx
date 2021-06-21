@@ -133,7 +133,7 @@ function BoxList(props) {
     };
 
     return (
-        <div id={"box-list"} className={"container-fluid"}>
+        <div id={"box-list"} className={"container-fluid mb-2"}>
 
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{i18n.t('mainPage')}</Link></li>
@@ -149,7 +149,7 @@ function BoxList(props) {
                 <li className="breadcrumb-item active" aria-current="page">{i18n.t('boxList.navbar.title')}</li>
             </BreadCrumb>
             <div className={"row"}>
-                <div className={"box-grid container mb-5"}>
+                <div className={"box-grid container"}>
 
                     <div className={"row"}>
                         <h1 className="col-md-6">{i18n.t('boxList.navbar.title')}</h1>

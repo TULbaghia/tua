@@ -187,8 +187,7 @@ function HotelInfo(props) {
     }
 
     return (
-        <>
-            <div className="container">
+        <div className={"container-fluid"}>
                 <BreadCrumb>
                     <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                     {currentRole === rolesConstant.admin && (
@@ -203,8 +202,7 @@ function HotelInfo(props) {
                     <li className="breadcrumb-item"><Link to="/hotels">{t('hotelList')}</Link></li>
                     <li className="breadcrumb-item active" aria-current="page">{t('hotelInfo')}</li>
                 </BreadCrumb>
-            </div>
-            <div id={"hotelInfo"} className={"container mt-2 p-4 mb-5"}>
+            <div id={"hotelInfo"} className={"container mt-2 p-4 mb-2"}>
                 <div className={"row"}>
                     <div className={"col-md-6 col-sm-8 col-10 mb-2"}>
                         <h2>{hotelData.name}</h2>
@@ -285,7 +283,7 @@ function HotelInfo(props) {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

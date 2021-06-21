@@ -3,10 +3,13 @@ import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
-import {Button, Form} from "react-bootstrap";
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import {useLocale} from "./LoginContext";
 import {api} from "../Api";
-import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "./Utils/Notification/NotificationProvider";
+import {
+    useNotificationDangerAndInfinity,
+    useNotificationSuccessAndShort
+} from "./Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import {useThemeColor} from './Utils/ThemeColor/ThemeColorProvider';
@@ -77,7 +80,7 @@ function ActiveBookings(props) {
             selector: 'price',
             sortable: true,
             cell: row => {
-                return row.price + " " + t('currency');
+                return row.price.toFixed(2) + " " + t('currency');
             }
         },
         {
@@ -137,33 +140,37 @@ function ActiveBookings(props) {
     }, [filterText]);
 
     return (
-        <div className="container">
+        <div className="mb-2 container-fluid">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('activeReservations')}</li>
             </BreadCrumb>
-            <div className="floating-box">
-                <div>
-                    <h1 className="float-left">{t('activeReservations')}</h1>
-                    <Button className="btn-secondary float-right m-2" onClick={event => {
-                        getActiveBookings().then(res => {
-                            setData(res.data);
-                            setFilterText('')
-                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
-                        }).catch(err => {
-                            ResponseErrorHandler(err, dispatchNotificationDanger)
-                        })
-                    }}>{t("refresh")}</Button>
-                </div>
-                <DataTable className={"rounded-0"}
-                           noDataComponent={i18n.t('table.no.result')}
-                           columns={columns}
-                           data={filteredItems}
-                           subHeader
-                           theme={themeColor}
-                           subHeaderComponent={subHeaderComponentMemo}
-                />
-            </div>
+            <Container>
+                <Row>
+                    <Col xs={12} sm={12} md={12} lg={12} xl={11} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div>
+                            <h1 className="float-left">{t('activeReservations')}</h1>
+                            <Button className="btn-secondary float-right m-2" onClick={event => {
+                                getActiveBookings().then(res => {
+                                    setData(res.data);
+                                    setFilterText('')
+                                    dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                                }).catch(err => {
+                                    ResponseErrorHandler(err, dispatchNotificationDanger)
+                                })
+                            }}>{t("refresh")}</Button>
+                        </div>
+                        <DataTable className={"rounded-0"}
+                                   noDataComponent={i18n.t('table.no.result')}
+                                   columns={columns}
+                                   data={filteredItems}
+                                   subHeader
+                                   theme={themeColor}
+                                   subHeaderComponent={subHeaderComponentMemo}
+                        />
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

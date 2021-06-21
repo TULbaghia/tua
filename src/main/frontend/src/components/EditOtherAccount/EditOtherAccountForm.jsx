@@ -19,7 +19,7 @@ import ContactNumberComponent from "./ContactNumberComponent";
 import {useLocale} from "../LoginContext";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import {Button} from "react-bootstrap";
+import {Button, Col, Container, Row} from "react-bootstrap";
 import {rolesConstant} from "../../Constants";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import queryString from "query-string";
@@ -56,8 +56,16 @@ function BookingForm({t, i18n}) {
     const handleDataFetch = (firstTime = true) => {
         let etagsGet = false
         if (token) {
-            getEtag(parsedQuery.login).then(r => {setETag(r); etagsGet = true;});
-            getEtagRole(parsedQuery.login).then(r => {setETagRole(r); if (etagsGet) {etagsGet = true;}});
+            getEtag(parsedQuery.login).then(r => {
+                setETag(r);
+                etagsGet = true;
+            });
+            getEtagRole(parsedQuery.login).then(r => {
+                setETagRole(r);
+                if (etagsGet) {
+                    etagsGet = true;
+                }
+            });
             getRoles().then(res => {
                 console.log(res.data);
                 let data = "";
@@ -83,20 +91,22 @@ function BookingForm({t, i18n}) {
     }
 
     const getEtag = async (login) => {
-        const response = await api.showAccount(login,{
+        const response = await api.showAccount(login, {
             method: "GET",
             headers: {
                 Authorization: token,
-            }})
+            }
+        })
         return response.headers.etag;
     };
 
     const getEtagRole = async (login) => {
-        const response = await api.getUserRole(login,{
+        const response = await api.getUserRole(login, {
             method: "GET",
             headers: {
                 Authorization: token,
-            }})
+            }
+        })
         return response.headers.etag;
     };
 
@@ -257,7 +267,7 @@ function BookingForm({t, i18n}) {
     }
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/userPage">{t('adminDashboard')}</Link></li>
@@ -265,186 +275,208 @@ function BookingForm({t, i18n}) {
                 <li className="breadcrumb-item active" aria-current="page">{t('userEdit')}</li>
             </BreadCrumb>
 
-            <div className="floating-box" style={{minWidth: "30rem", minHeight: "30rem"}}>
-                <div>
-                    <div className={"d-flex text-center flex-column"}>
-                        <h3 className="h3 mb-0.5">{t('userEdit')}: {parsedQuery.login}</h3>
-                        <Button className="btn btn-secondary my-2"
-                                style={{backgroundColor: "#7749F8", width: "20%", margin: "auto"}} onClick={event => {
-                            handleDataFetch(false)
-                        }}>{t("refresh")}</Button>
-                        <div style={{color: "#7749F8", fontSize: 14, marginBottom: "0.5rem"}}>
-                            {t('obligatoryFields')}
+            <Container>
+                <Row>
+                    <Col xs={12} sm={12} md={10} lg={9} xl={8} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div style={{minHeight: "30rem"}}>
+                            <div>
+                                <div className={"d-flex text-center flex-column"}>
+                                    <h3 className="h3 mb-0.5">{t('userEdit')}: {parsedQuery.login}</h3>
+                                    <Button className="btn btn-secondary my-2"
+                                            style={{backgroundColor: "#7749F8", width: "20%", margin: "auto"}}
+                                            onClick={event => {
+                                                handleDataFetch(false)
+                                            }}>{t("refresh")}</Button>
+                                    <div style={{color: "#7749F8", fontSize: 14, marginBottom: "0.5rem"}}>
+                                        {t('obligatoryFields')}
+                                    </div>
+                                </div>
+                                <div className="container">
+                                    <Tabs defaultActiveKey="tab1" className="categories my-3">
+                                        <Tab eventKey="tab1" title={t('editEmail')}>
+                                            <Formik
+                                                initialValues={{email: ''}}
+                                                validate={values => {
+                                                    const errors = {};
+                                                    let mailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                                                    if (!values.email) {
+                                                        errors.email = t('editOtherAccountForm.error.email.required');
+                                                    } else if (values.email.length > 127 || values.email.length < 6) {
+                                                        errors.email = t('editOtherAccountForm.error.email.length');
+                                                    } else if (!mailPattern.test(values.email)) {
+                                                        errors.email = t('editOtherAccountForm.error.email.pattern');
+                                                    }
+                                                    return errors;
+                                                }}
+                                                onSubmit={(values, {setSubmitting}) => handleEmailConfirmation(values, setSubmitting)}>
+                                                {({handleChange}) => (
+                                                    <Form className={{alignItems: "center"}}>
+                                                        <EmailComponent name="email" placeholder={t('emailAddress')}
+                                                                        handleChange={handleChange}/>
+                                                        <button className="btn btn-lg btn-primary btn-block mt-2"
+                                                                type="submit"
+                                                                style={{
+                                                                    backgroundColor: "#7749F8",
+                                                                    width: "70%",
+                                                                    margin: "auto"
+                                                                }}>
+                                                            {t('changeEmail')}
+                                                        </button>
+                                                    </Form>
+                                                )}
+                                            </Formik>
+                                        </Tab>
+                                        <Tab eventKey="tab2" title={t('editPassword')}>
+                                            <Formik
+                                                initialValues={{newPassword: '', repeatedNewPassword: ''}}
+                                                validate={values => {
+                                                    const errors = {};
+                                                    if (!values.newPassword) {
+                                                        errors.newPassword = t('editOtherAccountForm.password.error.required');
+                                                    } else if (values.newPassword.length > 64 || values.newPassword.length < 8) {
+                                                        errors.newPassword = t('editOtherAccountForm.password.error.length');
+                                                    }
+
+                                                    if (!values.repeatedNewPassword) {
+                                                        errors.repeatedNewPassword = t('editOtherAccountForm.password.error.repeated.required');
+                                                    } else if (values.repeatedNewPassword.length > 64 || values.repeatedNewPassword.length < 8) {
+                                                        errors.repeatedNewPassword = t('editOtherAccountForm.password.error.length');
+                                                    }
+
+                                                    if (!(values.repeatedNewPassword === values.newPassword)) {
+                                                        errors.repeatedNewPassword = t('editOtherAccountForm.password.error.match');
+                                                    }
+                                                    return errors;
+                                                }}
+                                                onSubmit={(values, {setSubmitting}) => handlePasswordConfirmation(values, setSubmitting)}>
+                                                {({handleChange}) => (
+                                                    <Form className={{alignItems: "center"}}>
+                                                        <PasswordComponent name="newPassword"
+                                                                           placeholder={t('password')}
+                                                                           handleChange={handleChange}/>
+                                                        <PasswordComponent name="repeatedNewPassword"
+                                                                           placeholder={t('repeatPassword')}
+                                                                           handleChange={handleChange}/>
+                                                        <button className="btn btn-lg btn-primary btn-block mt-2"
+                                                                type="submit"
+                                                                style={{
+                                                                    backgroundColor: "#7749F8",
+                                                                    width: "70%",
+                                                                    margin: "auto"
+                                                                }}>
+                                                            {t('changePassword')}
+                                                        </button>
+                                                    </Form>
+                                                )}
+                                            </Formik>
+                                        </Tab>
+                                        <Tab eventKey="tab3" title={t('editDetails')}>
+                                            <Formik
+                                                initialValues={{firstname: '', lastname: '', contactNumber: ''}}
+                                                validate={values => {
+                                                    const errors = {};
+                                                    let firstnamePattern = /^[A-ZĆŁÓŚŹŻ\s]{1}[a-ząęćńóśłźż]+$/;
+                                                    let lastnamePattern = /^[A-ZĆŁÓŚŹŻ\s]{1}[a-ząęćńóśłźż]+$/;
+                                                    let contactNumberPattern = /^[0-9\+][0-9]{8,14}$/;
+                                                    if (!values.firstname) {
+                                                        errors.firstname = t('editOtherAccountForm.firstname.error.required');
+                                                    } else if (values.firstname.length > 31 || values.firstname.length < 3) {
+                                                        errors.firstname = t('editOtherAccountForm.firstname.error.length');
+                                                    } else if (!firstnamePattern.test(values.firstname)) {
+                                                        errors.firstname = t('editOtherAccountForm.firstname.error.pattern');
+                                                    }
+
+                                                    if (!values.lastname) {
+                                                        errors.lastname = t('editOtherAccountForm.lastname.error.required');
+                                                    } else if (values.lastname.length > 31 || values.lastname.length < 2) {
+                                                        errors.lastname = t('editOtherAccountForm.lastname.error.length');
+                                                    } else if (!lastnamePattern.test(values.lastname)) {
+                                                        errors.lastname = t('editOtherAccountForm.lastname.error.pattern');
+                                                    }
+
+                                                    if (!values.contactNumber) {
+                                                        errors.contactNumber = t('editOtherAccountForm.contactNumber.error.required');
+                                                    } else if (values.contactNumber.length > 15 || values.contactNumber.length < 9) {
+                                                        errors.contactNumber = t('editOtherAccountForm.contactNumber.error.length');
+                                                    } else if (!contactNumberPattern.test(values.contactNumber)) {
+                                                        errors.contactNumber = t('editOtherAccountForm.contactNumber.error.pattern');
+                                                    }
+                                                    return errors;
+                                                }}
+                                                onSubmit={(values, {setSubmitting}) => handleDetailsConfirmation(values, setSubmitting)}>
+                                                {({handleChange}) => (
+                                                    <Form className={{alignItems: "center"}}>
+                                                        <FirstnameComponent name="firstname" placeholder={t('name')}
+                                                                            handleChange={handleChange}/>
+                                                        <LastnameComponent name="lastname" placeholder={t('surname')}
+                                                                           handleChange={handleChange}/>
+                                                        <ContactNumberComponent name="contactNumber"
+                                                                                placeholder={t('phoneNumber')}
+                                                                                handleChange={handleChange}/>
+                                                        <button className="btn btn-lg btn-primary btn-block mt-2"
+                                                                type="submit"
+                                                                style={{
+                                                                    backgroundColor: "#7749F8",
+                                                                    width: "70%",
+                                                                    margin: "auto"
+                                                                }}>
+                                                            {t('changeDetails')}
+                                                        </button>
+                                                    </Form>
+                                                )}
+                                            </Formik>
+                                        </Tab>
+                                        <Tab eventKey="tab4" title={t('editRoles')}>
+                                            {!isRole(rolesConstant.client) &&
+                                            <button className="btn btn-lg btn-primary btn-block" type="submit"
+                                                    style={{backgroundColor: "forestgreen", marginBottom: "1rem"}}
+                                                    onClick={handleAddRoleClient}>
+                                                {t('addRoleClient')}
+                                            </button>
+                                            }
+                                            {isRole(rolesConstant.client) &&
+                                            <button className="btn btn-lg btn-primary btn-block" type="submit"
+                                                    style={{backgroundColor: "indianred", marginBottom: "1rem"}}
+                                                    onClick={handleRevokeRoleClient}>
+                                                {t('revokeRoleClient')}
+                                            </button>
+                                            }
+                                            {!isRole(rolesConstant.manager) &&
+                                            <button className="btn btn-lg btn-primary btn-block" type="submit"
+                                                    style={{backgroundColor: "forestgreen", marginBottom: "1rem"}}
+                                                    onClick={handleAddRoleManager}>
+                                                {t('addRoleManager')}
+                                            </button>
+                                            }
+                                            {isRole(rolesConstant.manager) &&
+                                            <button className="btn btn-lg btn-primary btn-block" type="submit"
+                                                    style={{backgroundColor: "indianred", marginBottom: "1rem"}}
+                                                    onClick={handleRevokeRoleManager}>
+                                                {t('revokeRoleManager')}
+                                            </button>
+                                            }
+                                            {!isRole(rolesConstant.admin) &&
+                                            <button className="btn btn-lg btn-primary btn-block" type="submit"
+                                                    style={{backgroundColor: "forestgreen", marginBottom: "1rem"}}
+                                                    onClick={handleAddRoleAdmin}>
+                                                {t('addRoleAdmin')}
+                                            </button>
+                                            }
+                                            {isRole(rolesConstant.admin) &&
+                                            <button className="btn btn-lg btn-primary btn-block" type="submit"
+                                                    style={{backgroundColor: "indianred", marginBottom: "1rem"}}
+                                                    onClick={handleRevokeRoleAdmin}>
+                                                {t('revokeRoleAdmin')}
+                                            </button>
+                                            }
+                                        </Tab>
+                                    </Tabs>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="container">
-                        <Tabs defaultActiveKey="tab1" className="categories my-3">
-                            <Tab eventKey="tab1" title={t('editEmail')}>
-                                <Formik
-                                    initialValues={{email: ''}}
-                                    validate={values => {
-                                        const errors = {};
-                                        let mailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                                        if (!values.email) {
-                                            errors.email = t('editOtherAccountForm.error.email.required');
-                                        } else if (values.email.length > 127 || values.email.length < 6) {
-                                            errors.email = t('editOtherAccountForm.error.email.length');
-                                        } else if (!mailPattern.test(values.email)) {
-                                            errors.email = t('editOtherAccountForm.error.email.pattern');
-                                        }
-                                        return errors;
-                                    }}
-                                    onSubmit={(values, {setSubmitting}) => handleEmailConfirmation(values, setSubmitting)}>
-                                    {({handleChange}) => (
-                                        <Form className={{alignItems: "center"}}>
-                                            <EmailComponent name="email" placeholder={t('emailAddress')}
-                                                            handleChange={handleChange}/>
-                                            <button className="btn btn-lg btn-primary btn-block mt-2"
-                                                    type="submit"
-                                                    style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
-                                                {t('changeEmail')}
-                                            </button>
-                                        </Form>
-                                    )}
-                                </Formik>
-                            </Tab>
-                            <Tab eventKey="tab2" title={t('editPassword')}>
-                                <Formik
-                                    initialValues={{newPassword: '', repeatedNewPassword: ''}}
-                                    validate={values => {
-                                        const errors = {};
-                                        if (!values.newPassword) {
-                                            errors.newPassword = t('editOtherAccountForm.password.error.required');
-                                        } else if (values.newPassword.length > 64 || values.newPassword.length < 8) {
-                                            errors.newPassword = t('editOtherAccountForm.password.error.length');
-                                        }
-
-                                        if (!values.repeatedNewPassword) {
-                                            errors.repeatedNewPassword = t('editOtherAccountForm.password.error.repeated.required');
-                                        } else if (values.repeatedNewPassword.length > 64 || values.repeatedNewPassword.length < 8) {
-                                            errors.repeatedNewPassword = t('editOtherAccountForm.password.error.length');
-                                        }
-
-                                        if (!(values.repeatedNewPassword === values.newPassword)) {
-                                            errors.repeatedNewPassword = t('editOtherAccountForm.password.error.match');
-                                        }
-                                        return errors;
-                                    }}
-                                    onSubmit={(values, {setSubmitting}) => handlePasswordConfirmation(values, setSubmitting)}>
-                                    {({handleChange}) => (
-                                        <Form className={{alignItems: "center"}}>
-                                            <PasswordComponent name="newPassword" placeholder={t('password')}
-                                                               handleChange={handleChange}/>
-                                            <PasswordComponent name="repeatedNewPassword" placeholder={t('repeatPassword')}
-                                                               handleChange={handleChange}/>
-                                            <button className="btn btn-lg btn-primary btn-block mt-2"
-                                                    type="submit"
-                                                    style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
-                                                {t('changePassword')}
-                                            </button>
-                                        </Form>
-                                    )}
-                                </Formik>
-                            </Tab>
-                            <Tab eventKey="tab3" title={t('editDetails')}>
-                                <Formik
-                                    initialValues={{firstname: '', lastname: '', contactNumber: ''}}
-                                    validate={values => {
-                                        const errors = {};
-                                        let firstnamePattern = /^[A-ZĆŁÓŚŹŻ\s]{1}[a-ząęćńóśłźż]+$/;
-                                        let lastnamePattern = /^[A-ZĆŁÓŚŹŻ\s]{1}[a-ząęćńóśłźż]+$/;
-                                        let contactNumberPattern = /^[0-9\+][0-9]{8,14}$/;
-                                        if (!values.firstname) {
-                                            errors.firstname = t('editOtherAccountForm.firstname.error.required');
-                                        } else if (values.firstname.length > 31 || values.firstname.length < 3) {
-                                            errors.firstname = t('editOtherAccountForm.firstname.error.length');
-                                        } else if (!firstnamePattern.test(values.firstname)) {
-                                            errors.firstname = t('editOtherAccountForm.firstname.error.pattern');
-                                        }
-
-                                        if (!values.lastname) {
-                                            errors.lastname = t('editOtherAccountForm.lastname.error.required');
-                                        } else if (values.lastname.length > 31 || values.lastname.length < 2) {
-                                            errors.lastname = t('editOtherAccountForm.lastname.error.length');
-                                        } else if (!lastnamePattern.test(values.lastname)) {
-                                            errors.lastname = t('editOtherAccountForm.lastname.error.pattern');
-                                        }
-
-                                        if (!values.contactNumber) {
-                                            errors.contactNumber = t('editOtherAccountForm.contactNumber.error.required');
-                                        } else if (values.contactNumber.length > 15 || values.contactNumber.length < 9) {
-                                            errors.contactNumber = t('editOtherAccountForm.contactNumber.error.length');
-                                        } else if (!contactNumberPattern.test(values.contactNumber)) {
-                                            errors.contactNumber = t('editOtherAccountForm.contactNumber.error.pattern');
-                                        }
-                                        return errors;
-                                    }}
-                                    onSubmit={(values, {setSubmitting}) => handleDetailsConfirmation(values, setSubmitting)}>
-                                    {({handleChange}) => (
-                                        <Form className={{alignItems: "center"}}>
-                                            <FirstnameComponent name="firstname" placeholder={t('name')}
-                                                                handleChange={handleChange}/>
-                                            <LastnameComponent name="lastname" placeholder={t('surname')}
-                                                               handleChange={handleChange}/>
-                                            <ContactNumberComponent name="contactNumber" placeholder={t('phoneNumber')}
-                                                                    handleChange={handleChange}/>
-                                            <button className="btn btn-lg btn-primary btn-block mt-2"
-                                                    type="submit"
-                                                    style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
-                                                {t('changeDetails')}
-                                            </button>
-                                        </Form>
-                                    )}
-                                </Formik>
-                            </Tab>
-                            <Tab eventKey="tab4" title={t('editRoles')}>
-                                {!isRole(rolesConstant.client) &&
-                                <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                        style={{backgroundColor: "forestgreen", marginBottom: "1rem"}}
-                                        onClick={handleAddRoleClient}>
-                                    {t('addRoleClient')}
-                                </button>
-                                }
-                                {isRole(rolesConstant.client) &&
-                                <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                        style={{backgroundColor: "#dc3545", marginBottom: "1rem"}}
-                                        onClick={handleRevokeRoleClient}>
-                                    {t('revokeRoleClient')}
-                                </button>
-                                }
-                                {!isRole(rolesConstant.manager) &&
-                                <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                        style={{backgroundColor: "forestgreen", marginBottom: "1rem"}}
-                                        onClick={handleAddRoleManager}>
-                                    {t('addRoleManager')}
-                                </button>
-                                }
-                                {isRole(rolesConstant.manager) &&
-                                <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                        style={{backgroundColor: "#dc3545", marginBottom: "1rem"}}
-                                        onClick={handleRevokeRoleManager}>
-                                    {t('revokeRoleManager')}
-                                </button>
-                                }
-                                {!isRole(rolesConstant.admin) &&
-                                <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                        style={{backgroundColor: "forestgreen", marginBottom: "1rem"}}
-                                        onClick={handleAddRoleAdmin}>
-                                    {t('addRoleAdmin')}
-                                </button>
-                                }
-                                {isRole(rolesConstant.admin) &&
-                                <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                        style={{backgroundColor: "#dc3545", marginBottom: "1rem"}}
-                                        onClick={handleRevokeRoleAdmin}>
-                                    {t('revokeRoleAdmin')}
-                                </button>
-                                }
-                            </Tab>
-                        </Tabs>
-                    </div>
-                </div>
-            </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

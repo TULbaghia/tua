@@ -47,7 +47,7 @@ function ReportsTable({bookings}) {
             selector: 'price',
             sortable: true,
             width: "10rem",
-            cell: row => (row.price ? row.price + " " + i18n.t('currency') : "")
+            cell: row => (row.price ? row.price.toFixed(2) + " " + i18n.t('currency') : "")
         },
         {
             name: i18n.t('reportGenerator.table.rating'),
@@ -65,7 +65,7 @@ function ReportsTable({bookings}) {
 
     return (
         <DataTable className={"mt-0 pt-0 rounded-0"}
-                   style={{overflowY: "auto", maxHeight: "15rem"}}
+                   style={{overflowY: "auto"}}
                    title={i18n.t('reportGenerator.table.title')}
                    noDataComponent={i18n.t('table.no.result')}
                    data={bookings}

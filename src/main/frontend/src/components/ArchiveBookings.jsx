@@ -3,7 +3,7 @@ import BreadCrumb from "./Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
-import {Button, Form} from "react-bootstrap";
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import {useLocale} from "./LoginContext";
 import {api} from "../Api";
 import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
@@ -13,7 +13,7 @@ import {
 } from "./Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
-import { useThemeColor } from './Utils/ThemeColor/ThemeColorProvider';
+import {useThemeColor} from './Utils/ThemeColor/ThemeColorProvider';
 import {dateConverter} from "../i18n";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
@@ -59,7 +59,7 @@ function ArchiveBookings(props) {
             selector: 'dateFrom',
             sortable: true,
             cell: row => {
-                return(
+                return (
                     dateConverter(row.dateFrom.slice(0, -5))
                 );
             }
@@ -69,7 +69,7 @@ function ArchiveBookings(props) {
             selector: 'dateTo',
             sortable: true,
             cell: row => {
-                return(
+                return (
                     dateConverter(row.dateTo.slice(0, -5))
                 );
             }
@@ -79,7 +79,7 @@ function ArchiveBookings(props) {
             selector: 'price',
             sortable: true,
             cell: row => {
-                return row.price + " " + t('currency');
+                return row.price.toFixed(2) + " " + t('currency');
             }
         },
         {
@@ -87,7 +87,7 @@ function ArchiveBookings(props) {
             selector: 'bookingStatus',
             sortable: true,
             cell: row => {
-                return(
+                return (
                     t(row.bookingStatus.toLowerCase() + "BookingStatus")
                 );
             }
@@ -139,34 +139,41 @@ function ArchiveBookings(props) {
     }, [filterText]);
 
     return (
-        <div className="container">
+        <div className="container-fluid mb-2">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('archiveReservations')}</li>
             </BreadCrumb>
-            <div className="floating-box">
-                <div>
-                    <h1 className="float-left">{t('archiveReservations')}</h1>
-                    <Button className="btn-secondary float-right m-2" onClick={event => {
-                        getArchiveBookings().then(res => {
-                            setData(res.data);
-                            setFilterText('')
-                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
-                        }).catch(err => {
-                            ResponseErrorHandler(err, dispatchNotificationDanger)
-                        })
-                    }}>{t("refresh")}</Button>
-                </div>
-                <DataTable className={"rounded-0"}
-                           noDataComponent={i18n.t('table.no.result')}
-                           columns={columns}
-                           data={filteredItems}
-                           subHeader
-                           theme={themeColor}
-                           subHeaderComponent={subHeaderComponentMemo}
-                />
-            </div>
+            <Container>
+                <Row>
+                    <Col xs={12} sm={12} md={12} lg={10} xl={8} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div className="">
+                            <div>
+                                <h1 className="float-left">{t('archiveReservations')}</h1>
+                                <Button className="btn-secondary float-right m-2" onClick={event => {
+                                    getArchiveBookings().then(res => {
+                                        setData(res.data);
+                                        setFilterText('')
+                                        dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                                    }).catch(err => {
+                                        ResponseErrorHandler(err, dispatchNotificationDanger)
+                                    })
+                                }}>{t("refresh")}</Button>
+                            </div>
+                            <DataTable className={"rounded-0"}
+                                       noDataComponent={i18n.t('table.no.result')}
+                                       columns={columns}
+                                       data={filteredItems}
+                                       subHeader
+                                       theme={themeColor}
+                                       subHeaderComponent={subHeaderComponentMemo}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }
+
 export default withNamespaces()(ArchiveBookings);

@@ -18,6 +18,7 @@ import {v4} from "uuid";
 import {Form, Formik} from "formik";
 import GridItemInput from "./controls/GridInputItem"
 import '../css/overlay.css'
+import {Col, Container, Row} from "react-bootstrap";
 
 function SignUp(props) {
     const {t, i18n} = props
@@ -64,8 +65,8 @@ function SignUp(props) {
             .catch(err => {
                 ResponseErrorHandler(err, dispatchNotificationDanger)
             }).finally(() => {
-                setSubmitting(false)
-            })
+            setSubmitting(false)
+        })
     }
 
     function validate(values) {
@@ -97,53 +98,61 @@ function SignUp(props) {
     return (
         <Formik {...{initialValues, validate, onSubmit, submitting}}>
             {({handleSubmit, isSubmitting}) => (
-                <div className="container">
+                <div className="container-fluid">
                     <BreadCrumb>
                         <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                         <li className="breadcrumb-item active" aria-current="page">{t('signUp')}</li>
                     </BreadCrumb>
-                    <div className="floating-box pt-2 pb-2">
+                    <Container>
+                        <Row>
+                            <Col xs={12} sm={11} md={9} lg={8} xl={7} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                                <div className="pt-2 pb-2">
 
-                        <h3 className="h3 text-center mt-3">{t('registering')}</h3>
-                        <div className="col-12 text-center pt-2">
-                            <div style={{color: "#7749F8", fontSize: 14, marginBottom: "1rem"}}>
-                                {t('obligatoryFields')}
-                            </div>
-                        </div>
+                                    <h3 className="h3 text-center mt-3">{t('registering')}</h3>
+                                    <div className="col-12 text-center pt-2">
+                                        <div style={{color: "#7749F8", fontSize: 14, marginBottom: "1rem"}}>
+                                            {t('obligatoryFields')}
+                                        </div>
+                                    </div>
 
-                        <Form className="row g-3">
-                            <div className="overlay" style={{display: submitting ? 'inline-flex' : 'none'}}>
-                                <div class="spinner-border" role="status">
-                                    <span class="sr-only">Loading...</span>
+                                    <Form className="row g-3">
+                                        <div className="overlay" style={{display: submitting ? 'inline-flex' : 'none'}}>
+                                            <div class="spinner-border" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+
+                                        <GridItemInput name="login" placeholder={t("login")} type="text"/>
+                                        <GridItemInput name="email" placeholder={t("emailAddress")} type="email"/>
+                                        <GridItemInput name="password" placeholder={t("password")} type="password"/>
+                                        <GridItemInput name="repeatedPassword" placeholder={t("repeatPassword")}
+                                                       type="password"/>
+                                        <GridItemInput name="firstname" placeholder={t("name")} type="text"/>
+                                        <GridItemInput name="lastname" placeholder={t("surname")} type="text"/>
+                                        <GridItemInput name="contactNumber" placeholder={t("phoneNumber")} type="text"/>
+
+                                        <div className="col-12 d-flex justify-content-center mb-2">
+                                            <ReCAPTCHA key={reCaptchaKey} theme={colorTheme}
+                                                       style={{display: "inline-block"}}
+                                                       hl={i18n.language} ref={recaptchaRef}
+                                                       sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
+                                        </div>
+
+                                        <div className="col-12 d-flex justify-content-center mb-3">
+                                            <button
+                                                className="btn btn-primary"
+                                                style={{backgroundColor: "#7749F8"}}
+                                                type="submit"
+                                            >
+                                                {t('signUp')}
+                                            </button>
+                                        </div>
+
+                                    </Form>
                                 </div>
-                            </div>
-
-                            <GridItemInput name="login" placeholder={t("login")} type="text"/>
-                            <GridItemInput name="email" placeholder={t("emailAddress")} type="email"/>
-                            <GridItemInput name="password" placeholder={t("password")} type="password"/>
-                            <GridItemInput name="repeatedPassword" placeholder={t("repeatPassword")} type="password"/>
-                            <GridItemInput name="firstname" placeholder={t("name")} type="text"/>
-                            <GridItemInput name="lastname" placeholder={t("surname")} type="text"/>
-                            <GridItemInput name="contactNumber" placeholder={t("phoneNumber")} type="text"/>
-
-                            <div className="col-12 d-flex justify-content-center mb-2">
-                                <ReCAPTCHA key={reCaptchaKey} theme={colorTheme} style={{display: "inline-block"}}
-                                           hl={i18n.language} ref={recaptchaRef}
-                                           sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
-                            </div>
-
-                            <div className="col-12 d-flex justify-content-center mb-3">
-                                <button
-                                    className="btn btn-primary"
-                                    style={{backgroundColor: "#7749F8"}}
-                                    type="submit"
-                                >
-                                    {t('signUp')}
-                                </button>
-                            </div>
-
-                        </Form>
-                    </div>
+                            </Col>
+                        </Row>
+                    </Container>
                 </div>
             )}
         </Formik>

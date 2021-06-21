@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {withNamespaces} from "react-i18next";
-import {Button, Container, Form} from "react-bootstrap";
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import "../css/UserInfo.css";
 import {useLocale} from "./LoginContext";
 
@@ -55,19 +55,16 @@ function UnassignManager(props) {
             name: 'Login',
             selector: 'login',
             sortable: true,
-            width: "15rem"
         },
         {
             name: t('name'),
             selector: 'firstname',
             sortable: true,
-            width: "15rem"
         },
         {
             name: t('surname'),
             selector: 'lastname',
             sortable: true,
-            width: "15rem"
         },
         {
             name: t('deleteManager'),
@@ -87,11 +84,12 @@ function UnassignManager(props) {
     }, []);
 
     const getManagerData = async (login) => {
-        const response = await api.getManagerData(login,{
+        const response = await api.getManagerData(login, {
             method: "GET",
             headers: {
                 Authorization: token,
-            }})
+            }
+        })
         return response;
     };
 
@@ -114,12 +112,15 @@ function UnassignManager(props) {
     }
 
     const getManagersAssignedToHotel = async () => {
-        return await api.getManagersAssignedToHotel(parsedQuery.id,{headers: {Authorization: token}})
+        return await api.getManagersAssignedToHotel(parsedQuery.id, {headers: {Authorization: token}})
     }
 
     const handleUnassignManagerConfirmation = (login, setSubmitting) => (
         dispatchCriticalDialog({
-            callbackOnSave: () => {handleUnassignManagerSubmit(login); history.push("/hotels")},
+            callbackOnSave: () => {
+                handleUnassignManagerSubmit(login);
+                history.push("/hotels")
+            },
             callbackOnCancel: () => setSubmitting(false)
         })
     )
@@ -148,36 +149,40 @@ function UnassignManager(props) {
     }, [filterText]);
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/">{t('adminDashboard')}</Link></li>
                 <li className="breadcrumb-item"><Link to="/hotels">{t('hotelList')}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">{t('unassignManager')}</li>
             </BreadCrumb>
-            <Container className="main-wrapper floating-box">
-                <div>
-                    <h1 className="float-left">{t("unassignManager")}</h1>
-                    <Button className="btn-secondary float-right m-2" onClick={event => {
-                        getManagersAssignedToHotel().then(res => {
-                            setData(res.data);
-                            setFilterText('')
-                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
-                        }).catch(err => {
-                            ResponseErrorHandler(err, dispatchNotificationDanger)
-                        })
-                    }}>{t("refresh")}</Button>
-                </div>
-                {data.length == 0 ?
-                    <div className="float-left">{t("emptyListManagerUnassign")}</div>
-                    : <DataTable className={"rounded-0"}
-                                 noDataComponent={i18n.t('table.no.result')}
-                                 columns={columns}
-                                 data={filteredItems}
-                                 subHeader
-                                 theme={themeColor}
-                                 subHeaderComponent={subHeaderComponentMemo}
-                    /> }
+            <Container className="">
+                <Row>
+                    <Col xs={12} sm={11} md={9} lg={8} xl={7} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div>
+                            <h1 className="float-left">{t("unassignManager")}</h1>
+                            <Button className="btn-secondary float-right m-2" onClick={event => {
+                                getManagersAssignedToHotel().then(res => {
+                                    setData(res.data);
+                                    setFilterText('')
+                                    dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                                }).catch(err => {
+                                    ResponseErrorHandler(err, dispatchNotificationDanger)
+                                })
+                            }}>{t("refresh")}</Button>
+                        </div>
+                        {data.length == 0 ?
+                            <div className="float-left">{t("emptyListManagerUnassign")}</div>
+                            : <DataTable className={"rounded-0"}
+                                         noDataComponent={i18n.t('table.no.result')}
+                                         columns={columns}
+                                         data={filteredItems}
+                                         subHeader
+                                         theme={themeColor}
+                                         subHeaderComponent={subHeaderComponentMemo}
+                            />}
+                    </Col>
+                </Row>
             </Container>
         </div>
     );

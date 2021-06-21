@@ -122,12 +122,8 @@
 }
 
 .greeting {
-  position: absolute;
   font-style: normal;
   font-weight: bold;
   font-size: 82px;
   color: white;
-  left: 10%;
-  right: 10%;
-  top: 30%;
 }

@@ -3,14 +3,11 @@ import BreadCrumb from "../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
-import {Button} from "react-bootstrap";
+import {Button, Col, Container, Row} from "react-bootstrap";
 import {useLocale} from "../LoginContext";
 import {api} from "../../Api";
 import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
-import {
-    useNotificationDangerAndInfinity,
-    useNotificationSuccessAndShort
-} from "../Utils/Notification/NotificationProvider";
+import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "../Utils/Notification/NotificationProvider";
 import {useHistory} from "react-router";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import {useThemeColor} from '../Utils/ThemeColor/ThemeColorProvider';
@@ -60,8 +57,7 @@ function HotelList(props) {
                     backgroundColor: state.isFocused ? "#424242" : "",
                     color: state.isFocused ? "#f8f9fa" : "#424242"
                 }
-            }
-            else {
+            } else {
                 return {
                     ...styles,
                     backgroundColor: state.isFocused ? "#7749F8FF" : "#f8f9fa",
@@ -77,12 +73,11 @@ function HotelList(props) {
                     color: "#f8f9fa",
 
                 }
-            }
-            else {
+            } else {
                 return {
                     ...styles,
                     backgroundColor: "#f8f9fa",
-                    color:"#a8a4a4"
+                    color: "#a8a4a4"
                 }
             }
         },
@@ -93,11 +88,10 @@ function HotelList(props) {
                     color: "#f8f9fa",
 
                 }
-            }
-            else {
+            } else {
                 return {
                     ...styles,
-                    color:"#a8a4a4"
+                    color: "#a8a4a4"
                 }
             }
         },
@@ -108,8 +102,7 @@ function HotelList(props) {
                     backgroundColor: "#424242",
                     color: "#f8f9fa"
                 }
-            }
-            else {
+            } else {
                 return {
                     ...styles,
                     backgroundColor: "#f8f9fa"
@@ -125,8 +118,7 @@ function HotelList(props) {
         setSelectedValue([])
         if (event.target.value !== '') {
             fetchSearchedData(event.target.value)
-        }
-        else {
+        } else {
             fetchData()
         }
     }
@@ -153,8 +145,7 @@ function HotelList(props) {
                 if (a[sortProperty] > b[sortProperty]) return 1;
                 return 0;
             })
-        }
-        else if (property === 1) {
+        } else if (property === 1) {
             const sortProperty = types[property];
             sorted = [...sortData].sort((a, b) => {
                 if (a[sortProperty] === undefined) return 1;
@@ -163,8 +154,7 @@ function HotelList(props) {
                 if (b[sortProperty] > a[sortProperty]) return 1;
                 return 0;
             })
-        }
-        else if (property === 2){
+        } else if (property === 2) {
             const sortProperty = types[property - 1]
             sorted = [...sortData].sort((a, b) => {
                 if (b[sortProperty] > a[sortProperty]) return -1;
@@ -184,8 +174,7 @@ function HotelList(props) {
             .then(res => {
                 if (sortSelectedValue !== undefined && sortSelectedValue !== '') {
                     sortHotelData(sortSelectedValue.value - 1, res.data)
-                }
-                else {
+                } else {
                     setData(res.data)
                 }
             })
@@ -195,7 +184,7 @@ function HotelList(props) {
     }
 
     const handleMinValueChange = (e) => {
-        let { value, min, max } = e.target;
+        let {value, min, max} = e.target;
         if (value !== '') {
             value = Math.max(Number(min), Math.min(Number(max), Number(value)));
         }
@@ -203,7 +192,7 @@ function HotelList(props) {
     }
 
     const handleMaxValueChange = (e) => {
-        let { value, min, max } = e.target;
+        let {value, min, max} = e.target;
         if (value !== '') {
             value = Math.max(Number(min), Math.min(Number(max), Number(value)));
         }
@@ -215,8 +204,7 @@ function HotelList(props) {
             .then(res => {
                 if (sortSelectedValue !== undefined && sortSelectedValue !== '') {
                     sortHotelData(sortSelectedValue.value - 1, res.data)
-                }
-                else {
+                } else {
                     setData(res.data)
                 }
             }).catch(res => {
@@ -254,7 +242,7 @@ function HotelList(props) {
             name: t('details'),
             selector: 'details',
             cell: row => {
-                return(
+                return (
                     <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         history.push('/hotels/hotelInfo?id=' + row.id);
                     }}>{t('details')}</Button>
@@ -298,7 +286,7 @@ function HotelList(props) {
             name: t('details'),
             selector: 'details',
             cell: row => {
-                return(
+                return (
                     <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         history.push('/hotels/hotelInfo?id=' + row.id);
                     }}>{t('details')}</Button>
@@ -320,7 +308,7 @@ function HotelList(props) {
             name: t('deleteManager'),
             selector: 'delete',
             cell: row => {
-                return(
+                return (
                     <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         history.push('/hotels/unassignManager?id=' + row.id);
                     }}>{t("delete")}</Button>
@@ -357,7 +345,7 @@ function HotelList(props) {
     }
 
     return (
-        <div className="container">
+        <div className="container-fluid mb-2">
             {token !== null && token !== '' ? (
                 <BreadCrumb>
                     <li className="breadcrumb-item"><Link to="/">{t('mainPage')}</Link></li>
@@ -378,162 +366,178 @@ function HotelList(props) {
                     <li className="breadcrumb-item active" aria-current="page">{t('hotelList')}</li>
                 </BreadCrumb>
             )}
-            <div className="floating-box" style={{width: "75rem"}}>
-                <div>
-                    <h1>{t('hotelList')}</h1>
-                </div>
-                <div className="d-flex flex-column">
-                    <div className="d-flex float-right flex-wrap">
-                        <h4
-                            className="float-right align-self-center mr-1">
-                            {t('sort.by')}
-                        </h4>
-                        <Select
-                            className="align-self-center w-25"
-                            placeholder=''
-                            value={sortSelectedValue}
-                            options={sortingTypes}
-                            styles={selectStyles}
-                            onChange={handleSelectedSortValueChange}
-                        />
-                        <input
-                            className="input m-2 w-25"
-                            type="text"
-                            placeholder={t("search.hotel")}
-                            value={searchTerm}
-                            onChange={handleSearchTermChange}
-                            style={themeColor === "light" ? ({backgroundColor: "#f8f9fa"}) : ({color: "#f8f9fa", backgroundColor: "#424242"})}
-                        />
-                        {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
-                            <Button className="btn-primary float-right m-2" onClick={event => {
-                                history.push('/hotels/addHotel');
-                            }}>{t("addHotel")}</Button>
-                        ) : null}
-                        <Button className="btn-secondary float-right m-2" onClick={event => {
-                            getAllHotels().then(res => {
-                                setData(res.data);
-                                setFilterText('')
-                                dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
-                            }).catch(err => {
-                                ResponseErrorHandler(err, dispatchNotificationDanger)
-                            })
-                        }}>{t("refresh")}</Button>
-                    </div>
-                    <div className="d-flex float-right flex-wrap">
-                        <h4
-                            className="align-self-center">
-                            {t('rating')}
-                        </h4>
-                        <input
-                            className="input m-2"
-                            type="number"
-                            step='0.1'
-                            min='1'
-                            max='5'
-                            placeholder={t('rating.minimal')}
-                            value={minRatingValue}
-                            onChange={handleMinValueChange}
-                            style={themeColor === "light" ? ({backgroundColor: "#f8f9fa", minWidth: "10%"}) : ({color: "#f8f9fa", backgroundColor: "#424242", minWidth: "10%"})}
-                        />
-                        <input
-                            className="input m-2"
-                            type="number"
-                            step="0.1"
-                            min='1'
-                            max='5'
-                            placeholder={t('rating.maximal')}
-                            value={maxRatingValue}
-                            onChange={handleMaxValueChange}
-                            style={themeColor === "light" ? ({backgroundColor: "#f8f9fa", minWidth: "10%"}) : ({color: "#f8f9fa", backgroundColor: "#424242", minWidth: "10%"})}
-                        />
-                        <h4
-                        className="align-self-center mr-1">
-                        {t('text.animal.type')}
-                        </h4>
-                        <Select
-                            className="dropdown align-self-center"
-                            placeholder=''
-                            value={animalTypes.filter(obj => selectedValue.includes(obj.value))}
-                            options={animalTypes}
-                            onChange={handleSelectedValueChange}
-                            styles={selectStyles}
-                            closeMenuOnSelect={false}
-                            isMulti
-                            isClearable
-                        />
-                        <Button
-                            onClick={handleFilterClick}
-                            className="btn-secondary float-right m-2">
-                            {t('filter.button')}
-                        </Button>
-                    </div>
-                </div>
-                {(token === null || token === '') &&
-                    <div id={"hotel-list"} className={"container-fluid"}>
-                        <div style={{
-                            display: 'flex',
-                            flex: '1',
-                            flexDirection: 'row',
-                            overflowY: "scroll",
-                            height: '25rem'
-                        }}>
-                            <>
-                                <div className='row-wrapper w-100' style={{padding: '1rem'}}>
-                                    <div className={"row"} style={{display: "flex"}}>
-                                        {data.map(hotel => (
-                                            <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
-                                                <HotelItem key={hotel.id} hotel={hotel}/>
-                                            </div>
-                                        ))}
-                                    </div>
+            <Container>
+                <Row>
+                    <Col xs={12} className={"floating-no-absolute py-4 mx-auto mb-2"}>
+                        <div>
+                            <div>
+                                <h1>{t('hotelList')}</h1>
+                            </div>
+                            <div className="d-flex flex-column">
+                                <div className="d-flex float-right flex-wrap">
+                                    <h4
+                                        className="float-right align-self-center mr-1">
+                                        {t('sort.by')}
+                                    </h4>
+                                    <Select
+                                        className="align-self-center w-25"
+                                        placeholder=''
+                                        value={sortSelectedValue}
+                                        options={sortingTypes}
+                                        styles={selectStyles}
+                                        onChange={handleSelectedSortValueChange}
+                                    />
+                                    <input
+                                        className="input m-2 w-25"
+                                        type="text"
+                                        placeholder={t("search.hotel")}
+                                        value={searchTerm}
+                                        onChange={handleSearchTermChange}
+                                        style={themeColor === "light" ? ({backgroundColor: "#f8f9fa"}) : ({
+                                            color: "#f8f9fa",
+                                            backgroundColor: "#424242"
+                                        })}
+                                    />
+                                    {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
+                                        <Button className="btn-primary float-right m-2" onClick={event => {
+                                            history.push('/hotels/addHotel');
+                                        }}>{t("addHotel")}</Button>
+                                    ) : null}
+                                    <Button className="btn-secondary float-right m-2" onClick={event => {
+                                        getAllHotels().then(res => {
+                                            setData(res.data);
+                                            setFilterText('')
+                                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                                        }).catch(err => {
+                                            ResponseErrorHandler(err, dispatchNotificationDanger)
+                                        })
+                                    }}>{t("refresh")}</Button>
                                 </div>
-                            </>
-                        </div>
-                    </div>
-                }
-                {(token !== null && token !== '' && currentRole === rolesConstant.client) &&
-                    <div id={"hotel-list"} className={"container-fluid"}>
-                        <div style={{
-                            display: 'flex',
-                            flex: '1',
-                            flexDirection: 'row',
-                            overflowY: "scroll",
-                            height: '25rem'
-                        }}>
-                            <>
-                                <div className='row-wrapper w-100' style={{padding: '1rem'}}>
-                                    <div className={"row"} style={{display: "flex"}}>
-                                        {data.map(hotel => (
-                                            <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
-                                                <HotelItem key={hotel.id} hotel={hotel}/>
-                                            </div>
-                                        ))}
-                                    </div>
+                                <div className="d-flex float-right flex-wrap">
+                                    <h4
+                                        className="align-self-center">
+                                        {t('rating')}
+                                    </h4>
+                                    <input
+                                        className="input m-2"
+                                        type="number"
+                                        step='0.1'
+                                        min='1'
+                                        max='5'
+                                        placeholder={t('rating.minimal')}
+                                        value={minRatingValue}
+                                        onChange={handleMinValueChange}
+                                        style={themeColor === "light" ? ({
+                                            backgroundColor: "#f8f9fa",
+                                            minWidth: "10%"
+                                        }) : ({color: "#f8f9fa", backgroundColor: "#424242", minWidth: "10%"})}
+                                    />
+                                    <input
+                                        className="input m-2"
+                                        type="number"
+                                        step="0.1"
+                                        min='1'
+                                        max='5'
+                                        placeholder={t('rating.maximal')}
+                                        value={maxRatingValue}
+                                        onChange={handleMaxValueChange}
+                                        style={themeColor === "light" ? ({
+                                            backgroundColor: "#f8f9fa",
+                                            minWidth: "10%"
+                                        }) : ({color: "#f8f9fa", backgroundColor: "#424242", minWidth: "10%"})}
+                                    />
+                                    <h4
+                                        className="align-self-center mr-1">
+                                        {t('text.animal.type')}
+                                    </h4>
+                                    <Select
+                                        className="dropdown align-self-center"
+                                        placeholder=''
+                                        value={animalTypes.filter(obj => selectedValue.includes(obj.value))}
+                                        options={animalTypes}
+                                        onChange={handleSelectedValueChange}
+                                        styles={selectStyles}
+                                        closeMenuOnSelect={false}
+                                        isMulti
+                                        isClearable
+                                    />
+                                    <Button
+                                        onClick={handleFilterClick}
+                                        className="btn-secondary float-right m-2">
+                                        {t('filter.button')}
+                                    </Button>
                                 </div>
-                            </>
+                            </div>
+                            {(token === null || token === '') &&
+                            <div id={"hotel-list"} className={"container-fluid"}>
+                                <div style={{
+                                    display: 'flex',
+                                    flex: '1',
+                                    flexDirection: 'row',
+                                    overflowY: "scroll",
+                                    height: '25rem'
+                                }}>
+                                    <>
+                                        <div className='row-wrapper w-100' style={{padding: '1rem'}}>
+                                            <div className={"row"} style={{display: "flex"}}>
+                                                {data.map(hotel => (
+                                                    <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
+                                                        <HotelItem key={hotel.id} hotel={hotel}/>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </>
+                                </div>
+                            </div>
+                            }
+                            {(token !== null && token !== '' && currentRole === rolesConstant.client) &&
+                            <div id={"hotel-list"} className={"container-fluid"}>
+                                <div style={{
+                                    display: 'flex',
+                                    flex: '1',
+                                    flexDirection: 'row',
+                                    overflowY: "scroll",
+                                    height: '25rem'
+                                }}>
+                                    <>
+                                        <div className='row-wrapper w-100' style={{padding: '1rem'}}>
+                                            <div className={"row"} style={{display: "flex"}}>
+                                                {data.map(hotel => (
+                                                    <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
+                                                        <HotelItem key={hotel.id} hotel={hotel}/>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </>
+                                </div>
+                            </div>
+                            }
+                            {(token !== null && token !== '' && currentRole === rolesConstant.manager) &&
+                            <DataTable className={"rounded-0"}
+                                       noDataComponent={i18n.t('table.no.result')}
+                                       columns={managerColumns}
+                                       data={filteredItems}
+                                       subHeader
+                                       theme={themeColor}
+                            />
+                            }
+                            {(token !== null && token !== '' && currentRole === rolesConstant.admin) &&
+                            <DataTable className={"rounded-0"}
+                                       noDataComponent={i18n.t('table.no.result')}
+                                       columns={adminColumns}
+                                       data={filteredItems}
+                                       subHeader
+                                       theme={themeColor}
+                            />
+                            }
                         </div>
-                    </div>
-                }
-                {(token !== null && token !== '' && currentRole === rolesConstant.manager) &&
-                    <DataTable className={"rounded-0"}
-                               noDataComponent={i18n.t('table.no.result')}
-                               columns={managerColumns}
-                               data={filteredItems}
-                               subHeader
-                               theme={themeColor}
-                    />
-                }
-                {(token !== null && token !== '' && currentRole === rolesConstant.admin) &&
-                    <DataTable className={"rounded-0"}
-                               noDataComponent={i18n.t('table.no.result')}
-                               columns={adminColumns}
-                               data={filteredItems}
-                               subHeader
-                               theme={themeColor}
-                    />
-                }
-            </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }
+
 export default withNamespaces()(HotelList);

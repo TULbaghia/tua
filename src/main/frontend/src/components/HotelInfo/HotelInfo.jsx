@@ -86,7 +86,7 @@ function HotelInfo(props) {
         if (currentRole === rolesConstant.client) {
             getUsersBookings().then(res => {
                 console.log(res.data);
-                setUserBookings(res.data)
+                setUserBookings(res.data.filter(x => x.bookingStatus === 'FINISHED'));
             }).catch(err => {
                 if (err.response != null) {
                     if (err.response.status === 500) {

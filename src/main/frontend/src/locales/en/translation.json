@@ -410,8 +410,8 @@
 
   "choose.animal.type": "Choose animal type",
   "filter.button": "Filter",
-  "rating.minimal": "Minimal rating",
-  "rating.maximal": "Maximal rating",
+  "rating.minimal": "Min",
+  "rating.maximal": "Max",
   "text.animal.type": "Animal type",
 
   "sort.by.rating.ascending": "Rating ascending",

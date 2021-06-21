@@ -216,6 +216,7 @@ public class BookingManager {
         Booking booking = bookingFacade.find(bookingId);
         if (booking.getStatus().equals(BookingStatus.IN_PROGRESS)) {
             booking.setStatus(BookingStatus.FINISHED);
+            booking.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
             bookingFacade.edit(booking);
         } else if (booking.getStatus().equals(BookingStatus.FINISHED)) {
             throw BookingException.bookingAlreadyFinished();

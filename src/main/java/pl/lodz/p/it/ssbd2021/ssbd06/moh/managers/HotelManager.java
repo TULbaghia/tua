@@ -24,10 +24,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -94,8 +91,8 @@ public class HotelManager {
     /**
      * Zwraca listę hoteli po przefiltrowaniu
      *
-     * @param fromRating dolny przedział oceny hotelu
-     * @param toRating górny przedział oceny hotelu
+     * @param fromRating  dolny przedział oceny hotelu
+     * @param toRating    górny przedział oceny hotelu
      * @param animalTypes lista typów zwierząt
      * @return lista hoteli
      * @throws AppBaseException podczas błędu związanego z bazą danych
@@ -103,15 +100,17 @@ public class HotelManager {
     @PermitAll
     public List<HotelDto> getAllFilter(BigDecimal fromRating,
                                        BigDecimal toRating,
-                                       List<AnimalType> animalTypes) throws AppBaseException {
+                                       List<AnimalType> animalTypes,
+                                       String searchQuery) throws AppBaseException {
         List<Hotel> hotels = getAll()
                 .stream()
                 .filter(hotel -> {
                     try {
-                        return hotel.getRating() != null
-                                && hotel.getRating().compareTo(fromRating) >= 0
-                                && hotel.getRating().compareTo(toRating) <= 0
-                                && checkHotelPetTypeListAllowed(animalTypes, hotel.getId());
+                        return Objects.requireNonNullElse(hotel.getRating(), BigDecimal.ZERO).compareTo(fromRating) >= 0
+                                &&
+                                Objects.requireNonNullElse(hotel.getRating(), BigDecimal.TEN).compareTo(toRating) <= 0
+                                && checkHotelPetTypeListAllowed(animalTypes, hotel.getId())
+                                && checkHotelNameContainsString(hotel, searchQuery);
                     } catch (AppBaseException e) {
                         e.printStackTrace();
                         return false;
@@ -119,7 +118,7 @@ public class HotelManager {
                 })
                 .collect(Collectors.toList());
         List<HotelDto> result = new ArrayList<>();
-        for (Hotel hotel: hotels) {
+        for (Hotel hotel : hotels) {
             HotelDto hotelDto = Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
             hotelDto.setCityName(hotel.getCity().getName());
             result.add(hotelDto);
@@ -194,7 +193,7 @@ public class HotelManager {
     /**
      * Przypisuje managera (po loginie) do hotelu
      *
-     * @param hotelId      identyfikator hotelu
+     * @param hotelId     identyfikator hotelu
      * @param managerData rola managera którego przypisać do hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
@@ -299,8 +298,9 @@ public class HotelManager {
 
     /**
      * Sprawdza czy dany hotel oferuje boxy dla danego typu zwierzęcia.
+     *
      * @param animalType rodzaj zwierzęcia
-     * @param hotelId identyfikator hotelu
+     * @param hotelId    identyfikator hotelu
      * @return wartość logiczna
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
@@ -316,19 +316,27 @@ public class HotelManager {
 
     /**
      * Sprawdza czy dany hotel oferuje boxy dla danych typów zwierząt.
+     *
      * @param animalTypes lista typów zwierząt
-     * @param hotelId identyfikator hotelu
+     * @param hotelId     identyfikator hotelu
      * @return wartość logiczna
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @PermitAll
     private boolean checkHotelPetTypeListAllowed(List<AnimalType> animalTypes, Long hotelId) throws AppBaseException {
-        for (AnimalType type: animalTypes){
-            if (!checkHotelPetTypeAllowed(type, hotelId)){
+        for (AnimalType type : animalTypes) {
+            if (!checkHotelPetTypeAllowed(type, hotelId)) {
                 return false;
             }
         }
         return true;
+    }
+
+    @PermitAll
+    public boolean checkHotelNameContainsString(Hotel hotel, String text) {
+        return hotel.getName().toLowerCase().contains(text.toLowerCase())
+                || hotel.getAddress().toLowerCase().contains(text.toLowerCase())
+                || hotel.getCity().getName().toLowerCase().contains(text.toLowerCase());
     }
 
     /**
@@ -343,6 +351,7 @@ public class HotelManager {
                 stream()
                 .filter(hotel -> hotel.getBoxList().stream()
                         .anyMatch(b -> b.getBookingLineList().stream()
-                                .anyMatch(x -> x.getBooking().getId().equals(id)))).findFirst().orElseThrow(HotelException::noHotelForBooking);
+                                .anyMatch(x -> x.getBooking().getId().equals(id)))).findFirst()
+                .orElseThrow(HotelException::noHotelForBooking);
     }
 }

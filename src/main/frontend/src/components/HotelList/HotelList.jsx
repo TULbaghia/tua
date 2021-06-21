@@ -32,8 +32,8 @@ function HotelList(props) {
     const [searchTerm, setSearchTerm] = React.useState('');
     const [selectedValue, setSelectedValue] = useState([]);
     const [sortSelectedValue, setSortSelectedValue] = useState();
-    const [minRatingValue, setMinRatingValue] = useState(1);
-    const [maxRatingValue, setMaxRatingValue] = useState(5);
+    const [minRatingValue, setMinRatingValue] = useState();
+    const [maxRatingValue, setMaxRatingValue] = useState();
     const [data, setData] = useState([
         {
             id: "",
@@ -52,11 +52,79 @@ function HotelList(props) {
         return item.name && item.name.toLowerCase().includes(filterText.toLowerCase());
     });
 
+    const selectStyles = {
+        option: (styles, state) => {
+            if (themeColor === "dark") {
+                return {
+                    ...styles,
+                    backgroundColor: state.isFocused ? "#424242" : "",
+                    color: state.isFocused ? "#f8f9fa" : "#424242"
+                }
+            }
+            else {
+                return {
+                    ...styles,
+                    backgroundColor: state.isFocused ? "#7749F8FF" : "#f8f9fa",
+                    color: state.isFocused ? "#f8f9fa" : "#424242"
+                }
+            }
+        },
+        multiValue: styles => {
+            if (themeColor === "dark") {
+                return {
+                    ...styles,
+                    backgroundColor: "#a8a4a4",
+                    color: "#f8f9fa",
+
+                }
+            }
+            else {
+                return {
+                    ...styles,
+                    backgroundColor: "#f8f9fa",
+                    color:"#a8a4a4"
+                }
+            }
+        },
+        singleValue: styles => {
+            if (themeColor === "dark") {
+                return {
+                    ...styles,
+                    color: "#f8f9fa",
+
+                }
+            }
+            else {
+                return {
+                    ...styles,
+                    color:"#a8a4a4"
+                }
+            }
+        },
+        control: styles => {
+            if (themeColor === "dark") {
+                return {
+                    ...styles,
+                    backgroundColor: "#424242",
+                    color: "#f8f9fa"
+                }
+            }
+            else {
+                return {
+                    ...styles,
+                    backgroundColor: "#f8f9fa"
+                }
+            }
+        }
+    }
+
     const handleSearchTermChange = (event) => {
         setSearchTerm(event.target.value)
+        setMinRatingValue('')
+        setMaxRatingValue('')
+        setSelectedValue([])
         if (event.target.value !== '') {
             fetchSearchedData(event.target.value)
-            setSortSelectedValue('')
         }
         else {
             fetchData()
@@ -69,10 +137,10 @@ function HotelList(props) {
 
     const handleSelectedSortValueChange = (e) => {
         setSortSelectedValue(e);
-        sortHotelData(e.value - 1)
+        sortHotelData(e.value - 1, data)
     }
 
-    const sortHotelData = (property) => {
+    const sortHotelData = (property, sortData) => {
         const types = [
             'name',
             'rating'
@@ -80,30 +148,46 @@ function HotelList(props) {
         let sorted
         if (property === 0) {
             const sortProperty = types[property];
-            sorted = [...data].sort((a, b) => {
-                if (a.name < b[sortProperty]) return -1;
+            sorted = [...sortData].sort((a, b) => {
+                if (a[sortProperty] < b[sortProperty]) return -1;
                 if (a[sortProperty] > b[sortProperty]) return 1;
                 return 0;
             })
         }
         else if (property === 1) {
             const sortProperty = types[property];
-            sorted = [...data].sort((a, b) => b[sortProperty] - a[sortProperty])
+            sorted = [...sortData].sort((a, b) => {
+                if (a[sortProperty] === undefined) return 1;
+                if (b[sortProperty] === undefined) return -1;
+                if (b[sortProperty] < a[sortProperty]) return -1;
+                if (b[sortProperty] > a[sortProperty]) return 1;
+                return 0;
+            })
         }
-        else {
+        else if (property === 2){
             const sortProperty = types[property - 1]
-            sorted = [...data].sort((a, b) => a[sortProperty] - b[sortProperty])
+            sorted = [...sortData].sort((a, b) => {
+                if (b[sortProperty] > a[sortProperty]) return -1;
+                if (b[sortProperty] < a[sortProperty]) return 1;
+                if (a[sortProperty] === undefined) return 1;
+                if (b[sortProperty] === undefined) return -1;
+                return 0
+            })
         }
         setData(sorted);
     }
 
     const handleFilterClick = () => {
-        let query = queryBuilder(minRatingValue, maxRatingValue, selectedValue)
+        let query = queryBuilder(minRatingValue, maxRatingValue, selectedValue, searchTerm)
 
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/hotels/filter` + query)
             .then(res => {
-                setData(res.data)
-                setSortSelectedValue('')
+                if (sortSelectedValue !== undefined && sortSelectedValue !== '') {
+                    sortHotelData(sortSelectedValue.value - 1, res.data)
+                }
+                else {
+                    setData(res.data)
+                }
             })
             .catch(err => {
                 ResponseErrorHandler(err, dispatchNotificationDanger)
@@ -111,17 +195,30 @@ function HotelList(props) {
     }
 
     const handleMinValueChange = (e) => {
-        setMinRatingValue(e.target.value)
+        let { value, min, max } = e.target;
+        if (value !== '') {
+            value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+        }
+        setMinRatingValue(value)
     }
 
     const handleMaxValueChange = (e) => {
-        setMaxRatingValue(e.target.value)
+        let { value, min, max } = e.target;
+        if (value !== '') {
+            value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+        }
+        setMaxRatingValue(value)
     }
 
     const fetchSearchedData = (query) => {
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/hotels/look/${query}`)
             .then(res => {
-                setData(res.data)
+                if (sortSelectedValue !== undefined && sortSelectedValue !== '') {
+                    sortHotelData(sortSelectedValue.value - 1, res.data)
+                }
+                else {
+                    setData(res.data)
+                }
             }).catch(res => {
             if (res.response != null) {
                 if (res.response.status === 403) {
@@ -240,7 +337,9 @@ function HotelList(props) {
         getAllHotels().then(r => {
             console.log(r);
             setData(r.data);
-            setSortSelectedValue('')
+            if (sortSelectedValue !== undefined && sortSelectedValue !== '') {
+                sortHotelData(sortSelectedValue.value - 1, r.data)
+            }
         }).catch(r => {
             if (r.response != null) {
                 if (r.response.status === 403) {
@@ -283,84 +382,91 @@ function HotelList(props) {
                 <div>
                     <h1>{t('hotelList')}</h1>
                 </div>
-                <div className="d-flex flex-row-reverse">
-                    <Button className="btn-secondary float-right m-2" onClick={event => {
-                        getAllHotels().then(res => {
-                            setData(res.data);
-                            setFilterText('')
-                            dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
-                        }).catch(err => {
-                            ResponseErrorHandler(err, dispatchNotificationDanger)
-                        })
-                    }}>{t("refresh")}</Button>
-                    {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
-                        <Button className="btn-primary float-right m-2" style={{backgroundColor: "#7749F8"}} onClick={event => {
-                            history.push('/hotels/addHotel');
-                        }}>{t("addHotel")}</Button>
-                    ) : ( null )}
-                    <input
-                        className="input float-right m-2"
-                        type="text"
-                        placeholder={t("search.hotel")}
-                        value={searchTerm}
-                        onChange={handleSearchTermChange}
-                        style={themeColor === "light" ? ({backgroundColor: "#f8f9fa"}) : ({color: "#f8f9fa", backgroundColor: "#424242"})}
-                    />
-                    <Select
-                        className="align-self-center w-25"
-                        placeholder='...'
-                        value={sortSelectedValue}
-                        options={sortingTypes}
-                        onChange={handleSelectedSortValueChange}
-                    />
-                    <h4
-                        className="float-right align-self-center">
-                        {t('sort.by')}
-                    </h4>
-                </div>
-                <div className="d-flex flex-row-reverse">
-                    <Button
-                        onClick={handleFilterClick}
-                        className="btn-secondary float-right m-2">
-                        {t('filter.button')}
-                    </Button>
-                    <Select
-                        className="float-right dropdown align-self-center w-25"
-                        placeholder={t("choose.animal.type")}
-                        value={animalTypes.filter(obj => selectedValue.includes(obj.value))}
-                        options={animalTypes}
-                        onChange={handleSelectedValueChange}
-                        isMulti
-                        isClearable
-                    />
-                    <h4
-                        className="float-right align-self-center">
+                <div className="d-flex flex-column">
+                    <div className="d-flex float-right flex-wrap">
+                        <h4
+                            className="float-right align-self-center mr-1">
+                            {t('sort.by')}
+                        </h4>
+                        <Select
+                            className="align-self-center w-25"
+                            placeholder=''
+                            value={sortSelectedValue}
+                            options={sortingTypes}
+                            styles={selectStyles}
+                            onChange={handleSelectedSortValueChange}
+                        />
+                        <input
+                            className="input m-2 w-25"
+                            type="text"
+                            placeholder={t("search.hotel")}
+                            value={searchTerm}
+                            onChange={handleSearchTermChange}
+                            style={themeColor === "light" ? ({backgroundColor: "#f8f9fa"}) : ({color: "#f8f9fa", backgroundColor: "#424242"})}
+                        />
+                        {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
+                            <Button className="btn-primary float-right m-2" onClick={event => {
+                                history.push('/hotels/addHotel');
+                            }}>{t("addHotel")}</Button>
+                        ) : null}
+                        <Button className="btn-secondary float-right m-2" onClick={event => {
+                            getAllHotels().then(res => {
+                                setData(res.data);
+                                setFilterText('')
+                                dispatchNotificationSuccess({message: i18n.t('dataRefresh')})
+                            }).catch(err => {
+                                ResponseErrorHandler(err, dispatchNotificationDanger)
+                            })
+                        }}>{t("refresh")}</Button>
+                    </div>
+                    <div className="d-flex float-right flex-wrap">
+                        <h4
+                            className="align-self-center">
+                            {t('rating')}
+                        </h4>
+                        <input
+                            className="input m-2"
+                            type="number"
+                            step='0.1'
+                            min='1'
+                            max='5'
+                            placeholder={t('rating.minimal')}
+                            value={minRatingValue}
+                            onChange={handleMinValueChange}
+                            style={themeColor === "light" ? ({backgroundColor: "#f8f9fa", minWidth: "10%"}) : ({color: "#f8f9fa", backgroundColor: "#424242", minWidth: "10%"})}
+                        />
+                        <input
+                            className="input m-2"
+                            type="number"
+                            step="0.1"
+                            min='1'
+                            max='5'
+                            placeholder={t('rating.maximal')}
+                            value={maxRatingValue}
+                            onChange={handleMaxValueChange}
+                            style={themeColor === "light" ? ({backgroundColor: "#f8f9fa", minWidth: "10%"}) : ({color: "#f8f9fa", backgroundColor: "#424242", minWidth: "10%"})}
+                        />
+                        <h4
+                        className="align-self-center mr-1">
                         {t('text.animal.type')}
-                    </h4>
-                    <input
-                        className="input float-right m-2"
-                        type="number"
-                        step="0.1"
-                        min='1'
-                        max='5'
-                        placeholder={t('rating.maximal')}
-                        value={maxRatingValue}
-                        onChange={handleMaxValueChange}
-                    />
-                    <input
-                        className="input float-right m-2"
-                        type="number"
-                        step='0.1'
-                        min='1'
-                        max='5'
-                        placeholder={t('rating.minimal')}
-                        value={minRatingValue}
-                        onChange={handleMinValueChange}
-                    />
-                    <h4
-                        className="float-right align-self-center">
-                        {t('rating')}
-                    </h4>
+                        </h4>
+                        <Select
+                            className="dropdown align-self-center"
+                            placeholder=''
+                            value={animalTypes.filter(obj => selectedValue.includes(obj.value))}
+                            options={animalTypes}
+                            onChange={handleSelectedValueChange}
+                            styles={selectStyles}
+                            closeMenuOnSelect={false}
+                            isMulti
+                            isClearable
+                        />
+                        <Button
+                            onClick={handleFilterClick}
+                            className="btn-secondary float-right m-2">
+                            {t('filter.button')}
+                        </Button>
+                    </div>
                 </div>
                 {(token === null || token === '') &&
                     <div id={"hotel-list"} className={"container-fluid"}>
@@ -430,5 +536,4 @@ function HotelList(props) {
         </div>
     )
 }
-
 export default withNamespaces()(HotelList);

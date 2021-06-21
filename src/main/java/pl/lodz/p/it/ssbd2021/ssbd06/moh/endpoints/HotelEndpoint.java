@@ -81,8 +81,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     public List<HotelDto> lookForHotel(String searchQuery) throws AppBaseException {
         List<Hotel> hotels = hotelManager.getAll()
                 .stream()
-                .filter(hotel -> hotel.getName().toLowerCase().contains(searchQuery.toLowerCase())
-                        || hotel.getAddress().toLowerCase().contains(searchQuery.toLowerCase()))
+                .filter(hotel -> hotelManager.checkHotelNameContainsString(hotel, searchQuery))
                 .collect(Collectors.toList());
         List<HotelDto> result = new ArrayList<>();
         for (Hotel hotel : hotels) {
@@ -103,7 +102,8 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
                                        boolean bird,
                                        boolean rabbit,
                                        boolean lizard,
-                                       boolean turtle) throws AppBaseException {
+                                       boolean turtle,
+                                       String searchQuery) throws AppBaseException {
         List<AnimalType> animalTypes = new ArrayList<>();
         if (dog) animalTypes.add(AnimalType.DOG);
         if (cat) animalTypes.add(AnimalType.CAT);
@@ -112,7 +112,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
         if (rabbit) animalTypes.add(AnimalType.RABBIT);
         if (lizard) animalTypes.add(AnimalType.LIZARD);
         if (turtle) animalTypes.add(AnimalType.TURTLE);
-        return hotelManager.getAllFilter(fromRating, toRating, animalTypes);
+        return hotelManager.getAllFilter(fromRating, toRating, animalTypes, searchQuery);
     }
 
     @Override

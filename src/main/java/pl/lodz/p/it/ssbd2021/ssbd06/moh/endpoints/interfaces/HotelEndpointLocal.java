@@ -58,7 +58,7 @@ public interface HotelEndpointLocal extends CallingClass {
      * @param rabbit wartość logiczna określająca AnimalType.RABBIT
      * @param lizard wartość logiczna określająca AnimalType.LIZARD
      * @param turtle wartość logiczna określająca AnimalType.TURTLE
-     * @return
+     * @return Lista hoteli
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych
      */
     @PermitAll
@@ -70,7 +70,8 @@ public interface HotelEndpointLocal extends CallingClass {
                                 boolean bird,
                                 boolean rabbit,
                                 boolean lizard,
-                                boolean turtle) throws AppBaseException;
+                                boolean turtle,
+                                String searchQuery) throws AppBaseException;
 
     /**
      * Dodaje hotel

@@ -136,6 +136,7 @@ public class RatingController extends AbstractController {
      */
     @PATCH
     @RolesAllowed("hideHotelRating")
+    @EtagValidatorFilterBinding
     @Path("/changeVisibility/{ratingId}")
     @Operation(operationId = "changeVisibility", summary = "changeVisibility")
     public void changeVisibility(@PathParam("ratingId") Long ratingId) throws AppBaseException {

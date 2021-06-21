@@ -115,6 +115,7 @@ public class BookingController extends AbstractController {
      */
     @PATCH
     @RolesAllowed("endReservation")
+    @EtagValidatorFilterBinding
     @Path("/end/{id}")
     @Operation(operationId = "endBooking", summary = "endBooking")
     public void endBooking(@PathParam("id") Long bookingId) throws AppBaseException {

@@ -76,7 +76,7 @@ public class Hotel extends AbstractEntity implements Serializable {
 
     @Getter
     @Setter
-    @Size(min = 1, max = 127)
+    @Size(min = 1, max = 31)
     @Column(name = "image")
     @HotelImage
     private String image;

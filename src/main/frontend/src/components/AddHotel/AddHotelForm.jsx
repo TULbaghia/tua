@@ -130,15 +130,16 @@ function AddHotelForm() {
                                                              values={cities}
                                                              handleChange={handleChange}/>
                                         </Col>
-                                        <Col sm={6}>
+                                        <Col sm={6} className={"addHotelRight"}>
                                             <TextAreaComponent name="description"
                                                                obligatory
                                                                label={i18n.t('addHotel.add.description')}
                                                                handleChange={handleChange}/>
-                                            <TextAreaComponent name="image"
-                                                               placeholder="/static/media/example.jpg"
-                                                               label={i18n.t('addHotel.add.image')}
-                                                               handleChange={handleChange}/>
+                                            <FieldComponent name="image"
+                                                            obligatory={false}
+                                                            placeholder="/static/media/example.jpg"
+                                                            label={i18n.t('addHotel.add.image')}
+                                                            handleChange={handleChange}/>
                                         </Col>
                                     </Row>
                                     <Row>

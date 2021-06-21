@@ -26,7 +26,7 @@ function AppUsersPage(props) {
             <BreadCrumb>
                 <li className="breadcrumb-item">
                     <Link to="/">
-                        <div className="back"> {t('mainPage')} </div>
+                        <div> {t('mainPage')} </div>
                     </Link>
                 </li>
                 {currentRole === rolesConstant.admin && (

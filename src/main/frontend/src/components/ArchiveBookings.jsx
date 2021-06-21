@@ -96,7 +96,7 @@ function ArchiveBookings(props) {
             name: t('bookingDetails'),
             cell: row => {
                 return (
-                    <Button className="btn-sm" onClick={event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         history.push("/reservation/details/" + row.id + "?ref=archive");
                     }}>{t("bookingDetails.text")}</Button>
                 );

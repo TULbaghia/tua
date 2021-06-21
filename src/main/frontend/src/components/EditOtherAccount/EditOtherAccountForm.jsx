@@ -407,7 +407,7 @@ function BookingForm({t, i18n}) {
                                 }
                                 {isRole(rolesConstant.client) &&
                                 <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                        style={{backgroundColor: "indianred", marginBottom: "1rem"}}
+                                        style={{backgroundColor: "#dc3545", marginBottom: "1rem"}}
                                         onClick={handleRevokeRoleClient}>
                                     {t('revokeRoleClient')}
                                 </button>
@@ -421,7 +421,7 @@ function BookingForm({t, i18n}) {
                                 }
                                 {isRole(rolesConstant.manager) &&
                                 <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                        style={{backgroundColor: "indianred", marginBottom: "1rem"}}
+                                        style={{backgroundColor: "#dc3545", marginBottom: "1rem"}}
                                         onClick={handleRevokeRoleManager}>
                                     {t('revokeRoleManager')}
                                 </button>
@@ -435,7 +435,7 @@ function BookingForm({t, i18n}) {
                                 }
                                 {isRole(rolesConstant.admin) &&
                                 <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                        style={{backgroundColor: "indianred", marginBottom: "1rem"}}
+                                        style={{backgroundColor: "#dc3545", marginBottom: "1rem"}}
                                         onClick={handleRevokeRoleAdmin}>
                                     {t('revokeRoleAdmin')}
                                 </button>

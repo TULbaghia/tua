@@ -9,15 +9,14 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.HotelEndpointLocal;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.EtagValidatorFilterBinding;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.HotelEndpoint;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.math.BigDecimal;
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -146,8 +145,9 @@ public class HotelController extends AbstractController {
      */
     @DELETE
     @RolesAllowed("deleteHotel")
+    @Path("/{hotelId}")
     @Operation(operationId = "deleteHotel", summary = "deleteHotel")
-    public void deleteHotel(Long hotelId) throws AppBaseException {
+    public void deleteHotel(@PathParam("hotelId") Long hotelId) throws AppBaseException {
         repeat(() -> hotelEndpoint.deleteHotel(hotelId), hotelEndpoint);
     }
 

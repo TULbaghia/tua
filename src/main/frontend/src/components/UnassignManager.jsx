@@ -74,7 +74,7 @@ function UnassignManager(props) {
             selector: 'delete',
             cell: row => {
                 return (
-                    <Button className="btn-sm" onClick={event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         handleUnassignManagerConfirmation(row.login, parseInt(parsedQuery.id));
                     }}>{t("delete")}</Button>
                 )

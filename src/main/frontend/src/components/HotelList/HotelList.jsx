@@ -1,33 +1,27 @@
 import {withNamespaces} from 'react-i18next';
-import BreadCrumb from "./Partial/BreadCrumb";
+import BreadCrumb from "../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import DataTable from "react-data-table-component"
-import {Button, Card, Col, Form, Row} from "react-bootstrap";
-import {useLocale} from "./LoginContext";
-import {api} from "../Api";
-import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
+import {Button} from "react-bootstrap";
+import {useLocale} from "../LoginContext";
+import {api} from "../../Api";
+import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
 import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
-} from "./Utils/Notification/NotificationProvider";
-import {useHistory, useLocation} from "react-router";
-import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
-import {useThemeColor} from './Utils/ThemeColor/ThemeColorProvider';
-import {rolesConstant} from "../Constants";
+} from "../Utils/Notification/NotificationProvider";
+import {useHistory} from "react-router";
+import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
+import {useThemeColor} from '../Utils/ThemeColor/ThemeColorProvider';
+import {rolesConstant} from "../../Constants";
 import axios from "axios";
-import hotelPhoto from "../images/hotel.jpg";
 import Select from 'react-select';
-import {animalTypes, queryBuilder} from "./Utils/HotelsView/AnimalTypes";
-import {sortingTypes} from "./Utils/HotelsView/SortingTypes";
+import {animalTypes, queryBuilder} from "../Utils/HotelsView/AnimalTypes";
+import {sortingTypes} from "../Utils/HotelsView/SortingTypes";
+import HotelItem from "./HotelItem";
+import "./HotelListStyle.scss"
 
-const FilterComponent = ({filterText, onFilter, placeholderText}) => (
-    <>
-        <Form>
-            <Form.Control type="text" value={filterText} onChange={onFilter} placeholder={placeholderText}/>
-        </Form>
-    </>
-);
 
 function HotelList(props) {
     const {t, i18n} = props
@@ -35,7 +29,6 @@ function HotelList(props) {
     const {token, setToken, currentRole} = useLocale();
     const [filterText, setFilterText] = React.useState('');
     const themeColor = useThemeColor()
-    const [etag, setETag] = useState();
     const [searchTerm, setSearchTerm] = React.useState('');
     const [selectedValue, setSelectedValue] = useState([]);
     const [sortSelectedValue, setSortSelectedValue] = useState();
@@ -58,46 +51,6 @@ function HotelList(props) {
     const filteredItems = data.filter(item => {
         return item.name && item.name.toLowerCase().includes(filterText.toLowerCase());
     });
-
-    const HotelCard = ({hotel}) => (
-        <Col xs={12} md={6} lg={3} key={hotel.id}>
-            {themeColor === "light" ? (
-                <Card style={{width: '16rem', background: '#f5f5f5', marginRight: '20rem', marginTop: '2rem'}}>
-                    <Card.Img variant="top" src={hotel.image ? (hotel.image) : (hotelPhoto)}/>
-                    {hotel.name ? (
-                        <Card.Body>
-                            <Card.Title>{hotel.name}</Card.Title>
-                            <Card.Text>{hotel.cityName}</Card.Text>
-                            <Button className="btn-sm" onClick={event => {
-                                history.push('/hotels/hotelInfo?id=' + hotel.id);
-                            }}>{t('details')}</Button>
-                        </Card.Body>
-                    ) : (
-                        <Card.Body>
-                            <Card.Title>{t('emptyListHotel')}</Card.Title>
-                        </Card.Body>
-                    )}
-                </Card>
-            ) : (
-                <Card style={{width: '16rem', background: '#2b2b2b', marginRight: '20rem', marginTop: '2rem'}}>
-                    <Card.Img variant="top" src={hotel.image ? (hotel.image) : (hotelPhoto)}/>
-                    {hotel.name ? (
-                        <Card.Body>
-                            <Card.Title>{hotel.name}</Card.Title>
-                            <Card.Text>{hotel.cityName}</Card.Text>
-                            <Button className="btn-sm" onClick={event => {
-                                history.push('/hotels/hotelInfo?id=' + hotel.id);
-                            }}>{t('details')}</Button>
-                        </Card.Body>
-                    ) : (
-                        <Card.Body>
-                            <Card.Title>{t('emptyListHotel')}</Card.Title>
-                        </Card.Body>
-                    )}
-                </Card>
-            )}
-        </Col>
-    )
 
     const handleSearchTermChange = (event) => {
         setSearchTerm(event.target.value)
@@ -184,17 +137,17 @@ function HotelList(props) {
         {
             name: t('hotelName'),
             selector: 'name',
-            width: "10rem"
+            width: "15rem"
         },
         {
             name: t('address'),
             selector: 'address',
-            width: "10rem"
+            width: "15rem"
         },
         {
             name: t('city'),
             selector: 'cityName',
-            width: "10rem"
+            width: "15rem"
         },
         {
             name: t('rating'),
@@ -205,7 +158,7 @@ function HotelList(props) {
             selector: 'details',
             cell: row => {
                 return(
-                    <Button className="btn-sm" onClick={event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         history.push('/hotels/hotelInfo?id=' + row.id);
                     }}>{t('details')}</Button>
                 )
@@ -238,7 +191,7 @@ function HotelList(props) {
             selector: 'edit',
             cell: row => {
                 return (
-                    <Button className="btn-sm" onClick={event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         history.push('/hotels/editOtherHotel?id=' + row.id);
                     }}>{t("edit")}</Button>
                 )
@@ -249,7 +202,7 @@ function HotelList(props) {
             selector: 'details',
             cell: row => {
                 return(
-                    <Button className="btn-sm" onClick={event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         history.push('/hotels/hotelInfo?id=' + row.id);
                     }}>{t('details')}</Button>
                 )
@@ -260,7 +213,7 @@ function HotelList(props) {
             selector: 'assign',
             cell: row => {
                 return (
-                    <Button className="btn-sm" onClick={event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         history.push('/hotels/assignManager?id=' + row.id);
                     }}>{t("assign")}</Button>
                 )
@@ -271,7 +224,7 @@ function HotelList(props) {
             selector: 'delete',
             cell: row => {
                 return(
-                    <Button className="btn-sm" onClick={event => {
+                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
                         history.push('/hotels/unassignManager?id=' + row.id);
                     }}>{t("delete")}</Button>
                 )
@@ -304,12 +257,6 @@ function HotelList(props) {
         return await api.getAllHotelsList({headers: {Authorization: token}})
     }
 
-    const subHeaderComponentMemo = React.useMemo(() => {
-        return <FilterComponent onFilter={e => {
-            setFilterText(e.target.value);
-        }} filterText={filterText} placeholderText={t('filterPhase')}/>;
-    }, [filterText]);
-
     return (
         <div className="container">
             {token !== null && token !== '' ? (
@@ -332,7 +279,7 @@ function HotelList(props) {
                     <li className="breadcrumb-item active" aria-current="page">{t('hotelList')}</li>
                 </BreadCrumb>
             )}
-            <div className="floating-box">
+            <div className="floating-box" style={{width: "75rem"}}>
                 <div>
                     <h1>{t('hotelList')}</h1>
                 </div>
@@ -347,7 +294,7 @@ function HotelList(props) {
                         })
                     }}>{t("refresh")}</Button>
                     {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
-                        <Button className="btn-primary float-right m-2" onClick={event => {
+                        <Button className="btn-primary float-right m-2" style={{backgroundColor: "#7749F8"}} onClick={event => {
                             history.push('/hotels/addHotel');
                         }}>{t("addHotel")}</Button>
                     ) : ( null )}
@@ -416,24 +363,48 @@ function HotelList(props) {
                     </h4>
                 </div>
                 {(token === null || token === '') &&
-                    <div style={{height: '35rem', display: 'flex', flex: '1', flexDirection: 'row', width: '75rem', overflowY: 'scroll'}}>
-                        <div className='row-wrapper' style={{padding: '1rem'}}>
-                            <Row>
-                                {data.map(hotel => (
-                                    <HotelCard key={hotel.id} hotel={hotel}/>
-                                ))}
-                            </Row>
+                    <div id={"hotel-list"} className={"container-fluid"}>
+                        <div style={{
+                            display: 'flex',
+                            flex: '1',
+                            flexDirection: 'row',
+                            overflowY: "scroll",
+                            height: '25rem'
+                        }}>
+                            <>
+                                <div className='row-wrapper w-100' style={{padding: '1rem'}}>
+                                    <div className={"row"} style={{display: "flex"}}>
+                                        {data.map(hotel => (
+                                            <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
+                                                <HotelItem key={hotel.id} hotel={hotel}/>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </>
                         </div>
                     </div>
                 }
                 {(token !== null && token !== '' && currentRole === rolesConstant.client) &&
-                    <div style={{height: '35rem', display: 'flex', flex: '1', flexDirection: 'row', width: '75rem', overflowY: 'scroll'}}>
-                        <div className='row-wrapper' style={{padding: '1rem'}}>
-                            <Row>
-                                {data.map(hotel => (
-                                    <HotelCard key={hotel.id} hotel={hotel}/>
-                                ))}
-                            </Row>
+                    <div id={"hotel-list"} className={"container-fluid"}>
+                        <div style={{
+                            display: 'flex',
+                            flex: '1',
+                            flexDirection: 'row',
+                            overflowY: "scroll",
+                            height: '25rem'
+                        }}>
+                            <>
+                                <div className='row-wrapper w-100' style={{padding: '1rem'}}>
+                                    <div className={"row"} style={{display: "flex"}}>
+                                        {data.map(hotel => (
+                                            <div style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
+                                                <HotelItem key={hotel.id} hotel={hotel}/>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </>
                         </div>
                     </div>
                 }
@@ -444,7 +415,6 @@ function HotelList(props) {
                                data={filteredItems}
                                subHeader
                                theme={themeColor}
-                               subHeaderComponent={subHeaderComponentMemo}
                     />
                 }
                 {(token !== null && token !== '' && currentRole === rolesConstant.admin) &&
@@ -454,11 +424,11 @@ function HotelList(props) {
                                data={filteredItems}
                                subHeader
                                theme={themeColor}
-                               subHeaderComponent={subHeaderComponentMemo}
                     />
                 }
             </div>
         </div>
     )
 }
+
 export default withNamespaces()(HotelList);

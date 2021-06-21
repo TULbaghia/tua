@@ -23,7 +23,7 @@ import NewRatingComponent from "./NewRatingComponent";
 import axios from "axios";
 
 
-function Home(props) {
+function HotelInfo(props) {
     const {t, i18n} = props
     const location = useLocation();
     const {token, setToken, currentRole} = useLocale();
@@ -44,6 +44,7 @@ function Home(props) {
     });
 
     const [ratingData, setRatingData] = useState([]);
+    const [hotelEtag, setHotelEtag] = useState();
 
     React.useEffect(() => {
         refreshData()
@@ -106,7 +107,11 @@ function Home(props) {
     }
 
     const getHotelInfo = async () => {
-        return await api.getHotel(parsedQuery.id);
+        if (currentRole === rolesConstant.admin) {
+            return await getHotelData(parsedQuery.id)
+        } else {
+            return await api.getHotel(parsedQuery.id);
+        }
     }
 
     const handleRatingDataFetch = () => {
@@ -145,31 +150,33 @@ function Home(props) {
     }
 
     const getHotelData = async (id) => {
-        const response = await api.getHotel(id, {
+        const response = await api.getOtherHotelInfo(id, {
             method: "GET",
             headers: {
                 Authorization: token,
             }
-        })
+        }).catch(err => {
+            ResponseErrorHandler(err, dispatchNotificationDanger);
+            history.push("/hotels")
+        });
+        setHotelEtag(response.headers.etag);
         return response;
     };
 
-    const deleteHotel = () => (
-        getHotelData(parseInt(parsedQuery.id)).then(res => {
-                api.deleteHotel(parseInt(parsedQuery.id), {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: token,
-                        "If-Match": res.headers.etag
-                    }
-                }).then((res) => {
-                    dispatchNotificationSuccess({message: i18n.t('hotelDelete.success')})
-                }).catch(err => {
-                    ResponseErrorHandler(err, dispatchNotificationDanger);
-                });
+    const deleteHotel = () => {
+        api.deleteHotel(parsedQuery.id, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+                "If-Match": hotelEtag
             }
-        )
-    )
+        }).then((res) => {
+            dispatchNotificationSuccess({message: i18n.t('hotelDelete.success')});
+            history.push("/hotels");
+        }).catch(err => {
+            ResponseErrorHandler(err, dispatchNotificationDanger);
+        });
+    }
 
     const handleDeleteHotel = () => {
         dispatchDialog({
@@ -236,7 +243,7 @@ function Home(props) {
                                 <Tab eventKey="delete" title={t('delete')}>
                                     <Button className="btn btn-lg btn-primary btn-block mb-3"
                                             type="submit"
-                                            style={{backgroundColor: "#7749F8"}}
+                                            style={{backgroundColor: "#dc3545"}}
                                             onClick={() => handleDeleteHotel()}>{t("delete")}</Button>
                                 </Tab>
                             )}
@@ -284,4 +291,4 @@ function Home(props) {
     );
 }
 
-export default withNamespaces()(Home);
+export default withNamespaces()(HotelInfo);

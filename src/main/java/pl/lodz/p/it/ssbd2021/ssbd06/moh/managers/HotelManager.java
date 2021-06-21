@@ -256,7 +256,7 @@ public class HotelManager {
      * @return wyszukiwany Hotel.
      * @throws AppBaseException gdy nie udało się pobrać danych.
      */
-    @RolesAllowed({"getOwnHotelInfo", "updateOwnHotel", "generateReport"})
+    @RolesAllowed({"getOwnHotelInfo", "updateOwnHotel", "generateReport", "deleteManagerFromHotel"})
     public Hotel findHotelByManagerLogin(String login) throws AppBaseException {
         return managerDataFacade.findHotelByManagerId(login);
     }

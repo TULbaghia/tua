@@ -199,9 +199,6 @@ function NavigationBar(props) {
                             )}
                             {currentRole === rolesConstant.client && (
                                 <>
-                                    <LinkContainer to="/cities">
-                                        <Nav.Link>{t('cities')}</Nav.Link>
-                                    </LinkContainer>
                                     <LinkContainer to="/reservation">
                                         <Nav.Link>{t('reservation')}</Nav.Link>
                                     </LinkContainer>

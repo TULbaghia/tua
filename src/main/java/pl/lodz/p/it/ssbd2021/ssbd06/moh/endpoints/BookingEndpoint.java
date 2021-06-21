@@ -68,7 +68,7 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     public void cancelBooking(Long bookingId) throws AppBaseException {
         Booking booking = bookingManager.get(bookingId);
         if (getLogin().equals(booking.getAccount().getLogin()) || isManagerInHotelConnectedToBooking(booking)) {
-            BookingDto bookingIntegrity = Mappers.getMapper(IBookingMapper.class).toBookingDto(booking);
+            DetailBookingDto bookingIntegrity = Mappers.getMapper(IBookingMapper.class).toDetailBookingDto(booking);
             if (!verifyIntegrity(bookingIntegrity)) {
                 throw AppOptimisticLockException.optimisticLockException();
             }
@@ -83,7 +83,7 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     public void endBooking(Long bookingId) throws AppBaseException {
         Booking booking = bookingManager.get(bookingId);
         if (isManagerInHotelConnectedToBooking(booking)) {
-            BookingDto bookingIntegrity = Mappers.getMapper(IBookingMapper.class).toBookingDto(booking);
+            DetailBookingDto bookingIntegrity = Mappers.getMapper(IBookingMapper.class).toDetailBookingDto(booking);
             if (!verifyIntegrity(bookingIntegrity)) {
                 throw AppOptimisticLockException.optimisticLockException();
             }

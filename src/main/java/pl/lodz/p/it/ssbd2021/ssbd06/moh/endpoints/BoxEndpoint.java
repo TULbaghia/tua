@@ -165,6 +165,9 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
         if(isPending) {
             throw BoxException.boxIsPending();
         }
+        if (boxToDelete.isDelete()) {
+            throw BoxException.boxIsDeleted();
+        }
         boxManager.deleteBox(boxToDelete);
     }
 

@@ -28,7 +28,6 @@ import NewRatingComponent from "./NewRatingComponent";
 import axios from "axios";
 
 
-
 function Home(props) {
     const {t, i18n} = props
     const location = useLocation();
@@ -48,8 +47,7 @@ function Home(props) {
         image: "",
     });
 
-    const [ratingData, setRatingData] = useState([
-    ]);
+    const [ratingData, setRatingData] = useState([]);
 
     React.useEffect(() => {
         refreshData()
@@ -88,7 +86,7 @@ function Home(props) {
 
     const handleUsersBookingsDataFetch = () => {
         console.log("boookingsFetch")
-        if(currentRole === rolesConstant.client) {
+        if (currentRole === rolesConstant.client) {
             getUsersBookings().then(res => {
                 console.log(res.data);
                 setUserBookings(res.data)
@@ -104,9 +102,11 @@ function Home(props) {
 
     const getUsersBookings = async () => {
         let id = parsedQuery.id;
-        return await axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/ended/` + id, {headers: {
+        return await axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/ended/` + id, {
+            headers: {
                 Authorization: token,
-            }})
+            }
+        })
     }
 
     const getHotelInfo = async () => {
@@ -143,11 +143,12 @@ function Home(props) {
     }
 
     const getHotelData = async (id) => {
-        const response = await api.getHotel(id,{
+        const response = await api.getHotel(id, {
             method: "GET",
             headers: {
                 Authorization: token,
-            }})
+            }
+        })
         return response;
     };
 
@@ -224,11 +225,9 @@ function Home(props) {
                                     </ListGroup.Item>
                                 </ListGroup>
                             </Tab>
-                            {(currentRole === rolesConstant.manager || currentRole === rolesConstant.client) && (
-                                <Tab eventKey="boxlist" title={t('boxList.navbar.title')}/>
-                            )}
+                            <Tab eventKey="boxlist" title={t('boxList.navbar.title')} tabClassName={"ml-auto"}/>
                             {currentRole === rolesConstant.admin && (
-                                <Tab eventKey="delete" title={t('delete')} tabClassName={"ml-auto"}>
+                                <Tab eventKey="delete" title={t('delete')}>
                                     <Button className="btn btn-lg btn-primary btn-block mb-3"
                                             type="submit"
                                             style={{backgroundColor: "#7749F8"}}
@@ -251,18 +250,22 @@ function Home(props) {
                             readOnly
                             precision={0.5}
                         />
-                        <span className={"ml-3"}>[{hotelData.rating !== undefined ? hotelData.rating : t("ratings.noRatings")}]</span>
+                        <span
+                            className={"ml-3"}>[{hotelData.rating !== undefined ? hotelData.rating : t("ratings.noRatings")}]</span>
                     </div>
                 </div>
                 <div className={"row"}>
                     <div className={"col-md-12 mt-3"}>
                         {ratingData.length > 0 && ratingData.map((item) => (
-                            <RatingComponent key={v4()} triggerRefresh={refreshData} id={item.id} rate={item.rate} login={item.createdBy} content={item.comment}
-                                             hidden={item.hidden} date={dateConverter(item.creationDate.slice(0, -5))} modificationDate={item.modificationDate}/>
+                            <RatingComponent key={v4()} triggerRefresh={refreshData} id={item.id} rate={item.rate}
+                                             login={item.createdBy} content={item.comment}
+                                             hidden={item.hidden} date={dateConverter(item.creationDate.slice(0, -5))}
+                                             modificationDate={item.modificationDate}/>
                         ))}
                         {(currentRole === rolesConstant.client && userBookings.length > 0) &&
-                            <NewRatingComponent triggerRefresh={refreshData} placeholder={t('add.new.comment')} header={t('add.new.rating')}
-                            buttonText={t('add.rating')} bookings={userBookings}/>
+                        <NewRatingComponent triggerRefresh={refreshData} placeholder={t('add.new.comment')}
+                                            header={t('add.new.rating')}
+                                            buttonText={t('add.rating')} bookings={userBookings}/>
                         }
                     </div>
                 </div>

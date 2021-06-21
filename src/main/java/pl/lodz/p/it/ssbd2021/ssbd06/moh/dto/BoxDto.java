@@ -19,6 +19,7 @@ public class BoxDto implements Signable {
     private String description;
     private String animalType;
     private Long hotelId;
+    private boolean delete;
 
     private Long version;
 

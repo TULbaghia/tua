@@ -29,7 +29,9 @@ function ModifyBoxForm() {
     const [box, setBox] = useState({
         id: "",
         price: "",
-        description: ""
+        description: "",
+        animalType: "",
+        delete: ""
     });
 
     const boxId = queryString.parse(location.search).id;
@@ -49,6 +51,10 @@ function ModifyBoxForm() {
         getBox(boxId, token).then(response => {
             setBox({...response.data, key: v4()});
             setETag(response.headers.etag);
+            if(response.data.delete) {
+                history.push("/");
+                dispatchNotificationDanger({message: i18n.t('exception.box.box_is_deleted')});
+            }
         }).catch(error => {
             ResponseErrorHandler(error, dispatchNotificationDanger);
         });
@@ -117,7 +123,11 @@ function ModifyBoxForm() {
                         <p className="obligatory-fields">{i18n.t('obligatoryFields')}</p>
                     </Row>
                     <Formik
-                        initialValues={{...box}}
+                        initialValues={{
+                            price: box.price,
+                            description: box.description,
+                            animalType: i18n.t(box.animalType)
+                        }}
                         enableReinitialize
                         validate={ModifyBoxValidationSchema}
                         onSubmit={(values, {setSubmitting}) => handleModifyBox(values, setSubmitting)}>

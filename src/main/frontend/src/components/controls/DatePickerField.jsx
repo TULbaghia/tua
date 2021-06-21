@@ -4,7 +4,8 @@ import DatePicker from "react-datepicker";
 
 export default function DatePickerField({ ...props }) {
   const { setFieldValue } = useFormikContext();
-  const [field] = useField(props);
+  const [field, fieldMeta, fieldHelpers] = useField(props);
+  const { changeCallback} = props
   return (
     <DatePicker
       {...field}
@@ -12,6 +13,11 @@ export default function DatePickerField({ ...props }) {
       dateFormat="dd/MM/yyyy"
       selected={(field.value && new Date(field.value)) || null}
       onChange={val => {
+        fieldHelpers.setTouched(true)
+        console.log(changeCallback)
+        if(changeCallback !== undefined){
+          changeCallback()
+        }
         setFieldValue(field.name, val);
       }}
     />

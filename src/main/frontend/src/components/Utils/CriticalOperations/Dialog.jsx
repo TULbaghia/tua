@@ -5,6 +5,8 @@ import i18n from '../../../i18n';
 function Dialog(props) {
     const [show, setShow] = useState(true);
 
+    const {noCancel} = props
+
     const handleClose = () => {
         setShow(false);
         setTimeout(() => {
@@ -32,9 +34,11 @@ function Dialog(props) {
             </Modal.Header>
             <Modal.Body style={{whiteSpace: "pre-line"}}>{props.message}</Modal.Body>
             <Modal.Footer>
+                {noCancel !== true &&
                 <Button variant="secondary" onClick={handleCloseCancel}>
                     {i18n.t("dialog.button.cancel")}
                 </Button>
+                }
                 <Button variant="primary" onClick={handleCloseSave}>
                     {i18n.t(props.textButtonSave ?? "dialog.button.save")}
                 </Button>

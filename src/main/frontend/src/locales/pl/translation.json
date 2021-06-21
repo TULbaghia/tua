@@ -513,5 +513,12 @@
   "exception.hotel.no_hotel_for_booking": "Nie można odnaleźć hotelu dla tej rezerwacji!",
   "exception.rating.already_rated" : "Rezerwacja posiada już ocenę",
   "exception.booking.too_early" : "Aktualna data jest wcześniejsza niż data rozpoczęcia rezerwacji",
-  "exception.not_found_exception.hotel_not_found" : "Nie znaleziono hotelu"
+  "exception.not_found_exception.hotel_not_found" : "Nie znaleziono hotelu",
+
+  "city.description": "Opis miasta",
+  "btn.close": "Zamknij",
+  "booking.no_boxes_available": "Brak wolnych boxów w zadanym przedziale czasu",
+  "exception.booking.date_from_past": "Nie można utworzyć rezerwacji dla daty z przeszłości",
+  "booking.form.disclaimer_info_hours": "Stworzone rezerwacje obowiązują od godziny 14:00 i konczą się o godzinie 12:00",
+  "booking.form.disclaimer_info_start_date": "Rezerwacje mogą zostać złożone nie wcześniej niż dzień przed"
 }

@@ -15,6 +15,7 @@ public class BookingException extends AppBaseException {
     private static final String NOT_STARTED_BOOKING = "exception.booking.not_started_booking";
     private static final String INVALID_DATE_RANGE = "exception.booking.invalid_date_range";
     private static final String TOO_EARLY_TO_START = "exception.booking.too_early";
+    private static final String DATE_FROM_PAST = "exception.booking.date_from_past";
 
     protected BookingException(String message, Throwable cause) {
         super(message, cause);
@@ -34,6 +35,10 @@ public class BookingException extends AppBaseException {
 
     public static BookingException invalidDateRange() {
         return new BookingException(INVALID_DATE_RANGE);
+    }
+
+    public static BookingException dateFromPast() {
+        return new BookingException(DATE_FROM_PAST);
     }
 
     /**

@@ -29,26 +29,26 @@ import java.util.Set;
 })
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Box.findAll", query = "SELECT b FROM Box b"),
-        @NamedQuery(name = "Box.findById", query = "SELECT b FROM Box b WHERE b.id = :id"),
-        @NamedQuery(name = "Box.findByPricePerDay", query = "SELECT b FROM Box b WHERE b.pricePerDay = :pricePerDay"),
-        @NamedQuery(name = "getAvailableBoxesByTypesAndHotelId", query = "SELECT b FROM Box b WHERE " +
-                "b.hotel.id = :hotel_id " +
-                "AND b.animalType IN :types " +
-                "AND b.id NOT IN (SELECT bl.box.id FROM BookingLine bl WHERE bl.booking.dateTo >= :dateFrom AND bl.booking.dateFrom <= :dateTo) " +
-                "AND b.delete = false"
-        ),
-        @NamedQuery(name = "getAvailableBoxesByTypesByHotelIdAndBetween", query = "SELECT b FROM Box b WHERE " +
-                "b.hotel.id = :hotel_id " +
-                "AND b.id NOT IN (SELECT bl.box.id FROM BookingLine bl WHERE bl.booking.dateTo >= :dateFrom AND bl.booking.dateFrom <= :dateTo) " +
-                "AND b.delete = false"
-        ),
-        @NamedQuery(name = "getAvailableBoxesByIdListAndHotelId", query = "SELECT b FROM Box b WHERE " +
-                "b.hotel.id = :hotel_id " +
-                "AND b.id NOT IN (SELECT bl.box.id FROM BookingLine bl WHERE bl.booking.dateTo >= :dateFrom AND bl.booking.dateFrom <= :dateTo AND (bl.booking.status = pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus.IN_PROGRESS OR bl.booking.status = pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus.PENDING))  " +
-                "AND b.id IN :boxIdList " +
-                "AND b.delete = false"
-        ),
+    @NamedQuery(name = "Box.findAll", query = "SELECT b FROM Box b"),
+    @NamedQuery(name = "Box.findById", query = "SELECT b FROM Box b WHERE b.id = :id"),
+    @NamedQuery(name = "Box.findByPricePerDay", query = "SELECT b FROM Box b WHERE b.pricePerDay = :pricePerDay"),
+    @NamedQuery(name = "getAvailableBoxesByTypesAndHotelId", query = "SELECT b FROM Box b WHERE " +
+            "b.hotel.id = :hotel_id " +
+            "AND b.animalType IN :types " +
+            "AND b.id NOT IN (SELECT bl.box.id FROM BookingLine bl WHERE bl.booking.dateTo >= :dateFrom AND bl.booking.dateFrom <= :dateTo AND (bl.booking.status = pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus.IN_PROGRESS OR bl.booking.status = pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus.PENDING)) " +
+            "AND b.delete = false"
+            ),
+    @NamedQuery(name = "getAvailableBoxesByTypesByHotelIdAndBetween", query = "SELECT b FROM Box b WHERE " +
+            "b.hotel.id = :hotel_id " +
+            "AND b.id NOT IN (SELECT bl.box.id FROM BookingLine bl WHERE bl.booking.dateTo >= :dateFrom AND bl.booking.dateFrom <= :dateTo AND (bl.booking.status = pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus.IN_PROGRESS OR bl.booking.status = pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus.PENDING)) " +
+            "AND b.delete = false"
+    ),
+    @NamedQuery(name = "getAvailableBoxesByIdListAndHotelId", query = "SELECT b FROM Box b WHERE " +
+            "b.hotel.id = :hotel_id " +
+            "AND b.id NOT IN (SELECT bl.box.id FROM BookingLine bl WHERE bl.booking.dateTo >= :dateFrom AND bl.booking.dateFrom <= :dateTo AND (bl.booking.status = pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus.IN_PROGRESS OR bl.booking.status = pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus.PENDING))  " +
+            "AND b.id IN :boxIdList " +
+            "AND b.delete = false"
+    ),
 })
 @NoArgsConstructor
 public class Box extends AbstractEntity implements Serializable {

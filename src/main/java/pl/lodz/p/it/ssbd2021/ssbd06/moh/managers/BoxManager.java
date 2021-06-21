@@ -14,6 +14,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 /**
@@ -107,22 +109,20 @@ public class BoxManager {
 
     @RolesAllowed("getAllBoxes")
     public List<Box> getAvailableBoxesBetween(Long hotelId, Date dateFrom, Date dateTo) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dateFrom);
-        cal.set(Calendar.HOUR, 14);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-        dateFrom = cal.getTime();
-        cal = Calendar.getInstance();
-        cal.setTime(dateTo);
-        cal.set(Calendar.HOUR, 12);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-        dateTo = cal.getTime();
-        return new ArrayList<>(boxFacade.getAvailableBoxesByHotelIdAndBetween(hotelId, dateFrom, dateTo));
+        Date dateFromConverted = new Date(dateFrom
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .truncatedTo(ChronoUnit.DAYS)
+                .toInstant()
+                .plus(14, ChronoUnit.HOURS)
+                .toEpochMilli());
+        Date dateToConverted = new Date(dateTo
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .truncatedTo(ChronoUnit.DAYS)
+                .toInstant()
+                .plus(12, ChronoUnit.HOURS)
+                .toEpochMilli());
+        return new ArrayList<>(boxFacade.getAvailableBoxesByHotelIdAndBetween(hotelId, dateFromConverted, dateToConverted));
     }
 }

@@ -32,12 +32,10 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
 import javax.security.enterprise.SecurityContext;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -108,24 +106,31 @@ public class BookingManager {
      */
     @RolesAllowed("bookReservation")
     public void addBooking(NewBookingDto bookingDto, String username) throws AppBaseException {
-        Date dateFrom = bookingDto.getDateFrom();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dateFrom);
-        cal.set(Calendar.HOUR, 14);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-        dateFrom = cal.getTime();
-        Date dateTo = bookingDto.getDateTo();
-        cal = Calendar.getInstance();
-        cal.setTime(dateTo);
-        cal.set(Calendar.HOUR, 12);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-        dateTo = cal.getTime();
+        Date dateFrom = new Date(bookingDto
+        .getDateFrom()
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .truncatedTo(ChronoUnit.DAYS)
+                .toInstant()
+                .plus(14, ChronoUnit.HOURS)
+                .toEpochMilli());
+        Date dateTo = new Date(bookingDto
+        .getDateTo()
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .truncatedTo(ChronoUnit.DAYS)
+                .toInstant()
+                .plus(12, ChronoUnit.HOURS)
+                .toEpochMilli());
+
+
+        Date now = new Date(new Date().toInstant().atZone(ZoneId.systemDefault()).truncatedTo(ChronoUnit.DAYS).toInstant().plus(1, ChronoUnit.DAYS).plus(14, ChronoUnit.HOURS).toEpochMilli());
+
+
+        if(!(now.equals(dateFrom) || now.before(dateFrom))){
+            throw BookingException.dateFromPast();
+        }
+
         if(dateFrom.after(dateTo)){
             throw BookingException.invalidDateRange();
         }
@@ -142,7 +147,7 @@ public class BookingManager {
         Booking booking = new Booking(dateFrom, dateTo, BigDecimal.valueOf(0), account, BookingStatus.PENDING);
 
         BigDecimal price = BigDecimal.ZERO;
-        long bookingDurationDays = Duration.between(dateFrom.toInstant(), dateTo.toInstant()).toDays();
+        long bookingDurationDays = Duration.between(dateFrom.toInstant(), dateTo.toInstant()).toDays() + 1;
 
         for (Box box : availableBoxes) {
             if(bookingDto.getBoxes().stream().noneMatch(x -> Objects.equals(x, box.getId()))){

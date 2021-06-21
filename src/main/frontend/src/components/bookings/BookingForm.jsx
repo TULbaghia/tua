@@ -25,8 +25,7 @@ import DataTable from "react-data-table-component"
 import {Checkbox, Button} from "react-bootstrap";
 import {useDialogPermanentChange} from "./../Utils/CriticalOperations/CriticalOperationProvider";
 import { da } from "date-fns/locale";
-
-
+import DataTableField from "./../controls/DataTableField";
 
 function BookingForm(props) {
   const { t, i18n } = props;
@@ -39,6 +38,8 @@ function BookingForm(props) {
   const [ hotels, setHotels] = useState([])
   const [ boxes, setBoxes] = useState([])
   const dispatchCriticalDialog = useDialogPermanentChange();
+  const [ clearRows, setClearRows ] = useState(false)
+  const [ showTable, setShowTable] = useState(false)
 
   const themeColor = useThemeColor();
 
@@ -69,7 +70,7 @@ function BookingForm(props) {
       name: t('booking.description'),
       selector: 'description',
       sortable: false,
-      width: "10rem"
+      width: "15rem"
   },
   {
     name: t('price'),
@@ -77,7 +78,7 @@ function BookingForm(props) {
     sortable: false,
     width: "10rem",
     cell: row => {
-      return row.price + " " + t('currency');
+      return row.price.toFixed(2) + " " + t('currency');
   }
 }
 ];
@@ -113,8 +114,9 @@ function BookingForm(props) {
     },
   ];
 
-  const tommorrow = new Date()
+  let tommorrow = new Date()
   tommorrow.setDate(new Date().getDate() + 1)
+  tommorrow = new Date(tommorrow.setHours(12, 0, 0, 0))
 
   const initialValues = {
     hotelId: -1,
@@ -130,16 +132,26 @@ function BookingForm(props) {
     return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
   }
 
+  function roundDate(timeStamp){
+    timeStamp -= timeStamp % (24 * 60 * 60 * 1000);//subtract amount of time since midnight
+    timeStamp += new Date().getTimezoneOffset() * 60 * 1000;//add on the timezone offset
+    return new Date(timeStamp);
+  }
+
   function fetchBoxes(hotelId, dateFrom, dateTo){
     api.getAvailableBoxesBetween(hotelId, getDateString(dateFrom), getDateString(dateTo), {headers: {Authorization: token}}).then(res => {
       setBoxes(res.data)
+      setShowTable(true)
     })
   }
 
   function onSubmit(values, { resetForm }) {
     setSubmitting(true);
-    const dto = {...values};
-
+    let dto = {...values};
+    // dto.dateFrom = getDateString(values.dateFrom)
+    // dto.dateTo = getDateString(values.dateTo)
+    console.log(dto)
+    console.log(values)
     dispatchCriticalDialog({
       message: i18n.t("booking.cancellation_limit_info"),
       callbackOnSave: () => createReservation(dto, resetForm),
@@ -157,6 +169,7 @@ function BookingForm(props) {
         message: t("booking.create.success"),
       });
       resetForm();
+      resetTable();
     })
     .catch((err) => {
       ResponseErrorHandler(err, dispatchNotificationDanger);
@@ -166,27 +179,42 @@ function BookingForm(props) {
     });
   }
 
+  function resetTable(){
+    setClearRows(!clearRows)
+    setShowTable(false)
+    setBoxes([])
+  }
+
   function validate(values) {
+    console.log("validation")
     const errors = {};
-    const now = new Date();
+    let valid = true
+    const now = new Date(tommorrow)
+    console.log(values)
     if (values.dateFrom >= values.dateTo) {
       errors.dateFrom = t("booking.form.error.date_not_earlier");
+      valid = false
     }
     if(values.dateFrom < now){
       errors.dateFrom = t("booking.date_cannot_refer_to_past")
+      valid = false
     }
     if(values.dateTo < now){
       errors.dateTo = t("booking.date_cannot_refer_to_past")
+      valid = false
     }
     if(values.boxes.length === 0){
       errors.boxes = t("booking.form.error.no_boxes")
+      valid = false
     }
-    return errors;
+    console.log(errors)
+    if(valid) return undefined
+    else return errors;
   }
 
   return (
-    <Formik {...{ initialValues, validate, onSubmit, submitting }}>
-      {({ values, errors, touched, setFieldValue }) => (
+    <Formik {...{ initialValues, validate, onSubmit, submitting, isInitialValid: false }}>
+      {({ values, errors, touched, setFieldValue, isValid }) => (
         <div className="container">
           <BreadCrumb>
             <li className="breadcrumb-item">
@@ -198,6 +226,9 @@ function BookingForm(props) {
           </BreadCrumb>
           <div className="floating-box pt-2 pb-2">
             <h3 className="h3 text-center mt-3">{t("booking.form.title")}</h3>
+
+            <p>{t('booking.form.disclaimer_info_hours')}</p>
+            <p>{t('booking.form.disclaimer_info_start_date')}</p>
 
             <Form className="row g-3">
               <div
@@ -221,15 +252,22 @@ function BookingForm(props) {
 
               <div className="col-md-12">
                 <label htmlFor="dateFrom">{t('booking.form.date_from')}</label>
-                <DatePickerField name="dateFrom" />
+                <DatePickerField name="dateFrom" changeCallback={() => {
+                  setFieldValue("boxes", [], true)
+                  resetTable()
+                }} />
                 {errors && touched && errors.dateFrom && (
                   <div style={{ color: "red" }}>{errors.dateFrom}</div>
                 )}
               </div>
-
+              
               <div className="col-md-12">
                 <label htmlFor="dateTo">{t('booking.form.date_to')}</label>
-                <DatePickerField name="dateTo" />
+                <DatePickerField name="dateTo" changeCallback={() => {
+                  console.log(touched)
+                  setFieldValue("boxes", [],  true)
+                  resetTable()
+                }}/>
                 {errors && touched && errors.dateTo && (
                   <div style={{ color: "red" }}>{errors.dateTo}</div>
                 )}
@@ -237,35 +275,43 @@ function BookingForm(props) {
 
               <div className="col-12 my-3">
                 <button
+                  disabled={!(touched.dateFrom || touched.dateTo) || (errors.dateFrom || errors.dateTo)}
                   className="btn btn-primary"
                   style={{ backgroundColor: "#7749F8" }}
-                  onClick={() => fetchBoxes(values.hotelId, values.dateFrom, values.dateTo)}
+                  onClick={() => {
+                    console.log(isValid)
+                    console.log(errors)
+                      fetchBoxes(values.hotelId, values.dateFrom, values.dateTo)
+                  }}
                   type="button"
                 >
                   {t("booking.search_boxes")}
                 </button>
               </div>
+            
+              {showTable &&
 
               <div className="col-12">
-              <DataTable className={"rounded-0"}
-                    noDataComponent={i18n.t('table.no.result')}
+              <DataTableField
+              name="boxes"
+              className={"rounded-0"}
+                    noDataComponent={i18n.t("booking.no_boxes_available")}
                     columns={columns}
                     noHeader={true}
                     data={boxes}
                     selectableRows
                     theme={themeColor}
-                    onSelectedRowsChange={(state) => {
-                      const ids = state.selectedRows.map(x => x.id)
-                      setFieldValue('boxes', ids)
-                    }}
+                    clearSelectedRows={clearRows}
                 />
-              {errors && touched && errors.boxes && (
+              {errors && touched && errors.boxes && touched.boxes && (
                 <div style={{ color: "red" }}>{errors.boxes}</div>
               )}
               </div>
+              }
 
               <div className="col-12 d-flex justify-content-center my-3">
                 <button
+                disabled={!isValid}
                   className="btn btn-primary"
                   style={{ backgroundColor: "#7749F8" }}
                   type="submit"

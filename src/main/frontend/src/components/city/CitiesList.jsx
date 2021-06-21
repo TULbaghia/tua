@@ -6,7 +6,7 @@ import DataTable from "react-data-table-component"
 import {Button, Form} from "react-bootstrap";
 import {useLocale} from "../LoginContext";
 import {api} from "../../Api"
-import {useDialogPermanentChange} from "../Utils/CriticalOperations/CriticalOperationProvider";
+import {useDialogPermanentChange, useDialog} from "../Utils/CriticalOperations/CriticalOperationProvider";
 import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
@@ -41,6 +41,7 @@ function CitiesList(props) {
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchCriticalDialog = useDialogPermanentChange();
+    const dispatchCityDetailsDialog = useDialog();
 
     const filteredItems = data.filter(item => {
         return item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
@@ -90,8 +91,12 @@ function CitiesList(props) {
             cell: row => {
                 return(
                     <Button className="btn-sm" onClick={event => {
-                        // todo
-                        // history.push('/accounts/userInfo?login=' + row.login);
+                        dispatchCityDetailsDialog({
+                            title: t('city.description'),
+                            message: row.description,
+                            textButtonSave: t('btn.close'),
+                            noCancel: true
+                        })
                     }}>{t('details')}</Button>
                 )
             }

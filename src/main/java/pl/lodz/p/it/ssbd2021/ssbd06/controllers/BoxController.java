@@ -93,7 +93,6 @@ public class BoxController extends AbstractController {
      */
     @GET
     @Path("/all/id/{id}")
-    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(operationId = "getAllBoxesInHotelById", summary = "getAllBoxesInHotelById")
     public List<BoxDto> getAllBoxesInHotelById(@NotNull @PathParam("id") Long id) throws AppBaseException {

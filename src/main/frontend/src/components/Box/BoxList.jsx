@@ -13,25 +13,25 @@ import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
 } from "../Utils/Notification/NotificationProvider";
-import {useHistory, useLocation} from "react-router";
-import queryString from "query-string";
+import {useHistory, useParams} from "react-router";
 import {v4} from "uuid";
+import {api} from "../../Api";
 
 function BoxList(props) {
 
+    const {id} = useParams();
     const [boxes, setBoxes] = useState([])
     const {token, username, currentRole} = useLocale();
     const history = useHistory();
-    const location = useLocation();
 
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
 
     const [searchTerm, setSearchTerm] = React.useState('');
-    const hotelIdFromUrl = queryString.parse(location.search).id;
+    const hotelIdFromUrl = id;
 
     const decideFetch = (refresh = false) => {
-        if (handleIsHotelIdInUrl() && (currentRole === rolesConstant.manager || currentRole === rolesConstant.client)) {
+        if (handleIsHotelIdInUrl()) {
             fetchHotelDataById(refresh);
         } else if (!handleIsHotelIdInUrl() && currentRole === rolesConstant.manager) {
             fetchHotelData(refresh);
@@ -86,7 +86,10 @@ function BoxList(props) {
         };
 
         fetch("/resources/boxes/all/id/" + hotelIdFromUrl, requestOptions)
-            .then((res) => res.json())
+            .then((res) => {
+                console.log(res);
+                return res.json()
+            })
             .then((boxes) => {
                 setBoxes(boxes);
             })
@@ -103,7 +106,26 @@ function BoxList(props) {
     }
 
     const handleIsHotelIdInUrl = () => {
-        return hotelIdFromUrl !== undefined;
+        return hotelIdFromUrl !== 'own'
+
+    }
+
+    const handleGetHotelId = () => {
+        api.getOwnHotelInfo({
+            method: "GET",
+            headers: {
+                Authorization: token,
+            }
+        }).then(res => {
+            return res.data.id;
+        }).catch(err => {
+            ResponseErrorHandler(err, dispatchNotificationDanger);
+        })
+    }
+
+    const handleDisplayManagerButtons = () => {
+        return (handleIsManager() &&
+            !handleIsHotelIdInUrl());
     }
 
     const handleModify = (boxId) => {
@@ -131,15 +153,15 @@ function BoxList(props) {
 
                     <div className={"row"}>
                         <h1 className="col-md-6">{i18n.t('boxList.navbar.title')}</h1>
-                        <div className={"col-lg-6 col-12  d-flex flex-wrap flex-sm-nowrap justify-content-around justify-content-sm-start flex-row-reverse align-content-center"}>
+                        <div
+                            className={"col-lg-6 col-12  d-flex flex-wrap flex-sm-nowrap justify-content-around justify-content-sm-start flex-row-reverse align-content-center"}>
                             <Button className="btn-secondary float-right m-2" onClick={event => {
                                 decideFetch(true);
                                 setSearchTerm('');
                             }}>
                                 {i18n.t("refresh")}
                             </Button>
-                            {token !== null && token !== '' &&
-                            currentRole === rolesConstant.manager && !handleIsHotelIdInUrl() ? (
+                            {token !== null && token !== '' && handleDisplayManagerButtons() ? (
                                 <Button className="btn-primary float-right m-2" onClick={event => {
                                     history.push('/boxes/add');
                                 }}>{i18n.t("addBox")}</Button>
@@ -166,13 +188,13 @@ function BoxList(props) {
                                 {boxes.length === 0 ? (<div>{i18n.t('table.no.result')}</div>) : (
                                     <>
                                         {boxes.map((box) => (
-                                            <div key={v4()} style={{display: "flex"}} className={"col-sm-6 col-md-3 my-2"}>
+                                            <div key={v4()} style={{display: "flex"}}
+                                                 className={"col-sm-6 col-md-3 my-2"}>
                                                 <BoxItem
                                                     key={box.id}
                                                     onModify={handleModify}
                                                     box={box}
-                                                    isManager={handleIsManager}
-                                                    isIdInUrl={handleIsHotelIdInUrl}
+                                                    managerButtons={handleDisplayManagerButtons}
                                                 />
                                             </div>
                                         ))}

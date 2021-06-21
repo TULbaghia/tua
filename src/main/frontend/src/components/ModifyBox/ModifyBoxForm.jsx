@@ -69,7 +69,7 @@ function ModifyBoxForm() {
             callbackOnSave: () => {
                 modifyBox({values, token, etag}).then(res => {
                     dispatchNotificationSuccess({message: i18n.t('modifyBox.success')});
-                    history.push("/");
+                    history.goBack();
                 }).catch(err => {
                     ResponseErrorHandler(err, dispatchNotificationDanger);
                 });
@@ -86,7 +86,7 @@ function ModifyBoxForm() {
             callbackOnSave: () => {
                 deleteBox(boxId, etag, token).then(res => {
                     dispatchNotificationSuccess({message: i18n.t('box.delete.success')});
-                    history.push("/boxes");
+                    history.goBack();
                 }).catch(err => {
                     dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
                 })
@@ -104,7 +104,7 @@ function ModifyBoxForm() {
                     <Link to="/">{i18n.t('managerDashboard')}</Link>
                 </li>
                 <li className="breadcrumb-item active">
-                    <Link to="/boxes">{i18n.t('boxList.navbar.title')}</Link>
+                    <Link to="/boxes/own">{i18n.t('boxList.navbar.title')}</Link>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
                     {i18n.t('modifyBox.title')}
@@ -126,7 +126,8 @@ function ModifyBoxForm() {
                         initialValues={{
                             price: box.price,
                             description: box.description,
-                            animalType: i18n.t(box.animalType)
+                            animalType: i18n.t(box.animalType),
+                            id: box.id
                         }}
                         enableReinitialize
                         validate={ModifyBoxValidationSchema}

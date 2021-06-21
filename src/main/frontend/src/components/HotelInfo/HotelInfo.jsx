@@ -130,7 +130,7 @@ function Home(props) {
 
     const handleBoxListClick = (key) => {
         if (key === "boxlist") {
-            history.push("/boxes?id=" + parsedQuery.id)
+            history.push("/boxes/" + parsedQuery.id)
         }
     }
 

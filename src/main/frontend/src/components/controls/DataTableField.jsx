@@ -10,7 +10,6 @@ export default function DataTableField({ ...props }) {
     {...field}
     {...props}
     onSelectedRowsChange={(state) => {
-        console.log("elo")
       const ids = state.selectedRows.map(x => x.id)
       setFieldValue(field.name, ids)
     }}

@@ -524,5 +524,7 @@
   "booking.form.disclaimer_info_hours": "Stworzone rezerwacje obowiązują od godziny 14:00 i kończą się o godzinie 12:00.",
   "booking.form.disclaimer_info_start_date": "Rezerwacje mogą zostać złożone nie wcześniej niż dzień przed datą rozpoczęcia rezerwacji.",
   "exception.hotel.no_hotel_assigned" : "Manager nie ma przypisanego żadnego hotelu",
-  "exception.rating_exception.booking_not_finished" : "Rezerwacja musi być zakończona, aby ją ocenić"
+  "exception.rating_exception.booking_not_finished" : "Rezerwacja musi być zakończona, aby ją ocenić",
+
+  "reportGenerator.modificationDate" : "Data ostatniej modyfikacji"
 }

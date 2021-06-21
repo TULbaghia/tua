@@ -8,7 +8,7 @@ function ReportsTable({bookings}) {
     const themeColor = useThemeColor()
 
     const momentHelper = () => {
-        return i18n.language === "pl" ? "pl" : "en-gb";
+        return i18n.language === "pl" ? 'pl' : 'en';
     }
 
     const columns = [
@@ -16,13 +16,12 @@ function ReportsTable({bookings}) {
             name: 'Id',
             selector: 'id',
             sortable: true,
-            width: "4rem"
+            width: '5rem'
         },
         {
             name: i18n.t('reportGenerator.from'),
             selector: 'dateFrom',
             sortable: true,
-            width: "10rem",
             style: ({textTransform: 'capitalize'}),
             cell: row => (row.dateFrom ?
                 moment(row.dateFrom).locale(momentHelper()).local().format('LLLL').toString() : "")
@@ -31,35 +30,39 @@ function ReportsTable({bookings}) {
             name: i18n.t('reportGenerator.to'),
             selector: 'dateTo',
             sortable: true,
-            width: "10rem",
             style: ({textTransform: 'capitalize'}),
             cell: row => (row.dateTo ?
                 moment(row.dateTo).locale(momentHelper()).local().format('LLLL').toString() : "")
         },
         {
+            name: i18n.t('reportGenerator.modificationDate'),
+            selector: 'modificationDate',
+            sortable: true,
+            style: ({textTransform: 'capitalize'}),
+            sortFunction: (a, b) => (a.modificationDate - b.modificationDate),
+            cell: row => (row.modificationDate ?
+                moment(row.modificationDate).locale(momentHelper()).local().format('LLLL').toString() : "")
+        },
+        {
             name: 'Status',
             selector: 'status',
-            width: "10rem",
             cell: row => (row.status ? i18n.t(row.status.toLowerCase() + "BookingStatus") : "")
         },
         {
             name: i18n.t('reportGenerator.table.price'),
             selector: 'price',
             sortable: true,
-            width: "10rem",
             cell: row => (row.price ? row.price.toFixed(2) + " " + i18n.t('currency') : "")
         },
         {
             name: i18n.t('reportGenerator.table.rating'),
             selector: 'rating',
             sortable: true,
-            width: "10rem",
             sortFunction: (a, b) => (a.rating - b.rating)
         },
         {
             name: i18n.t('reportGenerator.table.owner_login'),
-            selector: 'ownerLogin',
-            width: "10rem"
+            selector: 'ownerLogin'
         },
     ];
 
@@ -69,6 +72,7 @@ function ReportsTable({bookings}) {
                    title={i18n.t('reportGenerator.table.title')}
                    noDataComponent={i18n.t('table.no.result')}
                    data={bookings}
+                   highlightOnHover
                    columns={columns}
                    theme={themeColor}/>
     );

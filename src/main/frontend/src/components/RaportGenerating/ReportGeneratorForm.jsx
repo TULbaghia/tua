@@ -31,6 +31,7 @@ function ReportGeneratorForm() {
             id: "",
             dateFrom: "",
             dateTo: "",
+            modificationDate: "",
             status: "",
             price: "",
             rating: null,
@@ -100,7 +101,7 @@ function ReportGeneratorForm() {
                                     <button className="btn btn-lg btn-primary btn-block btn-background-custom"
                                             type="submit"
                                             onClick={handleGenerateReport}
-                                            disabled={isFetching}>
+                                            disabled={isFetching || !startDate || !endDate}>
                                         {i18n.t('reportGenerator.action')}
                                         {isFetching &&
                                         <div className="ml-4 align-content-center spinner-border" role="status"/>}

@@ -521,5 +521,7 @@
   "booking.form.disclaimer_info_hours": "Created booking starts from 2:00 PM and ends at 12:00 AM",
   "booking.form.disclaimer_info_start_date": "Reservations can be made no earlier than the day before",
   "exception.hotel.no_hotel_assigned" : "There is no hotel assigned to manager",
-  "exception.rating_exception.booking_not_finished" : "Reservation must be finished to add rating"
+  "exception.rating_exception.booking_not_finished" : "Reservation must be finished to add rating",
+
+  "reportGenerator.modificationDate" : "Last modification date"
 }

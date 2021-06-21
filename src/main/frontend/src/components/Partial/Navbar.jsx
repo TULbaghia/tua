@@ -184,7 +184,7 @@ function NavigationBar(props) {
                                             <Dropdown.Item as={Link} to="/hotels/generateReport">
                                                 {t('generateReport.navbar.title')}
                                             </Dropdown.Item>
-                                            <Dropdown.Item as={Link} to="/boxes">
+                                            <Dropdown.Item as={Link} to="/boxes/own">
                                                 {t("boxList.navbar.title")}
                                             </Dropdown.Item>
                                         </Dropdown.Menu>

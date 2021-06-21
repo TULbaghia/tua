@@ -15,6 +15,7 @@ export default function Input({type, field, form, handleChange, fieldName, place
                 required
                 readOnly={readonly}
                 autoFocus={true}
+                style={{backgroundColor: "var(--light)", color: "var(--dark)"}}
             />
             {readonly ? <></> : <span className="custom-asterisk">*</span>}
         </div>

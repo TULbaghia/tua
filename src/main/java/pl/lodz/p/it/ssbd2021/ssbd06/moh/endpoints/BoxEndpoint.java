@@ -75,7 +75,7 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
     }
 
     @Override
-    @RolesAllowed("getAllBoxes")
+    @PermitAll
     public List<BoxDto> getAllBoxesInHotel(Long hotelId) throws AppBaseException {
         List<Box> boxes = boxManager.getAll();
         List<BoxDto> result = new ArrayList<>();
@@ -164,6 +164,9 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
         }
         if(isPending) {
             throw BoxException.boxIsPending();
+        }
+        if (boxToDelete.isDelete()) {
+            throw BoxException.boxIsDeleted();
         }
         boxManager.deleteBox(boxToDelete);
     }

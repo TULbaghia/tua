@@ -198,8 +198,7 @@ function App() {
                             <GuardedRoute exact path="/boxes/modify" component={ModifyBoxForm}
                                           meta={{auth: true, manager: true, logged, currentRole}}/>
                             <GuardedRoute exact path="/hotels/hotelInfo" component={HotelInfo} meta={{}}/>
-                            <GuardedRoute exact path="/boxes" component={BoxList}
-                                          meta={{auth: true, clientManager: true, logged, currentRole}}/>
+                            <GuardedRoute exact path="/boxes/:id" component={BoxList} meta={{}}/>
                             <GuardedRoute exact path="/reservation/details/:id" component={ReservationDetail} meta={{auth: true, clientManager: true, logged, currentRole}}/>
                             <Route component={NotFound}/>
                         </Switch>

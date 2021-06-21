@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.CallingClass;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import java.util.Date;
@@ -46,7 +47,7 @@ public interface BoxEndpointLocal extends CallingClass {
      * @return lista klatek
      * @throws AppBaseException w momencie wystąpienia błędu
      */
-    @RolesAllowed("getAllBoxes")
+    @PermitAll
     List<BoxDto> getAllBoxesInHotel(Long hotelId) throws AppBaseException;
 
     /**

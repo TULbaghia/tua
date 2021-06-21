@@ -131,7 +131,7 @@ function HotelInfo(props) {
 
     const handleBoxListClick = (key) => {
         if (key === "boxlist") {
-            history.push("/boxes?id=" + parsedQuery.id)
+            history.push("/boxes/" + parsedQuery.id)
         } else if (key === "refresh") {
             refreshData();
             document.querySelector("#tab-tab-refresh").blur();
@@ -236,9 +236,7 @@ function HotelInfo(props) {
                                 </ListGroup>
                             </Tab>
                             <Tab eventKey="refresh" tabClassName={"ml-auto"} title={t('refresh')}/>
-                            {(currentRole === rolesConstant.manager || currentRole === rolesConstant.client) && (
                                 <Tab eventKey="boxlist" tabClassName={"ml-0"} title={t('boxList.navbar.title')}/>
-                            )}
                             {currentRole === rolesConstant.admin && (
                                 <Tab eventKey="delete" title={t('delete')}>
                                     <Button className="btn btn-lg btn-primary btn-block mb-3"

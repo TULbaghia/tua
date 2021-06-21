@@ -105,8 +105,8 @@ public class HotelManager {
                     .stream()
                     .filter(hotel -> {
                         try {
-                            return Objects.requireNonNullElse(hotel.getRating(), BigDecimal.valueOf(5.0)).compareTo(fromRating) >= 0
-                                    && Objects.requireNonNullElse(hotel.getRating(), BigDecimal.ONE).compareTo(toRating) <= 0
+                            return Objects.requireNonNullElse(hotel.getRating(), BigDecimal.ZERO).compareTo(fromRating) >= 0
+                                    && Objects.requireNonNullElse(hotel.getRating(), BigDecimal.TEN).compareTo(toRating) <= 0
                                     && checkHotelPetTypeListAllowed(animalTypes, hotel.getId())
                                     && checkHotelNameContainsString(hotel, searchQuery);
                         } catch (AppBaseException e) {

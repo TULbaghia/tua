@@ -11,10 +11,7 @@ import DropdownToggle from "react-bootstrap/DropdownToggle";
 import ThemeColorSwitcher from "../Utils/ThemeColor/ThemeColorSwitcher";
 import {rolesConstant} from "../../Constants";
 import {useEffect, useState} from "react";
-import {
-    useNotificationDangerAndInfinity,
-    useNotificationSuccessAndShort
-} from "../Utils/Notification/NotificationProvider";
+import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "../Utils/Notification/NotificationProvider";
 import {useThemeColor} from "../Utils/ThemeColor/ThemeColorProvider";
 import {api} from "../../Api"
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
@@ -90,7 +87,8 @@ function LanguageSwitcher(props) {
         <>
             <Dropdown>
                 <DropdownToggle id="dropdown-basic" className="dropButton pl-0 pl-lg-2 pr-0 pr-lg-2" variant="Info">
-                    <span style={{marginRight: "10px"}}>{i18n.t("language")} [{i18n.language.substring(0, 2).toUpperCase()}]</span>
+                    <span
+                        style={{marginRight: "10px"}}>{i18n.t("language")} [{i18n.language.substring(0, 2).toUpperCase()}]</span>
                 </DropdownToggle>
 
                 <Dropdown.Menu>
@@ -112,8 +110,32 @@ function NavigationBar(props) {
     const {t, divStyle, i18n} = props
     const history = useHistory();
     const {token, username, setToken, currentRole, setCurrentRole, setUsername} = useLocale();
+    const [managerAccess, setManagerAccess] = useState(false)
     const dispatchNotificationDanger = useNotificationDangerAndInfinity();
     const dispatchNotificationSuccess = useNotificationSuccessAndShort();
+
+    useEffect(() => {
+        isManagerInAnyHotel();
+    }, [token, currentRole]);
+
+    const getOwnHotelInfo = () => {
+        return api.getOwnHotelInfo({
+            method: "GET",
+            headers: {
+                Authorization: token,
+            }
+        });
+    };
+
+    const isManagerInAnyHotel = () => {
+        if (currentRole === rolesConstant.manager && token) {
+            getOwnHotelInfo().then(res => {
+                setManagerAccess(true);
+            }).catch(err => {
+                setManagerAccess(false);
+            });
+        }
+    }
 
     const handleLogout = () => {
 
@@ -128,8 +150,10 @@ function NavigationBar(props) {
         };
 
         api.logout(requestOptions)
-            .then((res) => {})
-            .catch((err) =>  {});
+            .then((res) => {
+            })
+            .catch((err) => {
+            });
         setToken('');
         setCurrentRole('');
         setUsername('');
@@ -149,11 +173,14 @@ function NavigationBar(props) {
                 //------------------------LOGGED USER VIEW----------------------------
                 <Navbar expand="lg" className="main-navbar" style={divStyle()}>
                     <Navbar.Brand>
-                        <div className="name d-flex flex-wrap justify-content-start align-items-center position-relative mr-3" style={{width: "min-content"}}>
+                        <div className="name d-flex flex-wrap justify-content-start align-items-center position-relative mr-3"
+                             style={{width: "min-content"}}>
                             <LinkContainer to="/">
-                                <h4 className={"cursor-pointer"}>Purrfecti<img src={"/favicon.ico"} className={"img-fluid"} style={{maxHeight: "20px"}}/>n</h4>
+                                <h4 className={"cursor-pointer"}>Purrfecti<img src={"/favicon.ico"} className={"img-fluid"}
+                                                                               style={{maxHeight: "20px"}}/>n</h4>
                             </LinkContainer>
-                            <sub className={"small position-absolute mb-0"} style={{fontSize: ".7rem", bottom: "5px", left: "1px"}}>{t('animalHotel')}</sub>
+                            <sub className={"small position-absolute mb-0"}
+                                 style={{fontSize: ".7rem", bottom: "5px", left: "1px"}}>{t('animalHotel')}</sub>
                         </div>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
@@ -175,10 +202,11 @@ function NavigationBar(props) {
                                     </LinkContainer>
                                 </>
                             )}
-                            {currentRole === rolesConstant.manager && (
+                            {managerAccess && (
                                 <>
                                     <Dropdown className="">
-                                        <DropdownToggle id="dropdown-basic" className="dropButton pl-0 pl-lg-2 pr-0 pr-lg-2" variant="Info">
+                                        <DropdownToggle id="dropdown-basic" className="dropButton pl-0 pl-lg-2 pr-0 pr-lg-2"
+                                                        variant="Info">
                                             <span style={{marginRight: "10px"}}>{t('myHotel')}</span>
                                         </DropdownToggle>
 
@@ -220,7 +248,8 @@ function NavigationBar(props) {
                             <ThemeColorSwitcher/>
                             <LanguageSwitcher t={t} i18n={i18n}/>
                             <Dropdown alignRight={true}>
-                                <Dropdown.Toggle id="dropdown-basic" className="dropButton pl-0 pl-lg-2 pr-0 pr-lg-2" variant="Info">
+                                <Dropdown.Toggle id="dropdown-basic" className="dropButton pl-0 pl-lg-2 pr-0 pr-lg-2"
+                                                 variant="Info">
                                     <FontAwesomeIcon icon="user"/>
                                     {' '}{username}{' '}
                                 </Dropdown.Toggle>
@@ -243,11 +272,14 @@ function NavigationBar(props) {
                 //------------------------GUEST VIEW----------------------------
                 <Navbar expand="lg" className="main-navbar" style={divStyle()}>
                     <Navbar.Brand>
-                        <div className="name d-flex flex-wrap justify-content-start align-items-center position-relative mr-3" style={{width: "min-content"}}>
+                        <div className="name d-flex flex-wrap justify-content-start align-items-center position-relative mr-3"
+                             style={{width: "min-content"}}>
                             <LinkContainer to="/">
-                                <h4 className={"cursor-pointer"}>Purrfecti<img src={"/favicon.ico"} className={"img-fluid"} style={{maxHeight: "20px"}}/>n</h4>
+                                <h4 className={"cursor-pointer"}>Purrfecti<img src={"/favicon.ico"} className={"img-fluid"}
+                                                                               style={{maxHeight: "20px"}}/>n</h4>
                             </LinkContainer>
-                            <sub className={"small position-absolute mb-0"} style={{fontSize: ".7rem", bottom: "5px", left: "1px"}}>{t('animalHotel')}</sub>
+                            <sub className={"small position-absolute mb-0"}
+                                 style={{fontSize: ".7rem", bottom: "5px", left: "1px"}}>{t('animalHotel')}</sub>
                         </div>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
@@ -290,7 +322,8 @@ export function setLanguage(i18n, lang) {
 }
 
 export function getUserLanguage(token, i18n, showNotification = (() => {
-}), showDanger = (() => {})) {
+}), showDanger = (() => {
+})) {
     if (token !== null && token !== '') {
         api.showAccountInformation({
             headers: {

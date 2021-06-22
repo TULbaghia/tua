@@ -2,7 +2,7 @@ import {withNamespaces} from 'react-i18next';
 import BreadCrumb from "../Partial/BreadCrumb";
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import DataTable from "react-data-table-component"
+import DataTable, {createTheme} from "react-data-table-component"
 import {Button, Col, Container, Row} from "react-bootstrap";
 import {useLocale} from "../LoginContext";
 import {api} from "../../Api";
@@ -101,13 +101,13 @@ function HotelList(props) {
                     ...styles,
                     backgroundColor: "#424242",
                     color: "#f8f9fa",
-                    minWidth: "80px",
+                    minWidth: "100px",
                 }
             } else {
                 return {
                     ...styles,
                     backgroundColor: "#f8f9fa",
-                    minWidth: "80px",
+                    minWidth: "100px",
                 }
             }
         }
@@ -238,7 +238,8 @@ function HotelList(props) {
         },
         {
             name: t('rating'),
-            selector: 'rating'
+            selector: 'rating',
+            width: "10rem"
         },
         {
             name: t('details'),
@@ -401,7 +402,8 @@ function HotelList(props) {
                                         })}
                                     />
                                     {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
-                                        <Button className="btn-primary float-right m-2" onClick={event => {
+                                        <Button className="btn-secondary float-right m-2"
+                                            onClick={event => {
                                             history.push('/hotels/addHotel');
                                         }}>{t("addHotel")}</Button>
                                     ) : null}
@@ -517,8 +519,8 @@ function HotelList(props) {
                                        noDataComponent={i18n.t('table.no.result')}
                                        columns={managerColumns}
                                        data={filteredItems}
-                                       subHeader
-                                       theme={themeColor}
+                                       theme={themeColor === 'light' ? 'lightMode' : themeColor}
+                                       noHeader={true}
                             />
                             }
                             {(token !== null && token !== '' && currentRole === rolesConstant.admin) &&
@@ -526,8 +528,8 @@ function HotelList(props) {
                                        noDataComponent={i18n.t('table.no.result')}
                                        columns={adminColumns}
                                        data={filteredItems}
-                                       subHeader
-                                       theme={themeColor}
+                                       theme={themeColor === 'light' ? 'lightMode' : themeColor}
+                                       noHeader={true}
                             />
                             }
                         </div>

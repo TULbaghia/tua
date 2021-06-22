@@ -74,7 +74,7 @@ function ReportsTable({bookings}) {
                    data={bookings}
                    highlightOnHover
                    columns={columns}
-                   theme={themeColor}/>
+                   theme={themeColor === 'light' ? 'lightMode' : themeColor}/>
     );
 }
 

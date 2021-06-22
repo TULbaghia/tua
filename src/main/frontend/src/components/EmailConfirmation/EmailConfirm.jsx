@@ -2,7 +2,7 @@ import React from "react";
 import {useHistory} from "react-router";
 import {Link, useParams} from "react-router-dom";
 import {withNamespaces} from 'react-i18next';
-import BreadCrumb from "../Partial/BreadCrumb"
+import BreadCrumb from "../Partial/BreadCrumb";
 import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort

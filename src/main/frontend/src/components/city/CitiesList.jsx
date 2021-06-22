@@ -179,7 +179,7 @@ function CitiesList(props) {
                                     })
                                 }}>{t("refresh")}</Button>
                                 {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
-                                    <Button className="btn-primary float-right m-2" style={{backgroundColor: "#7749F8"}}
+                                    <Button className="btn-secondary float-right m-2"
                                             onClick={event => {
                                                 history.push('/cities/add');
                                             }}>{t('addCity.action')}</Button>
@@ -190,7 +190,8 @@ function CitiesList(props) {
                                        columns={columns}
                                        data={filteredItems}
                                        subHeader
-                                       theme={themeColor}
+                                       noHeader={true}
+                                       theme={themeColor === 'light' ? 'lightMode' : themeColor}
                                        subHeaderComponent={subHeaderComponentMemo}
                             />
                         </div>

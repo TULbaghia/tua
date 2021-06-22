@@ -26,6 +26,15 @@ export const modifyCity = ({values, token, etag}) => {
     });
 };
 
+export const deleteCity = ({id, token, etag}) => {
+    return api.deleteCity(id, {
+        headers: {
+            Authorization: token,
+            "If-Match": etag
+        }
+    });
+};
+
 
 
 

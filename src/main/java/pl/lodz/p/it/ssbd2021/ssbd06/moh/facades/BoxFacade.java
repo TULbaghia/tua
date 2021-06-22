@@ -5,15 +5,14 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 
 import javax.validation.ConstraintViolationException;
 
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BoxException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
@@ -115,12 +114,17 @@ public class BoxFacade extends AbstractFacade<Box> {
 
     @PermitAll
     // todo specific access role ?
-    public List<Box> getAvailableBoxesByIdListAndHotelId(long hotelId, List<Long> boxIdList, Date dateFrom, Date dateTo){
-        TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByIdListAndHotelId", Box.class);
-        query.setParameter("hotel_id", hotelId);
-        query.setParameter("boxIdList", boxIdList);
-        query.setParameter("dateFrom", dateFrom);
-        query.setParameter("dateTo", dateTo);
-        return query.getResultList();
+    public List<Box> getAvailableBoxesByIdListAndHotelIdWithLock(long hotelId, List<Long> boxIdList, Date dateFrom, Date dateTo) throws AppBaseException {
+        try{
+            TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByIdListAndHotelId", Box.class);
+            query.setParameter("hotel_id", hotelId);
+            query.setParameter("boxIdList", boxIdList);
+            query.setParameter("dateFrom", dateFrom);
+            query.setParameter("dateTo", dateTo);
+            query.setLockMode(LockModeType.PESSIMISTIC_FORCE_INCREMENT);
+            return query.getResultList();
+        }catch(PessimisticLockException ex){
+            throw BoxException.boxIsUsed();
+        }
     }
 }

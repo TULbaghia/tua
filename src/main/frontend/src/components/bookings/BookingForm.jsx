@@ -82,6 +82,69 @@ function BookingForm(props) {
         }
     ];
 
+    const selectStyles = {
+        option: (styles, state) => {
+            if (themeColor === "dark") {
+                return {
+                    ...styles,
+                    backgroundColor: state.isFocused ? "#424242" : "",
+                    color: state.isFocused ? "#f8f9fa" : "#424242"
+                }
+            } else {
+                return {
+                    ...styles,
+                    backgroundColor: state.isFocused ? "#7749F8FF" : "#f8f9fa",
+                    color: state.isFocused ? "#f8f9fa" : "#424242"
+                }
+            }
+        },
+        multiValue: styles => {
+            if (themeColor === "dark") {
+                return {
+                    ...styles,
+                    backgroundColor: "#a8a4a4",
+                    color: "#f8f9fa",
+
+                }
+            } else {
+                return {
+                    ...styles,
+                    backgroundColor: "#f8f9fa",
+                    color: "#a8a4a4"
+                }
+            }
+        },
+        singleValue: styles => {
+            if (themeColor === "dark") {
+                return {
+                    ...styles,
+                    color: "#f8f9fa",
+
+                }
+            } else {
+                return {
+                    ...styles,
+                }
+            }
+        },
+        control: styles => {
+            if (themeColor === "dark") {
+                return {
+                    ...styles,
+                    backgroundColor: "#424242",
+                    color: "#f8f9fa",
+                    minWidth: "80px",
+                }
+            } else {
+                return {
+                    ...styles,
+                    backgroundColor: "#f8f9fa",
+                    minWidth: "80px",
+                }
+            }
+        }
+    }
+
     const animalTypes = [
         {
             label: "dog",
@@ -250,6 +313,7 @@ function BookingForm(props) {
                                                     name="hotelId"
                                                     component={SelectField}
                                                     options={hotels}
+                                                    styles={selectStyles}
                                                 />
                                             </div>
 

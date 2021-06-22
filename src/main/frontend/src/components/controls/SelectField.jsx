@@ -5,6 +5,7 @@ export default function SelectField({
   options,
   field,
   form,
+  styles
 }){
     return (
         <Select
@@ -13,6 +14,7 @@ export default function SelectField({
         value={options ? options.find(option => option.value === field.value) : ''}
         onChange={(option) => form.setFieldValue(field.name, option.value)}
         onBlur={field.onBlur}
+        styles={styles}
       />
     )
 }

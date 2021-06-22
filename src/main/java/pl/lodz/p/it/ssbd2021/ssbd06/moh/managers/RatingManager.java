@@ -213,7 +213,9 @@ public class RatingManager {
                 .limit(1)
                 .map(BookingLine::getBox)
                 .map(Box::getHotel)
-                .findAny();
+                .map(Optional::ofNullable)
+                .findAny()
+                .flatMap(Function.identity());
 
         ratingFacade.remove(rating);
 

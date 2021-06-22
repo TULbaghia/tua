@@ -182,7 +182,8 @@ function AssignManager(props) {
                                          columns={columns}
                                          data={filteredItems}
                                          subHeader
-                                         theme={themeColor}
+                                         noHeader={true}
+                                         theme={themeColor === 'light' ? 'lightMode' : themeColor}
                                          subHeaderComponent={subHeaderComponentMemo}
                             /> }
                     </Col>

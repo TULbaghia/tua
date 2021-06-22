@@ -303,7 +303,7 @@ function BookingForm(props) {
                                                     noHeader={true}
                                                     data={boxes}
                                                     selectableRows
-                                                    theme={themeColor}
+                                                    theme={themeColor === 'light' ? 'lightMode' : themeColor}
                                                     clearSelectedRows={clearRows}
                                                 />
                                                 {errors && touched && errors.boxes && touched.boxes && (

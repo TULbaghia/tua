@@ -182,7 +182,7 @@ function ReservationDetail(props) {
                                 <div className={'modificationDate' in reservation ? "d-block" : "d-none"}>
                                     <div
                                         className={"font-weight-bold"}>{i18n.t("bookingDetails.reservation.modificationDate")}</div>
-                                    <div className={"ml-2"}>{'modificationDate' in reservation ? dateConverter(reservation.modificationDate.slice(0, -5)) : "asd"}</div>
+                                    <div className={"ml-2"}>{'modificationDate' in reservation ? dateConverter(reservation.modificationDate.slice(0, -5)) : ""}</div>
                                 </div>
                                 <div>
                                     <div

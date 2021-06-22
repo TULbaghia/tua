@@ -95,8 +95,8 @@ export const validateAddress = (data) => {
 
 export const validateHotelImage = (data) => {
     let errors = [];
-    errors.push(sizeValidator(data, 2, 127));
-    errors.push(patternValidator(data, /^(\b(https?|ftp|file):\/\/)?[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]$/));
+    errors.push(sizeValidator(data, 2, 31));
+    errors.push(patternValidator(data, /^(?!\/\/)(\/[A-Za-z0-9]+)+\.(jpg|png)$/));
     return errors.filter(err => err !== undefined);
 }
 

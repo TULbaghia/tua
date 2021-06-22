@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {})
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Size(min = 2, max = 127, message = "validation.hotel.image.size")
+@Size(min = 2, max = 31, message = "validation.hotel.image.size")
 @Pattern(regexp = RegularExpression.HOTEL_IMAGE, message = "validation.hotel.image.pattern")
 public @interface HotelImage {
     String message() default "validation.hotel.image.pattern";

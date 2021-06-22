@@ -154,7 +154,7 @@ function ModifyHotelForm() {
                                     enableReinitialize
                                     validate={ModifyHotelValidationSchema}
                                     onSubmit={(values, {setSubmitting}) => handleHotelModify(values, setSubmitting)}>
-                                    {({isSubmitting, handleChange}) => (
+                                    {({isSubmitting, handleChange, errors}) => (
                                         <Form>
                                             <Row>
                                                 <Col sm={6}>
@@ -187,7 +187,7 @@ function ModifyHotelForm() {
                                             <Row>
                                                 <button className="btn-background-custom btn btn-lg btn-primary mt-3"
                                                         type="submit"
-                                                        disabled={isSubmitting}>
+                                                        disabled={isSubmitting || Object.keys(errors).length > 0}>
                                                     {i18n.t('send')}
                                                 </button>
                                             </Row>

@@ -9,10 +9,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IHotelMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.ManagerDataFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
@@ -47,6 +44,9 @@ public class HotelManager {
 
     @Inject
     private AccountFacade accountFacade;
+
+    @Inject
+    private BookingFacade bookingFacade;
 
     @Inject
     private HttpServletRequest servletRequest;
@@ -175,6 +175,16 @@ public class HotelManager {
         Hotel hotel = hotelFacade.find(hotelId);
         if (hotel == null) {
             throw HotelException.notExists();
+        }
+
+        List<Booking> activeBookings = bookingFacade.findAllActive();
+        for (Booking booking : activeBookings) {
+            List<BookingLine> bookingLines = booking.getBookingLineList();
+            for (BookingLine bookingLine : bookingLines) {
+                if (bookingLine.getBox().getHotel() == hotel) {
+                    throw HotelException.activeBooking();
+                }
+            }
         }
 
         List<Box> boxList = boxFacade.findAll();

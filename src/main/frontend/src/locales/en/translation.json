@@ -260,6 +260,7 @@
   "hotelDelete.success": "Hotel deleted successfully",
   "exception.delete.hotel.has_manager": "Cannot delete hotel with assigned manager",
   "exception.hotel.not_exist": "Hotel doesn't exist",
+  "exception.hotel.have_active_booking": "Cannot delete hotel with active bookings",
   "addHotel": "Add hotel",
   "assignManager": "Assign manager",
   "assign": "Assign",

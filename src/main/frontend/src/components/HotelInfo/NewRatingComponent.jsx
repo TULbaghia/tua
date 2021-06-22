@@ -1,6 +1,6 @@
 import {Field, Form, Formik} from "formik";
 import React from "react";
-import {DropdownButton, Dropdown} from "react-bootstrap";
+import {DropdownButton, Dropdown, Button, Container, Row} from "react-bootstrap";
 import i18n from "i18next";
 import {api} from "../../Api";
 import {Rating} from "@material-ui/lab";
@@ -13,7 +13,7 @@ import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import {NewRatingValidator} from "./NewRatingValidator";
 import {useLocale} from "../LoginContext";
 
-export default function NewRatingComponent({placeholder, header, buttonText, bookings, triggerRefresh}) {
+export default function NewRatingComponent({placeholder, header, buttonText, bookings, triggerRefresh, singleItemButton}) {
     const dangerNotifier = useNotificationDangerAndInfinity();
     const successNotifier = useNotificationSuccessAndShort();
     const confirmDialog = useDialogPermanentChange();
@@ -38,6 +38,15 @@ export default function NewRatingComponent({placeholder, header, buttonText, boo
         })
     }
 
+    const handleButton = (e, item, values) => {
+        let newRate = {...values, bookingId: item.id}
+        if (newRate.comment === "") {
+            delete newRate.comment;
+        }
+        console.log(newRate);
+        createRateDialog(newRate);
+    }
+
     return (
         <div>
             <h4 className={"m-0"}>{header}</h4>
@@ -60,29 +69,35 @@ export default function NewRatingComponent({placeholder, header, buttonText, boo
                                onChange={handleChange}
                         >
                         </Field>
-                        <Rating
-                            size="large"
-                            name="rate"
-                            defaultValue={0}
-                            autoSave={true}
-                            precision={1}
-                            onChange={handleChange}
-                        />
-                        <DropdownButton title={buttonText}
-                                        disabled={bookings.length < 1 || isSubmitting || Object.keys(errors).length > 0}>
-                            {
-                                bookings.map(item => (
-                                    <Dropdown.Item disabled={isSubmitting} className={"dark-text-hover"} onClick={e => {
-                                        let newRate = {...values, bookingId: item.id}
-                                        if (newRate.comment === "") {
-                                            delete newRate.comment;
+
+                        <Container>
+                            <Row>
+                                <Rating
+                                    size="large"
+                                    name="rate"
+                                    defaultValue={0}
+                                    autoSave={true}
+                                    precision={1}
+                                    onChange={handleChange}
+                                />
+                            </Row>
+                            <Row>
+                                {!singleItemButton ?
+                                    <DropdownButton title={buttonText}
+                                                    disabled={bookings.length < 1 || isSubmitting || Object.keys(errors).length > 0}>
+                                        {
+                                            bookings.map(item => (
+                                                <Dropdown.Item disabled={isSubmitting} className={"dark-text-hover"} onClick={e => handleButton(e, item, values)}>{i18n.t('booking') + " id: " + item.id + ", price: " + item.price}</Dropdown.Item>
+                                            ))
                                         }
-                                        console.log(newRate);
-                                        createRateDialog(newRate);
-                                    }}>{i18n.t('booking') + " id: " + item.id + ", price: " + item.price}</Dropdown.Item>
-                                ))
-                            }
-                        </DropdownButton>
+                                    </DropdownButton>
+                                    :
+                                    <Button className="" disabled={bookings.length < 1 || isSubmitting || Object.keys(errors).length > 0} onClick={e => handleButton(e, bookings[0], values)}>
+                                        {buttonText}
+                                    </Button>
+                                }
+                            </Row>
+                        </Container>
                     </Form>
                 )}
             </Formik>

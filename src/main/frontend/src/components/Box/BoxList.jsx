@@ -15,7 +15,6 @@ import {
 } from "../Utils/Notification/NotificationProvider";
 import {useHistory, useParams} from "react-router";
 import {v4} from "uuid";
-import {api} from "../../Api";
 
 function BoxList(props) {
 
@@ -86,10 +85,7 @@ function BoxList(props) {
         };
 
         fetch("/resources/boxes/all/id/" + hotelIdFromUrl, requestOptions)
-            .then((res) => {
-                console.log(res);
-                return res.json()
-            })
+            .then((res) => res.json())
             .then((boxes) => {
                 setBoxes(boxes);
             })
@@ -107,20 +103,6 @@ function BoxList(props) {
 
     const handleIsHotelIdInUrl = () => {
         return hotelIdFromUrl !== 'own'
-
-    }
-
-    const handleGetHotelId = () => {
-        api.getOwnHotelInfo({
-            method: "GET",
-            headers: {
-                Authorization: token,
-            }
-        }).then(res => {
-            return res.data.id;
-        }).catch(err => {
-            ResponseErrorHandler(err, dispatchNotificationDanger);
-        })
     }
 
     const handleDisplayManagerButtons = () => {
@@ -137,14 +119,22 @@ function BoxList(props) {
 
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{i18n.t('mainPage')}</Link></li>
-                {currentRole === rolesConstant.manager && (
-                    <li className="breadcrumb-item"><Link to="/">{i18n.t('managerDashboard')}</Link></li>
-                )}
                 {currentRole === rolesConstant.client && (
                     <li className="breadcrumb-item"><Link to="/">{i18n.t('userDashboard')}</Link></li>
                 )}
-                {hotelIdFromUrl !== undefined && (
-                    <li className="breadcrumb-item"><Link to="/hotels">{i18n.t('hotelInfo')}</Link></li>
+                {currentRole === rolesConstant.manager && (
+                    <li className="breadcrumb-item"><Link to="/">{i18n.t('managerDashboard')}</Link></li>
+                )}
+                {currentRole === rolesConstant.admin && (
+                    <li className="breadcrumb-item"><Link to="/">{i18n.t('adminDashboard')}</Link></li>
+                )}
+                {handleIsHotelIdInUrl() && (
+                    <li className="breadcrumb-item"><Link to="/hotels">{i18n.t('hotelList')}</Link></li>
+                )}
+                {handleIsHotelIdInUrl() && (
+                    <li className="breadcrumb-item">
+                        <Link to={"/hotels/hotelInfo?id=" + id}>{i18n.t('hotelInfo')}</Link>
+                    </li>
                 )}
                 <li className="breadcrumb-item active" aria-current="page">{i18n.t('boxList.navbar.title')}</li>
             </BreadCrumb>

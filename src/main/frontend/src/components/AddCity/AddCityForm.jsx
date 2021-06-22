@@ -17,6 +17,7 @@ import {addCity} from "./AddCityApiUtil";
 import './AddCityFormWrapper.scss';
 import {Col, Container, Row} from "react-bootstrap";
 import {useHistory} from "react-router";
+import TextAreaComponent from "./AddCityFormComponents/TextAreaComponent";
 
 function AddCityForm() {
     const history = useHistory();
@@ -71,30 +72,30 @@ function AddCityForm() {
                                     name: "",
                                     description: "",
                                 }}
+                                initialErrors={{
+                                    dummy: ""
+                                }}
                                 validate={AddCityValidationSchema}
                                 onSubmit={(values, {setSubmitting}) => handleAddCity(values, setSubmitting)}>
-                                {({isSubmitting, handleChange}) => (
+                                {({isSubmitting, handleChange, errors}) => (
                                     <Form>
                                         <Row>
-                                            <Col>
+                                            <Col sm={12}>
                                                 <FieldComponent name="name"
                                                                 label={i18n.t('addCity.name')}
                                                                 placeholder={i18n.t('addCity.name')}
                                                                 handleChange={handleChange}/>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col>
-                                                <FieldComponent name="description"
-                                                                label={i18n.t('addCity.description')}
-                                                                placeholder={i18n.t('addCity.description')}
-                                                                handleChange={handleChange}/>
+                                                <TextAreaComponent name="description"
+                                                                   obligatory
+                                                                   label={i18n.t('addCity.description')}
+                                                                   placeholder={i18n.t('addCity.description')}
+                                                                   handleChange={handleChange}/>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <button className="btn-background-custom btn btn-lg btn-primary mt-3"
                                                     type="submit"
-                                                    disabled={isSubmitting}>
+                                                    disabled={isSubmitting || Object.keys(errors).length > 0}>
                                                 {i18n.t('addCity.send.form')}
                                             </button>
                                         </Row>

@@ -1,6 +1,7 @@
 import React from "react";
+import {Field} from "formik";
 
-export default function Input({type, field, form, handleChange, fieldName}) {
+export default function Input({type, field, form, handleChange, fieldName, placeholder, obligatory = false}) {
     return (
         <div className="d-flex w-100">
             <input
@@ -9,12 +10,13 @@ export default function Input({type, field, form, handleChange, fieldName}) {
                     handleChange(e)
                     form.setFieldValue(fieldName, e.target.value)
                 }}
+                placeholder={placeholder}
                 className="form-control my-2"
                 type={type}
-                required
+                required={obligatory}
                 autoFocus={true}
             />
-            <span className="custom-asterisk">*</span>
+            {obligatory && <span className="custom-asterisk">*</span>}
         </div>
     )
 }

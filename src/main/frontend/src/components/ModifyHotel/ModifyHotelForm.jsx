@@ -154,17 +154,20 @@ function ModifyHotelForm() {
                                     enableReinitialize
                                     validate={ModifyHotelValidationSchema}
                                     onSubmit={(values, {setSubmitting}) => handleHotelModify(values, setSubmitting)}>
-                                    {({isSubmitting, handleChange}) => (
+                                    {({isSubmitting, handleChange, errors}) => (
                                         <Form>
                                             <Row>
                                                 <Col sm={6}>
                                                     <FieldComponent name="name"
+                                                                    obligatory
                                                                     label={i18n.t('modifyHotel.modify.name')}
                                                                     handleChange={handleChange}/>
                                                     <FieldComponent name="address"
+                                                                    obligatory
                                                                     label={i18n.t('modifyHotel.modify.address')}
                                                                     handleChange={handleChange}/>
                                                     <SelectComponent name="city"
+                                                                     obligatory
                                                                      entryValue={hotel.cityName}
                                                                      label={i18n.t('modifyHotel.modify.city')}
                                                                      values={cities}
@@ -175,16 +178,16 @@ function ModifyHotelForm() {
                                                                        obligatory
                                                                        label={i18n.t('modifyHotel.modify.description')}
                                                                        handleChange={handleChange}/>
-                                                    <TextAreaComponent name="image"
-                                                                       placeholder="/static/media/example.jpg"
-                                                                       label={i18n.t('modifyHotel.modify.image')}
-                                                                       handleChange={handleChange}/>
+                                                    <FieldComponent name="image"
+                                                                    placeholder="/static/media/example.jpg"
+                                                                    label={i18n.t('modifyHotel.modify.image')}
+                                                                    handleChange={handleChange}/>
                                                 </Col>
                                             </Row>
                                             <Row>
                                                 <button className="btn-background-custom btn btn-lg btn-primary mt-3"
                                                         type="submit"
-                                                        disabled={isSubmitting}>
+                                                        disabled={isSubmitting || Object.keys(errors).length > 0}>
                                                     {i18n.t('send')}
                                                 </button>
                                             </Row>

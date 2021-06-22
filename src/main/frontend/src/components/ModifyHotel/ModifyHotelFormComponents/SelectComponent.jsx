@@ -8,7 +8,7 @@ const selectPredicate = (values, predicate) => (
     values.filter(predicate).map(x => <option value={x.id}>{x.name}</option>)
 )
 
-export const SelectComponent = ({values, label, name, handleChange, entryValue}) => (
+export const SelectComponent = ({values, label, name, handleChange, entryValue, obligatory = false}) => (
     <>
         <h6 className="mt-3 mb-0">{label}</h6>
         <div className="d-flex w-100">
@@ -18,7 +18,7 @@ export const SelectComponent = ({values, label, name, handleChange, entryValue})
                 {selectPredicate(values, y => y.name === entryValue)}
                 {selectPredicate(values, y => y.name !== entryValue)}
             </Field>
-            <span className="custom-asterisk">*</span>
+            {obligatory && <span className="custom-asterisk">*</span>}
         </div>
         <ErrorMessage name={name}>
             {msg => <div className="err-msg">{msg}</div>}

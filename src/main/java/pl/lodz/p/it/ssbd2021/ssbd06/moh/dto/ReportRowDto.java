@@ -18,6 +18,7 @@ public class ReportRowDto {
     private Long id;
     private Long dateFrom;
     private Long dateTo;
+    private Long modificationDate;
     private String status;
     private BigDecimal price;
     private Short rating;

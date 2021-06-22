@@ -2,7 +2,7 @@ import {ErrorMessage, Field, Form} from "formik";
 import React from "react";
 import Input from "./Input";
 
-export default function FieldComponent({type, label, name, handleChange}) {
+export default function FieldComponent({type, label, name, handleChange, placeholder, obligatory = false}) {
     return (
         <>
             <h6 className="mt-3 mb-0">{label}</h6>
@@ -13,6 +13,8 @@ export default function FieldComponent({type, label, name, handleChange}) {
                        type={type}
                        field={field}
                        form={form}
+                       obligatory={obligatory}
+                       placeholder={placeholder}
                        handleChange={handleChange}
                        fieldName={name}/>
                )}/>

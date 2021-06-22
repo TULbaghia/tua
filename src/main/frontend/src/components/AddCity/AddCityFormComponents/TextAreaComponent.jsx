@@ -1,7 +1,7 @@
 import {ErrorMessage, Field} from "formik";
 import React from "react";
 
-function TextAreaComponent({label, name, handleChange, placeholder, obligatory = false}) {
+function TextAreaComponent({label, name, handleChange, obligatory = false, placeholder}) {
     return (
         <>
             <h6 className="mt-3 mb-0">{label}</h6>

@@ -70,7 +70,7 @@ function ReportsTable({bookings}) {
                    noDataComponent={i18n.t('table.no.result')}
                    data={bookings}
                    columns={columns}
-                   theme={themeColor}/>
+                   theme={themeColor === 'light' ? 'lightMode' : themeColor}/>
     );
 }
 

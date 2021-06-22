@@ -9,11 +9,18 @@ import {
     useNotificationSuccessAndShort
 } from "../Notification/NotificationProvider";
 import i18n from "../../../i18n";
+import {createTheme} from "react-data-table-component";
 
 export const ThemeColorAllowed = {
     LIGHT: "light",
     DARK: "dark"
 };
+
+createTheme('lightMode', {
+    background: {
+        default: '#f8f9fa'
+    }
+})
 
 const ThemeColor = createContext();
 

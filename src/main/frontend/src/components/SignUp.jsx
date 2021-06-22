@@ -140,8 +140,7 @@ function SignUp(props) {
 
                                         <div className="col-12 d-flex justify-content-center mb-3">
                                             <button
-                                                className="btn btn-primary"
-                                                style={{backgroundColor: "#7749F8"}}
+                                                className="btn btn-purple"
                                                 type="submit"
                                             >
                                                 {t('signUp')}

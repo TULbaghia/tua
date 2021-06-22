@@ -121,7 +121,7 @@ function ModifyCityForm() {
                                 <Row className="text-center justify-content-center d-block">
                                     <h1 className="mb-3">{i18n.t('modifyCity.title')}</h1>
                                     <h5>{i18n.t('modifyCity.modify.info')}{city.name}</h5>
-                                    <button className="mt-3 mx-3 w-25 btn-background-custom btn btn-primary"
+                                    <button className="mt-3 mx-3 w-25 btn btn-secondary"
                                             onClick={(e) => handleFetch()}
                                             type="submit">
                                         {i18n.t("refresh")}

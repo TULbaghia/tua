@@ -343,8 +343,7 @@ function BookingForm(props) {
                                             <div className="col-12 my-3">
                                                 <button
                                                     disabled={!(touched.dateFrom || touched.dateTo) || (errors.dateFrom || errors.dateTo)}
-                                                    className="btn btn-primary"
-                                                    style={{backgroundColor: "#7749F8"}}
+                                                    className="btn btn-purple"
                                                     onClick={() => {
                                                         console.log(isValid)
                                                         console.log(errors)
@@ -379,8 +378,7 @@ function BookingForm(props) {
                                             <div className="col-12 d-flex justify-content-center my-3">
                                                 <button
                                                     disabled={!isValid}
-                                                    className="btn btn-primary"
-                                                    style={{backgroundColor: "#7749F8"}}
+                                                    className="btn btn-purple"
                                                     type="submit"
                                                 >
                                                     {t("booking.create_reservation")}

@@ -97,24 +97,24 @@ function ReservationStateHandler({reservation, refreshComponent, ...props}) {
         <div className={"d-flex"}>
             <div className={"bookingStates d-flex"}>
                 {verifyStateTransition(reservation.bookingStatus, stateEnums.CANCELLED) && allowToCancel() &&
-                <Button className={"mr-2 bg-danger"} onClick={() => promptAct(cancelBooking)}>
+                <Button className={"mr-2"} variant="danger" onClick={() => promptAct(cancelBooking)}>
                     {i18n.t("bookingDetails.buttons.cancel")}
                 </Button>
                 }
                 <div style={{display: (currentRole === rolesConstant.manager ? "flex" : "none")}}>
                     {verifyStateTransition(reservation.bookingStatus, stateEnums.IN_PROGRESS) &&
-                    <Button className={"mr-2 bg-success"} onClick={() => promptAct(inProgressBooking)}>
+                    <Button className={"mr-2"} variant="success" onClick={() => promptAct(inProgressBooking)}>
                         {i18n.t("bookingDetails.buttons.in_progress")}
                     </Button>
                     }
                     {verifyStateTransition(reservation.bookingStatus, stateEnums.FINISHED) &&
-                    <Button className={"mr-2 bg-success"} onClick={() => promptAct(endBooking)}>
+                    <Button className={"mr-2"} variant="success" onClick={() => promptAct(endBooking)}>
                         {i18n.t("bookingDetails.buttons.end_booking")}
                     </Button>
                     }
                 </div>
             </div>
-            <Button onClick={() => refreshComponent(true)}>{i18n.t("refresh")}</Button>
+            <Button variant="secondary" onClick={() => refreshComponent(true)}>{i18n.t("refresh")}</Button>
         </div>
     );
 }

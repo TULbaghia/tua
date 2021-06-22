@@ -123,8 +123,16 @@ public class BoxFacade extends AbstractFacade<Box> {
             query.setParameter("dateTo", dateTo);
             query.setLockMode(LockModeType.PESSIMISTIC_FORCE_INCREMENT);
             return query.getResultList();
-        }catch(PessimisticLockException ex){
+        }catch(PessimisticLockException | org.hibernate.PessimisticLockException ex){
             throw BoxException.boxIsUsed();
+        }catch(LockTimeoutException ex){
+            if(ex.getCause() instanceof PessimisticLockException){
+                throw BoxException.boxIsUsed();
+            }
+            if(ex.getCause() instanceof org.hibernate.PessimisticLockException){
+                throw BoxException.boxIsUsed();
+            }
+            throw ex;
         }
     }
 }

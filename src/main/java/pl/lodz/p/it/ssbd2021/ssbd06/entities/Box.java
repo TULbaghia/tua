@@ -47,7 +47,8 @@ import java.util.Set;
             "b.hotel.id = :hotel_id " +
             "AND b.id NOT IN (SELECT bl.box.id FROM BookingLine bl WHERE bl.booking.dateTo >= :dateFrom AND bl.booking.dateFrom <= :dateTo AND (bl.booking.status = pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus.IN_PROGRESS OR bl.booking.status = pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus.PENDING))  " +
             "AND b.id IN :boxIdList " +
-            "AND b.delete = false"
+            "AND b.delete = false",
+            hints = {@QueryHint(name="javax.persistence.lock.timeout", value="11000")}
     ),
 })
 @NoArgsConstructor

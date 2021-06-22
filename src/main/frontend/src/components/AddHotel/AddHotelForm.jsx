@@ -119,12 +119,15 @@ function AddHotelForm() {
                                     <Row>
                                         <Col sm={6}>
                                             <FieldComponent name="name"
+                                                            obligatory
                                                             label={i18n.t('addHotel.add.name')}
                                                             handleChange={handleChange}/>
                                             <FieldComponent name="address"
+                                                            obligatory
                                                             label={i18n.t('addHotel.add.address')}
                                                             handleChange={handleChange}/>
                                             <SelectComponent name="city"
+                                                             obligatory
                                                              entryValue={cities.map(x => x.name)[0]}
                                                              label={i18n.t('addHotel.add.city')}
                                                              values={cities}
@@ -136,7 +139,6 @@ function AddHotelForm() {
                                                                label={i18n.t('addHotel.add.description')}
                                                                handleChange={handleChange}/>
                                             <FieldComponent name="image"
-                                                            obligatory={false}
                                                             placeholder="/static/media/example.jpg"
                                                             label={i18n.t('addHotel.add.image')}
                                                             handleChange={handleChange}/>

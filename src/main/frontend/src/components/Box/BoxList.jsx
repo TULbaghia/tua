@@ -15,11 +15,13 @@ import {
 } from "../Utils/Notification/NotificationProvider";
 import {useHistory, useParams} from "react-router";
 import {v4} from "uuid";
+import {api} from "../../Api";
 
 function BoxList(props) {
 
     const {id} = useParams();
     const [boxes, setBoxes] = useState([])
+    const [managerHotelId, setManagerHotelId] = useState("")
     const {token, username, currentRole} = useLocale();
     const history = useHistory();
 
@@ -34,6 +36,10 @@ function BoxList(props) {
             fetchHotelDataById(refresh);
         } else if (!handleIsHotelIdInUrl() && currentRole === rolesConstant.manager) {
             fetchHotelData(refresh);
+        }
+
+        if(currentRole === rolesConstant.manager) {
+            handleGetHotelId();
         }
     }
 
@@ -105,9 +111,22 @@ function BoxList(props) {
         return hotelIdFromUrl !== 'own'
     }
 
+    const handleGetHotelId = () => {
+        api.getOwnHotelInfo({
+            method: "GET",
+            headers: {
+                Authorization: token,
+            }
+        }).then(res => {
+            setManagerHotelId(res.data.id);
+        }).catch(err => {
+            ResponseErrorHandler(err, dispatchNotificationDanger);
+        })
+    }
+
     const handleDisplayManagerButtons = () => {
-        return (handleIsManager() &&
-            !handleIsHotelIdInUrl());
+        return (handleIsManager() && !handleIsHotelIdInUrl()) ||
+            (handleIsManager() && managerHotelId === parseInt(hotelIdFromUrl));
     }
 
     const handleModify = (boxId) => {

@@ -134,6 +134,8 @@ function NavigationBar(props) {
             }).catch(err => {
                 setManagerAccess(false);
             });
+        } else {
+            setManagerAccess(false);
         }
     }
 

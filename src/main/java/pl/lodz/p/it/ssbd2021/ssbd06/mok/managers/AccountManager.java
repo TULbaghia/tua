@@ -375,10 +375,10 @@ public class AccountManager {
         }
 
         PendingCode pendingCode = createPendingCode(accountEmail, CodeType.EMAIL_CHANGE);
-        pendingCode.setCreatedBy(getCurrentUser());
+        pendingCode.setCreatedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
         accountEmail.getPendingCodeList().add(pendingCode);
         accountEmail.setNewEmail(newEmail);
-        accountEmail.setModifiedBy(getCurrentUser());
+        accountEmail.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
 
         accountFacade.edit(accountEmail);
         emailSender.sendEmailChange(accountEmail, pendingCode.getCode());

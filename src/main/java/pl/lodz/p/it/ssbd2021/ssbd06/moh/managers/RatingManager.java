@@ -26,6 +26,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Manager odpowiadający za zarządzanie ocenami hoteli.
@@ -183,7 +184,8 @@ public class RatingManager {
                 .limit(1)
                 .map(BookingLine::getBox)
                 .map(Box::getHotel)
-                .findAny();
+                .map(Optional::ofNullable)
+                .findAny().flatMap(Function.identity());
 
         if (optionalHotel.isPresent()) {
             Hotel hotel = optionalHotel.get();

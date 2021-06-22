@@ -258,7 +258,7 @@ function HotelInfo(props) {
                             defaultValue={0}
                             value={hotelData.rating}
                             readOnly
-                            precision={0.5}
+                            precision={0.1}
                         />
                         <span
                             className={"ml-3"}>[{hotelData.rating !== undefined ? hotelData.rating : t("ratings.noRatings")}]</span>

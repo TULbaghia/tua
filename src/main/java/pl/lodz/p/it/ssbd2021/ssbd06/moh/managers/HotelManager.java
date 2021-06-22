@@ -22,6 +22,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.security.enterprise.SecurityContext;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
@@ -52,6 +53,9 @@ public class HotelManager {
 
     @Inject
     private CityManager cityManager;
+
+    @Inject
+    private SecurityContext securityContext;
 
     /**
      * Zwraca hotel o podanym identyfikatorze
@@ -209,9 +213,9 @@ public class HotelManager {
         }
 
         managerData.setHotel(hotel);
+        managerData.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
         hotel.getManagerDataList().add(managerData);
-
-        managerDataFacade.create(managerData);
+        managerDataFacade.edit(managerData);
         hotelFacade.edit(hotel);
     }
 
@@ -234,7 +238,7 @@ public class HotelManager {
                 .findFirst()
                 .get();
         managerData.setHotel(null);
-
+        managerData.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
         managerDataFacade.edit(managerData);
     }
 

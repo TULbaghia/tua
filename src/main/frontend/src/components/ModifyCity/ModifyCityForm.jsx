@@ -16,7 +16,7 @@ import {
 import 'moment/locale/pl';
 import 'moment/locale/en-gb';
 import {ModifyCityValidationSchema} from "./ModifyCityFormComponents/ValidationSchema";
-import {getCity, modifyCity} from "./ModifyCityApiUtil";
+import {deleteCity, getCity, modifyCity} from "./ModifyCityApiUtil";
 import queryString from "query-string";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import TextAreaComponent from "./ModifyCityFormComponents/TextAreaComponent";
@@ -57,6 +57,21 @@ function ModifyCityForm() {
         if (!firstFetch) {
             dispatchNotificationSuccess({message: i18n.t('dataRefresh')});
         }
+    }
+
+    const handleCityDelete = () => {
+        dispatchDialog({
+            callbackOnSave: () => {
+                const id = city.id
+                deleteCity({id, token, etag})
+                    .then(response => {
+                        dispatchNotificationSuccess({message: i18n.t('city.delete.success')})
+                        history.push("/cities");
+                    }).catch(err => {
+                    ResponseErrorHandler(err, dispatchNotificationDanger)
+                });
+            },
+        });
     }
 
     const handleCityModify = (values, setSubmitting) => {
@@ -106,10 +121,15 @@ function ModifyCityForm() {
                                 <Row className="text-center justify-content-center d-block">
                                     <h1 className="mb-3">{i18n.t('modifyCity.title')}</h1>
                                     <h5>{i18n.t('modifyCity.modify.info')}{city.name}</h5>
-                                    <button className="mt-3 w-25 btn-background-custom btn btn-primary"
+                                    <button className="mt-3 mx-3 w-25 btn-background-custom btn btn-primary"
                                             onClick={(e) => handleFetch()}
                                             type="submit">
                                         {i18n.t("refresh")}
+                                    </button>
+                                    <button className="mt-3 mx-3 w-25 btn-background-custom btn btn-primary"
+                                            onClick={(e) => handleCityDelete()}
+                                            type="submit">
+                                        {i18n.t("delete")}
                                     </button>
                                     <p className="mt-2 obligatory-fields">
                                         {i18n.t('obligatoryFields')}

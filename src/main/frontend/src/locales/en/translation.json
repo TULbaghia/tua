@@ -436,7 +436,7 @@
   "booking.form.error.no_boxes": "No boxes selected",
   "booking.search_boxes": "Search",
   "booking.create_reservation": "Book",
-  "booking.date_cannot_refer_to_past": "Date cannot refer to past",
+  "booking.date_cannot_refer_to_past": "The check-in time for the given date has already started",
   "booking.cancellation_limit_info": "Booking can be cancelled 24 hours after booking and 48 hours before reservation starts",
   "booking.description": "Description",
   "booking.book": "Add",

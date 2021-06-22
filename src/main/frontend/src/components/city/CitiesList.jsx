@@ -56,19 +56,6 @@ function CitiesList(props) {
     ];
 
     if (currentRole === rolesConstant.admin) {
-        columns.push({
-            name: t('delete'),
-            selector: 'delete',
-            cell: row => {
-                return (
-                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={async event => {
-                        dispatchCriticalDialog({
-                            callbackOnSave: () => deleteCity(row.id),
-                        })
-                    }}>{t('delete')}</Button>
-                )
-            }
-        })
 
         columns.push({
             name: t('edit'),
@@ -101,27 +88,6 @@ function CitiesList(props) {
             }
         },
     );
-
-    function deleteCity(id) {
-        api.getCity(id, {method: 'GET', headers: {Authorization: token}})
-            .then(res => {
-                console.log("etag")
-                console.log(res)
-                console.log(res.headers.etag)
-                api.deleteCity(id, {
-                    headers: {
-                        Authorization: token,
-                        "If-Match": res.headers.etag
-                    }
-                }).then(res => {
-                    dispatchNotificationSuccess({message: i18n.t('city.delete.success')})
-                }).catch(err => {
-                    dispatchNotificationDanger({message: i18n.t(err.response.data.message)})
-                }).finally(() => fetchData());
-            }).catch(err => dispatchNotificationDanger({message: i18n.t(err.response.data.message)}))
-            .finally(() => fetchData());
-    }
-
 
     useEffect(() => {
         fetchData();

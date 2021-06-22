@@ -24,14 +24,11 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.security.enterprise.SecurityContext;
-import javax.security.enterprise.SecurityContext;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.math.BigDecimal;
-import java.util.Set;
 import java.time.Duration;
-import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -133,8 +130,7 @@ public class BookingManager {
         Account account = accountFacade.findByLogin(username);
 
         List<Box> availableBoxes = boxFacade
-                .getAvailableBoxesByIdListAndHotelId(bookingDto.getHotelId(), bookingDto.getBoxes(), dateFrom, dateTo);
-
+                .getAvailableBoxesByIdListAndHotelIdWithLock(bookingDto.getHotelId(), bookingDto.getBoxes(), dateFrom, dateTo);
         // not enough boxes to fulfill the booking or booking has been sent without any boxes
         if (availableBoxes.size() != bookingDto.getBoxes().size()) {
             throw BookingException.notEnoughBoxesOfSpecifiedType();

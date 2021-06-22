@@ -439,11 +439,11 @@
   "booking.form.error.no_boxes": "Nie wybrano żadnego boxa",
   "booking.search_boxes": "Wyszukaj",
   "booking.create_reservation": "Rezerwuj",
-  "booking.date_cannot_refer_to_past": "Data nie może być z przeszłości",
+  "booking.date_cannot_refer_to_past": "Doba hotelowa dla podanej daty już się zaczęła",
   "booking.cancellation_limit_info": "Rezerwacja może być anulowana 24 godziny po dokonaniu rezerwacji oraz 48 godzin przed rozpoczęciem rezerwacji",
   "booking.description": "Opis",
   "booking.book": "Zarezerwuj",
-  "exception.boxes.not_enough": "Nie wystarczająca liczba boxów aby zreazliować rezerwacje w wybranym okresie",
+  "exception.boxes.not_enough": "Niewystarczająca liczba boxów aby zrealizować rezerwacje w wybranym okresie",
   "exception.boxes.not_available": "Wybrane boxy nie są dostępne",
   "exception.booking.invalid_date_range": "Data rozpoczęcia rezerwacji powinna być wcześniejsza od daty zakończenia",
 

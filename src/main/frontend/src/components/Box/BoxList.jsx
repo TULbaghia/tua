@@ -120,7 +120,9 @@ function BoxList(props) {
         }).then(res => {
             setManagerHotelId(res.data.id);
         }).catch(err => {
-            ResponseErrorHandler(err, dispatchNotificationDanger);
+            if (err.response.data.message !== "exception.hotel.no_hotel_assigned") {
+                ResponseErrorHandler(err, dispatchNotificationDanger);
+            }
         })
     }
 

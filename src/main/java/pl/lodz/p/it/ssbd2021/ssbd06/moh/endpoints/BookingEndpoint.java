@@ -87,7 +87,6 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
             if (!verifyIntegrity(bookingIntegrity)) {
                 throw AppOptimisticLockException.optimisticLockException();
             }
-
             bookingManager.endBooking(bookingId);
         }
         else {

@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from "react-router";
 import NotFound from "../ErrorPages/NotFound";
-import {getBox, getHotel, getRenter, getReservation} from "./ReservationDetailApiUtil";
+import {getBox, getHotel, getReservation} from "./ReservationDetailApiUtil";
 import {useLocale} from "../LoginContext";
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
 } from "../Utils/Notification/NotificationProvider";
-import {Badge, Button, Card, Col, Container, Row, Table} from "react-bootstrap";
+import {Badge, Card, Col, Container, Row, Table} from "react-bootstrap";
 import i18n from "i18next";
 import {v4} from "uuid";
 import BreadCrumb from "../Partial/BreadCrumb";
@@ -36,20 +36,20 @@ function ReservationDetail(props) {
         bookingStatus: "",
         creationDate: "",
         dateFrom: "",
-        dateTo: ""
+        dateTo: "",
+        renter: {}
     })
-    const [renter, setRenter] = useState({})
 
-    const fetchData = async (showInfo = false, reservationRef = true, hotelRef = true, renterRef = true) => {
+    const fetchData = async (showInfo = false, reservationRef = true, hotelRef = true) => {
         if (reservationRef) setReservation({
             bookingLine: [],
             bookingStatus: "",
             creationDate: "",
             dateFrom: "",
-            dateTo: ""
+            dateTo: "",
+            renter: {}
         });
         if (hotelRef) setHotel({})
-        if (renterRef) setRenter({});
         try {
             let reservationE = reservation;
             if (reservationRef) {
@@ -72,12 +72,6 @@ function ReservationDetail(props) {
                 }
 
                 setReservation(reservationE)
-            }
-
-            if (renterRef) {
-                getRenter({login: reservationE.renterLogin, token, currentRole}).then(res => {
-                    setRenter({...res.data, ETag: res.headers.etag})
-                }).catch(err => ResponseErrorHandler(err, dispatchError));
             }
 
             if (hotelRef) {
@@ -115,10 +109,10 @@ function ReservationDetail(props) {
         return (<></>);
     }
 
-    const bookingLinePrinter = (bookingLine) => {
+    const bookingLinePrinter = (bookingLine, i) => {
         return (
             <tr key={v4()}>
-                <td>{bookingLine.id}</td>
+                <td>{i + 1}</td>
                 <td>{i18n.t(bookingLine.box ? bookingLine.box.animalType : "")}</td>
                 <td>{(Math.round(bookingLine.pricePerDay * 100) / 100).toFixed(2)} {i18n.t("currency")}</td>
                 <td>{(Math.round(bookingLine.pricePerDay * reservation.differenceInDays * 100) / 100).toFixed(2)} {i18n.t("currency")}</td>
@@ -147,7 +141,7 @@ function ReservationDetail(props) {
                         <ReservationStateHandler reservation={reservation} refreshComponent={fetchData}/>
                     </Col>
                 </Row>
-                { reservation.bookingStatus === "FINISHED" &&
+                {reservation.bookingStatus === "FINISHED" &&
                 <ReservationCommentHandler reservation={reservation} refreshComponent={() => fetchData(true)}/>
                 }
                 <Row className={"d-flex"}>
@@ -173,23 +167,29 @@ function ReservationDetail(props) {
                                 <div>
                                     <div
                                         className={"font-weight-bold"}>{i18n.t("bookingDetails.reservation.creationDate")}</div>
-                                    <div className={"ml-2"}>{dateConverter(reservation.creationDate.slice(0, -5))}</div>
+                                    <div className={"ml-2"}>{reservation.creationDate !== "" ? dateConverter(reservation.creationDate.slice(0, -5)) : ""}</div>
                                 </div>
                                 <div>
                                     <div
                                         className={"font-weight-bold"}>{i18n.t("bookingDetails.reservation.dateFrom")}</div>
-                                    <div className={"ml-2"}>{dateConverter(reservation.dateFrom.slice(0, -5))}</div>
+                                    <div className={"ml-2"}>{reservation.creationDate !== "" ? dateConverter(reservation.dateFrom.slice(0, -5)) : ""}</div>
                                 </div>
                                 <div>
                                     <div
                                         className={"font-weight-bold"}>{i18n.t("bookingDetails.reservation.dateTo")}</div>
-                                    <div className={"ml-2"}>{dateConverter(reservation.dateTo.slice(0, -5))}</div>
+                                    <div className={"ml-2"}>{reservation.creationDate !== "" ? dateConverter(reservation.dateTo.slice(0, -5)) : ""}</div>
+                                </div>
+                                <div className={'modificationDate' in reservation ? "d-block" : "d-none"}>
+                                    <div
+                                        className={"font-weight-bold"}>{i18n.t("bookingDetails.reservation.modificationDate")}</div>
+                                    <div className={"ml-2"}>{'modificationDate' in reservation ? dateConverter(reservation.modificationDate.slice(0, -5)) : "asd"}</div>
                                 </div>
                                 <div>
                                     <div
                                         className={"font-weight-bold"}>{i18n.t("bookingDetails.reservation.price")}</div>
                                     <div className={"ml-2"}><Badge
-                                        variant={"info"}>{reservation.price ? reservation.price.toFixed(2) : ''} {i18n.t("currency")}</Badge></div>
+                                        variant={"info"}>{reservation.price ? reservation.price.toFixed(2) : '0.00'} {i18n.t("currency")}</Badge>
+                                    </div>
                                 </div>
                             </Card.Body>
                         </Card>
@@ -203,25 +203,26 @@ function ReservationDetail(props) {
                             <Card.Body>
                                 <div>
                                     <div className={"font-weight-bold"}>{i18n.t("bookingDetails.renter.login")}</div>
-                                    <div className={"ml-3"}>{renter.login}</div>
+                                    <div className={"ml-3"}>{reservation.renter.login}</div>
                                 </div>
                                 <div>
                                     <div className={"font-weight-bold"}>{i18n.t("bookingDetails.renter.personal")}</div>
-                                    <div className={"ml-3"}>{renter.firstname} {renter.lastname}</div>
+                                    <div
+                                        className={"ml-3"}>{reservation.renter.firstname} {reservation.renter.lastname}</div>
                                 </div>
                                 <div>
                                     <div className={"font-weight-bold"}>{i18n.t("bookingDetails.renter.email")}</div>
-                                    <div className={"ml-3"}>{renter.email}</div>
+                                    <div className={"ml-3"}>{reservation.renter.email}</div>
                                 </div>
                                 <div>
                                     <div
                                         className={"font-weight-bold"}>{i18n.t("bookingDetails.renter.contactNumber")}</div>
-                                    <div className={"ml-3"}>{renter.contactNumber}</div>
+                                    <div className={"ml-3"}>{reservation.renter.contactNumber}</div>
                                 </div>
                                 <div style={{display: (currentRole === rolesConstant.manager ? "block" : "none")}}>
                                     <div className={"font-weight-bold"}>{i18n.t("bookingDetails.renter.enabled")}</div>
                                     <div
-                                        className={"ml-3"}>{i18n.t("bookingDetails.renter.enabled." + (renter.enabled ? "yes" : "no"))}</div>
+                                        className={"ml-3"}>{i18n.t("bookingDetails.renter.enabled." + (reservation.renter.enabled ? "yes" : "no"))}</div>
                                 </div>
                             </Card.Body>
                         </Card>

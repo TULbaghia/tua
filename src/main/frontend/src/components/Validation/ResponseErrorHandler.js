@@ -7,12 +7,6 @@ export const ResponseErrorHandler = (error, errorNotifier, shouldDispatchViolati
 }), isAuthRequest = false) => {
     if (error.response) {
         let errorHandled = false;
-        if (error.response.status === 500) {
-            errorNotifier({
-                "dialogDuration": dialogDuration.INFINITY,
-                "message": i18n.t("request.error.5xx")
-            });
-        }
         if (error.response.status === 404) {
             errorNotifier({
                 "dialogDuration": dialogDuration.INFINITY,

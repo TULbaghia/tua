@@ -26,21 +26,6 @@ export const getBox = ({id, token}) => {
     });
 }
 
-export const getRenter = ({login, token, currentRole}) => {
-    if (currentRole === rolesConstant.client) {
-        return api.showAccountInformation({
-            headers: {
-                Authorization: token
-            }
-        });
-    }
-    return api.showAccount(login, {
-        headers: {
-            Authorization: token
-        }
-    });
-}
-
 export const apiCancelBooking = ({id, token, ETag, dispatchDanger}) => {
     return api.cancelBooking(id, {
         headers: {

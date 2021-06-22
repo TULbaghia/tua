@@ -1,3 +1,7 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins/breakpoints";
+
 .name {
     font-weight: bold;
     color: var(--dark)
@@ -122,4 +126,10 @@
 .dropdown-menu.show .dropdown-item:hover {
     background-color: var(--hover-gray);
     color: var(--light);
+}
+
+#basic-navbar-nav .dropdown {
+  @include media-breakpoint-down(md) {
+    width: 100%;
+  }
 }

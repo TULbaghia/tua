@@ -11,6 +11,7 @@ import {
 } from "../../Utils/Notification/NotificationProvider";
 import {rolesConstant} from "../../../Constants";
 import {ResponseErrorHandler} from "../../Validation/ResponseErrorHandler";
+import moment from "moment";
 
 const stateEnums = {CANCELLED: "CANCELLED", PENDING: "PENDING", IN_PROGRESS: "IN_PROGRESS", FINISHED: "FINISHED"}
 
@@ -81,10 +82,21 @@ function ReservationStateHandler({reservation, refreshComponent, ...props}) {
         })
     }
 
+    const allowToCancel = () => {
+        if (reservation.creationDate) {
+            const createDate = moment(reservation.creationDate.slice(0, -5)).unix();
+            const startDate = moment(reservation.dateFrom.slice(0, -5)).unix();
+            const now = moment().unix();
+            const day = 24 * 60 * 60;
+
+            return now - createDate < day && startDate - now > 2 * day
+        }
+    }
+
     return (
         <div className={"d-flex"}>
             <div className={"bookingStates d-flex"}>
-                {verifyStateTransition(reservation.bookingStatus, stateEnums.CANCELLED) &&
+                {verifyStateTransition(reservation.bookingStatus, stateEnums.CANCELLED) && allowToCancel() &&
                 <Button className={"mr-2 bg-danger"} onClick={() => promptAct(cancelBooking)}>
                     {i18n.t("bookingDetails.buttons.cancel")}
                 </Button>

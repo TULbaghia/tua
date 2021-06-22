@@ -5,14 +5,23 @@ import logo from "../images/logo.png"
 import hand from "../images/hand.jpg"
 import cat from "../images/cat.png"
 import {withNamespaces} from "react-i18next";
-import {Carousel, Container, Row} from "react-bootstrap";
+import {Carousel, Col, Container, Row} from "react-bootstrap";
+import {ThemeColorAllowed, useThemeColor} from "./Utils/ThemeColor/ThemeColorProvider";
 
 function Home(props) {
     const {t, i18n} = props
     const {isAuthenticated} = props;
 
+    const themeColor = useThemeColor();
+    let bgColor = "#f8f9fa";
+    if (themeColor === ThemeColorAllowed.DARK) {
+        bgColor = "#424242";
+    }
+
     return (
-        <Container fluid>
+        <Container fluid className={"darkify pb-4 mb-n2"}>
+            <style
+                dangerouslySetInnerHTML={{__html: "body {background-color: " + bgColor + "; background-image: unset;"}}/>
             <Row className={"px-0"}>
                 <Carousel className={"homeCarousel w-100"}>
                     <Carousel.Item interval={15000}>
@@ -31,18 +40,24 @@ function Home(props) {
                     </Carousel.Item>
                 </Carousel>
             </Row>
-            <Row>
-                <div className={"darkify pb-3 mb-n2 homeGrid px-3"} style={{minHeight: "500px"}}>
-                    <div className={"text-center h3 my-4 d-flex justify-content-center align-items-start textLeft"}>{t('landingPageLeft')}</div>
-                    <div className={"text-center h3 my-4 d-flex justify-content-center align-items-start textRight"}>{t('landingPageRight')}</div>
-                    <div className={"d-flex justify-content-center align-items-start imageLeft"}>
-                        <img alt="cat" className={"img-fluid"} src={cat}/>
-                    </div>
-                    <div className={"d-flex justify-content-center align-items-start imageRight"}>
-                        <img alt="hand" className={"img-fluid"} src={hand}/>
-                    </div>
-                </div>
-            </Row>
+            <Container className={"darkify"}>
+                <Row>
+                    <Col xs={12} className={"px-0 px-md-3"}>
+                        <div className={"darkify pb-3 mb-n2 homeGrid px-0 px-md-3"} style={{minHeight: "500px"}}>
+                            <div
+                                className={"text-center h3 my-4 d-flex justify-content-center align-items-start textLeft"}>{t('landingPageLeft')}</div>
+                            <div
+                                className={"text-center h3 my-4 d-flex justify-content-center align-items-start textRight"}>{t('landingPageRight')}</div>
+                            <div className={"d-flex justify-content-center align-items-start imageLeft"}>
+                                <img alt="cat" className={"img-fluid"} src={cat}/>
+                            </div>
+                            <div className={"d-flex justify-content-center align-items-start imageRight"}>
+                                <img alt="hand" className={"img-fluid"} src={hand}/>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         </Container>
     );
 }

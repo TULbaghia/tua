@@ -6,7 +6,7 @@ import {useLocale} from "../LoginContext";
 import {withNamespaces} from 'react-i18next';
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
-import "../../css/Navbar.css";
+import "../../css/Navbar.scss";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import ThemeColorSwitcher from "../Utils/ThemeColor/ThemeColorSwitcher";
 import {rolesConstant} from "../../Constants";
@@ -283,8 +283,8 @@ function NavigationBar(props) {
                         </div>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                    <Navbar.Collapse id="basic-navbar-nav d-flex align-items-center align-content-center">
-                        <Nav className="mr-auto d-flex align-items-center align-content-center">
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="mr-auto d-flex align-items-start align-items-lg-center">
                             <LinkContainer to="/">
                                 <Nav.Link>{t('mainPage')}</Nav.Link>
                             </LinkContainer>
@@ -292,12 +292,12 @@ function NavigationBar(props) {
                                 <Nav.Link>{t('hotels')}</Nav.Link>
                             </LinkContainer>
                         </Nav>
-                        <Nav className="navbar-right d-flex align-items-center align-content-center">
+                        <Nav className="navbar-right d-flex align-items-start align-items-lg-center">
                             <ThemeColorSwitcher/>
                             <LanguageSwitcher t={t} i18n={i18n}/>
-                            <div className={"d-flex flex-nowrap flex-md-wrap mt-2 mt-md-0 mb-2 mb-md-0"}>
+                            <div className={"d-flex flex-nowrap flex-md-wrap mt-2 mt-lg-0 mb-2 mb-lg-0"}>
                                 <LinkContainer to="/signUp">
-                                    <Nav.Link className="signUp">
+                                    <Nav.Link className="signUp ml-0 ml-lg-2">
                                         <FontAwesomeIcon className="signUpIcon" icon="user-plus"/>
                                         <div className="signUpText">{t('signUp')}</div>
                                     </Nav.Link>

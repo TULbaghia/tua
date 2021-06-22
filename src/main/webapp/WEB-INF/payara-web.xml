@@ -100,7 +100,6 @@
     <security-role-mapping>
         <role-name>getOtherAccountInfo</role-name>
         <group-name>ADMIN</group-name>
-        <group-name>MANAGER</group-name>
     </security-role-mapping>
 
     <security-role-mapping>

@@ -13,7 +13,7 @@ import {
 } from "../../Utils/Notification/NotificationProvider";
 import {dateConverter} from "../../../i18n";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faComment, faCreditCard} from "@fortawesome/free-solid-svg-icons";
+import {faComment} from "@fortawesome/free-solid-svg-icons";
 import {rolesConstant} from "../../../Constants";
 
 function ReservationCommentHandler({reservation, refreshComponent, ...props}) {
@@ -43,7 +43,7 @@ function ReservationCommentHandler({reservation, refreshComponent, ...props}) {
     }, [reservation.ratingId]);
 
     return (
-        <Row className={ ( reservation.ratingId == null && currentRole === rolesConstant.manager ? "" : "mt-4") }>
+        <Row className={(reservation.ratingId == null && currentRole === rolesConstant.manager ? "" : "mt-4")}>
             <Col xs={12}>
                 {reservation.ratingId != null && rating.id &&
                 <div className={"mb-n3"}>
@@ -55,19 +55,21 @@ function ReservationCommentHandler({reservation, refreshComponent, ...props}) {
                 </div>
                 }
                 {reservation.ratingId == null && currentRole === rolesConstant.client &&
-                    <Card className={"mb-1"}>
-                        <Card.Header>
-                            <FontAwesomeIcon icon={faComment} size={"1x"} className={"mr-2"}/>
-                            <span>{i18n.t("bookingDetails.header.comment")}</span>
-                        </Card.Header>
-                        <Card.Body>
-                            <NewRatingComponent triggerRefresh={refreshComponent}
-                                                placeholder={i18n.t('add.new.comment')}
-                                                header={i18n.t('add.new.rating')}
-                                                buttonText={i18n.t('add.rating')}
-                                                bookings={[reservation]}/>
-                        </Card.Body>
-                    </Card>
+                <Card className={"mb-1"}>
+                    <Card.Header>
+                        <FontAwesomeIcon icon={faComment} size={"1x"} className={"mr-2"}/>
+                        <span>{i18n.t("bookingDetails.header.comment")}</span>
+                    </Card.Header>
+                    <Card.Body>
+                        <NewRatingComponent triggerRefresh={refreshComponent}
+                                            placeholder={i18n.t('add.new.comment')}
+                                            header={i18n.t('add.new.rating')}
+                                            buttonText={i18n.t('add.rating')}
+                                            bookings={[reservation]}
+                                            singleItemButton
+                        />
+                    </Card.Body>
+                </Card>
                 }
             </Col>
         </Row>

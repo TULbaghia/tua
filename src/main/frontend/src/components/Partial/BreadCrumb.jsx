@@ -7,8 +7,8 @@ function BreadCrumb(props) {
             <nav aria-label="breadcrumb" className={"w-100"} style={{}}>
                 <ol className="breadcrumb" style={{
                     backgroundColor: "var(--breadcrumb-light)",
-                    padding: "0.4rem",
-                    borderRadius: "0 0 0.3rem 0.3rem"
+                    padding: "0.4rem 1rem",
+                    borderRadius: "0"
                 }}>
                     {props.children}
                 </ol>

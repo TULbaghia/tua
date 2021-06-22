@@ -18,11 +18,11 @@ import java.util.Set;
 public class DetailBookingDto implements Signable {
     private Long id;
 
-    private Long renterId;
-    private String renterLogin;
+    private DetailBooking_Renter renter;
 
     private Date creationDate;
 
+    private Date modificationDate;
     private Date dateFrom;
     private Date dateTo;
 
@@ -37,7 +37,7 @@ public class DetailBookingDto implements Signable {
 
     @Override
     public String getMessageToSign() {
-        return String.format("%d;%d;%d", id, renterId, version);
+        return String.format("%d;%d;%d", id, renter.id, version);
     }
 
     @Data
@@ -46,5 +46,17 @@ public class DetailBookingDto implements Signable {
         private Long id;
         private Long boxId;
         private BigDecimal pricePerDay;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class DetailBooking_Renter {
+        private Long id;
+        private String login;
+        private String firstname;
+        private String lastname;
+        private String email;
+        private String contactNumber;
+        private boolean active;
     }
 }

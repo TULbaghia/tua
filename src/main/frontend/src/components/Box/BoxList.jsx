@@ -21,6 +21,7 @@ function BoxList(props) {
 
     const {id} = useParams();
     const [boxes, setBoxes] = useState([])
+    const [managerHotelId, setManagerHotelId] = useState("")
     const {token, username, currentRole} = useLocale();
     const history = useHistory();
 
@@ -35,6 +36,10 @@ function BoxList(props) {
             fetchHotelDataById(refresh);
         } else if (!handleIsHotelIdInUrl() && currentRole === rolesConstant.manager) {
             fetchHotelData(refresh);
+        }
+
+        if(currentRole === rolesConstant.manager) {
+            handleGetHotelId();
         }
     }
 
@@ -86,10 +91,7 @@ function BoxList(props) {
         };
 
         fetch("/resources/boxes/all/id/" + hotelIdFromUrl, requestOptions)
-            .then((res) => {
-                console.log(res);
-                return res.json()
-            })
+            .then((res) => res.json())
             .then((boxes) => {
                 setBoxes(boxes);
             })
@@ -107,7 +109,6 @@ function BoxList(props) {
 
     const handleIsHotelIdInUrl = () => {
         return hotelIdFromUrl !== 'own'
-
     }
 
     const handleGetHotelId = () => {
@@ -117,15 +118,15 @@ function BoxList(props) {
                 Authorization: token,
             }
         }).then(res => {
-            return res.data.id;
+            setManagerHotelId(res.data.id);
         }).catch(err => {
             ResponseErrorHandler(err, dispatchNotificationDanger);
         })
     }
 
     const handleDisplayManagerButtons = () => {
-        return (handleIsManager() &&
-            !handleIsHotelIdInUrl());
+        return (handleIsManager() && !handleIsHotelIdInUrl()) ||
+            (handleIsManager() && managerHotelId === parseInt(hotelIdFromUrl));
     }
 
     const handleModify = (boxId) => {
@@ -137,14 +138,22 @@ function BoxList(props) {
 
             <BreadCrumb>
                 <li className="breadcrumb-item"><Link to="/">{i18n.t('mainPage')}</Link></li>
-                {currentRole === rolesConstant.manager && (
-                    <li className="breadcrumb-item"><Link to="/">{i18n.t('managerDashboard')}</Link></li>
-                )}
                 {currentRole === rolesConstant.client && (
                     <li className="breadcrumb-item"><Link to="/">{i18n.t('userDashboard')}</Link></li>
                 )}
-                {hotelIdFromUrl !== undefined && (
-                    <li className="breadcrumb-item"><Link to="/hotels">{i18n.t('hotelInfo')}</Link></li>
+                {currentRole === rolesConstant.manager && (
+                    <li className="breadcrumb-item"><Link to="/">{i18n.t('managerDashboard')}</Link></li>
+                )}
+                {currentRole === rolesConstant.admin && (
+                    <li className="breadcrumb-item"><Link to="/">{i18n.t('adminDashboard')}</Link></li>
+                )}
+                {handleIsHotelIdInUrl() && (
+                    <li className="breadcrumb-item"><Link to="/hotels">{i18n.t('hotelList')}</Link></li>
+                )}
+                {handleIsHotelIdInUrl() && (
+                    <li className="breadcrumb-item">
+                        <Link to={"/hotels/hotelInfo?id=" + id}>{i18n.t('hotelInfo')}</Link>
+                    </li>
                 )}
                 <li className="breadcrumb-item active" aria-current="page">{i18n.t('boxList.navbar.title')}</li>
             </BreadCrumb>

@@ -402,7 +402,7 @@ function HotelList(props) {
                                         })}
                                     />
                                     {token !== null && token !== '' && currentRole === rolesConstant.admin ? (
-                                        <Button className="btn-primary float-right m-2" style={{backgroundColor: "#7749F8"}}
+                                        <Button className="btn-secondary float-right m-2"
                                             onClick={event => {
                                             history.push('/hotels/addHotel');
                                         }}>{t("addHotel")}</Button>

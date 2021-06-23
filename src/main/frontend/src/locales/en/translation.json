@@ -525,6 +525,75 @@
   "exception.hotel.no_hotel_assigned" : "There is no hotel assigned to manager",
   "exception.rating_exception.booking_not_finished" : "Reservation must be finished to add rating",
 
+  "exception.booking.not_started_booking": "Booking have not started yet",
   "reportGenerator.modificationDate" : "Last modification date",
-  "exception.booking.not_started_booking": "Booking have not started yet"
+
+  "form.validation.field.contact_number.min_size": "Contact number is too short",
+  "form.validation.field.contact_number.max_size": "Contact number is too long",
+  "form.validation.field.contact_number.pattern": "Contact number does not meet pattern requirements",
+
+  "form.validation.field.firstname.min_size": "Firstname is too short",
+  "form.validation.field.firstname.max_size": "Firstname is too long",
+  "form.validation.field.firstname.pattern": "Firstname does not meet pattern requirements",
+
+  "form.validation.field.language.min_size": "Language name is too short",
+  "form.validation.field.language.max_size": "Language name is too long",
+  "form.validation.field.language.pattern": "Language name does not meet pattern requirements",
+  "form.validation.field.language.not_allowed": "Language is not allowed",
+
+  "form.validation.field.lastname.min_size": "Lastname is too short",
+  "form.validation.field.lastname.max_size": "Lastname is too long",
+  "form.validation.field.lastname.pattern": "Lastname does not meet pattern requirements",
+
+  "form.validation.field.login.min_size": "Login is too short",
+  "form.validation.field.login.max_size": "Login is too long",
+  "form.validation.field.login.pattern": "Login does not meet pattern requirements",
+
+  "form.validation.field.password.min_size": "Password is too short",
+  "form.validation.field.password.max_size": "Password is too long",
+  "form.validation.field.password.pattern": "Password does not meet pattern requirements",
+
+  "form.validation.field.pen_code.min_size": "One-time code is too short",
+  "form.validation.field.pen_code.max_size": "One-time code long",
+  "form.validation.field.pen_code.pattern": "One-does not meet pattern requirements",
+
+  "form.validation.field.user_email.min_size": "Email is too short",
+  "form.validation.field.user_email.max_size": "Email is too long",
+  "form.validation.field.user_email.pattern": "Email does not meet pattern requirements",
+
+  "form.validation.field.hotel_name.min_size": "Hotel name is too short",
+  "form.validation.field.hotel_name.max_size": "Hotel name is too long",
+  "form.validation.field.hotel_name.pattern": "Hotel name does not meet pattern requirements",
+
+  "form.validation.field.address.min_size": "Address is too short",
+  "form.validation.field.address.max_size": "Address is too long",
+  "form.validation.field.address.pattern": "Address does not meet pattern requirements",
+
+  "form.validation.field.hotel_image.min_size": "Image URL is too short",
+  "form.validation.field.hotel_image.max_size": "Image URL is too long",
+  "form.validation.field.hotel_image.pattern": "Image URL does not meet pattern requirements",
+
+  "form.validation.field.hotel_description.min_size": "Hotel description is too short",
+  "form.validation.field.hotel_description.max_size": "Hotel description is too long",
+  "form.validation.field.hotel_description.pattern": "Hotel description does not meet pattern requirements",
+
+  "form.validation.field.city_name.min_size": "City name is too short",
+  "form.validation.field.city_name.max_size": "City name is too long",
+  "form.validation.field.city_name.pattern": "City name does not meet pattern requirements",
+
+  "form.validation.field.city_description.min_size": "City description is too short",
+  "form.validation.field.city_description.max_size": "City description is too long",
+  "form.validation.field.city_description.pattern": "City description does not meet pattern requirements",
+
+  "form.validation.field.price.min_size": "Price is too low",
+  "form.validation.field.price.max_size": "Price is too big",
+  "form.validation.field.price.pattern": "Price does not meet pattern requirements",
+
+  "form.validation.field.box_description.min_size": "Box description is too short",
+  "form.validation.field.box_description.max_size": "Box description is too long",
+  "form.validation.field.box_description.pattern": "Box description does not meet pattern requirements",
+
+  "form.validation.field.rating_comment.min_size": "Comment rating is too short",
+  "form.validation.field.rating_comment.max_size": "Comment rating is too long",
+  "form.validation.field.rating_comment.pattern": "Comment does not meet pattern requirements"
 }

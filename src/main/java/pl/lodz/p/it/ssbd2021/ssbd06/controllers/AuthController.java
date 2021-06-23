@@ -89,7 +89,7 @@ public class AuthController extends AbstractController {
     @Operation(operationId = "logout", summary = "logout")
     public Response logout() {
         authEndpoint.logout();
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 
     /**

@@ -391,7 +391,7 @@ public class AccountController extends AbstractController {
     @Operation(operationId = "changeOwnAccessLevel", summary = "changeOwnAccessLevel")
     public Response changeOwnAccessLevel(@NotNull @PathParam("accessLevel") AccessLevel accessLevel) {
         accountEndpoint.changeOwnAccessLevel(accessLevel);
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 
     /**

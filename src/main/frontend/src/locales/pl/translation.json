@@ -529,6 +529,74 @@
   "exception.rating_exception.booking_not_finished" : "Rezerwacja musi być zakończona, aby ją ocenić",
 
   "reportGenerator.modificationDate" : "Data ostatniej modyfikacji",
-  "exception.booking.not_started_booking": "Rezerwacja nie rozpoczęła się"
+  "exception.booking.not_started_booking": "Rezerwacja nie rozpoczęła się",
 
+  "form.validation.field.contact_number.min_size": "Numer telefonu jest zbyt krótki",
+  "form.validation.field.contact_number.max_size": "Numer telefonu jest zbyt długi",
+  "form.validation.field.contact_number.pattern": "Numer telefonu nie spełnia wymagań wzorca",
+
+  "form.validation.field.firstname.min_size": "Imię jest zbyt krótkie",
+  "form.validation.field.firstname.max_size": "Imię jest zbyt długie",
+  "form.validation.field.firstname.pattern": "Imię nie spełnia wymagań wzorca",
+
+  "form.validation.field.language.min_size": "Nazwa języka jest zbyt krótka",
+  "form.validation.field.language.max_size": "Nazwa języka jest zbyt długa",
+  "form.validation.field.language.pattern": "Nazwa języka nie spełnia wymagań wzorca",
+  "form.validation.field.language.not_allowed": "Nazwa języka nie jest dozwolona",
+
+  "form.validation.field.lastname.min_size": "Nazwisko jest zbyt krótkie",
+  "form.validation.field.lastname.max_size": "Nazwisko jest zbyt długie",
+  "form.validation.field.lastname.pattern": "Nazwisko nie spełnia wymagań wzorca",
+
+  "form.validation.field.login.min_size": "Login jest zbyt krótki",
+  "form.validation.field.login.max_size": "Login jest zbyt długi",
+  "form.validation.field.login.pattern": "Login nie spełnia wymagań wzorca",
+
+  "form.validation.field.password.min_size": "Hasło jest zbyt krótkie",
+  "form.validation.field.password.max_size": "Hasło jest zbyt długie",
+  "form.validation.field.password.pattern": "Hasło nie spełnia wymagań wzorca",
+
+  "form.validation.field.pen_code.min_size": "Kod jednorazowy jest zbyt krótki",
+  "form.validation.field.pen_code.max_size": "Kod jednorazowy jest zbyt długi",
+  "form.validation.field.pen_code.pattern": "Kod jednorazowy nie spełnia wymagań wzorca",
+
+  "form.validation.field.user_email.min_size": "Email jest zbyt krótki",
+  "form.validation.field.user_email.max_size": "Email jest zbyt długi",
+  "form.validation.field.user_email.pattern": "Email nie spełnia wymagań wzorca",
+
+  "form.validation.field.hotel_name.min_size": "Nazwa hotelu jest zbyt krótka",
+  "form.validation.field.hotel_name.max_size": "Nazwa hotelu jest zbyt długa",
+  "form.validation.field.hotel_name.pattern": "Nazwa hotelu nie spełnia wymagań wzorca",
+
+  "form.validation.field.address.min_size": "Adres jest zbyt krótki",
+  "form.validation.field.address.max_size": "Adres jest zbyt długi",
+  "form.validation.field.address.pattern": "Adres nie spełnia wymagań wzorca",
+
+  "form.validation.field.hotel_image.min_size": "Adres obrazka jest zbyt krótki",
+  "form.validation.field.hotel_image.max_size": "Adres obrazka jest zbyt długi",
+  "form.validation.field.hotel_image.pattern": "Adres obrazka nie spełnia wymagań wzorca",
+
+  "form.validation.field.hotel_description.min_size": "Opis hotelu jest zbyt krótki",
+  "form.validation.field.hotel_description.max_size": "Opis hotelu jest zbyt długi",
+  "form.validation.field.hotel_description.pattern": "Opis hotelu nie spełnia wymagań wzorca",
+
+  "form.validation.field.city_name.min_size": "Nazwa miasta jest zbyt krótka",
+  "form.validation.field.city_name.max_size": "Nazwa miasta jest zbyt długa",
+  "form.validation.field.city_name.pattern": "Nazwa miasta nie spełnia wymagań wzorca",
+
+  "form.validation.field.city_description.min_size": "Opis miasta jest zbyt krótki",
+  "form.validation.field.city_description.max_size": "Opis miasta jest zbyt długi",
+  "form.validation.field.city_description.pattern": "Opis miasta nie spełnia wymagań wzorca",
+
+  "form.validation.field.price.min_size": "Cena jest za mała",
+  "form.validation.field.price.max_size": "Cena jest za duża",
+  "form.validation.field.price.pattern": "Cena nie spełnia wymagań wzorca",
+
+  "form.validation.field.box_description.min_size": "Opis klatki jest zbyt krótki",
+  "form.validation.field.box_description.max_size": "Opis klatki jest zbyt długi",
+  "form.validation.field.box_description.pattern": "Opis klatki nie spełnia wymagań wzorca",
+
+  "form.validation.field.rating_comment.min_size": "Treść komentarza jest zbyt krótka",
+  "form.validation.field.rating_comment.max_size": "Treść komentarza jest zbyt długa",
+  "form.validation.field.rating_comment.pattern": "Treść komentarza nie spełnia wymagań wzorca"
 }

@@ -83,6 +83,7 @@ function ReservationStateHandler({reservation, refreshComponent, ...props}) {
     }
 
     const allowToCancel = () => {
+        if (currentRole === rolesConstant.manager) return true;
         if (reservation.creationDate) {
             const createDate = moment(reservation.creationDate.slice(0, -5)).unix();
             const startDate = moment(reservation.dateFrom.slice(0, -5)).unix();

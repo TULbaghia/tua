@@ -598,5 +598,13 @@
   "form.validation.field.rating_comment.pattern": "Comment does not meet pattern requirements",
 
   "booking.form.error.hotel_id_not_selected": "Hotel is not selected",
-  "booking.form.select_hotel": "Select hotel..."
+  "booking.form.select_hotel": "Select hotel...",
+
+  "modifyCity.error.id_invalid": "There was a problem during city selection",
+  "reservationDetail.error.id_invalid": "There was a problem during booking selection",
+  "hotelDetail.error.id_invalid": "There was a problem during hotel selection",
+  "assignManager.error.id_hotel_invalid": "There was a problem during hotel selection",
+  "unassignManager.error.id_hotel_invalid": "There was a problem during hotel selection",
+  "internal_server_error": "Internal server error",
+  "menu.cityList": "Cities"
 }

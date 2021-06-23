@@ -51,7 +51,8 @@ function ModifyCityForm() {
             setCity({...response.data, key: v4()});
             setETag(response.headers.etag);
         }).catch(err => {
-            ResponseErrorHandler(err, dispatchNotificationDanger);
+            history.push("/");
+            dispatchNotificationDanger({message: i18n.t('modifyCity.error.id_invalid')});
         });
 
         if (!firstFetch) {
@@ -126,7 +127,7 @@ function ModifyCityForm() {
                                             type="submit">
                                         {i18n.t("refresh")}
                                     </button>
-                                    <button className="mt-3 mx-3 w-25 btn-background-custom btn btn-primary"
+                                    <button className="mt-3 mx-3 w-25 btn-danger btn"
                                             onClick={(e) => handleCityDelete()}
                                             type="submit">
                                         {i18n.t("delete")}

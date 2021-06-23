@@ -90,7 +90,8 @@ function ReservationDetail(props) {
             }
 
         } catch (err) {
-            ResponseErrorHandler(err, dispatchError);
+            history.push("/");
+            dispatchError({message: i18n.t('reservationDetail.error.id_invalid')});
         }
     }
 

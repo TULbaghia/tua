@@ -44,7 +44,7 @@ function BoxItem(props) {
                 {(managerButtons()) ? (
                     <>
                         <Button id={v4()} onClick={() => onModify(box.id)} className={"btn-block card-button ml-0"}
-                                style={{background: "#7749F8"}}>{i18n.t('button.edit')}</Button>
+                                variant="purple">{i18n.t('button.edit')}</Button>
                     </>
                 ) : (<></>)}
 

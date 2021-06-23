@@ -281,7 +281,7 @@ function BookingForm({t, i18n}) {
                                 <div className={"d-flex text-center flex-column"}>
                                     <h3 className="h3 mb-0.5">{t('userEdit')}: {parsedQuery.login}</h3>
                                     <Button className="btn btn-secondary my-2"
-                                            style={{backgroundColor: "#7749F8", width: "20%", margin: "auto"}}
+                                            style={{width: "20%", margin: "auto"}}
                                             onClick={event => {
                                                 handleDataFetch(false)
                                             }}>{t("refresh")}</Button>
@@ -311,10 +311,9 @@ function BookingForm({t, i18n}) {
                                                     <Form className={{alignItems: "center"}}>
                                                         <EmailComponent name="email" placeholder={t('emailAddress')}
                                                                         handleChange={handleChange}/>
-                                                        <button className="btn btn-lg btn-primary btn-block mt-2"
+                                                        <button className="btn btn-lg btn-purple btn-block mt-2"
                                                                 type="submit"
                                                                 style={{
-                                                                    backgroundColor: "#7749F8",
                                                                     width: "70%",
                                                                     margin: "auto"
                                                                 }}>
@@ -355,10 +354,9 @@ function BookingForm({t, i18n}) {
                                                         <PasswordComponent name="repeatedNewPassword"
                                                                            placeholder={t('repeatPassword')}
                                                                            handleChange={handleChange}/>
-                                                        <button className="btn btn-lg btn-primary btn-block mt-2"
+                                                        <button className="btn btn-lg btn-purple btn-block mt-2"
                                                                 type="submit"
                                                                 style={{
-                                                                    backgroundColor: "#7749F8",
                                                                     width: "70%",
                                                                     margin: "auto"
                                                                 }}>
@@ -411,10 +409,9 @@ function BookingForm({t, i18n}) {
                                                         <ContactNumberComponent name="contactNumber"
                                                                                 placeholder={t('phoneNumber')}
                                                                                 handleChange={handleChange}/>
-                                                        <button className="btn btn-lg btn-primary btn-block mt-2"
+                                                        <button className="btn btn-lg btn-purple btn-block mt-2"
                                                                 type="submit"
                                                                 style={{
-                                                                    backgroundColor: "#7749F8",
                                                                     width: "70%",
                                                                     margin: "auto"
                                                                 }}>
@@ -426,43 +423,43 @@ function BookingForm({t, i18n}) {
                                         </Tab>
                                         <Tab eventKey="tab4" title={t('editRoles')}>
                                             {!isRole(rolesConstant.client) &&
-                                            <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                                    style={{backgroundColor: "forestgreen", marginBottom: "1rem"}}
+                                            <button className="btn btn-lg btn-success btn-block" type="submit"
+                                                    style={{marginBottom: "1rem"}}
                                                     onClick={handleAddRoleClient}>
                                                 {t('addRoleClient')}
                                             </button>
                                             }
                                             {isRole(rolesConstant.client) &&
-                                            <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                                    style={{backgroundColor: "indianred", marginBottom: "1rem"}}
+                                            <button className="btn btn-lg btn-danger btn-block" type="submit"
+                                                    style={{marginBottom: "1rem"}}
                                                     onClick={handleRevokeRoleClient}>
                                                 {t('revokeRoleClient')}
                                             </button>
                                             }
                                             {!isRole(rolesConstant.manager) &&
-                                            <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                                    style={{backgroundColor: "forestgreen", marginBottom: "1rem"}}
+                                            <button className="btn btn-lg btn-success btn-block" type="submit"
+                                                    style={{marginBottom: "1rem"}}
                                                     onClick={handleAddRoleManager}>
                                                 {t('addRoleManager')}
                                             </button>
                                             }
                                             {isRole(rolesConstant.manager) &&
-                                            <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                                    style={{backgroundColor: "indianred", marginBottom: "1rem"}}
+                                            <button className="btn btn-lg btn-danger btn-block" type="submit"
+                                                    style={{marginBottom: "1rem"}}
                                                     onClick={handleRevokeRoleManager}>
                                                 {t('revokeRoleManager')}
                                             </button>
                                             }
                                             {!isRole(rolesConstant.admin) &&
-                                            <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                                    style={{backgroundColor: "forestgreen", marginBottom: "1rem"}}
+                                            <button className="btn btn-lg btn-success btn-block" type="submit"
+                                                    style={{marginBottom: "1rem"}}
                                                     onClick={handleAddRoleAdmin}>
                                                 {t('addRoleAdmin')}
                                             </button>
                                             }
                                             {isRole(rolesConstant.admin) &&
-                                            <button className="btn btn-lg btn-primary btn-block" type="submit"
-                                                    style={{backgroundColor: "indianred", marginBottom: "1rem"}}
+                                            <button className="btn btn-lg btn-danger btn-block" type="submit"
+                                                    style={{marginBottom: "1rem"}}
                                                     onClick={handleRevokeRoleAdmin}>
                                                 {t('revokeRoleAdmin')}
                                             </button>

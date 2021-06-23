@@ -117,7 +117,7 @@ export default function RatingComponent({id, rate, login, content, date, modific
                     />
                     <div>
                         {currentRole === 'ADMIN' ?
-                            <Button className="btn-sm float-right mr-2" style={{backgroundColor: "#7749F8"}}
+                            <Button className="btn-sm float-right mr-2 btn-purple"
                                     onClick={() => handleChangeVisibilityClick(id)}>
                                 {hiddenValue ? i18n.t('show.button') : i18n.t('hide.button')}
                             </Button>
@@ -140,7 +140,7 @@ export default function RatingComponent({id, rate, login, content, date, modific
                         {!editMode && !hiddenValue ? content : ''}
                     </Card.Text>
                 </Card.Body>
-                <Card.Footer className={"p-2"}>{editMode ? <span className={"float-left"}><Button onClick={updateDialog}
+                <Card.Footer className={"p-2"}>{editMode ? <span className={"float-left"}><Button onClick={updateDialog} style={{backgroundColor: "#7749F8"}}
                                                                                                   className="btn-sm">{i18n.t('rate.update')}</Button></span> : ''}
                     <span className={"float-right text-muted"}>{!modificationDate ? date : dateConverter(modificationDate.slice(0, -5))}</span><span
                         className={"float-right mr-2"}>{login}</span></Card.Footer>

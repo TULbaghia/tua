@@ -111,7 +111,7 @@ function UserList(props) {
             selector: 'edit',
             cell: row => {
                 return (
-                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
+                    <Button className="btn-sm" variant="purple" onClick={event => {
                         history.push('/editOtherAccount?login=' + row.login);
                     }}>{t("edit")}</Button>
                 )
@@ -122,7 +122,7 @@ function UserList(props) {
             selector: 'details',
             cell: row => {
                 return(
-                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
+                    <Button className="btn-sm" variant="purple" onClick={event => {
                         history.push('/accounts/userInfo?login=' + row.login);
                     }}>{t('details')}</Button>
                 )

@@ -72,7 +72,7 @@ function AssignManager(props) {
             selector: 'assign',
             cell: row => {
                 return (
-                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
+                    <Button className="btn-sm" variant="purple" onClick={event => {
                         handleAssignManagerConfirmation(row.login);
                     }}>{t("assign")}</Button>
                 )

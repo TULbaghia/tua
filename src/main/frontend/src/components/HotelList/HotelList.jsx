@@ -246,7 +246,7 @@ function HotelList(props) {
             selector: 'details',
             cell: row => {
                 return (
-                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
+                    <Button className="btn-sm" variant="purple" onClick={event => {
                         history.push('/hotels/hotelInfo?id=' + row.id);
                     }}>{t('details')}</Button>
                 )
@@ -279,7 +279,7 @@ function HotelList(props) {
             selector: 'edit',
             cell: row => {
                 return (
-                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
+                    <Button className="btn-sm" variant="purple" onClick={event => {
                         history.push('/hotels/editOtherHotel?id=' + row.id);
                     }}>{t("edit")}</Button>
                 )
@@ -290,7 +290,7 @@ function HotelList(props) {
             selector: 'details',
             cell: row => {
                 return (
-                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
+                    <Button className="btn-sm" variant="purple" onClick={event => {
                         history.push('/hotels/hotelInfo?id=' + row.id);
                     }}>{t('details')}</Button>
                 )
@@ -301,7 +301,7 @@ function HotelList(props) {
             selector: 'assign',
             cell: row => {
                 return (
-                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
+                    <Button className="btn-sm" variant="purple" onClick={event => {
                         history.push('/hotels/assignManager?id=' + row.id);
                     }}>{t("assign")}</Button>
                 )
@@ -312,7 +312,7 @@ function HotelList(props) {
             selector: 'delete',
             cell: row => {
                 return (
-                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
+                    <Button className="btn-sm" variant="purple" onClick={event => {
                         history.push('/hotels/unassignManager?id=' + row.id);
                     }}>{t("delete")}</Button>
                 )

@@ -4,6 +4,7 @@ import {DropdownButton, Dropdown, Button, Container, Row} from "react-bootstrap"
 import i18n from "i18next";
 import {api} from "../../Api";
 import {Rating} from "@material-ui/lab";
+import "../../css/purple-styled-btn.css"
 import {
     useNotificationDangerAndInfinity,
     useNotificationSuccessAndShort
@@ -83,7 +84,7 @@ export default function NewRatingComponent({placeholder, header, buttonText, boo
                             </Row>
                             <Row>
                                 {!singleItemButton ?
-                                    <DropdownButton title={buttonText}
+                                    <DropdownButton title={buttonText} variant="purple"
                                                     disabled={bookings.length < 1 || isSubmitting || Object.keys(errors).length > 0}>
                                         {
                                             bookings.map(item => (
@@ -92,7 +93,7 @@ export default function NewRatingComponent({placeholder, header, buttonText, boo
                                         }
                                     </DropdownButton>
                                     :
-                                    <Button className="" disabled={bookings.length < 1 || isSubmitting || Object.keys(errors).length > 0} onClick={e => handleButton(e, bookings[0], values)}>
+                                    <Button variant="purple" disabled={bookings.length < 1 || isSubmitting || Object.keys(errors).length > 0} onClick={e => handleButton(e, bookings[0], values)}>
                                         {buttonText}
                                     </Button>
                                 }

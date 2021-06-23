@@ -71,8 +71,8 @@ function UnassignManager(props) {
             selector: 'delete',
             cell: row => {
                 return (
-                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
-                        handleUnassignManagerConfirmation(row.login, parseInt(parsedQuery.id));
+                    <Button className="btn-sm" variant="purple" onClick={event => {
+                        handleUnassignManagerConfirmation(row.login);
                     }}>{t("delete")}</Button>
                 )
             },
@@ -115,13 +115,12 @@ function UnassignManager(props) {
         return await api.getManagersAssignedToHotel(parsedQuery.id, {headers: {Authorization: token}})
     }
 
-    const handleUnassignManagerConfirmation = (login, setSubmitting) => (
+    const handleUnassignManagerConfirmation = (login) => (
         dispatchCriticalDialog({
             callbackOnSave: () => {
                 handleUnassignManagerSubmit(login);
                 history.push("/hotels")
             },
-            callbackOnCancel: () => setSubmitting(false)
         })
     )
 

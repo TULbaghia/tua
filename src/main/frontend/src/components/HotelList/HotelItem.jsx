@@ -24,7 +24,7 @@ function HotelItem(props) {
                         size="small"
                     />
                     <>
-                        <Button className={"btn-block card-button ml-0"} style={{backgroundColor: "#7749F8"}} onClick={event => {
+                        <Button className={"btn-block card-button ml-0"} variant="purple" onClick={event => {
                             history.push('/hotels/hotelInfo?id=' + hotel.id);
                         }}>{i18n.t('details')}</Button>
                     </>

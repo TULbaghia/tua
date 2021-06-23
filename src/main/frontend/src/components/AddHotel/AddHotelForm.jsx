@@ -91,7 +91,7 @@ function AddHotelForm() {
                     <Col xs={12} sm={12} md={12} lg={10} className={"floating-no-absolute py-4 mx-auto mb-2"}>
                         <Row className="text-center justify-content-center d-block">
                             <h1 className="mb-3">{i18n.t('addHotel.title')}</h1>
-                            <button className="my-3 w-25 btn-background-custom btn btn-primary"
+                            <button className="my-3 w-25 btn btn-secondary"
                                     onClick={(e) => handleFetch(false)}
                                     type="submit">
                                 {i18n.t("refresh")}

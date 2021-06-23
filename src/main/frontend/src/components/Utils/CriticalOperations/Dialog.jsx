@@ -39,7 +39,7 @@ function Dialog(props) {
                     {i18n.t("dialog.button.cancel")}
                 </Button>
                 }
-                <Button variant="primary" onClick={handleCloseSave}>
+                <Button variant="purple" onClick={handleCloseSave}>
                     {i18n.t(props.textButtonSave ?? "dialog.button.save")}
                 </Button>
             </Modal.Footer>

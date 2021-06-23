@@ -68,30 +68,6 @@ public class BookingManager {
     }
 
     /**
-     * Zwraca listę rezerwacji w zależności od roli:
-     * - Dla managera rezerwacje dotyczące jego hotelu,
-     * - Dla klienta rezerwacje dotyczące tego klienta.
-     *
-     * @return lista rezerwacji
-     * @throws AppBaseException podczas błędu związanego z bazą danych
-     */
-    List<Booking> getAll() throws AppBaseException {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Zwraca listę rezerwacji w zależności od roli z filtrowaniem:
-     * - Dla managera rezerwacje dotyczące jego hotelu,
-     * - Dla klienta rezerwacje dotyczące tego klienta.
-     *
-     * @return lista rezerwacji
-     * @throws AppBaseException podczas błędu związanego z bazą danych
-     */
-    List<Booking> getAll(String... option) throws AppBaseException {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
      * Tworzy nową rezerwację
      *
      * @param bookingDto dane nowej rezerwacji

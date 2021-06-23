@@ -102,6 +102,11 @@ public class JWTGenerator {
         }
     }
 
+    /**
+     * Zwraca listę grup, do których należy użytkownik wysyłający żądanie.
+     * @param token token JWT
+     * @return Lista ról
+     */
     public String getCallerGroups(String token) {
         try {
             SignedJWT jwtToken = SignedJWT.parse(token);

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * Enum definiujące widoczoność komentarzy
+ * Typ wyliczeniowy określający poziomy widoczności komentarza.
  */
 @Getter
 @AllArgsConstructor

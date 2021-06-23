@@ -28,5 +28,11 @@ public interface ICityMapper {
      */
     City toCity(NewCityDto cityDto);
 
+    /**
+     * Dokonuje mapowania z obiektu CityDto na obiekt City.
+     *
+     * @param cityDto obiekt klasy CityDto.
+     * @param city zmapowany obiekt klasy City.
+     */
     void toCity(CityDto cityDto, @MappingTarget City city);
 }

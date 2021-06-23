@@ -38,6 +38,7 @@ public class BookingEndpoint extends AbstractEndpoint implements BookingEndpoint
     private BookingManager bookingManager;
 
     @Override
+    @RolesAllowed("getReservation")
     public DetailBookingDto get(Long id) throws AppBaseException {
         Booking booking = bookingManager.get(id);
         if (getLogin().equals(booking.getAccount().getLogin()) || isManagerInHotelConnectedToBooking(booking)) {

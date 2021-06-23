@@ -32,25 +32,6 @@ public class RatingController extends AbstractController {
     private MessageSigner messageSigner;
 
     /**
-     * Zwraca ocenę hotelu
-     *
-     * @param id identyfikator oceny
-     * @return obiekt dto oceny hotelu
-     * @throws AppBaseException podczas błędu związanego z bazą danych
-     */
-    @GET
-    @Path("/get/{id}")
-    @PermitAll
-    @Operation(operationId = "getRating", summary = "getRating")
-    public Response get(@NotNull @PathParam("id") Long id) throws AppBaseException {
-        RatingDto ratingDto = repeat(() -> ratingEndpoint.get(id), ratingEndpoint);
-        return Response.ok()
-                .entity(ratingDto)
-                .header("ETag", messageSigner.sign(ratingDto))
-                .build();
-    }
-
-    /**
      * Zwraca listę ocen hotelu
      *
      * @param hotelId identyfikator hotelu

@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.facades;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -31,43 +32,43 @@ public class BookingLineFacade extends AbstractFacade<BookingLine> {
         super(BookingLine.class);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public void create(BookingLine entity) throws AppBaseException {
         super.create(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public void edit(BookingLine entity) throws AppBaseException {
         super.edit(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public void remove(BookingLine entity) throws AppBaseException {
         super.remove(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public BookingLine find(Object id) throws AppBaseException {
         return super.find(id);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<BookingLine> findAll() throws AppBaseException {
         return super.findAll();
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<BookingLine> findRange(int[] range) throws AppBaseException {
         return super.findRange(range);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public int count() throws AppBaseException {
         return super.count();

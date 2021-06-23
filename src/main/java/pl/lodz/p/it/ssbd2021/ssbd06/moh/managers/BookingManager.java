@@ -62,7 +62,7 @@ public class BookingManager {
      * @return rezerwacja
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @PermitAll
+    @RolesAllowed({"startReservation", "cancelReservation", "endReservation", "getReservation"})
     public Booking get(Long id) throws AppBaseException {
         return bookingFacade.find(id);
     }

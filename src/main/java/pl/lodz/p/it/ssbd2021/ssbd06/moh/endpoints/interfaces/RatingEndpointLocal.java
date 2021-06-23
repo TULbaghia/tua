@@ -18,16 +18,6 @@ import java.util.List;
 public interface RatingEndpointLocal extends CallingClass {
 
     /**
-     * Zwraca ocenę hotelu
-     *
-     * @param id identyfikator oceny
-     * @return obiekt oceny hotelu
-     * @throws AppBaseException podczas błędu związanego z bazą danych
-     */
-    @PermitAll
-    RatingDto get(Long id) throws AppBaseException;
-
-    /**
      * Zwraca listę ocen hotelu
      *
      * @param hotelId identyfikator hotelu

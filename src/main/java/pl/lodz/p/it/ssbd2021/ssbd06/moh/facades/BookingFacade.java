@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.facades;
 
-import javax.annotation.security.PermitAll;
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -39,7 +40,7 @@ public class BookingFacade extends AbstractFacade<Booking>{
      * @return lista aktywnych rezerwacji
      * @throws AppBaseException gdy nie udało się przeprowadzić operacji pobrania aktywnych rezerwaacji
      */
-    @PermitAll
+    @RolesAllowed({"getAllActiveReservations", "deleteHotel"})
     public List<Booking> findAllActive() throws AppBaseException {
         try {
             TypedQuery<Booking> bookingTypedQuery = em.createNamedQuery("Booking.findAllActive", Booking.class);
@@ -56,7 +57,7 @@ public class BookingFacade extends AbstractFacade<Booking>{
      * @return lista archiwalnych rezerwacji
      * @throws AppBaseException gdy nie udało się przeprowadzić operacji pobrania archiwalnych rezerwaacji
      */
-    @PermitAll
+    @RolesAllowed({"getAllArchiveReservations", "getEndedBookingsForHotel"})
     public List<Booking> findAllArchived() throws AppBaseException {
         try {
             TypedQuery<Booking> bookingTypedQuery = em.createNamedQuery("Booking.findAllArchived", Booking.class);
@@ -68,43 +69,43 @@ public class BookingFacade extends AbstractFacade<Booking>{
         }
     }
 
-    @PermitAll
+    @RolesAllowed("bookReservation")
     @Override
     public void create(Booking entity) throws AppBaseException {
         super.create(entity);
     }
 
-    @PermitAll
+    @RolesAllowed({"startReservation", "cancelReservation", "endReservation"})
     @Override
     public void edit(Booking entity) throws AppBaseException {
         super.edit(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public void remove(Booking entity) throws AppBaseException {
         super.remove(entity);
     }
 
-    @PermitAll
+    @RolesAllowed({"addHotelRating", "startReservation", "cancelReservation", "endReservation", "getReservation"})
     @Override
     public Booking find(Object id) throws AppBaseException {
         return super.find(id);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<Booking> findAll() throws AppBaseException {
         return super.findAll();
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<Booking> findRange(int[] range) throws AppBaseException {
         return super.findRange(range);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public int count() throws AppBaseException {
         return super.count();

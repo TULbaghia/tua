@@ -112,6 +112,7 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     /**
      * Przeprowadza operację edycji obiektu encji.
+     *
      * @param entity obiekt encji.
      * @throws AppBaseException gdy nie udało się przeprowadzić operacji edycji
      */
@@ -127,7 +128,7 @@ public class AccountFacade extends AbstractFacade<Account> {
                 throw AccountException.contactNumberException(e.getCause());
             } else if (e.getCause().getMessage().contains(Account.EMAIL_CONSTRAINT)) {
                 throw AccountException.emailExists(e.getCause());
-            } else  if (e.getCause().getMessage().contains(Role.ROLE_ACCESS_LEVEL_ACCOUNT_ID_CONSTRAINT)) {
+            } else if (e.getCause().getMessage().contains(Role.ROLE_ACCESS_LEVEL_ACCOUNT_ID_CONSTRAINT)) {
                 throw RoleException.alreadyGranted();
             }
             throw DatabaseQueryException.databaseQueryException(e.getCause());
@@ -136,6 +137,7 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     /**
      * Zwraca listę kont niezweryfikowanych
+     *
      * @param expirationDate data wygaśnięcia możliwości aktywacji konta
      * @return lista kont
      * @throws AppBaseException gdy nie udało się przeprowadzić operacji wyświetlenia listy kont

@@ -22,6 +22,7 @@ public interface CityEndpointLocal extends CallingClass {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return dto miasta
      */
+    @RolesAllowed("getCity")
     CityDto get(Long id) throws AppBaseException;
 
     /**

@@ -55,20 +55,6 @@ public class BoxController extends AbstractController {
     }
 
     /**
-     * Zwraca listę klatek
-     *
-     * @return lista dto klatek
-     * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
-     */
-    @GET
-    @RolesAllowed("getAllBoxes")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Operation(operationId = "getAllBoxesList", summary = "getAllBoxesList")
-    public List<BoxDto> getAll() throws AppBaseException {
-        return repeat(() -> boxEndpoint.getAll(), boxEndpoint);
-    }
-
-    /**
      * Zwraca listę klatek przypisanych do hotelu
      *
      * @param loginManger login menadżera hotelu
@@ -97,25 +83,6 @@ public class BoxController extends AbstractController {
     @Operation(operationId = "getAllBoxesInHotelById", summary = "getAllBoxesInHotelById")
     public List<BoxDto> getAllBoxesInHotelById(@NotNull @PathParam("id") Long id) throws AppBaseException {
         return repeat(() -> boxEndpoint.getAllBoxesInHotel(id), boxEndpoint);
-    }
-
-    /**
-     * Zwraca listę klatek przypisanych do hotelu przeznaczonych dla konkretnego typu zwierzęcia
-     *
-     * @param id         identyfikator hotelu
-     * @param animalType typ zwierzęcia
-     * @return lista dto klatek przypisanych do hotelu
-     * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
-     */
-    @GET
-    @Path("/all/{id}/{animalType}")
-    @RolesAllowed("getAllBoxes")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Operation(operationId = "getSomeTypeBoxesFromHotel", summary = "getSomeTypeBoxesFromHotel")
-    public List<BoxDto> getSomeTypeBoxesFromHotel(@NotNull @PathParam("id") Long id,
-                                                  @NotNull @PathParam("animalType") AnimalType animalType)
-            throws AppBaseException {
-        return repeat(() -> boxEndpoint.getSomeTypeBoxesFromHotel(id, animalType), boxEndpoint);
     }
 
     /**
@@ -171,6 +138,7 @@ public class BoxController extends AbstractController {
      * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
      */
     @GET
+    @RolesAllowed("getAllBoxes")
     @Path("/all/{id}/from/{date_from}/to/{date_to}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(operationId = "getAvailableBoxesBetween", summary = "getAvailableBoxesBetween")

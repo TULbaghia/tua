@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.facades;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -37,7 +39,7 @@ public class BoxFacade extends AbstractFacade<Box> {
         super(Box.class);
     }
 
-    @PermitAll
+    @RolesAllowed("addBox")
     @Override
     public void create(Box entity) throws AppBaseException {
         try {
@@ -47,7 +49,7 @@ public class BoxFacade extends AbstractFacade<Box> {
         }
     }
 
-    @PermitAll
+    @RolesAllowed({"deleteHotel", "updateBox", "deleteBox"})
     @Override
     public void edit(Box entity) throws AppBaseException {
         try {
@@ -57,7 +59,7 @@ public class BoxFacade extends AbstractFacade<Box> {
         }
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public void remove(Box entity) throws AppBaseException {
         try {
@@ -79,13 +81,13 @@ public class BoxFacade extends AbstractFacade<Box> {
         return super.findAll();
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<Box> findRange(int[] range) throws AppBaseException {
         return super.findRange(range);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public int count() throws AppBaseException {
         return super.count();
@@ -99,7 +101,7 @@ public class BoxFacade extends AbstractFacade<Box> {
      * @param dateTo koniec zakresu czasu kiedy klatka jest wolna
      * @return listę wolnych klatek w danym hotelu w zadanym zakresie czasu
      */
-    @PermitAll
+    @RolesAllowed("getAllBoxes")
     public List<Box> getAvailableBoxesByHotelIdAndBetween(long hotelId, Date dateFrom, Date dateTo){
         TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByTypesByHotelIdAndBetween", Box.class);
         query.setParameter("hotel_id", hotelId);
@@ -120,7 +122,7 @@ public class BoxFacade extends AbstractFacade<Box> {
      * @return listę klatek z zadanego hotelu o zadanych identyfikatorach i nie zajęte przez żadną rezerwacje w zadanym zakresie czasu
      * @throws AppBaseException w przypadku natrafienia na blokadę pesymistyczną
      */
-    @PermitAll
+    @RolesAllowed("bookReservation")
     public List<Box> getAvailableBoxesByIdListAndHotelIdWithLock(long hotelId, List<Long> boxIdList, Date dateFrom, Date dateTo) throws AppBaseException {
         try{
             TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByIdListAndHotelId", Box.class);

@@ -45,6 +45,7 @@ public class BoxEndpoint extends AbstractEndpoint implements BoxEndpointLocal {
     private HotelManager hotelManager;
 
     @Override
+    @PermitAll
     public BoxDto get(Long id) throws AppBaseException {
         return Mappers.getMapper(IBoxMapper.class).toBoxDto(boxManager.get(id));
     }

@@ -109,7 +109,7 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
      * @return kod aktywacyjny
      * @throws AppBaseException gdy operacja zakończy się niepowodzeniem
      */
-    @PermitAll
+    @DenyAll
     public PendingCode findNotUsedByAccount(Account account) throws AppBaseException {
         try {
             TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findNotUsedByAccount", PendingCode.class);
@@ -148,7 +148,7 @@ public class PendingCodeFacade extends AbstractFacade<PendingCode> {
      * @return kod aktywacyjny
      * @throws AppBaseException podczas wystąpienia problemu z bazą danych.
      */
-    @PermitAll
+    @DenyAll
     public PendingCode findUnusedCodeByAccount(Account account, CodeType codeType) throws AppBaseException {
         try {
             TypedQuery<PendingCode> query = em.createNamedQuery("PendingCode.findUnusedCodeByAccount", PendingCode.class);

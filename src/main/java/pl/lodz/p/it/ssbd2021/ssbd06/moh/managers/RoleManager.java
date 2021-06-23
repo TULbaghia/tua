@@ -5,7 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.ManagerDataFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
-import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -30,7 +30,7 @@ public class RoleManager {
      * @return wyszukiwana rola managera
      * @throws AppBaseException gdy nie udało się pobrać danych
      */
-    @PermitAll
+    @RolesAllowed("addManagerToHotel")
     public ManagerData find(Long id) throws AppBaseException {
         return managerDataFacade.find(id);
     }

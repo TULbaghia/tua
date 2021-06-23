@@ -36,16 +36,6 @@ public class PendingCodeManager {
     private AccountFacade accountFacade;
 
     /**
-     * Wyszukuje obiekt klasy PendingCode na podstawie kodu przekazanego jako parametr
-     * @param code kod przypisany do obiektu PendingCode
-     * @return wyszukiwany kod aktywacyjny
-     * @throws AppBaseException w przypadku gdy operacja zakończy się niepowodzeniem
-     */
-    public PendingCode findByCode(String code) throws AppBaseException {
-        return pendingCodeFacade.findByCode(code);
-    }
-
-    /**
      * Tworzy nowy kod resetu hasła i wysyła wiadomość na e-mail odpowiadający kontu.
      *
      * @param email email konta, którego resetowanie hasła dotyczy

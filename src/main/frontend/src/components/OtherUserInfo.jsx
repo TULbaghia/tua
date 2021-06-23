@@ -153,10 +153,10 @@ function OtherUserInfo(props) {
                             </tbody>
                         </table>
                         <div className="main-wrapper-actions-container">
-                            <Button className="btn-primary" onClick={event => {
+                            <Button variant="purple" onClick={event => {
                                 history.push('/editOtherAccount?login=' + parsedQuery.login)
                             }}>{t("userDetailsEditBtn")}</Button>
-                            <Button className="btn-primary" onClick={event => {
+                            <Button variant="secondary" onClick={event => {
                                 handleDataFetch(false)
                             }}>{t("refresh")}</Button>
                         </div>

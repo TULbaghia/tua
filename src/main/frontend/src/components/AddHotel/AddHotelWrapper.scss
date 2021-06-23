@@ -5,8 +5,13 @@
 #add-hotel-form {
   .btn-background-custom {
     background-color: #7749F8;
+    border-color: #7749F8;
     width: 70%;
     margin: auto;
+  }
+
+  .btn-background-custom:hover {
+    background-color: #6a40e3;
   }
 
   .custom-asterisk {

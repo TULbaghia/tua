@@ -141,14 +141,14 @@ function Login(props) {
                                                              handleChange={handleChange}/>
                                         <FieldComponent name="password" placeholder={t('password')}
                                                         handleChange={handleChange}/>
-                                        <button className="btn btn-lg btn-primary btn-block mt-2"
+                                        <button className="btn btn-lg btn-purple btn-block mt-2"
                                                 type="submit" disabled={isSubmitting}
-                                                style={{backgroundColor: "#7749F8", margin: "auto"}}>
+                                                style={{margin: "auto"}}>
                                             {t('signIn')}
                                         </button>
-                                        <button className="btn btn-lg btn-primary btn-block mt-2" type="button"
+                                        <button className="btn btn-lg btn-purple btn-block mt-2" type="button"
                                                 onClick={() => history.push("/login/password-reset")}
-                                                style={{backgroundColor: "#7749F8", margin: "auto"}}>
+                                                style={{margin: "auto"}}>
                                             {t('passwordReset')}
                                         </button>
                                     </Form>

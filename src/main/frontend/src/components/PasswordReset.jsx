@@ -69,13 +69,13 @@ function PasswordReset(props) {
                                 </div>
 
                                 {!isSubmitted ?
-                                    <button className="btn btn-lg btn-primary btn-block" onClick={handleSend}
-                                            style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
+                                    <button className="btn btn-lg btn-purple btn-block" onClick={handleSend}
+                                            style={{width: "70%", margin: "auto"}}>
                                         {t('send')}
                                     </button>
                                     :
-                                    <button className="btn btn-lg btn-primary btn-block" onClick={handleSendAgain}
-                                            style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
+                                    <button className="btn btn-lg btn-purple btn-block" onClick={handleSendAgain}
+                                            style={{width: "70%", margin: "auto"}}>
                                         {t('sendAgain')}
                                     </button>
                                 }

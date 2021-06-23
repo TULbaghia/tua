@@ -3,40 +3,51 @@ import i18n from "../../i18n";
 
 const sizeValidator = (data, minInclusive, maxInclusive) => {
     if (data.length < minInclusive) {
-        return i18n.t("form.validation.field.min_size");
+        return "form.validation.field.min_size";
     }
     if (data.length > maxInclusive) {
-        return i18n.t("form.validation.field.max_size");
+        return "form.validation.field.max_size";
     }
 }
 
 const patternValidator = (data, pattern) => {
     if (!pattern.test(data)) {
-        return i18n.t("form.validation.field.pattern");
+        return "form.validation.field.pattern";
     }
 }
 
 const allowedListValidator = (data, list) => {
     if (!list.includes(data)) {
-        return i18n.t("form.validation.field.not_allowed");
+        return "form.validation.field.not_allowed";
     }
 }
 
-export const validateContactNumber = (data) => {
+const changeValidatorIdentity = (errors, identity) => {
+    return errors.map(x => {
+        const translationString = x.replace("field", "field." + identity.toLowerCase());
+        const translated = i18n.t(translationString);
+        if (translated === translationString) {
+            return i18n.t(x);
+        }
+        return translated;
+    });
+}
+
+const validateContactNumber = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 9, 15));
     errors.push(patternValidator(data, /^[0-9\+][0-9]{8,14}$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validateFirstname = (data) => {
+const validateFirstname = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 3, 31));
     errors.push(patternValidator(data, /^[A-ZĆŁÓŚŹŻ\s]{1}[a-ząęćńóśłźż]+$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validateLanguage = (data) => {
+const validateLanguage = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 2, 2));
     errors.push(patternValidator(data, /^[a-z]{2}$/));
@@ -44,98 +55,98 @@ export const validateLanguage = (data) => {
     return errors.filter(err => err !== undefined);
 }
 
-export const validateLastname = (data) => {
+const validateLastname = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 2, 31));
     errors.push(patternValidator(data, /^[A-ZĆŁÓŚŹŻ\s]{1}[a-ząęćńóśłźż]+$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validateLogin = (data) => {
+const validateLogin = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 3, 19));
     errors.push(patternValidator(data, /^[a-zA-Z0-9]+$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validatePassword = (data) => {
+const validatePassword = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 8, 64));
     errors.push(patternValidator(data, /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,64}$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validatePenCode = (data) => {
+const validatePenCode = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 32, 32));
     errors.push(patternValidator(data, /^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validateUserEmail = (data) => {
+const validateUserEmail = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 6, 127));
     errors.push(patternValidator(data, /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validateHotelName = (data) => {
+const validateHotelName = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 2, 31));
     errors.push(patternValidator(data, /^[A-ZĆŁÓŚŹŻ\s]{1}[A-Za-ząęćńóśłźż \-]+$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validateAddress = (data) => {
+const validateAddress = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 2, 63));
     errors.push(patternValidator(data, /^[A-Za-z0-9ĆŁÓŚŹŻąęćńóśłźż\s/]+$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validateHotelImage = (data) => {
+const validateHotelImage = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 2, 31));
     errors.push(patternValidator(data, /^(?!\/\/)(\/[A-Za-z0-9]+)+\.(jpg|png)$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validateHotelDescription = (data) => {
+const validateHotelDescription = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 8, 511));
     errors.push(patternValidator(data, /^[A-Za-z0-9ĄĘĆŃÓŚŁŹŻąęćńóśłźż.,:\s\-]+$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validateCityName = (data) => {
+const validateCityName = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 2, 31));
     errors.push(patternValidator(data, /^[A-ZĆŁÓŚŹŻ\s]{1}[A-Za-ząęćńóśłźż \-]+$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validateCityDescription = (data) => {
+const validateCityDescription = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 8, 511));
     errors.push(patternValidator(data, /^[A-Za-z0-9ĄĘĆŃÓŚŁŹŻąęćńóśłźż.,:\s\-]+$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validatePrice = (data) => {
+const validatePrice = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 1, 8));
     errors.push(patternValidator(data, /^(\d*\.)?\d+$/));
     return errors.filter(err => err !== undefined);
 }
 
-export const validateBoxDescription = (data) => {
+const validateBoxDescription = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 1, 31));
     errors.push(patternValidator(data, /^[A-Za-z0-9ĄĘĆŃÓŚŁŹŻąęćńóśłźż.,:\s\-]+$/));
     return errors.filter(err => err !== undefined);
 }
 
-export  const validateRatingComment = (data) => {
+const validateRatingComment = (data) => {
     let errors = [];
     errors.push(sizeValidator(data, 4, 255));
     return errors.filter(err => err !== undefined);
@@ -164,39 +175,39 @@ export const ValidatorType = {
 export const validatorFactory = (data, validatorType) => {
     switch (validatorType) {
         case ValidatorType.CONTACT_NUMBER:
-            return validateContactNumber(data);
+            return changeValidatorIdentity(validateContactNumber(data), 'CONTACT_NUMBER');
         case ValidatorType.FIRSTNAME:
-            return validateFirstname(data);
+            return changeValidatorIdentity(validateFirstname(data), 'FIRSTNAME');
         case ValidatorType.LANGUAGE:
-            return validateLanguage(data);
+            return changeValidatorIdentity(validateLanguage(data), 'LANGUAGE');
         case ValidatorType.LASTNAME:
-            return validateLastname(data);
+            return changeValidatorIdentity(validateLastname(data), 'LASTNAME');
         case ValidatorType.LOGIN:
-            return validateLogin(data);
+            return changeValidatorIdentity(validateLogin(data), 'LOGIN');
         case ValidatorType.PASSWORD:
-            return validatePassword(data);
+            return changeValidatorIdentity(validatePassword(data), 'PASSWORD');
         case ValidatorType.PEN_CODE:
-            return validatePenCode(data);
+            return changeValidatorIdentity(validatePenCode(data), 'PEN_CODE');
         case ValidatorType.USER_EMAIL:
-            return validateUserEmail(data);
+            return changeValidatorIdentity(validateUserEmail(data), 'USER_EMAIL');
         case ValidatorType.HOTEL_NAME:
-            return validateHotelName(data);
+            return changeValidatorIdentity(validateHotelName(data), 'HOTEL_NAME');
         case ValidatorType.ADDRESS:
-            return validateAddress(data);
+            return changeValidatorIdentity(validateAddress(data), 'ADDRESS');
         case ValidatorType.HOTEL_IMAGE:
-            return validateHotelImage(data);
+            return changeValidatorIdentity(validateHotelImage(data), 'HOTEL_IMAGE');
         case ValidatorType.HOTEL_DESCRIPTION:
-            return validateHotelDescription(data);
+            return changeValidatorIdentity(validateHotelDescription(data), 'HOTEL_DESCRIPTION');
         case ValidatorType.CITY_NAME:
-            return validateCityName(data);
+            return changeValidatorIdentity(validateCityName(data), 'CITY_NAME');
         case ValidatorType.CITY_DESCRIPTION:
-            return validateCityDescription(data);
+            return changeValidatorIdentity(validateCityDescription(data), 'CITY_DESCRIPTION');
         case ValidatorType.PRICE:
-            return validatePrice(data);
+            return changeValidatorIdentity(validatePrice(data), 'PRICE');
         case ValidatorType.BOX_DESCRIPTION:
-            return validateBoxDescription(data);
+            return changeValidatorIdentity(validateBoxDescription(data), 'BOX_DESCRIPTION');
         case ValidatorType.RATING_COMMENT:
-            return validateRatingComment(data);
+            return changeValidatorIdentity(validateRatingComment(data), 'RATING_COMMENT');
         default:
             return [];
     }

@@ -173,7 +173,7 @@ function BoxList(props) {
                                 {i18n.t("refresh")}
                             </Button>
                             {token !== null && token !== '' && handleDisplayManagerButtons() ? (
-                                <Button className="btn-primary float-right m-2" onClick={event => {
+                                <Button className="float-right m-2" variant="purple" onClick={event => {
                                     history.push('/boxes/add');
                                 }}>{i18n.t("addBox")}</Button>
                             ) : (<></>)}

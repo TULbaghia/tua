@@ -33,9 +33,3 @@
     display: flex;
     justify-content: space-around;
 }
-
-.main-wrapper-actions-container > button{
-    color: #fff;
-    background-color: var(--purple);
-    border-color: var(--purple);
-}

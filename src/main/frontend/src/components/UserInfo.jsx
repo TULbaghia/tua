@@ -161,10 +161,10 @@ function UserInfo(props) {
                             </tbody>
                         </table>
                         <div className="main-wrapper-actions-container">
-                            <Button className="btn-primary" onClick={event => {
+                            <Button variant="purple" onClick={event => {
                                 history.push("/editOwnAccount")
                             }}>{t("userDetailsEditBtn")}</Button>
-                            <Button className="btn-primary" onClick={event => {
+                            <Button variant="secondary" onClick={event => {
                                 handleDataFetch(false)
                             }}>{t("refresh")}</Button>
                         </div>

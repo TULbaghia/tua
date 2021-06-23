@@ -10,7 +10,12 @@
 
   .btn-background-custom {
     background-color: #7749F8;
+    border-color: #7749F8;
   }
+  .btn-background-custom:hover {
+    background-color: #6a40e3;
+  }
+
 
   .table-content-uppercase {
     text-transform: capitalize;

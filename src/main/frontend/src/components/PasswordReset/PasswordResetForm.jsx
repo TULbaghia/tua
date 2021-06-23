@@ -89,9 +89,9 @@ function PasswordResetForm({t, i18n}) {
                                                             handleChange={handleChange}/>
                                             <FieldComponent name="repeatedNewPassword" placeholder={t('repeatPassword')}
                                                             handleChange={handleChange}/>
-                                            <button className="btn btn-lg btn-primary btn-block mt-2"
+                                            <button className="btn btn-lg btn-purple btn-block mt-2"
                                                     type="submit" disabled={isSubmitting}
-                                                    style={{backgroundColor: "#7749F8", width: "70%", margin: "auto"}}>
+                                                    style={{width: "70%", margin: "auto"}}>
                                                 {t('send')}
                                             </button>
                                         </Form>

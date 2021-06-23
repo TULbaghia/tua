@@ -193,9 +193,8 @@ function EditOwnAccount() {
                                                                        ref={recaptchaRef1}
                                                                        sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                                                         </div>
-                                                        <button className="btn btn-lg btn-primary btn-block mb-3"
-                                                                type="submit" disabled={isSubmitting}
-                                                                style={{backgroundColor: "#7749F8"}}>
+                                                        <button className="btn btn-lg btn-purple btn-block mb-3"
+                                                                type="submit" disabled={isSubmitting}>
                                                             {i18n.t('changeEmail')}
                                                         </button>
                                                     </Form>
@@ -266,9 +265,8 @@ function EditOwnAccount() {
                                                                        ref={recaptchaRef2}
                                                                        sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                                                         </div>
-                                                        <button className="btn btn-lg btn-primary btn-block mb-3"
-                                                                type="submit" disabled={isSubmitting}
-                                                                style={{backgroundColor: "#7749F8"}}>
+                                                        <button className="btn btn-lg btn-purple btn-block mb-3"
+                                                                type="submit" disabled={isSubmitting}>
                                                             {i18n.t('changePassword')}
                                                         </button>
                                                     </Form>
@@ -330,9 +328,8 @@ function EditOwnAccount() {
                                                                        ref={recaptchaRef3}
                                                                        sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}/>
                                                         </div>
-                                                        <button className="btn btn-lg btn-primary btn-block mb-3"
-                                                                type="submit" disabled={isSubmitting}
-                                                                style={{backgroundColor: "#7749F8"}}>
+                                                        <button className="btn btn-lg btn-purple btn-block mb-3"
+                                                                type="submit" disabled={isSubmitting}>
                                                             {i18n.t('changeDetails')}
                                                         </button>
                                                     </Form>

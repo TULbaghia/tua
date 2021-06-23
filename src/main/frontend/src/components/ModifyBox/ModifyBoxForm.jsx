@@ -118,7 +118,7 @@ function ModifyBoxForm() {
                                 <Row className="text-center justify-content-center d-block">
                                     <h1 className="mb-3">{i18n.t('modifyBox.title')}</h1>
                                     <h5>{i18n.t('modifyBox.modify.info')}{box.description}</h5>
-                                    <button className="mt-3 w-25 btn-background-custom btn btn-primary"
+                                    <button className="mt-3 w-25 btn btn-secondary"
                                             onClick={(e) => handleFetch()}
                                             type="submit">
                                         {i18n.t("refresh")}
@@ -163,7 +163,7 @@ function ModifyBoxForm() {
                                                 </Col>
                                             </Row>
                                             <Row>
-                                                <button className="btn-background-custom btn btn-lg btn-primary mt-3"
+                                                <button className="btn-background-custom btn btn-lg btn-primary mt-3 "
                                                         type="submit"
                                                         disabled={isSubmitting}>
                                                     {i18n.t('edit')}

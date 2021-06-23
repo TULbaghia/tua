@@ -62,7 +62,7 @@ function CitiesList(props) {
             selector: 'edit',
             cell: row => {
                 return (
-                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
+                    <Button className="btn-sm" variant="purple" onClick={event => {
                         history.push('/cities/editCity?id=' + row.id);
                     }}>{t("edit")}</Button>
                 )
@@ -76,7 +76,7 @@ function CitiesList(props) {
             selector: 'details',
             cell: row => {
                 return (
-                    <Button className="btn-sm" style={{backgroundColor: "#7749F8"}} onClick={event => {
+                    <Button className="btn-sm" variant="purple" onClick={event => {
                         dispatchCityDetailsDialog({
                             title: t('city.description'),
                             message: row.description,

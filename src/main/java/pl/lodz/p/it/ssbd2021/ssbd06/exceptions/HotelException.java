@@ -10,6 +10,7 @@ public class HotelException extends AppBaseException {
     private static final String HOTEL_NAME_INVALID = "exception.hotel.name_invalid";
     private static final String NO_HOTEL_ASSIGNED = "exception.hotel.no_hotel_assigned";
     private static final String NO_HOTEL_FOR_BOOKING = "exception.hotel.no_hotel_for_booking";
+    private static final String HOTEL_HAVE_ACTIVE_BOOKING = "exception.hotel.have_active_booking";
 
     private HotelException(String message, Throwable cause) {
         super(message, cause);
@@ -65,8 +66,22 @@ public class HotelException extends AppBaseException {
         return new HotelException(NO_HOTEL_ASSIGNED);
     }
 
+    /**
+     * Wyjątek reprezentuje błąd podczas odnajdywania hotelu na podstawie rezerwacji związany z nie odnalezieniem hotelu.
+     *
+     * @return wyjątek HotelException
+     */
     public static AppBaseException noHotelForBooking() {
         return new HotelException(NO_HOTEL_FOR_BOOKING);
+    }
+
+    /**
+     * Wyjątek reprezentuje błąd podczas usuwania hotelu związany z aktywnymi rezerwacjami dla tego hotelu.
+     *
+     * @return wyjątek HotelException
+     */
+    public static AppBaseException activeBooking() {
+        return new HotelException(HOTEL_HAVE_ACTIVE_BOOKING);
     }
 }
 

@@ -134,7 +134,7 @@ function ModifyHotelForm() {
                                 <Row className="text-center justify-content-center d-block">
                                     <h1 className="mb-3">{i18n.t('modifyHotel.title')}</h1>
                                     <h5>{i18n.t('modifyHotel.modify.info')}{hotel.name}</h5>
-                                    <button className="my-3 w-25 btn-background-custom btn btn-primary"
+                                    <button className="my-3 w-25 btn btn-secondary"
                                             onClick={(e) => handleFetch(false)}
                                             type="submit">
                                         {i18n.t("refresh")}
@@ -187,7 +187,7 @@ function ModifyHotelForm() {
                                             <Row>
                                                 <button className="btn-background-custom btn btn-lg btn-primary mt-3"
                                                         type="submit"
-                                                        disabled={isSubmitting || Object.keys(errors).length > 0}>
+                                                        disabled={!etag || isSubmitting || Object.keys(errors).length > 0}>
                                                     {i18n.t('send')}
                                                 </button>
                                             </Row>

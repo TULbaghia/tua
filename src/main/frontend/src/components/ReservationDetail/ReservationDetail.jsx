@@ -75,7 +75,7 @@ function ReservationDetail(props) {
             }
 
             if (hotelRef) {
-                const hotelId = reservationE.bookingLine.map(x => x.box.hotelId)
+                const hotelId = reservationE.bookingLine.map(x => x.box.hotelId).filter(x => x != null);
                 if (hotelId.length > 0) {
                     getHotel({id: hotelId[0], token}).then(res => {
                         setHotel({...res.data, ETag: res.headers.etag});
@@ -237,7 +237,7 @@ function ReservationDetail(props) {
                             </Card.Header>
                             <Card.Body>
                                 <Row>
-                                    <Col md={12} className={"d-flex flex-column-reverse flex-md-row px-0"}>
+                                    <Col md={12} className={"flex-column-reverse flex-md-row px-0 " + ('name' in hotel ? "d-flex" : "d-none")}>
                                         <Col md={6}>
                                             <div>
                                                 <div
@@ -265,7 +265,7 @@ function ReservationDetail(props) {
                                     </Col>
                                     <Col md={12} className={"d-flex flex-column-reverse flex-md-row"}>
                                         <div id={"reservationDetailBoxTable"} className={"table-responsive"}>
-                                            <hr className={"w-75 ml-0 my-4"}/>
+                                            <hr className={"w-75 ml-0 my-4 " + ('name' in hotel ? "d-block" : "d-none")}/>
                                             <h5 className={"font-weight-bold"}>{i18n.t("bookingDetails.reservation.boxList")}</h5>
                                             <Table className={"table table-striped table-hover"}>
                                                 <thead>

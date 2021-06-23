@@ -160,6 +160,16 @@ public class BoxController extends AbstractController {
         repeat(() -> boxEndpoint.deleteBox(boxId), boxEndpoint);
     }
 
+
+    /**
+     * Pobiera klatki z zadanego hotelu nie zajęte przez żadną rezerwacje w zadanym zakresie czasu
+     *
+     * @param hotelId identyfikator hotelu
+     * @param dateFrom początek zakresu czasu kiedy klatka jest wolna
+     * @param dateTo koniec zakresu czasu kiedy klatka jest wolna
+     * @return listę wolnych klatek w danym hotelu w zadanym zakresie czasu
+     * @throws AppBaseException podczas błędu związanego z pobieraniem listy klatek
+     */
     @GET
     @Path("/all/{id}/from/{date_from}/to/{date_to}")
     @Produces(MediaType.APPLICATION_JSON)

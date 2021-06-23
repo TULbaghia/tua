@@ -598,5 +598,8 @@
 
   "form.validation.field.rating_comment.min_size": "Treść komentarza jest zbyt krótka",
   "form.validation.field.rating_comment.max_size": "Treść komentarza jest zbyt długa",
-  "form.validation.field.rating_comment.pattern": "Treść komentarza nie spełnia wymagań wzorca"
+  "form.validation.field.rating_comment.pattern": "Treść komentarza nie spełnia wymagań wzorca",
+
+  "booking.form.error.hotel_id_not_selected": "Nie wybrano hotelu",
+  "booking.form.select_hotel": "Wybierz hotel..."
 }

@@ -16,8 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewBookingDto {
-
+    @NotNull
     private Date dateFrom;
+    @NotNull
     private Date dateTo;
     @NotNull
     private Long hotelId;

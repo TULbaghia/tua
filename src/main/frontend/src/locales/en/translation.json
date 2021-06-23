@@ -595,5 +595,8 @@
 
   "form.validation.field.rating_comment.min_size": "Comment rating is too short",
   "form.validation.field.rating_comment.max_size": "Comment rating is too long",
-  "form.validation.field.rating_comment.pattern": "Comment does not meet pattern requirements"
+  "form.validation.field.rating_comment.pattern": "Comment does not meet pattern requirements",
+
+  "booking.form.error.hotel_id_not_selected": "Hotel is not selected",
+  "booking.form.select_hotel": "Select hotel..."
 }

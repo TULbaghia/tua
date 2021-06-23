@@ -86,5 +86,13 @@ public interface BoxEndpointLocal extends CallingClass {
     @RolesAllowed("deleteBox")
     void deleteBox(Long boxId) throws AppBaseException;
 
-    List<BoxDto> getAvailableBoxesBetween(Long hotelId, Date date, Date date1);
+    /**
+     * Pobiera klatki z zadanego hotelu nie zajęte przez żadną rezerwacje w zadanym zakresie czasu
+     *
+     * @param hotelId identyfikator hotelu
+     * @param dateFrom początek zakresu czasu kiedy klatka jest wolna
+     * @param dateTo koniec zakresu czasu kiedy klatka jest wolna
+     * @return listę wolnych klatek w danym hotelu w zadanym zakresie czasu
+     */
+    List<BoxDto> getAvailableBoxesBetween(Long hotelId, Date dateFrom, Date dateTo);
 }

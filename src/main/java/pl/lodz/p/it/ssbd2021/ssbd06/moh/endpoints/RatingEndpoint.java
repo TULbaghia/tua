@@ -41,6 +41,11 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
     @Inject
     private SecurityContext securityContext;
 
+    @RolesAllowed({"getHotelRating"})
+    public RatingDto get(Long id) throws AppBaseException {
+        return Mappers.getMapper(IRatingMapper.class).toRatingDto(ratingManager.get(id));
+    }
+
     @Override
     @PermitAll
     public List<RatingDto> getAll(Long hotelId) throws AppBaseException {

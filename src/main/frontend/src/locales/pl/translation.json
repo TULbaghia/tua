@@ -267,6 +267,7 @@
   "assignManager": "Przypisz managera",
   "assign": "Przypisz",
   "exception.role_exception.account_not_manager": "Wybrane konto nie posiada roli Manager",
+  "exception.hotel.have_active_booking": "Nie można usunąć hotelu z aktywnymi rezerwacjami",
   "assignTitle": "Przypisz managera do hotelu",
   "assignManager.success": "Manager przypisany pomyślnie",
   "exception.hotel.has_manager": "Ten manager został już przypisany",

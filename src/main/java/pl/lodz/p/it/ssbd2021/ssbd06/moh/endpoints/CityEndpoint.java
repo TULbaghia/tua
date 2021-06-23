@@ -42,6 +42,7 @@ public class CityEndpoint extends AbstractEndpoint implements CityEndpointLocal 
     private CityManager cityManager;
 
     @Override
+    @RolesAllowed("getCity")
     public CityDto get(Long id) throws AppBaseException {
         return Mappers.getMapper(ICityMapper.class).toCityDto(cityManager.get(id));
     }

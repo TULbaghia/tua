@@ -5,11 +5,11 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CityException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.DatabaseQueryException;
-import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
-import javax.annotation.security.PermitAll;
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -34,7 +34,7 @@ public class CityFacade extends AbstractFacade<City> {
         return em;
     }
 
-    @PermitAll
+    @RolesAllowed("addCity")
     @Override
     public void create(City entity) throws AppBaseException {
         try {
@@ -47,7 +47,7 @@ public class CityFacade extends AbstractFacade<City> {
         }
     }
 
-    @PermitAll
+    @RolesAllowed("updateCity")
     @Override
     public void edit(City entity) throws AppBaseException {
         try {
@@ -60,53 +60,33 @@ public class CityFacade extends AbstractFacade<City> {
         }
     }
 
-    @PermitAll
+    @RolesAllowed("deleteCity")
     @Override
     public void remove(City entity) throws AppBaseException {
         super.remove(entity);
     }
 
-    @PermitAll
+    @RolesAllowed({"addHotel", "deleteCity", "updateCity", "getCity", "updateOwnHotel", "updateOtherHotel"})
     @Override
     public City find(Object id) throws AppBaseException {
         return super.find(id);
     }
 
-    @PermitAll
+    @RolesAllowed("getAllCities")
     @Override
     public List<City> findAll() throws AppBaseException {
         return super.findAll();
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<City> findRange(int[] range) throws AppBaseException {
         return super.findRange(range);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public int count() throws AppBaseException {
         return super.count();
-    }
-
-    /**
-     * Wyszukuje obiekt City o podanej nazwie.
-     *
-     * @param name nazwa miasta.
-     * @return wyszukiwane miasto.
-     * @throws AppBaseException gdy nie udało się pobrać danych
-     */
-    @PermitAll
-    public City findByName(String name) throws AppBaseException {
-        try {
-            TypedQuery<City> cityQuery = em.createNamedQuery("City.findByName", City.class);
-            cityQuery.setParameter("name", name);
-            return cityQuery.getSingleResult();
-        } catch (NoResultException e) {
-            throw NotFoundException.cityNotFound(e);
-        } catch (PersistenceException e) {
-            throw DatabaseQueryException.databaseQueryException(e);
-        }
     }
 }

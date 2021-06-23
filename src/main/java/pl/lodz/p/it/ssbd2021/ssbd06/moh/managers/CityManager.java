@@ -45,7 +45,7 @@ public class CityManager {
      * @return wyszukiwane miasto.
      * @throws AppBaseException gdy nie udało się pobrać danych lub podczas błędu z bazą danych
      */
-    @PermitAll
+    @RolesAllowed({"addHotel", "deleteCity", "updateCity", "getCity", "updateOwnHotel", "updateOtherHotel"})
     public City get(Long id) throws AppBaseException {
         return Optional.ofNullable(cityFacade.find(id)).orElseThrow(NotFoundException::cityNotFound);
     }
@@ -99,18 +99,6 @@ public class CityManager {
             throw CityException.deleteHasHotels();
         }
         cityFacade.remove(city);
-    }
-
-    /**
-     * Wyszukuje obiekt City o podanej nazwie.
-     *
-     * @param name nazwa miasta.
-     * @return wyszukiwane miasto.
-     * @throws AppBaseException gdy nie udało się pobrać danych
-     */
-    @PermitAll
-    public City findByName(String name) throws AppBaseException {
-        return cityFacade.findByName(name);
     }
 
     /**

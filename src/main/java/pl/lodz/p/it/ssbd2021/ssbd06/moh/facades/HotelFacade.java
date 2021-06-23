@@ -10,7 +10,9 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -36,27 +38,7 @@ public class HotelFacade extends AbstractFacade<Hotel> {
         super(Hotel.class);
     }
 
-    /**
-     * Wyszukuje Hotel o podanej nazwie.
-     *
-     * @param name nazwa hotelu.
-     * @return wyszukiwany Hotel.
-     * @throws AppBaseException gdy nie udało się pobrać danych.
-     */
-    @PermitAll
-    public Hotel findByName(String name) throws AppBaseException {
-        try {
-            TypedQuery<Hotel> hotelQuery = em.createNamedQuery("Hotel.findByName", Hotel.class);
-            hotelQuery.setParameter("name", name);
-            return hotelQuery.getSingleResult();
-        } catch (NoResultException e) {
-            throw NotFoundException.hotelNotFound(e);
-        } catch (PersistenceException e) {
-            throw DatabaseQueryException.databaseQueryException(e);
-        }
-    }
-
-    @PermitAll
+    @RolesAllowed("addHotel")
     @Override
     public void create(Hotel entity) throws AppBaseException {
         try {
@@ -69,7 +51,7 @@ public class HotelFacade extends AbstractFacade<Hotel> {
         }
     }
 
-    @PermitAll
+    @RolesAllowed({"updateOwnHotel", "updateOtherHotel", "addManagerToHotel", "addHotelRating"})
     @Override
     public void edit(Hotel entity) throws AppBaseException {
         try {
@@ -82,7 +64,7 @@ public class HotelFacade extends AbstractFacade<Hotel> {
         }
     }
 
-    @PermitAll
+    @RolesAllowed("deleteHotel")
     @Override
     public void remove(Hotel entity) throws AppBaseException {
         try {
@@ -115,13 +97,13 @@ public class HotelFacade extends AbstractFacade<Hotel> {
         return super.findAll();
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<Hotel> findRange(int[] range) throws AppBaseException {
         return super.findRange(range);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public int count() throws AppBaseException {
         return super.count();
@@ -136,7 +118,7 @@ public class HotelFacade extends AbstractFacade<Hotel> {
      * @return wyszukiwany Hotel.
      * @throws AppBaseException gdy nie udało się pobrać danych.
      */
-    @PermitAll
+    @RolesAllowed("generateReport")
     public List<Booking> findAllHotelBookingsInTimeRange(Long hotelId, Date from, Date to) throws AppBaseException {
         try {
             TypedQuery<Booking> hotelQuery = em.createNamedQuery("BookingLine.findAllByHotelId", Booking.class);

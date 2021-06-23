@@ -5,7 +5,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
-import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -30,7 +30,7 @@ public class AccountManager {
      * @return konto wyszukiwanego użytkownika
      * @throws AppBaseException gdy nie udało się pobrać danych
      */
-    @PermitAll
+    @RolesAllowed("addManagerToHotel")
     public Account findByLogin(String login) throws AppBaseException {
         return accountFacade.findByLogin(login);
     }

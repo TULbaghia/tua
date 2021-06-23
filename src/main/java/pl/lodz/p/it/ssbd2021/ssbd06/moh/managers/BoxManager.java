@@ -46,6 +46,7 @@ public class BoxManager {
      * @throws AppBaseException podczas błędu związanego z bazą danych
      * @return encja klatki
      */
+    @PermitAll
     public Box get(Long id) throws AppBaseException {
         return Optional.ofNullable(boxFacade.find(id)).orElseThrow(NotFoundException::boxNotFound);
     }

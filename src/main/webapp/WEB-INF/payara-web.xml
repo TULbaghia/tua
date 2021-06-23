@@ -259,6 +259,12 @@
     </security-role-mapping>
 
     <security-role-mapping>
+        <role-name>getCity</role-name>
+        <group-name>MANAGER</group-name>
+        <group-name>ADMIN</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
         <role-name>addBox</role-name>
         <group-name>MANAGER</group-name>
     </security-role-mapping>

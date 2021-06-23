@@ -201,6 +201,9 @@
     <security-role>
         <role-name>getAllCities</role-name>
     </security-role>
+    <security-role>
+        <role-name>getCity</role-name>
+    </security-role>
 
     <security-role>
         <role-name>addBox</role-name>

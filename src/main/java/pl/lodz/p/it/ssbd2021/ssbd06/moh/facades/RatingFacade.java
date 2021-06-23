@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -33,7 +34,7 @@ public class RatingFacade extends AbstractFacade<Rating> {
         super(Rating.class);
     }
 
-    @PermitAll
+    @RolesAllowed("addHotelRating")
     @Override
     public void create(Rating entity) throws AppBaseException {
         try {
@@ -46,7 +47,7 @@ public class RatingFacade extends AbstractFacade<Rating> {
         }
     }
 
-    @PermitAll
+    @RolesAllowed({"updateHotelRating", "hideHotelRating"})
     @Override
     public void edit(Rating entity) throws AppBaseException {
         super.edit(entity);
@@ -58,7 +59,7 @@ public class RatingFacade extends AbstractFacade<Rating> {
         super.remove(entity);
     }
 
-    @PermitAll
+    @RolesAllowed({"deleteHotelRating", "getHotelRating", "hideHotelRating"})
     @Override
     public Rating find(Object id) throws AppBaseException {
         return super.find(id);
@@ -76,13 +77,13 @@ public class RatingFacade extends AbstractFacade<Rating> {
         return super.findAll();
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<Rating> findRange(int[] range) throws AppBaseException {
         return super.findRange(range);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public int count() throws AppBaseException {
         return super.count();
@@ -95,7 +96,7 @@ public class RatingFacade extends AbstractFacade<Rating> {
      * @return Lista ocen
      * @throws AppBaseException gdy nie udało się przeprowadzić operacji pobrania ocen
      */
-    @RolesAllowed({"deleteHotelRating", "addHotelRating"})
+    @RolesAllowed({"deleteHotelRating", "addHotelRating", "updateHotelRating"})
     public List<Rating> getAllRatingsForHotelId(Long hotelId) throws AppBaseException {
         try {
             TypedQuery<Rating> ratingTypedQuery = em.createNamedQuery("Rating.getAllRatingsForHotelId", Rating.class);

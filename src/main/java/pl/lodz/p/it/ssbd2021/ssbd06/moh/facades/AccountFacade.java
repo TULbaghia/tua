@@ -7,7 +7,8 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
-import javax.annotation.security.PermitAll;
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -39,7 +40,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @return obiekt encji konta o podanym loginie
      * @throws AppBaseException gdy konto nie zostało znalezione, lub wystąpił problem z bazą danych.
      */
-    @PermitAll
+    @RolesAllowed("addManagerToHotel")
     public Account findByLogin(String login) throws AppBaseException {
         try {
             TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findByLogin", Account.class);
@@ -51,43 +52,44 @@ public class AccountFacade extends AbstractFacade<Account> {
             throw DatabaseQueryException.databaseQueryException(e);
         }
     }
-    @PermitAll
+
+    @DenyAll
     @Override
     public void create(Account entity) throws AppBaseException {
         super.create(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public void edit(Account entity) throws AppBaseException {
         super.edit(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public void remove(Account entity) throws AppBaseException {
         super.remove(entity);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public Account find(Object id) throws AppBaseException {
         return super.find(id);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<Account> findAll() throws AppBaseException {
         return super.findAll();
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public List<Account> findRange(int[] range) throws AppBaseException {
         return super.findRange(range);
     }
 
-    @PermitAll
+    @DenyAll
     @Override
     public int count() throws AppBaseException {
         return super.count();

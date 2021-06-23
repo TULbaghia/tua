@@ -11,6 +11,7 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -37,14 +38,12 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
     }
 
     @DenyAll
-    @PermitAll
     @Override
     public void create(ManagerData entity) throws AppBaseException {
         super.create(entity);
     }
 
-    @DenyAll
-    @PermitAll
+    @RolesAllowed({"addManagerToHotel", "deleteManagerFromHotel"})
     @Override
     public void edit(ManagerData entity) throws AppBaseException {
         super.edit(entity);
@@ -56,8 +55,7 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
         super.remove(entity);
     }
 
-    @DenyAll
-    @PermitAll
+    @RolesAllowed("addManagerToHotel")
     @Override
     public ManagerData find(Object id) throws AppBaseException {
         return super.find(id);
@@ -76,7 +74,7 @@ public class ManagerDataFacade extends AbstractFacade<ManagerData> {
      * @return wyszukiwany Hotel.
      * @throws AppBaseException gdy nie udało się pobrać danych.
      */
-    @PermitAll
+    @RolesAllowed({"getOwnHotelInfo", "updateOwnHotel", "generateReport", "deleteManagerFromHotel"})
     public Hotel findHotelByManagerId(String login) throws AppBaseException {
         try {
             TypedQuery<Hotel> managerHotelQuery =

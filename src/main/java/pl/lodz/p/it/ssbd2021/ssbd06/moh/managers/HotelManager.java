@@ -81,18 +81,6 @@ public class HotelManager {
     }
 
     /**
-     * Wyszukaj hotel
-     *
-     * @param option identyfikator hotelu
-     * @return encja hotelu
-     * @throws AppBaseException podczas błędu związanego z bazą danych
-     */
-    @PermitAll
-    Hotel lookForHotel(String... option) throws AppBaseException {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
      * Zwraca listę hoteli po przefiltrowaniu
      *
      * @param fromRating  dolny przedział oceny hotelu
@@ -250,19 +238,6 @@ public class HotelManager {
         managerData.setHotel(null);
         managerData.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
         managerDataFacade.edit(managerData);
-    }
-
-    /**
-     * Generuje raport nt. działalności hotelu
-     *
-     * @param hotelId identyfikator hotelu
-     * @param from    data od
-     * @param to      data do
-     * @return Dane potrzebne do wygenerowania raportu
-     */
-    @RolesAllowed("generateReport")
-    GenerateReportDto generateReport(Long hotelId, String from, String to) throws AppBaseException {
-        throw new UnsupportedOperationException();
     }
 
     /**

@@ -57,11 +57,6 @@ public class HotelFacade extends AbstractFacade<Hotel> {
     }
 
     @PermitAll
-    public List<Hotel> findByFilter(String... filter) {
-        throw new UnsupportedOperationException();
-    }
-
-    @PermitAll
     @Override
     public void create(Hotel entity) throws AppBaseException {
         try {

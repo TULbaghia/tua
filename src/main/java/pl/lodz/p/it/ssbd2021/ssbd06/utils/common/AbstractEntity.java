@@ -66,7 +66,8 @@ public abstract class AbstractEntity {
                 (this.getId() == null || this.getId().equals(other.getId()));
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         ToStringBuilder toStringBuilder = new ToStringBuilder(this)
                 .append("creationDate", creationDate)
                 .append("modificationDate", modificationDate)

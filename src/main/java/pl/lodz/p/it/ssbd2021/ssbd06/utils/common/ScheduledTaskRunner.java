@@ -29,7 +29,7 @@ public class ScheduledTaskRunner {
      * @param time
      * @throws AppBaseException w przypadku gdy operacja zakończy się niepowodzeniem
      */
-    @Schedule(hour = "*/1", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny", persistent = false)
+    @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny", persistent = false)
     private void deleteUnverifiedAccounts(Timer time) throws AppBaseException {
         scheduledTasksManager.deleteUnverifiedAccounts(time);
     }
@@ -40,7 +40,7 @@ public class ScheduledTaskRunner {
      * @param time
      * @throws AppBaseException w przypadku gdy operacja zakończy się niepowodzeniem
      */
-    @Schedule(hour = "*/1", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny", persistent = false)
+    @Schedule(hour = "*", minute = "0", second = "0", info = "Wykonuje metodę co godzinę począwszy od pełnej godziny", persistent = false)
     private void sendRepeatedEmailChange(Timer time) throws AppBaseException {
         scheduledTasksManager.sendRepeatedEmailChange(time);
     }

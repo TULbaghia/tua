@@ -1,5 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.entities.enums;
 
+/**
+ * Typ wyliczeniowy reprezentujący typy zwierząt.
+ */
 public enum AnimalType{
     DOG,
     CAT,

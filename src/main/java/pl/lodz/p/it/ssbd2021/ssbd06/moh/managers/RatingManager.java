@@ -227,7 +227,7 @@ public class RatingManager {
     }
 
     /**
-     * Zmień widoczność oceny
+     * Zmienia widoczność oceny
      *
      * @param ratingId identyfikator oceny hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych

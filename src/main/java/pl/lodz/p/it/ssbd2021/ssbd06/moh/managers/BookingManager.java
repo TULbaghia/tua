@@ -94,6 +94,8 @@ public class BookingManager {
     /**
      * Tworzy nową rezerwację
      *
+     * @param bookingDto dane nowej rezerwacji
+     * @param username nazwa użytkownika
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
     @RolesAllowed("bookReservation")

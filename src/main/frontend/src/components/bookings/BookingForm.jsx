@@ -39,7 +39,7 @@ function BookingForm(props) {
     const dispatchCriticalDialog = useDialogPermanentChange();
     const [clearRows, setClearRows] = useState(false)
     const [showTable, setShowTable] = useState(false)
-
+    const inputRef = React.createRef();
     const themeColor = useThemeColor();
 
     useEffect(() => {
@@ -181,7 +181,7 @@ function BookingForm(props) {
     tommorrow = new Date(tommorrow.setHours(12, 0, 0, 0))
 
     const initialValues = {
-        hotelId: -1,
+        hotelId: null,
         dateFrom: tommorrow,
         dateTo: tommorrow,
         boxes: [],
@@ -253,6 +253,10 @@ function BookingForm(props) {
         let valid = true
         const now = new Date(tommorrow)
         console.log(values)
+        if(values.hotelId === null){
+            errors.hotelId = t("booking.form.error.hotel_id_not_selected")
+            valid = false
+        }
         if (values.dateFrom >= values.dateTo) {
             errors.dateFrom = t("booking.form.error.date_not_earlier");
             valid = false
@@ -287,7 +291,7 @@ function BookingForm(props) {
             <Container>
                 <Row>
                     <Col xs={12} sm={12} md={10} lg={8} className={"floating-no-absolute py-4 mx-auto mb-2"}>
-                        <Formik {...{initialValues, validate, onSubmit, submitting, isInitialValid: false}}>
+                        <Formik {...{initialValues, enableReinitialize: true, validate, onSubmit, submitting, isInitialValid: false}}>
                             {({values, errors, touched, setFieldValue, isValid}) => (
                                 <div>
                                     <div className="pb-2">
@@ -308,13 +312,16 @@ function BookingForm(props) {
 
                                             <div className="col-md-12 mb-2">
                                                 <label htmlFor="hotelId">{t('hotel')}</label>
-                                                <Field
+                                                <SelectField
                                                     className="col-md-5"
                                                     name="hotelId"
-                                                    component={SelectField}
                                                     options={hotels}
                                                     styles={selectStyles}
+                                                    placeholder={t('booking.form.select_hotel')}
                                                 />
+                                                {errors && touched && errors.hotelId && (
+                                                    <div style={{color: "red"}}>{errors.hotelId}</div>
+                                                )}
                                             </div>
 
                                             <div className="col-md-12">
@@ -342,7 +349,7 @@ function BookingForm(props) {
 
                                             <div className="col-12 my-3">
                                                 <button
-                                                    disabled={!(touched.dateFrom || touched.dateTo) || (errors.dateFrom || errors.dateTo)}
+                                                    disabled={!(touched.dateFrom || touched.dateTo) || (errors.dateFrom || errors.dateTo || errors.hotelId)}
                                                     className="btn btn-primary"
                                                     style={{backgroundColor: "#7749F8"}}
                                                     onClick={() => {

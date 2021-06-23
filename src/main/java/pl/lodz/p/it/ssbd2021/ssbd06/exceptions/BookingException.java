@@ -25,18 +25,38 @@ public class BookingException extends AppBaseException {
         super(message);
     }
 
+    /**
+     * Tworzy wyjątek występujący podczas składania rezerwacji gdy brakuje klatek aby dokończyć proces rezerwacji
+     *
+     * @return wyjątek BookingException.
+     */
     public static BookingException notEnoughBoxesOfSpecifiedType() {
         return new BookingException(NOT_ENOUGH_BOXES);
     }
 
+    /**
+     * Tworzy wyjątek występujący podczas składania rezerwacji na klatki które nie są dostępne
+     *
+     * @return wyjątek BookingException.
+     */
     public static BookingException boxesNotAvailable() {
         return new BookingException(BOXES_NOT_AVAILABLE);
     }
 
+    /**
+     * Tworzy wyjątek występujący podczas podania dat nie tworzących poprawnego zakresu
+     *
+     * @return wyjątek BookingException.
+     */
     public static BookingException invalidDateRange() {
         return new BookingException(INVALID_DATE_RANGE);
     }
 
+    /**
+     * Tworzy wyjątek występujący podczas podania daty z przeszłości lub daty której doba hotelowa już się zaczęła
+     *
+     * @return wyjątek BookingException.
+     */
     public static BookingException dateFromPast() {
         return new BookingException(DATE_FROM_PAST);
     }

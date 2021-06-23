@@ -91,19 +91,15 @@ public class BoxFacade extends AbstractFacade<Box> {
         return super.count();
     }
 
+    /**
+     * Pobiera klatki z zadanego hotelu nie zajęte przez żadną rezerwacje w zadanym zakresie czasu
+     *
+     * @param hotelId identyfikator hotelu
+     * @param dateFrom początek zakresu czasu kiedy klatka jest wolna
+     * @param dateTo koniec zakresu czasu kiedy klatka jest wolna
+     * @return listę wolnych klatek w danym hotelu w zadanym zakresie czasu
+     */
     @PermitAll
-    // todo specific access role ?
-    public List<Box> getAvailableBoxesByTypesAndHotelId(long hotelId, List<AnimalType> types, Date dateFrom, Date dateTo){
-        TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByTypesAndHotelId", Box.class);
-        query.setParameter("hotel_id", hotelId);
-        query.setParameter("types", types);
-        query.setParameter("dateFrom", dateFrom);
-        query.setParameter("dateTo", dateTo);
-        return query.getResultList();
-    }
-
-    @PermitAll
-    // todo specific access role ?
     public List<Box> getAvailableBoxesByHotelIdAndBetween(long hotelId, Date dateFrom, Date dateTo){
         TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByTypesByHotelIdAndBetween", Box.class);
         query.setParameter("hotel_id", hotelId);
@@ -112,8 +108,19 @@ public class BoxFacade extends AbstractFacade<Box> {
         return query.getResultList();
     }
 
+    /**
+     * Pobiera klatki z zadanego hotelu o zadanych identyfikatorach i nie zajęte przez żadną rezerwacje w zadanym zakresie czasu
+     * Metoda zakłada blokadę pesymistyczną na pobrane rekordy aktualizując ich wersje - zapobiega to przypadkowi,
+     * w którym system zarządzania bazą danych zezwalałby na odczyt danych zablokowanych (MCC or MVCC)
+     *
+     * @param hotelId identyfikator hotelu
+     * @param boxIdList lista identyfikatorów klatek
+     * @param dateFrom początek zakresu czasu kiedy klatka jest wolna
+     * @param dateTo koniec zakresu czasu kiedy klatka jest wolna
+     * @return listę klatek z zadanego hotelu o zadanych identyfikatorach i nie zajęte przez żadną rezerwacje w zadanym zakresie czasu
+     * @throws AppBaseException w przypadku natrafienia na blokadę pesymistyczną
+     */
     @PermitAll
-    // todo specific access role ?
     public List<Box> getAvailableBoxesByIdListAndHotelIdWithLock(long hotelId, List<Long> boxIdList, Date dateFrom, Date dateTo) throws AppBaseException {
         try{
             TypedQuery<Box> query = em.createNamedQuery("getAvailableBoxesByIdListAndHotelId", Box.class);

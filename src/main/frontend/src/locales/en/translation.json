@@ -524,5 +524,7 @@
   "exception.hotel.no_hotel_assigned" : "There is no hotel assigned to manager",
   "exception.rating_exception.booking_not_finished" : "Reservation must be finished to add rating",
 
-  "reportGenerator.modificationDate" : "Last modification date"
+  "reportGenerator.modificationDate" : "Last modification date",
+  "booking.form.error.hotel_id_not_selected": "Hotel is not selected",
+  "booking.form.select_hotel": "Select hotel..."
 }

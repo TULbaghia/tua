@@ -21,6 +21,7 @@ import {useNotificationDangerAndInfinity, useNotificationSuccessAndShort} from "
 import {ResponseErrorHandler} from "../Validation/ResponseErrorHandler";
 import NewRatingComponent from "./NewRatingComponent";
 import axios from "axios";
+import i18n from "i18next";
 
 
 function HotelInfo(props) {
@@ -78,6 +79,8 @@ function HotelInfo(props) {
                     history.push("/errors/internal");
                 }
             }
+            history.push("/");
+            dispatchNotificationDanger({message: i18n.t('hotelDetail.error.id_invalid')});
         });
     }
 

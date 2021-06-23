@@ -191,18 +191,23 @@ function NavigationBar(props) {
                             {/*<LinkContainer to="/">*/}
                             {/*    <Nav.Link>{t('mainPage')}</Nav.Link>*/}
                             {/*</LinkContainer>*/}
-                            <LinkContainer to="/hotels">
-                                <Nav.Link>{t('hotels')}</Nav.Link>
-                            </LinkContainer>
                             {currentRole === rolesConstant.admin && (
                                 <>
+                                    <LinkContainer to="/cities">
+                                        <Nav.Link>{t('menu.cityList')}</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/hotels">
+                                        <Nav.Link>{t('hotels')}</Nav.Link>
+                                    </LinkContainer>
                                     <LinkContainer to="/accounts">
                                         <Nav.Link>{t('accountList')}</Nav.Link>
                                     </LinkContainer>
-                                    <LinkContainer to="/cities">
-                                        <Nav.Link>{t('cityList')}</Nav.Link>
-                                    </LinkContainer>
                                 </>
+                            )}
+                            {currentRole === rolesConstant.manager && (
+                                <LinkContainer to="/hotels">
+                                    <Nav.Link>{t('hotels')}</Nav.Link>
+                                </LinkContainer>
                             )}
                             {managerAccess && (
                                 <>
@@ -234,6 +239,9 @@ function NavigationBar(props) {
                             )}
                             {currentRole === rolesConstant.client && (
                                 <>
+                                    <LinkContainer to="/hotels">
+                                        <Nav.Link>{t('hotels')}</Nav.Link>
+                                    </LinkContainer>
                                     <LinkContainer to="/reservation">
                                         <Nav.Link>{t('reservation')}</Nav.Link>
                                     </LinkContainer>

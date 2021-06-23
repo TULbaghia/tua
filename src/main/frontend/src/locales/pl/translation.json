@@ -601,5 +601,13 @@
   "form.validation.field.rating_comment.pattern": "Treść komentarza nie spełnia wymagań wzorca",
 
   "booking.form.error.hotel_id_not_selected": "Nie wybrano hotelu",
-  "booking.form.select_hotel": "Wybierz hotel..."
+  "booking.form.select_hotel": "Wybierz hotel...",
+
+  "modifyCity.error.id_invalid": "Wystąpił problem podczas pobierania miasta",
+  "reservationDetail.error.id_invalid": "Wystąpił problem podczas pobierania rezerwacji",
+  "hotelDetail.error.id_invalid": "Wystąpił problem podczas pobierania hotelu",
+  "assignManager.error.id_hotel_invalid": "Wystąpił problem podczas pobierania hotelu",
+  "unassignManager.error.id_hotel_invalid": "Wystąpił problem podczas pobierania hotelu",
+  "internal_server_error": "Błąd wewnętrzny serwera",
+  "menu.cityList": "Miasta"
 }

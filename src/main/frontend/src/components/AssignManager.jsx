@@ -17,6 +17,7 @@ import DataTable from "react-data-table-component";
 import {useThemeColor} from "./Utils/ThemeColor/ThemeColorProvider";
 import {ResponseErrorHandler} from "./Validation/ResponseErrorHandler";
 import {useDialogPermanentChange} from "./Utils/CriticalOperations/CriticalOperationProvider";
+import i18n from "../i18n";
 
 const FilterComponent = ({filterText, onFilter, placeholderText}) => (
     <>
@@ -142,6 +143,9 @@ function AssignManager(props) {
     const getHotelName = () => {
         api.getHotel(parsedQuery.id).then(res => {
             setHotelData(res.data.name);
+        }).catch(err => {
+            history.push("/");
+            dispatchNotificationDanger({message: i18n.t('assignManager.error.id_hotel_invalid')});
         });
     }
 

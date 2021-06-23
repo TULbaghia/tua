@@ -56,6 +56,7 @@ function ModifyBoxForm() {
                 dispatchNotificationDanger({message: i18n.t('exception.box.box_is_deleted')});
             }
         }).catch(error => {
+            history.push("/");
             ResponseErrorHandler(error, dispatchNotificationDanger);
         });
 

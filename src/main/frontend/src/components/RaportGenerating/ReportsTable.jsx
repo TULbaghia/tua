@@ -39,7 +39,6 @@ function ReportsTable({bookings}) {
             selector: 'modificationDate',
             sortable: true,
             style: ({textTransform: 'capitalize'}),
-            sortFunction: (a, b) => (a.modificationDate - b.modificationDate),
             cell: row => (row.modificationDate ?
                 moment(row.modificationDate).locale(momentHelper()).local().format('LLLL').toString() : "")
         },
@@ -57,8 +56,7 @@ function ReportsTable({bookings}) {
         {
             name: i18n.t('reportGenerator.table.rating'),
             selector: 'rating',
-            sortable: true,
-            sortFunction: (a, b) => (a.rating - b.rating)
+            sortable: true
         },
         {
             name: i18n.t('reportGenerator.table.owner_login'),

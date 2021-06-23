@@ -313,7 +313,7 @@ function BookingForm(props) {
                                             <div className="col-md-12 mb-2">
                                                 <label htmlFor="hotelId">{t('hotel')}</label>
                                                 <SelectField
-                                                    className="col-md-5"
+                                                    className="col-md-5 pl-0"
                                                     name="hotelId"
                                                     options={hotels}
                                                     styles={selectStyles}

@@ -58,7 +58,7 @@ public class RatingManager {
      * @return obiekt oceny hotelu
      * @throws AppBaseException podczas błędu związanego z bazą danych
      */
-    @RolesAllowed("deleteHotelRating")
+    @RolesAllowed({"deleteHotelRating", "getHotelRating"})
     public Rating get(Long id) throws AppBaseException {
         return Optional.ofNullable(ratingFacade.find(id)).orElseThrow(NotFoundException::ratingNotFound);
     }

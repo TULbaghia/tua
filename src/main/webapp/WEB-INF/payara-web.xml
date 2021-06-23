@@ -190,6 +190,7 @@
         <role-name>getHotelRating</role-name>
         <group-name>ADMIN</group-name>
         <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
     </security-role-mapping>
 
     <security-role-mapping>

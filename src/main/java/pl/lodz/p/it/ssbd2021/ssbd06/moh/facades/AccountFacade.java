@@ -40,7 +40,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * @return obiekt encji konta o podanym loginie
      * @throws AppBaseException gdy konto nie zostało znalezione, lub wystąpił problem z bazą danych.
      */
-    @RolesAllowed("addManagerToHotel")
+    @RolesAllowed({"Client", "Manager", "Admin"})
     public Account findByLogin(String login) throws AppBaseException {
         try {
             TypedQuery<Account> accountTypedQuery = em.createNamedQuery("Account.findByLogin", Account.class);

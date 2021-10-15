@@ -35,13 +35,17 @@ public abstract class AbstractEndpoint {
     @Inject
     private HttpServletRequest httpServletRequest;
 
-    @Getter
     private String transactionId;
 
     private boolean lastTransactionRollback;
 
     @Resource(name = "sessionContext")
     SessionContext sessionContext;
+
+    @PermitAll
+    public String getTransactionId() {
+        return transactionId;
+    }
 
     @PermitAll
     public boolean isLastTransactionRollback() {

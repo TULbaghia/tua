@@ -1,71 +1,8 @@
-create sequence seq_account_id
-    as bigint
-    increment 1
-    start 1
-    minvalue 1
-    maxvalue 9223372036854775807;
-
-create sequence seq_booking_id
-    as bigint
-    increment 1
-    start 1
-    minvalue 1
-    maxvalue 9223372036854775807;
-
-create sequence seq_booking_line_id
-    as bigint
-    increment 1
-    start 1
-    minvalue 1
-    maxvalue 9223372036854775807;
-
-create sequence seq_box_id
-    as bigint
-    increment 1
-    start 1
-    minvalue 1
-    maxvalue 9223372036854775807;
-
-create sequence seq_city_id
-    as bigint
-    increment 1
-    start 1
-    minvalue 1
-    maxvalue 9223372036854775807;
-
-create sequence seq_hotel_id
-    as bigint
-    increment 1
-    start 1
-    minvalue 1
-    maxvalue 9223372036854775807;
-
-create sequence seq_pending_code_id
-    as bigint
-    increment 1
-    start 1
-    minvalue 1
-    maxvalue 9223372036854775807;
-
-create sequence seq_rating_id
-    as bigint
-    increment 1
-    start 1
-    minvalue 1
-    maxvalue 9223372036854775807;
-
-create sequence seq_role_id
-    as bigint
-    increment 1
-    start 1
-    minvalue 1
-    maxvalue 9223372036854775807;
-
 create table account
 (
-    id                               bigint       not null,
-    creation_date                    timestamp    not null,
-    modification_date                timestamp,
+    id                               bigint       not null auto_increment,
+    creation_date                    datetime    not null,
+    modification_date                datetime,
     version                          bigint       not null,
     confirmed                        boolean      not null,
     contact_number                   varchar(15),
@@ -73,15 +10,15 @@ create table account
     failed_login_attempts_counter    integer default 0,
     firstname                        varchar(31)  not null,
     language                         varchar(2),
-    last_failed_login_date           timestamp,
+    last_failed_login_date           datetime,
     last_failed_login_ip_address     varchar(39),
     theme_color                      varchar(31) not null,
-    last_successful_login_date       timestamp,
+    last_successful_login_date       datetime,
     last_successful_login_ip_address varchar(39),
-    enable_modification_date         timestamp,
-    confirm_modification_date        timestamp,
-    email_modification_date          timestamp,
-    password_modification_date       timestamp,
+    enable_modification_date         datetime,
+    confirm_modification_date        datetime,
+    email_modification_date          datetime,
+    password_modification_date       datetime,
     enable_modification_by           bigint,
     confirm_modification_by          bigint,
     email_modification_by            bigint,
@@ -102,9 +39,9 @@ create table account
     constraint uk_account_email
         unique (email),
     constraint fk_account_account_created_by
-        foreign key (created_by) references account,
+        foreign key (created_by) references account(id),
     constraint fk_account_account_modified_by
-        foreign key (modified_by) references account,
+        foreign key (modified_by) references account(id),
     constraint account_failed_login_attempts_counter_check
         check (failed_login_attempts_counter >= 0)
 );
@@ -117,12 +54,12 @@ create index ix_account_modified_by
 
 create table booking
 (
-    id                bigint        not null,
-    creation_date     timestamp     not null,
-    modification_date timestamp,
+    id                bigint        not null auto_increment,
+    creation_date     datetime     not null,
+    modification_date datetime,
     version           bigint        not null,
-    date_from         timestamp     not null,
-    date_to           timestamp     not null,
+    date_from         datetime     not null,
+    date_to           datetime     not null,
     price             numeric(8, 2) not null,
     status            integer       not null,
     created_by        bigint        not null,
@@ -131,13 +68,13 @@ create table booking
     constraint pk_booking_id
         primary key (id),
     constraint fk_booking_account_created_by
-        foreign key (created_by) references account,
+        foreign key (created_by) references account(id),
     constraint fk_booking_account_modified_by
-        foreign key (modified_by) references account,
+        foreign key (modified_by) references account(id),
     constraint fk_booking_account_account_id
-        foreign key (account_id) references account,
+        foreign key (account_id) references account(id),
     constraint booking_price_check
-        check (price >= (0)::numeric),
+        check (price >= 0),
     constraint booking_dates_check
         check (date_from < date_to)
 );
@@ -153,9 +90,9 @@ create index ix_booking_modified_by
 
 create table city
 (
-    id                bigint       not null,
-    creation_date     timestamp    not null,
-    modification_date timestamp,
+    id                bigint       not null auto_increment,
+    creation_date     datetime    not null,
+    modification_date datetime,
     version           bigint       not null,
     description       varchar(255) not null,
     name              varchar(31)  not null,
@@ -166,9 +103,9 @@ create table city
     constraint uk_city_name
         unique (name),
     constraint fk_city_account_created_by
-        foreign key (created_by) references account,
+        foreign key (created_by) references account(id),
     constraint fk_city_account_modified_by
-        foreign key (modified_by) references account
+        foreign key (modified_by) references account(id)
 );
 
 create index ix_city_created_by
@@ -179,9 +116,9 @@ create index ix_city_modified_by
 
 create table hotel
 (
-    id                bigint        not null,
-    creation_date     timestamp     not null,
-    modification_date timestamp,
+    id                bigint        not null auto_increment,
+    creation_date     datetime     not null,
+    modification_date datetime,
     version           bigint        not null,
     address           varchar(63)   not null,
     name              varchar(63)   not null,
@@ -196,13 +133,13 @@ create table hotel
     constraint uk_hotel_name
         unique (name),
     constraint fk_hotel_account_created_by
-        foreign key (created_by) references account,
+        foreign key (created_by) references account(id),
     constraint fk_hotel_account_modified_by
-        foreign key (modified_by) references account,
+        foreign key (modified_by) references account(id),
     constraint fk_hotel_city_city_id
-        foreign key (city_id) references city,
+        foreign key (city_id) references city(id),
     constraint hotel_rating_check
-        check ((rating <= (5)::numeric) AND (rating >= (1)::numeric))
+        check ((rating <= 5) AND (rating >= 1))
 );
 
 create index ix_hotel_city_id
@@ -216,28 +153,28 @@ create index ix_hotel_modified_by
 
 create table box
 (
-    id                bigint        not null,
-    creation_date     timestamp     not null,
-    modification_date timestamp,
+    id                bigint        not null auto_increment,
+    creation_date     datetime     not null,
+    modification_date datetime,
     version           bigint        not null,
     animal_type       integer       not null,
     price_per_day     numeric(8, 2) not null,
     description       varchar(31)   not null,
-    delete            boolean       not null,
+    deleted           boolean       not null,
     created_by        bigint        not null,
     modified_by       bigint,
     hotel_id          bigint,
     constraint pk_box_id
         primary key (id),
     constraint fk_box_account_created_by
-        foreign key (created_by) references account,
+        foreign key (created_by) references account(id),
     constraint fk_box_account_modified_by
-        foreign key (modified_by) references account,
+        foreign key (modified_by) references account(id),
     constraint fk_box_hotel_hotel_id
-        foreign key (hotel_id) references hotel,
+        foreign key (hotel_id) references hotel(id),
     constraint box_price_per_day_check
-        check (price_per_day >= (0)::numeric)
-);
+        check (price_per_day >= 0)
+    );
 
 create index ix_box_hotel_id
     on box (hotel_id);
@@ -250,9 +187,9 @@ create index ix_box_modified_by
 
 create table booking_line
 (
-    id                bigint        not null,
-    creation_date     timestamp     not null,
-    modification_date timestamp,
+    id                bigint        not null auto_increment,
+    creation_date     datetime     not null,
+    modification_date datetime,
     version           bigint        not null,
     price_per_day     numeric(8, 2) not null,
     created_by        bigint        not null,
@@ -262,16 +199,16 @@ create table booking_line
     constraint pk_booking_line_id
         primary key (id),
     constraint fk_booking_line_account_created_by
-        foreign key (created_by) references account,
+        foreign key (created_by) references account(id),
     constraint fk_booking_line_account_modified_by
-        foreign key (modified_by) references account,
+        foreign key (modified_by) references account(id),
     constraint fk_booking_line_booking_booking_id
-        foreign key (booking_id) references booking,
+        foreign key (booking_id) references booking(id),
     constraint fk_booking_line_box_box_id
-        foreign key (box_id) references box,
+        foreign key (box_id) references box(id),
     constraint booking_line_price_per_day_check
-        check (price_per_day >= (0)::numeric)
-);
+        check (price_per_day >= 0)
+    );
 
 create index ix_booking_line_booking_id
     on booking_line (booking_id);
@@ -287,9 +224,9 @@ create index ix_booking_line_modified_by
 
 create table pending_code
 (
-    id                bigint       not null,
-    creation_date     timestamp    not null,
-    modification_date timestamp,
+    id                bigint       not null auto_increment,
+    creation_date     datetime    not null,
+    modification_date datetime,
     version           bigint       not null,
     code              varchar(128) not null,
     code_type         integer      not null,
@@ -303,11 +240,11 @@ create table pending_code
     constraint uk_pending_code_code
         unique (code),
     constraint fk_pending_code_account_created_by
-        foreign key (created_by) references account,
+        foreign key (created_by) references account(id),
     constraint fk_pending_code_account_modified_by
-        foreign key (modified_by) references account,
+        foreign key (modified_by) references account(id),
     constraint fk_pending_code_account_account_id
-        foreign key (account_id) references account
+        foreign key (account_id) references account(id)
 );
 
 create index ix_pending_code_account_id
@@ -321,9 +258,9 @@ create index ix_pending_code_modified_by
 
 create table rating
 (
-    id                bigint    not null,
-    creation_date     timestamp not null,
-    modification_date timestamp,
+    id                bigint    not null auto_increment,
+    creation_date     datetime not null,
+    modification_date datetime,
     version           bigint    not null,
     comment           varchar(255),
     hidden            boolean   not null,
@@ -336,11 +273,11 @@ create table rating
     constraint uk_rating_booking_id
         unique (booking_id),
     constraint fk_rating_account_created_by
-        foreign key (created_by) references account,
+        foreign key (created_by) references account(id),
     constraint fk_rating_account_modified_by
-        foreign key (modified_by) references account,
+        foreign key (modified_by) references account(id),
     constraint fk_rating_booking_booking_id
-        foreign key (booking_id) references booking,
+        foreign key (booking_id) references booking(id),
     constraint rating_rate_check
         check ((rate <= 5) AND (rate >= 1))
 );
@@ -357,9 +294,9 @@ create index ix_rating_modified_by
 create table role
 (
     access_level      varchar(31) not null,
-    id                bigint      not null,
-    creation_date     timestamp   not null,
-    modification_date timestamp,
+    id                bigint      not null auto_increment,
+    creation_date     datetime   not null,
+    modification_date datetime,
     version           bigint      not null,
     enabled           boolean     not null,
     created_by        bigint      not null,
@@ -370,11 +307,11 @@ create table role
     constraint uk_role_access_level_account_id
         unique (access_level, account_id),
     constraint fk_role_account_created_by
-        foreign key (created_by) references account,
+        foreign key (created_by) references account(id),
     constraint fk_role_account_modified_by
-        foreign key (modified_by) references account,
+        foreign key (modified_by) references account(id),
     constraint fk_role_account_account_id
-        foreign key (account_id) references account
+        foreign key (account_id) references account(id)
 );
 
 create index ix_role_account_id
@@ -388,32 +325,32 @@ create index ix_role_modified_by
 
 create table admin_data
 (
-    id bigint not null,
+    id bigint not null auto_increment,
     constraint pk_admin_data_id
         primary key (id),
     constraint fk_admin_data_role_id
-        foreign key (id) references role
+        foreign key (id) references role(id)
 );
 
 create table client_data
 (
-    id bigint not null,
+    id bigint not null auto_increment,
     constraint pk_client_data_id
         primary key (id),
     constraint fk_client_data_role_id
-        foreign key (id) references role
+        foreign key (id) references role(id)
 );
 
 create table manager_data
 (
-    id       bigint not null,
+    id       bigint not null auto_increment,
     hotel_id bigint,
     constraint pk_manager_data_id
         primary key (id),
     constraint fk_manager_data_role_id
-        foreign key (id) references role,
+        foreign key (id) references role(id),
     constraint fk_manager_data_hotel_hotel_id
-        foreign key (hotel_id) references hotel
+        foreign key (hotel_id) references hotel(id)
 );
 
 create index ix_manager_data_hotel_id

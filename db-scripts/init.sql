@@ -72,7 +72,7 @@ INSERT INTO client_data (id)
 VALUES (-9);
 
 -- Inicjalizacja boxów
-INSERT INTO box (id, creation_date, modification_date, version, animal_type, price_per_day, description, delete, created_by, modified_by, hotel_id)
+INSERT INTO box (id, creation_date, modification_date, version, animal_type, price_per_day, description, deleted, created_by, modified_by, hotel_id)
 VALUES (-1, now(), null, 1, 0, 55.55, 'Duża klatka dla psa', false, -2, null, -1),
        (-2, now(), null, 1, 0, 55.55, 'Duża klatka dla psa', false, -2, null, -1),
        (-3, now(), null, 1, 1, 39.99, 'Standardowa klatka dla kota', false, -2, null, -1),
@@ -90,21 +90,21 @@ VALUES (-1, now(), null, 1, 0, 55.55, 'Duża klatka dla psa', false, -2, null, -
 
 -- Inicjalizacja rezerwacji
 INSERT INTO booking (id, creation_date, modification_date, version, date_from, date_to, price, status, created_by, modified_by, account_id)
-VALUES (-1, now(), null ,1 , current_timestamp, current_timestamp + INTERVAL '1 week', 388.85, 2, -4, null, -4),
-       (-2, now() - INTERVAL '1 week', null ,1 ,now() - INTERVAL '1 week', current_timestamp - INTERVAL '5 day', 191.08, 3, -4, null, -4),
-       (-3, now(), null, 1, current_timestamp + INTERVAL '1 week', current_timestamp + INTERVAL '2 week', 209.93, 3, -7, null, -7),
-       (-4, now() - INTERVAL '1 week', null, 1, now() - INTERVAL '1 week', current_timestamp - INTERVAL '3 day', 175.60, 3, -9, null, -9),
-       (-5, now() - INTERVAL '1 week', null, 1, now() - INTERVAL '1 week', current_timestamp - INTERVAL '3 day', 215.93, 3, -7, null, -7);
+VALUES (-1, now(), null ,1 , current_timestamp, ADDDATE(current_timestamp, INTERVAL 1 week), 388.85, 2, -4, null, -4),
+       (-2, SUBDATE(now(), INTERVAL 1 week), null ,1 ,SUBDATE(now(), INTERVAL 1 week), SUBDATE(current_timestamp, INTERVAL 5 day), 191.08, 3, -4, null, -4),
+       (-3, now(), null, 1, ADDDATE(current_timestamp, INTERVAL 1 week), ADDDATE(current_timestamp, INTERVAL 2 week), 209.93, 3, -7, null, -7),
+       (-4, SUBDATE(now(), INTERVAL 1 week), null, 1, SUBDATE(now(), INTERVAL 1 week), SUBDATE(current_timestamp, INTERVAL 3 day), 175.60, 3, -9, null, -9),
+       (-5, SUBDATE(now(), INTERVAL 1 week), null, 1, SUBDATE(now(), INTERVAL 1 week), SUBDATE(current_timestamp, INTERVAL 3 day), 267.00, 3, -7, null, -7);
 
 -- Inicjalizacja booking line
 INSERT INTO booking_line(id, creation_date, modification_date, version, price_per_day, created_by, modified_by,
                                        booking_id, box_id)
 VALUES (-1, now(), null, 1, 55.55, -4, null, -1, -1),
-       (-2, now() - INTERVAL '1 week', null, 1, 55.55, -4, null, -2, -2),
-       (-3, now() - INTERVAL '1 week', null, 1, 39.99, -4, null, -2, -3),
+       (-2, SUBDATE(now(), INTERVAL 1 week), null, 1, 55.55, -4, null, -2, -2),
+       (-3, SUBDATE(now(), INTERVAL 1 week), null, 1, 39.99, -4, null, -2, -3),
        (-4, now(), null, 1, 29.99, -7, null, -3, -5),
-       (-5, now() - INTERVAL '1 week', null, 1, 43.90, -9, null, -4, -11),
-       (-6, now() - INTERVAL '1 week', null, 1, 66.75, -7, null, -5, -4);
+       (-5, SUBDATE(now(), INTERVAL 1 week), null, 1, 43.90, -9, null, -4, -11),
+       (-6, SUBDATE(now(), INTERVAL 1 week), null, 1, 66.75, -7, null, -5, -4);
 
 -- Inicjalizacja ratingów
 INSERT INTO rating(id, creation_date, modification_date, version, comment, hidden, rate, created_by, modified_by, booking_id)

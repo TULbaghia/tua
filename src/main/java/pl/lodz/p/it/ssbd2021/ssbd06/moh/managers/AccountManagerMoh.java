@@ -1,8 +1,8 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.ManagerData;
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.ManagerDataFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacadeMoh;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
@@ -13,25 +13,25 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
 /**
- * Odpowiada za odnajdywanie ról managerów w systemie.
+ * Odpowiada za odnajdywanie kont w systemie.
  */
 @Stateless
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class RoleManager {
+public class AccountManagerMoh {
 
     @Inject
-    private ManagerDataFacade managerDataFacade;
+    private AccountFacadeMoh accountFacadeMoh;
 
     /**
-     * Wyszukuje obiekt ManagerData o podanym identyfikatorze.
+     * Wyszukuje obiekt Acccount o podanym loginie.
      *
-     * @param id identyfikator wyszukiwanej roli managera.
-     * @return wyszukiwana rola managera
+     * @param login login wyszukiwanego konta użytkownika.
+     * @return konto wyszukiwanego użytkownika
      * @throws AppBaseException gdy nie udało się pobrać danych
      */
     @RolesAllowed("addManagerToHotel")
-    public ManagerData find(Long id) throws AppBaseException {
-        return managerDataFacade.find(id);
+    public Account findByLogin(String login) throws AppBaseException {
+        return accountFacadeMoh.findByLogin(login);
     }
 }

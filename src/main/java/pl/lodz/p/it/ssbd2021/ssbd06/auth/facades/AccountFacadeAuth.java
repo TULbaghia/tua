@@ -1,14 +1,14 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.auth.facades;
 
+import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
+import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.entities.Account;
-
 @Stateless
-public class AccountFacade extends AbstractFacade<Account> {
+public class AccountFacadeAuth extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd06authPU")
     private EntityManager em;
@@ -18,7 +18,7 @@ public class AccountFacade extends AbstractFacade<Account> {
         return em;
     }
 
-    public AccountFacade() {
+    public AccountFacadeAuth() {
         super(Account.class);
     }
     

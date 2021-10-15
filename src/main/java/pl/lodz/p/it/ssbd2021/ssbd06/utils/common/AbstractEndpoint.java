@@ -6,14 +6,15 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.MessageSigner;
 import pl.lodz.p.it.ssbd2021.ssbd06.security.Signable;
 
+import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
 import javax.ejb.AfterBegin;
 import javax.ejb.AfterCompletion;
+import javax.ejb.SessionContext;
 import javax.inject.Inject;
-import javax.security.enterprise.SecurityContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import java.security.Principal;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
@@ -30,9 +31,6 @@ public abstract class AbstractEndpoint {
     @Context
     private HttpHeaders httpHeaders;
 
-    @Inject
-    private SecurityContext securityContext;
-
     @Getter(AccessLevel.PROTECTED)
     @Inject
     private HttpServletRequest httpServletRequest;
@@ -40,8 +38,15 @@ public abstract class AbstractEndpoint {
     @Getter
     private String transactionId;
 
-    @Getter
     private boolean lastTransactionRollback;
+
+    @Resource(name = "sessionContext")
+    SessionContext sessionContext;
+
+    @PermitAll
+    public boolean isLastTransactionRollback() {
+        return lastTransactionRollback;
+    }
 
     /**
      * Weryfikuje integralność danych
@@ -50,7 +55,7 @@ public abstract class AbstractEndpoint {
      * @return wynik weryfikacji.
      */
     public boolean verifyIntegrity(Signable signable) {
-        String valueFromHeader = httpHeaders.getRequestHeader("If-Match").get(0);
+        String valueFromHeader = httpServletRequest.getHeader("If-Match");
         String valueFromSigner = messageSigner.sign(signable);
         return valueFromSigner.equals(valueFromHeader);
     }
@@ -84,11 +89,7 @@ public abstract class AbstractEndpoint {
      * @return login użytkownika lub 'Guest' dla gościa
      */
     protected String getLogin() {
-        Principal principal = securityContext.getCallerPrincipal();
-        if (principal != null) {
-            return principal.getName();
-        }
-        return "Guest";
+        return sessionContext.getCallerPrincipal().getName();
     }
 
     /**

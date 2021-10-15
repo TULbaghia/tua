@@ -17,16 +17,15 @@ import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import javax.security.enterprise.SecurityContext;
-import javax.servlet.ServletContext;
-import javax.ws.rs.core.Context;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -50,14 +49,11 @@ public class AccountManager {
     @Inject
     private PendingCodeFacade pendingCodeFacade;
 
-    @Inject
-    private SecurityContext securityContext;
+    @Resource(name = "sessionContext")
+    SessionContext sessionContext;
 
     @Inject
     private Config codeConfig;
-
-    @Context
-    ServletContext servletContext;
 
     private static int RESET_EXPIRATION_MINUTES;
 
@@ -67,8 +63,7 @@ public class AccountManager {
     @PostConstruct
     private void init() {
         RESET_EXPIRATION_MINUTES = codeConfig.getResetExpirationMinutes();
-        INCORRECT_LOGIN_ATTEMPTS_LIMIT = Integer
-                .parseInt(servletContext.getInitParameter("incorrectLoginAttemptsLimit"));
+        INCORRECT_LOGIN_ATTEMPTS_LIMIT = 3;
     }
 
     /**
@@ -294,7 +289,7 @@ public class AccountManager {
      */
     @RolesAllowed("editOwnPassword")
     public Account getCurrentUser() throws AppBaseException {
-        return accountFacade.findByLogin(securityContext.getCallerPrincipal().getName());
+        return accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
     }
 
     /**
@@ -375,10 +370,10 @@ public class AccountManager {
         }
 
         PendingCode pendingCode = createPendingCode(accountEmail, CodeType.EMAIL_CHANGE);
-        pendingCode.setCreatedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
+        pendingCode.setCreatedBy(accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName()));
         accountEmail.getPendingCodeList().add(pendingCode);
         accountEmail.setNewEmail(newEmail);
-        accountEmail.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
+        accountEmail.setModifiedBy(accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName()));
 
         accountFacade.edit(accountEmail);
         emailSender.sendEmailChange(accountEmail, pendingCode.getCode());

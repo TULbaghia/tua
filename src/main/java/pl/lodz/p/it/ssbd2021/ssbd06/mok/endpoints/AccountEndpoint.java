@@ -291,6 +291,7 @@ public class AccountEndpoint extends AbstractEndpoint implements AccountEndpoint
     }
 
     @Override
+    @RolesAllowed("getManagerData")
     public List<AccountManagerDto> getManagersAssignedToHotel(Long hotelId) throws AppBaseException {
         List<Account> accounts = accountManager.getAllAccounts();
         List<AccountManagerDto> result = new ArrayList<>();

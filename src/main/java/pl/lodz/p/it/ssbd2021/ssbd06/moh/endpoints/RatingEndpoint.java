@@ -14,15 +14,16 @@ import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.RatingManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import javax.security.enterprise.SecurityContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +39,8 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
     @Inject
     private RatingManager ratingManager;
 
-    @Inject
-    private SecurityContext securityContext;
+    @Resource(name = "sessionContext")
+    SessionContext sessionContext;
 
     @RolesAllowed({"getHotelRating"})
     public RatingDto get(Long id) throws AppBaseException {
@@ -61,7 +62,7 @@ public class RatingEndpoint extends AbstractEndpoint implements RatingEndpointLo
     @RolesAllowed({"getHotelRating"})
     public RatingDto getRating(Long ratingId) throws AppBaseException {
         Rating rating = ratingManager.getRating(ratingId);
-        if (getLogin().equals(rating.getBooking().getAccount().getLogin()) || securityContext.isCallerInRole("Admin")) {
+        if (getLogin().equals(rating.getBooking().getAccount().getLogin()) || sessionContext.isCallerInRole("Admin")) {
             return Mappers.getMapper(IRatingMapper.class).toRatingDto(rating);
         } else {
             throw RatingException.accessDenied();

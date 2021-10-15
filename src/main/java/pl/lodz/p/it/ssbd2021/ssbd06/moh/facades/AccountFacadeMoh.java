@@ -19,7 +19,7 @@ import java.util.List;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Interceptors({LoggingInterceptor.class})
-public class AccountFacade extends AbstractFacade<Account> {
+public class AccountFacadeMoh extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd06mohPU")
     private EntityManager em;
@@ -29,7 +29,7 @@ public class AccountFacade extends AbstractFacade<Account> {
         return em;
     }
 
-    public AccountFacade() {
+    public AccountFacadeMoh() {
         super(Account.class);
     }
 

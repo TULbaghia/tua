@@ -8,27 +8,29 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.BookingStatus;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.BookingException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewBookingDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacadeMoh;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.Config;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.email.EmailSender;
 
+import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import javax.security.enterprise.SecurityContext;
-import java.time.*;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -45,9 +47,9 @@ public class BookingManager {
     @Inject
     private BoxFacade boxFacade;
     @Inject
-    private AccountFacade accountFacade;
-    @Inject
-    private SecurityContext securityContext;
+    private AccountFacadeMoh accountFacadeMoh;
+    @Resource(name = "sessionContext")
+    SessionContext sessionContext;
     @Inject
     private EmailSender emailSender;
     @Inject
@@ -105,7 +107,7 @@ public class BookingManager {
             throw BookingException.invalidDateRange();
         }
 
-        Account account = accountFacade.findByLogin(username);
+        Account account = accountFacadeMoh.findByLogin(username);
 
         List<Box> availableBoxes = boxFacade
                 .getAvailableBoxesByIdListAndHotelIdWithLock(bookingDto.getHotelId(), bookingDto.getBoxes(), dateFrom, dateTo);
@@ -145,7 +147,7 @@ public class BookingManager {
     public void cancelBooking(Long bookingId) throws AppBaseException {
         Booking booking = bookingFacade.find(bookingId);
         if (booking.getStatus().equals(BookingStatus.PENDING)) {
-            if (securityContext.isCallerInRole("Client") &&
+            if (sessionContext.isCallerInRole("Client") &&
                     !isBetweenAllowedTimeLimit(booking.getCreationDate(), booking.getDateFrom())) {
                 throw BookingException.timeForCancellationExceeded();
             }
@@ -190,7 +192,7 @@ public class BookingManager {
         Booking booking = bookingFacade.find(bookingId);
         if (booking.getStatus().equals(BookingStatus.IN_PROGRESS)) {
             booking.setStatus(BookingStatus.FINISHED);
-            booking.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
+            booking.setModifiedBy(accountFacadeMoh.findByLogin(sessionContext.getCallerPrincipal().getName()));
             bookingFacade.edit(booking);
         } else if (booking.getStatus().equals(BookingStatus.FINISHED)) {
             throw BookingException.bookingAlreadyFinished();
@@ -211,7 +213,7 @@ public class BookingManager {
     public void startBooking(Long bookingId) throws AppBaseException {
         Booking booking = bookingFacade.find(bookingId);
         if (booking.getStatus().equals(BookingStatus.PENDING) && ifReservationCanBeStarted(booking.getDateFrom())) {
-            Account modifier = accountFacade.findByLogin(securityContext.getCallerPrincipal().getName());
+            Account modifier = accountFacadeMoh.findByLogin(sessionContext.getCallerPrincipal().getName());
             booking.setStatus(BookingStatus.IN_PROGRESS);
             booking.setModifiedBy(modifier);
             bookingFacade.edit(booking);
@@ -247,8 +249,8 @@ public class BookingManager {
      */
     @RolesAllowed({"getAllActiveReservations"})
     public List<Booking> showActiveBooking() throws AppBaseException {
-        String callerName = securityContext.getCallerPrincipal().getName();
-        if (securityContext.isCallerInRole("Client")) {
+        String callerName = sessionContext.getCallerPrincipal().getName();
+        if (sessionContext.isCallerInRole("Client")) {
             return bookingFacade.findAllActive().stream()
                     .filter(b -> b.getAccount().getLogin().equals(callerName))
                     .collect(Collectors.toList());
@@ -271,8 +273,8 @@ public class BookingManager {
      */
     @RolesAllowed({"getAllArchiveReservations"})
     public List<Booking> showEndedBooking() throws AppBaseException {
-        String callerName = securityContext.getCallerPrincipal().getName();
-        if (securityContext.isCallerInRole("Client")) {
+        String callerName = sessionContext.getCallerPrincipal().getName();
+        if (sessionContext.isCallerInRole("Client")) {
             return bookingFacade.findAllArchived().stream()
                     .filter(b -> b.getAccount().getLogin().equals(callerName))
                     .collect(Collectors.toList());
@@ -294,7 +296,7 @@ public class BookingManager {
      */
     @RolesAllowed("getEndedBookingsForHotel")
     public List<Booking> showUnratedEndedBookingsForHotel(Long hotelId) throws AppBaseException {
-        String callerName = securityContext.getCallerPrincipal().getName();
+        String callerName = sessionContext.getCallerPrincipal().getName();
         return bookingFacade.findAllArchived().stream()
                 .filter(b -> b.getAccount().getLogin().equals(callerName)
                         &&

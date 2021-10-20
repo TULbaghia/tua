@@ -221,14 +221,14 @@
         <role-name>editOwnLanguage</role-name>
     </security-role>
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Common</web-resource-name>
-            <url-pattern>/*</url-pattern>
-        </web-resource-collection>
-        <user-data-constraint>
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
+<!--    <security-constraint>-->
+<!--        <web-resource-collection>-->
+<!--            <web-resource-name>Common</web-resource-name>-->
+<!--            <url-pattern>/*</url-pattern>-->
+<!--        </web-resource-collection>-->
+<!--        <user-data-constraint>-->
+<!--            <transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
+<!--        </user-data-constraint>-->
+<!--    </security-constraint>-->
 
 </web-app>

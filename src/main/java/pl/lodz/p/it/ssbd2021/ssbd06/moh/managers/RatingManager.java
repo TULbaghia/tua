@@ -7,20 +7,21 @@ import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.RatingException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewRatingDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.UpdateRatingDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacadeMoh;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BookingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.RatingFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import javax.security.enterprise.SecurityContext;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -43,13 +44,13 @@ public class RatingManager {
     private BookingFacade bookingFacade;
 
     @Inject
-    private AccountFacade accountFacade;
+    private AccountFacadeMoh accountFacadeMoh;
 
     @Inject
     private HotelFacade hotelFacade;
 
-    @Inject
-    private SecurityContext securityContext;
+    @Resource(name = "sessionContext")
+    SessionContext sessionContext;
 
     /**
      * Zwraca ocenę hotelu
@@ -120,7 +121,7 @@ public class RatingManager {
             throw RatingException.ratingAlreadyExists();
         }
 
-        Account clientAccount = accountFacade.findByLogin(securityContext.getCallerPrincipal().getName());
+        Account clientAccount = accountFacadeMoh.findByLogin(sessionContext.getCallerPrincipal().getName());
         if (!ratedBooking.getAccount().getId().equals(clientAccount.getId())) {
             throw RatingException.bookingNotOwned();
         }
@@ -176,7 +177,7 @@ public class RatingManager {
         }
 
         rating.setRate(updateRatingDto.getRate());
-        rating.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
+        rating.setModifiedBy(accountFacadeMoh.findByLogin(sessionContext.getCallerPrincipal().getName()));
         ratingFacade.edit(rating);
 
         Optional<Hotel> optionalHotel = rating.getBooking().getBookingLineList()
@@ -203,7 +204,7 @@ public class RatingManager {
     @RolesAllowed("deleteHotelRating")
     public void deleteRating(Long ratingId) throws AppBaseException {
         Rating rating = get(ratingId);
-        Account self = accountFacade.findByLogin(securityContext.getCallerPrincipal().getName());
+        Account self = accountFacadeMoh.findByLogin(sessionContext.getCallerPrincipal().getName());
         if (!rating.getCreatedBy().equals(self)) {
             throw RatingException.bookingNotOwned();
         }
@@ -236,7 +237,7 @@ public class RatingManager {
     public void changeVisibility(Long ratingId) throws AppBaseException {
         Rating rating = ratingFacade.find(ratingId);
         rating.setHidden(!rating.isHidden());
-        rating.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
+        rating.setModifiedBy(accountFacadeMoh.findByLogin(sessionContext.getCallerPrincipal().getName()));
         ratingFacade.edit(rating);
     }
 }

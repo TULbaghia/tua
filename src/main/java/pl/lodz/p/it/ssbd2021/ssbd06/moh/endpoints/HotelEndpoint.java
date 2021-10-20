@@ -11,23 +11,24 @@ import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IHotelMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IRoleMapper;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.endpoints.interfaces.HotelEndpointLocal;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.AccountManagerMoh;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.CityManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.HotelManager;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.RoleManagerMoh;
 import pl.lodz.p.it.ssbd2021.ssbd06.mok.dto.ManagerDataDto;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.AccountManager;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.managers.RoleManager;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.math.BigDecimal;
-import javax.security.enterprise.SecurityContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,14 +49,14 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @Inject
     private CityManager cityManager;
 
-    @Inject
-    private SecurityContext securityContext;
+    @Resource(name = "sessionContext")
+    SessionContext sessionContext;
 
     @Inject
-    private AccountManager accountManager;
+    private AccountManagerMoh accountManagerMoh;
 
     @Inject
-    private RoleManager roleManager;
+    private RoleManagerMoh roleManagerMoh;
 
     @Override
     @PermitAll
@@ -135,7 +136,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @Override
     @RolesAllowed("addManagerToHotel")
     public void addManagerToHotel(Long hotelId, String managerLogin) throws AppBaseException {
-        Account account = accountManager.findByLogin(managerLogin);
+        Account account = accountManagerMoh.findByLogin(managerLogin);
         Set<Role> roleList = account.getRoleList();
         Role managerRole = null;
         for (Role role : roleList) {
@@ -143,7 +144,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
                 managerRole = role;
             }
         }
-        ManagerData managerData = roleManager.find(managerRole.getId());
+        ManagerData managerData = roleManagerMoh.find(managerRole.getId());
         ManagerDataDto managerDataDto = Mappers.getMapper(IRoleMapper.class).toManagerDataDto(managerData);
         if (!verifyIntegrity(managerDataDto)) {
             throw AppOptimisticLockException.optimisticLockException();
@@ -170,7 +171,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @Override
     @RolesAllowed("updateOwnHotel")
     public void updateOwnHotel(UpdateHotelDto hotelDto) throws AppBaseException {
-        String managerLogin = securityContext.getCallerPrincipal().getName();
+        String managerLogin = sessionContext.getCallerPrincipal().getName();
         Hotel hotel = hotelManager.findHotelByManagerLogin(managerLogin);
 
         HotelDto hotelIntegrity = Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
@@ -203,7 +204,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @Override
     @RolesAllowed("getOwnHotelInfo")
     public HotelDto getOwnHotelInfo() throws AppBaseException {
-        String managerLogin = securityContext.getCallerPrincipal().getName();
+        String managerLogin = sessionContext.getCallerPrincipal().getName();
         Hotel hotel = hotelManager.findHotelByManagerLogin(managerLogin);
         return Mappers.getMapper(IHotelMapper.class).toHotelDto(hotel);
     }
@@ -226,7 +227,7 @@ public class HotelEndpoint extends AbstractEndpoint implements HotelEndpointLoca
     @RolesAllowed("generateReport")
     public GenerateReportDto generateReport(Long from, Long to) throws AppBaseException {
         IBookingMapper im = Mappers.getMapper(IBookingMapper.class);
-        String managerLogin = securityContext.getCallerPrincipal().getName();
+        String managerLogin = sessionContext.getCallerPrincipal().getName();
         Hotel hotel = hotelManager.findHotelByManagerLogin(managerLogin);
 
         List<ReportRowDto> reportContent = new ArrayList<>();

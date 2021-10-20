@@ -51,8 +51,7 @@ public class Box extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_box_id")
-    @SequenceGenerator(name = "seq_box_id", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 
@@ -94,7 +93,7 @@ public class Box extends AbstractEntity implements Serializable {
     @Setter
     @NotNull
     @Basic(optional = false)
-    @Column(name = "delete")
+    @Column(name = "deleted")
     private boolean delete = false;
 
     public Box(BigDecimal pricePerDay, Hotel hotel, AnimalType animalType, String description, boolean delete) {

@@ -14,8 +14,8 @@ import java.util.logging.Level;
 @Log
 public class LoggingInterceptor {
 
-    @Resource
-    private SessionContext sessionContext;
+    @Resource(name = "sessionContext")
+    SessionContext sessionContext;
 
     /**
      * Metoda logująca szczegóły wywołania metod do dziennika zdarzeń.
@@ -28,8 +28,7 @@ public class LoggingInterceptor {
     public Object intercept(InvocationContext invocationContext) throws Exception {
         String className = invocationContext.getTarget().getClass().getName();
         String methodName = invocationContext.getMethod().getName();
-        String caller =
-                sessionContext.getCallerPrincipal() != null ? sessionContext.getCallerPrincipal().getName() : "Guest";
+        String caller = sessionContext.getCallerPrincipal().getName();
 
         StringBuilder params = new StringBuilder();
         if (invocationContext.getParameters() != null && invocationContext.getParameters().length > 0) {

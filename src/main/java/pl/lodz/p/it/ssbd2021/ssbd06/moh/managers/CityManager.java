@@ -5,13 +5,10 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.City;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.CityException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacadeMoh;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.CityFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.CityFacade;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.HotelFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -34,7 +31,7 @@ public class CityManager {
     @Inject
     private CityFacade cityFacade;
     @Inject
-    private AccountFacade accountFacade;
+    private AccountFacadeMoh accountFacadeMoh;
     @Inject
     private HttpServletRequest servletRequest;
 
@@ -69,7 +66,7 @@ public class CityManager {
      */
     @RolesAllowed("addCity")
     public void addCity(City city) throws AppBaseException {
-        city.setCreatedBy(accountFacade.findByLogin(getLogin()));
+        city.setCreatedBy(accountFacadeMoh.findByLogin(getLogin()));
         cityFacade.create(city);
     }
 
@@ -81,7 +78,7 @@ public class CityManager {
      */
     @RolesAllowed("updateCity")
     public void updateCity(City city) throws AppBaseException {
-        Account modifier = accountFacade.findByLogin(getLogin());
+        Account modifier = accountFacadeMoh.findByLogin(getLogin());
         city.setModifiedBy(modifier);
         cityFacade.edit(city);
     }

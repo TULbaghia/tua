@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb
+    environment:
+      MYSQL_DATABASE: tua03
+      MYSQL_USER: tua03
+      MYSQL_PASSWORD: tua03
+      MYSQL_ROOT_PASSWORD: tua03
+    volumes:
+      - ./mariadb/init:/docker-entrypoint-initdb.d:ro
+      - ./mariadb/mysql:/var/lib/mysql:rw
+
+  wildfly:
+    build: ./wildfly
+    links:
+      - mariadb
+    depends_on:
+      - mariadb
+    volumes:
+      - ./wildfly/ssbd06.war:/opt/jboss/wildfly/standalone/deployments/ssbd06.war:ro
+
+  nginx:
+    image: nginx
+    links:
+      - wildfly
+    depends_on:
+      - wildfly
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/certificate.crt:/etc/ssl/private/certificate.crt:ro
+      - ./nginx/private.key:/etc/ssl/private/private.key:ro
+    ports:
+      - "127.0.0.1:9443:443"

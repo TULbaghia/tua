@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2021.ssbd06.moh.managers;
 import pl.lodz.p.it.ssbd2021.ssbd06.entities.Box;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.NotFoundException;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.AccountFacadeMoh;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.BoxFacade;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
@@ -31,7 +31,7 @@ public class BoxManager {
     private BoxFacade boxFacade;
 
     @Inject
-    private AccountFacade accountFacade;
+    private AccountFacadeMoh accountFacadeMoh;
 
     @Inject
     private HotelManager hotelManager;
@@ -71,7 +71,7 @@ public class BoxManager {
     @RolesAllowed("addBox")
     public void addBox(Box box) throws AppBaseException {
         box.setHotel(hotelManager.findHotelByManagerLogin(getLogin()));
-        box.setCreatedBy(accountFacade.findByLogin(getLogin()));
+        box.setCreatedBy(accountFacadeMoh.findByLogin(getLogin()));
         boxFacade.create(box);
     }
 
@@ -83,7 +83,7 @@ public class BoxManager {
      */
     @RolesAllowed("updateBox")
     public void updateBox(Box box) throws AppBaseException {
-        box.setModifiedBy(accountFacade.findByLogin(getLogin()));
+        box.setModifiedBy(accountFacadeMoh.findByLogin(getLogin()));
         boxFacade.edit(box);
     }
 
@@ -96,7 +96,7 @@ public class BoxManager {
     @RolesAllowed("deleteBox")
     public void deleteBox(Box box) throws AppBaseException {
         box.setDelete(true);
-        box.setModifiedBy(accountFacade.findByLogin(getLogin()));
+        box.setModifiedBy(accountFacadeMoh.findByLogin(getLogin()));
         boxFacade.edit(box);
     }
 

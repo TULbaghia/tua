@@ -39,8 +39,7 @@ public class Rating extends AbstractEntity implements Serializable {
     public static final String BOOKING_ID_CONSTRAINT = "uk_rating_booking_id";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_rating_id")
-    @SequenceGenerator(name = "seq_rating_id", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
     private Long id;
 

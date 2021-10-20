@@ -6,20 +6,20 @@ import pl.lodz.p.it.ssbd2021.ssbd06.entities.enums.AnimalType;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.HotelException;
 import pl.lodz.p.it.ssbd2021.ssbd06.mappers.IHotelMapper;
-import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.HotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.NewHotelDto;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.facades.*;
 import pl.lodz.p.it.ssbd2021.ssbd06.utils.common.LoggingInterceptor;
 
+import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import javax.security.enterprise.SecurityContext;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
@@ -40,10 +40,10 @@ public class HotelManager {
     private BoxFacade boxFacade;
 
     @Inject
-    private ManagerDataFacade managerDataFacade;
+    private ManagerDataFacadeMoh managerDataFacadeMoh;
 
     @Inject
-    private AccountFacade accountFacade;
+    private AccountFacadeMoh accountFacadeMoh;
 
     @Inject
     private BookingFacade bookingFacade;
@@ -54,8 +54,8 @@ public class HotelManager {
     @Inject
     private CityManager cityManager;
 
-    @Inject
-    private SecurityContext securityContext;
+    @Resource(name = "sessionContext")
+    SessionContext sessionContext;
 
     /**
      * Zwraca hotel o podanym identyfikatorze
@@ -134,7 +134,7 @@ public class HotelManager {
         City city = cityManager.get(hotelDto.getCityId());
         hotel.setCity(city);
 
-        hotel.setCreatedBy(accountFacade.findByLogin(getLogin()));
+        hotel.setCreatedBy(accountFacadeMoh.findByLogin(getLogin()));
 
         hotelFacade.create(hotel);
     }
@@ -147,7 +147,7 @@ public class HotelManager {
      */
     @RolesAllowed({"updateOwnHotel", "updateOtherHotel"})
     public void updateHotel(Hotel hotel) throws AppBaseException {
-        Account modifier = accountFacade.findByLogin(getLogin());
+        Account modifier = accountFacadeMoh.findByLogin(getLogin());
         hotel.setModifiedBy(modifier);
         hotelFacade.edit(hotel);
     }
@@ -211,9 +211,9 @@ public class HotelManager {
         }
 
         managerData.setHotel(hotel);
-        managerData.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
+        managerData.setModifiedBy(accountFacadeMoh.findByLogin(sessionContext.getCallerPrincipal().getName()));
         hotel.getManagerDataList().add(managerData);
-        managerDataFacade.edit(managerData);
+        managerDataFacadeMoh.edit(managerData);
         hotelFacade.edit(hotel);
     }
 
@@ -225,8 +225,8 @@ public class HotelManager {
      */
     @RolesAllowed("deleteManagerFromHotel")
     public void deleteManagerFromHotel(String managerLogin) throws AppBaseException {
-        Account managerAccount = accountFacade.findByLogin(managerLogin);
-        Hotel managerHotel = managerDataFacade.findHotelByManagerId(managerLogin);
+        Account managerAccount = accountFacadeMoh.findByLogin(managerLogin);
+        Hotel managerHotel = managerDataFacadeMoh.findHotelByManagerId(managerLogin);
         if (managerHotel == null) {
             throw HotelException.noHotelAssigned();
         }
@@ -236,8 +236,8 @@ public class HotelManager {
                 .findFirst()
                 .get();
         managerData.setHotel(null);
-        managerData.setModifiedBy(accountFacade.findByLogin(securityContext.getCallerPrincipal().getName()));
-        managerDataFacade.edit(managerData);
+        managerData.setModifiedBy(accountFacadeMoh.findByLogin(sessionContext.getCallerPrincipal().getName()));
+        managerDataFacadeMoh.edit(managerData);
     }
 
     /**
@@ -261,7 +261,7 @@ public class HotelManager {
      */
     @RolesAllowed({"getOwnHotelInfo", "updateOwnHotel", "generateReport", "deleteManagerFromHotel"})
     public Hotel findHotelByManagerLogin(String login) throws AppBaseException {
-        return managerDataFacade.findHotelByManagerId(login);
+        return managerDataFacadeMoh.findHotelByManagerId(login);
     }
 
     /**

@@ -1,3 +1,6 @@
+SET NAMES utf8;
+SET character_set_server = 'utf8';
+
 -- Utworzenie kont użytkowników
 INSERT INTO account (id, creation_date, modification_date, version, confirmed, contact_number, enabled,
                      failed_login_attempts_counter, firstname, language, last_failed_login_date,

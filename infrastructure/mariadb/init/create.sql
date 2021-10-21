@@ -1,3 +1,6 @@
+SET NAMES utf8;
+SET character_set_server = 'utf8';
+
 create table account
 (
     id                               bigint       not null auto_increment,

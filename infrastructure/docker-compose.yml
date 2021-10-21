@@ -8,28 +8,47 @@ services:
       MYSQL_USER: tua03
       MYSQL_PASSWORD: tua03
       MYSQL_ROOT_PASSWORD: tua03
+    networks:
+      - internal_db
     volumes:
       - ./mariadb/init:/docker-entrypoint-initdb.d:ro
       - ./mariadb/mysql:/var/lib/mysql:rw
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-ptua03"]
+      interval: 5s
+      timeout: 30s
+      retries: 5
 
   wildfly:
     build: ./wildfly
-    links:
-      - mariadb
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
+    networks:
+      - internal_db
+      - internal_http
     volumes:
       - ./wildfly/ssbd06.war:/opt/jboss/wildfly/standalone/deployments/ssbd06.war:ro
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080"]
+      interval: 5s
+      timeout: 30s
+      retries: 5
 
   nginx:
     image: nginx
-    links:
-      - wildfly
     depends_on:
-      - wildfly
+      wildfly:
+        condition: service_healthy
+    networks:
+      - internal_http
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./nginx/certificate.crt:/etc/ssl/private/certificate.crt:ro
       - ./nginx/private.key:/etc/ssl/private/private.key:ro
     ports:
       - "127.0.0.1:9443:443"
+
+networks:
+  internal_db: {}
+  internal_http: {}

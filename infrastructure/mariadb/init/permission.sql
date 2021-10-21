@@ -1,3 +1,6 @@
+SET NAMES utf8;
+SET character_set_server = 'utf8';
+
 CREATE USER IF NOT EXISTS 'ssbd06admin'@'%' IDENTIFIED BY 'zaq1@WSX';
 CREATE USER IF NOT EXISTS 'ssbd06mok'@'%' IDENTIFIED BY 'zaq1@WSX';
 CREATE USER IF NOT EXISTS 'ssbd06moh'@'%' IDENTIFIED BY 'zaq1@WSX';

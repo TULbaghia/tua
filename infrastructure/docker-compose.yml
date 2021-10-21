@@ -18,8 +18,6 @@ services:
       interval: 5s
       timeout: 30s
       retries: 5
-    ports:
-      - "127.0.0.1:3306:3306"
 
   wildfly:
     build: ./wildfly
@@ -31,14 +29,11 @@ services:
       - internal_http
     volumes:
       - ./wildfly/ssbd06.war:/opt/jboss/wildfly/standalone/deployments/ssbd06.war:ro
-#      - target-context:/usr/app/target/
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080"]
       interval: 5s
       timeout: 30s
       retries: 5
-    ports:
-      - "127.0.0.1:8080:8080"
 
   nginx:
     image: nginx
@@ -54,18 +49,6 @@ services:
     ports:
       - "127.0.0.1:9443:443"
 
-#  builder:
-#    build: builder
-#    volumes:
-#      - ../src:/usr/app/src:ro
-#      - ../src/main/api-client:/usr/app/src/main/api-client:rw
-#      - ../src/main/frontend:/usr/app/src/main/frontend:rw
-#      - ../pom.xml:/usr/app/pom.xml:ro
-#      - target-context:/usr/app/target/
-
 networks:
   internal_db: {}
   internal_http: {}
-
-volumes:
-  target-context:

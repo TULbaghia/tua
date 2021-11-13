@@ -172,7 +172,7 @@ function HotelList(props) {
     const handleFilterClick = () => {
         let query = queryBuilder(minRatingValue, maxRatingValue, selectedValue, searchTerm)
 
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/hotels/filter` + query)
+        axios.get(`${document.location.origin}/resources/hotels/filter` + query)
             .then(res => {
                 if (sortSelectedValue !== undefined && sortSelectedValue !== '') {
                     sortHotelData(sortSelectedValue.value - 1, res.data)
@@ -202,7 +202,7 @@ function HotelList(props) {
     }
 
     const fetchSearchedData = (query) => {
-        axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/hotels/look/${query}`)
+        axios.get(`${document.location.origin}/resources/hotels/look/${query}`)
             .then(res => {
                 if (sortSelectedValue !== undefined && sortSelectedValue !== '') {
                     sortHotelData(sortSelectedValue.value - 1, res.data)

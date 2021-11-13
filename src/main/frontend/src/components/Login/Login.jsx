@@ -47,7 +47,7 @@ function Login(props) {
     const refreshToken = (event) => {
         event.target.closest(".alert").querySelector(".close").click();
         if (localStorage.getItem("token")) {
-            axios.post(`${process.env.REACT_APP_API_BASE_URL}/resources/auth/refresh-token`, localStorage.getItem("token"), {
+            axios.post(`${document.location.origin}/resources/auth/refresh-token`, localStorage.getItem("token"), {
                 headers: {
                     "Authorization": `${localStorage.getItem("token")}`
                 }

@@ -102,7 +102,7 @@ function HotelInfo(props) {
 
     const getUsersBookings = async () => {
         let id = parsedQuery.id;
-        return await axios.get(`${process.env.REACT_APP_API_BASE_URL}/resources/bookings/ended/` + id, {
+        return await axios.get(`${document.location.origin}/resources/bookings/ended/` + id, {
             headers: {
                 Authorization: token,
             }

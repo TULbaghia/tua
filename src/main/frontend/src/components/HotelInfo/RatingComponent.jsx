@@ -81,7 +81,7 @@ export default function RatingComponent({id, rate, login, content, date, modific
     }
 
     const handleChangeVisibilityClick = (id) => {
-        axios.patch(`${process.env.REACT_APP_API_BASE_URL}/resources/ratings/changeVisibility/${id}`, {}, {
+        axios.patch(`${document.location.origin}/resources/ratings/changeVisibility/${id}`, {}, {
             headers: {
                 "Authorization": token,
                 "If-Match": etag

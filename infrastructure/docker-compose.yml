@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mariadb:
@@ -27,6 +27,7 @@ services:
     networks:
       - internal_db
       - internal_http
+      - internal_metrics
     volumes:
       - ./wildfly/ssbd06.war:/opt/jboss/wildfly/standalone/deployments/ssbd06.war:ro
     healthcheck:
@@ -34,6 +35,47 @@ services:
       interval: 5s
       timeout: 30s
       retries: 5
+    ports:
+      - "9990:9990"
+      - "8080:8080"
+
+  prometheus:
+    image: prom/prometheus:v2.31.1
+    depends_on:
+      wildfly:
+        condition: service_healthy
+    networks:
+      - internal_metrics
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - ./prometheus/data:/var/lib/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-lifecycle"
+    ports:
+      - "9090:9090" # todo delete ?
+
+  grafana:
+    image: grafana/grafana:8.2.4
+    depends_on:
+      wildfly:
+        condition: service_healthy
+    networks:
+      - internal_metrics
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - "3000:3000"
 
   nginx:
     image: nginx
@@ -52,3 +94,4 @@ services:
 networks:
   internal_db: {}
   internal_http: {}
+  internal_metrics: {}

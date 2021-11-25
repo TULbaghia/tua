@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
@@ -56,6 +57,7 @@ public class HotelController extends AbstractController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(operationId = "getAllHotelsList", summary = "getAllHotelsList")
+    @Counted(name = "performedChecks", displayName="Performed Checks", description = "How many prime checks have been performed.")
     public List<HotelDto> getAll() throws AppBaseException {
         return repeat(() -> hotelEndpoint.getAll(), hotelEndpoint);
     }

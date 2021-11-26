@@ -57,7 +57,6 @@ public class HotelController extends AbstractController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(operationId = "getAllHotelsList", summary = "getAllHotelsList")
-    @Counted(name = "performedChecks", displayName="Performed Checks", description = "How many prime checks have been performed.")
     public List<HotelDto> getAll() throws AppBaseException {
         return repeat(() -> hotelEndpoint.getAll(), hotelEndpoint);
     }

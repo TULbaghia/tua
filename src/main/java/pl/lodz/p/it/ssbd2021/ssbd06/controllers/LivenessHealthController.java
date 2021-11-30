@@ -2,12 +2,14 @@ package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
+import org.eclipse.microprofile.health.Liveness;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 
 @ApplicationScoped
+@Liveness
 public class LivenessHealthController implements HealthCheck {
 
     private final MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();

@@ -1,1 +1,4 @@
 /subsystem=undertow/application-security-domain=other:write-attribute(name=integrated-jaspi, value=false)
+/extension=org.wildfly.extension.microprofile.metrics-smallrye:add()
+/subsystem=microprofile-metrics-smallrye:add()
+/subsystem=microprofile-metrics-smallrye:write-attribute(name=security-enabled, value=false)

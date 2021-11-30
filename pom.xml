@@ -178,6 +178,11 @@
             <artifactId>microprofile-metrics-api</artifactId>
             <version>4.0-RC4</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.microprofile.health</groupId>
+            <artifactId>microprofile-health-api</artifactId>
+            <version>4.0</version>
+        </dependency>
         <!-- Import the CDI API, we use provided scope as the API is included in the server -->
         <dependency>
             <groupId>jakarta.enterprise</groupId>

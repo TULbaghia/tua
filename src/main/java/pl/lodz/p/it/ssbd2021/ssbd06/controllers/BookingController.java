@@ -1,5 +1,7 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.metrics.MetricUnits;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.BookingDto;
@@ -88,6 +90,8 @@ public class BookingController extends AbstractController {
     @RolesAllowed("bookReservation")
     @Operation(operationId = "addBooking", summary = "addBooking")
     @Consumes({MediaType.APPLICATION_JSON})
+    @Timed(name = "reservationTime", description = "Metrics to monitor booking ordering time",
+    unit = MetricUnits.SECONDS, absolute = true)
     public void addBooking(NewBookingDto bookingDto) throws AppBaseException {
         repeat(() -> bookingEndpoint.addBooking(bookingDto), bookingEndpoint);
     }

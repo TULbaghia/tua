@@ -15,7 +15,7 @@ public class ReadinessChangeController {
     @GET
     @Path("toggle")
     public String toggle() {
-        keeper.setClicked(keeper.isClicked());
+        keeper.setClicked(!keeper.isClicked());
         return String.valueOf(keeper.isClicked());
     }
 }

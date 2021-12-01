@@ -16,7 +16,7 @@ public class ReadinessHealthController implements HealthCheck {
 
     @Getter
     @Setter
-    private boolean isClicked;
+    private boolean isClicked = true;
 
     @GET
     @Path("/health/toggle")

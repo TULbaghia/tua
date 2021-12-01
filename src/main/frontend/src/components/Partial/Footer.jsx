@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Col, Dropdown} from "react-bootstrap";
 import {withNamespaces} from "react-i18next";
 import userIcon from "../../assets/userRole.svg"
@@ -31,10 +31,10 @@ function AccessLevelSwitcher(props) {
         }
     }, [props.levels])
 
-    const handleSelect=(level)=> {
+    const handleSelect = (level) => {
         setCurrentRole(level);
         localStorage.setItem('currentRole', level);
-        if(level !== rolesConstant.client && level!== currentRole) {
+        if (level !== rolesConstant.client && level !== currentRole) {
             handleChangeLevel(level);
             history.push("/")
         }
@@ -48,15 +48,16 @@ function AccessLevelSwitcher(props) {
             }
         };
         api.changeOwnAccessLevel(e, requestOptions)
-            .then(()=>dispatchNotificationSuccess({message: i18n.t('roleChanged') + i18n.t(e)}))
-            .catch((err)=> ResponseErrorHandler(err, dispatchNotificationDanger))
+            .then(() => dispatchNotificationSuccess({message: i18n.t('roleChanged') + i18n.t(e)}))
+            .catch((err) => ResponseErrorHandler(err, dispatchNotificationDanger))
     }
 
     return (
         <div className={"d-flex ml-3"}>
             <img alt="userIcon" src={userIcon} className={"mr-2"}/>
             <Dropdown onSelect={handleSelect}>
-                <DropdownToggle id="dropdown-basic" key='up' drop='up' className="roleMenu text-white" style={{backgroundColor: "transparent"}}>
+                <DropdownToggle id="dropdown-basic" key='up' drop='up' className="roleMenu text-white"
+                                style={{backgroundColor: "transparent"}}>
                     {i18n.t('roleChange')}
                 </DropdownToggle>
                 <DropdownMenu>
@@ -73,8 +74,12 @@ function Footer(props) {
     const {token, currentRole} = useLocale();
     const {roles, divStyle} = props;
 
+    const toggleBtn = () => {
+        fetch("/resources/health/toggle", { method: "GET" });
+    }
+
     return (
-        <div className={"container-fluid footer position-fixed b-0 d-flex bottom-navbar"} style={ divStyle() }>
+        <div className={"container-fluid footer position-fixed b-0 d-flex bottom-navbar"} style={divStyle()}>
             <div className={"row"}>
                 <Col xs={12} className={"d-flex align-items-center flex-wrap flex-row"}>
                     <div>
@@ -83,6 +88,11 @@ function Footer(props) {
                     <div className={"text-white d-none d-sm-flex"}>
                         {token !== null && token !== '' ? <span className={"px-2"}>|</span> : ""}
                         &copy; SSBD202106
+                    </div>
+                    <div>
+                        <button className="btn btn-primary ml-3" onClick={toggleBtn}>
+                            Application down
+                        </button>
                     </div>
                 </Col>
             </div>

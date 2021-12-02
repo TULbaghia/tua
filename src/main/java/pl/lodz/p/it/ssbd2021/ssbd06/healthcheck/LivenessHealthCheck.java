@@ -12,7 +12,7 @@ import javax.inject.Inject;
 public class LivenessHealthCheck implements HealthCheck {
 
     @Inject
-    private ReadinessKeeper keeper;
+    private LivenessKeeper keeper;
 
     @Override
     public HealthCheckResponse call() {

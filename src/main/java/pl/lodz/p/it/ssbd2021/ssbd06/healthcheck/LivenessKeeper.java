@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class ReadinessKeeper {
+public class LivenessKeeper {
 
     @Getter
     @Setter

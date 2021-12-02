@@ -7,10 +7,10 @@ import javax.ws.rs.Path;
 
 @ApplicationScoped
 @Path("/health")
-public class ReadinessChangeController {
+public class LivenessChangeController {
 
     @Inject
-    private ReadinessKeeper keeper;
+    private LivenessKeeper keeper;
 
     @GET
     @Path("toggle")

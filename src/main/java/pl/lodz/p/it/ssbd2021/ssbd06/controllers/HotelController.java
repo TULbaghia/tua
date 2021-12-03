@@ -1,6 +1,9 @@
 package pl.lodz.p.it.ssbd2021.ssbd06.controllers;
 
+import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Metered;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import pl.lodz.p.it.ssbd2021.ssbd06.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2021.ssbd06.moh.dto.GenerateReportDto;
@@ -57,6 +60,8 @@ public class HotelController extends AbstractController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(operationId = "getAllHotelsList", summary = "getAllHotelsList")
+    @Metered(name = "hotel.getAll.frequency", absolute = true)
+    @Timed(name = "hotel.getAll.duration", unit = MetricUnits.MILLISECONDS)
     public List<HotelDto> getAll() throws AppBaseException {
         return repeat(() -> hotelEndpoint.getAll(), hotelEndpoint);
     }

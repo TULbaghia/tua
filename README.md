@@ -1,6 +1,11 @@
 # Techniki utrzymania aplikacji 2021-03
 
 
+## Cele projektu
+- Payara do Wildfly, PostgreSQL do MariaDB,
+- Konteneryzacja,
+- Kubernetes
+
 ## Autorzy
 
 | Imię nazwisko           | GitHub profile                                             |

@@ -1,0 +1,22 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: wildfly-hpa
+  namespace: tua03
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: wildfly
+    apiVersion: apps/v1
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: AverageValue
+          averageValue: 120m
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60

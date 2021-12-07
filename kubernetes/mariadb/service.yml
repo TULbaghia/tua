@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+  namespace: tua03
+spec:
+  selector:
+    app: mariadb
+  type: ClusterIP
+  ports:
+    - name: mariadb
+      port: 3306
+      targetPort: 3306
+      protocol: TCP

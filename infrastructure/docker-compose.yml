@@ -2,7 +2,8 @@ version: "3.8"
 
 services:
   mariadb:
-    image: mariadb
+    image: mariadb:10.7.1
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: tua03
       MYSQL_USER: tua03
@@ -21,6 +22,7 @@ services:
 
   wildfly:
     build: ./wildfly
+    restart: unless-stopped
     depends_on:
       mariadb:
         condition: service_healthy
@@ -35,12 +37,13 @@ services:
       interval: 5s
       timeout: 30s
       retries: 5
-    ports:
-      - "9990:9990"
-      - "8080:8080"
+#    ports:                     # development only
+#      - "127.0.0.1:9990:9990"
+#      - "127.0.0.1:8080:8080"
 
   prometheus:
     image: prom/prometheus:v2.31.1
+    restart: unless-stopped
     depends_on:
       wildfly:
         condition: service_healthy
@@ -48,7 +51,7 @@ services:
       - internal_metrics
     volumes:
       - ./prometheus:/etc/prometheus
-      - ./prometheus/data:/var/lib/prometheus
+      - prometeus-storage:/var/lib/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
@@ -56,18 +59,19 @@ services:
       - "--web.console.templates=/etc/prometheus/consoles"
       - "--storage.tsdb.retention.time=200h"
       - "--web.enable-lifecycle"
-    ports:
-      - "9090:9090" # todo delete ?
+#    ports:                     # development only
+#      - "127.0.0.1:9090:9090"
 
   grafana:
     image: grafana/grafana:8.2.4
+    restart: unless-stopped
     depends_on:
       wildfly:
         condition: service_healthy
     networks:
       - internal_metrics
     volumes:
-      - ./grafana/data:/var/lib/grafana
+      - grafana-storage:/var/lib/grafana
       - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     environment:
@@ -75,10 +79,11 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
 
   nginx:
-    image: nginx
+    image: nginx:1.21.4
+    restart: unless-stopped
     depends_on:
       wildfly:
         condition: service_healthy
@@ -90,6 +95,10 @@ services:
       - ./nginx/private.key:/etc/ssl/private/private.key:ro
     ports:
       - "127.0.0.1:443:443"
+
+volumes:
+  grafana-storage:
+  prometeus-storage:
 
 networks:
   internal_db: {}

@@ -1,0 +1,633 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: init-db
+  namespace: tua03
+data:
+  create.sql: >
+    ALTER DATABASE tua03 CHARACTER SET='utf8' COLLATE='utf8_bin'; SET NAMES
+    utf8;
+
+    SET character_set_server = 'utf8';
+
+
+    create table account (
+        id                               bigint       not null auto_increment,
+        creation_date                    datetime    not null,
+        modification_date                datetime,
+        version                          bigint       not null,
+        confirmed                        boolean      not null,
+        contact_number                   varchar(15),
+        enabled                          boolean      not null,
+        failed_login_attempts_counter    integer default 0,
+        firstname                        varchar(31)  not null,
+        language                         varchar(2),
+        last_failed_login_date           datetime,
+        last_failed_login_ip_address     varchar(39),
+        theme_color                      varchar(31) not null,
+        last_successful_login_date       datetime,
+        last_successful_login_ip_address varchar(39),
+        enable_modification_date         datetime,
+        confirm_modification_date        datetime,
+        email_modification_date          datetime,
+        password_modification_date       datetime,
+        enable_modification_by           bigint,
+        confirm_modification_by          bigint,
+        email_modification_by            bigint,
+        password_modification_by         bigint,
+        lastname                         varchar(31)  not null,
+        login                            varchar(127) not null,
+        email                            varchar(127) not null,
+        new_email                        varchar(127),
+        password                         varchar(64)  not null,
+        created_by                       bigint       not null,
+        modified_by                      bigint,
+        constraint pk_account_id
+            primary key (id),
+        constraint uk_account_contact_number
+            unique (contact_number),
+        constraint uk_account_login
+            unique (login),
+        constraint uk_account_email
+            unique (email),
+        constraint fk_account_account_created_by
+            foreign key (created_by) references account(id),
+        constraint fk_account_account_modified_by
+            foreign key (modified_by) references account(id),
+        constraint account_failed_login_attempts_counter_check
+            check (failed_login_attempts_counter >= 0)
+    );
+
+
+    create index ix_account_created_by
+        on account (created_by);
+
+    create index ix_account_modified_by
+        on account (modified_by);
+
+    create table booking
+
+    (
+        id                bigint        not null auto_increment,
+        creation_date     datetime     not null,
+        modification_date datetime,
+        version           bigint        not null,
+        date_from         datetime     not null,
+        date_to           datetime     not null,
+        price             numeric(8, 2) not null,
+        status            integer       not null,
+        created_by        bigint        not null,
+        modified_by       bigint,
+        account_id        bigint        not null,
+        constraint pk_booking_id
+            primary key (id),
+        constraint fk_booking_account_created_by
+            foreign key (created_by) references account(id),
+        constraint fk_booking_account_modified_by
+            foreign key (modified_by) references account(id),
+        constraint fk_booking_account_account_id
+            foreign key (account_id) references account(id),
+        constraint booking_price_check
+            check (price >= 0),
+        constraint booking_dates_check
+            check (date_from < date_to)
+    );
+
+
+    create index ix_booking_account_id
+        on booking (account_id);
+
+    create index ix_booking_created_by
+        on booking (created_by);
+
+    create index ix_booking_modified_by
+        on booking (modified_by);
+
+    create table city
+
+    (
+        id                bigint       not null auto_increment,
+        creation_date     datetime    not null,
+        modification_date datetime,
+        version           bigint       not null,
+        description       varchar(255) not null,
+        name              varchar(31)  not null,
+        created_by        bigint       not null,
+        modified_by       bigint,
+        constraint pk_city_id
+            primary key (id),
+        constraint uk_city_name
+            unique (name),
+        constraint fk_city_account_created_by
+            foreign key (created_by) references account(id),
+        constraint fk_city_account_modified_by
+            foreign key (modified_by) references account(id)
+    );
+
+
+    create index ix_city_created_by
+        on city (created_by);
+
+    create index ix_city_modified_by
+        on city (modified_by);
+
+    create table hotel
+
+    (
+        id                bigint        not null auto_increment,
+        creation_date     datetime     not null,
+        modification_date datetime,
+        version           bigint        not null,
+        address           varchar(63)   not null,
+        name              varchar(63)   not null,
+        image             varchar(31),
+        description       varchar(511)  not null,
+        rating            numeric(2, 1),
+        created_by        bigint        not null,
+        modified_by       bigint,
+        city_id           bigint        not null,
+        constraint pk_hotel_id
+            primary key (id),
+        constraint uk_hotel_name
+            unique (name),
+        constraint fk_hotel_account_created_by
+            foreign key (created_by) references account(id),
+        constraint fk_hotel_account_modified_by
+            foreign key (modified_by) references account(id),
+        constraint fk_hotel_city_city_id
+            foreign key (city_id) references city(id),
+        constraint hotel_rating_check
+            check ((rating <= 5) AND (rating >= 1))
+    );
+
+
+    create index ix_hotel_city_id
+        on hotel (city_id);
+
+    create index ix_hotel_created_by
+        on hotel (created_by);
+
+    create index ix_hotel_modified_by
+        on hotel (modified_by);
+
+    create table box
+
+    (
+        id                bigint        not null auto_increment,
+        creation_date     datetime     not null,
+        modification_date datetime,
+        version           bigint        not null,
+        animal_type       integer       not null,
+        price_per_day     numeric(8, 2) not null,
+        description       varchar(31)   not null,
+        deleted           boolean       not null,
+        created_by        bigint        not null,
+        modified_by       bigint,
+        hotel_id          bigint,
+        constraint pk_box_id
+            primary key (id),
+        constraint fk_box_account_created_by
+            foreign key (created_by) references account(id),
+        constraint fk_box_account_modified_by
+            foreign key (modified_by) references account(id),
+        constraint fk_box_hotel_hotel_id
+            foreign key (hotel_id) references hotel(id),
+        constraint box_price_per_day_check
+            check (price_per_day >= 0)
+        );
+
+    create index ix_box_hotel_id
+        on box (hotel_id);
+
+    create index ix_box_created_by
+        on box (created_by);
+
+    create index ix_box_modified_by
+        on box (modified_by);
+
+    create table booking_line
+
+    (
+        id                bigint        not null auto_increment,
+        creation_date     datetime     not null,
+        modification_date datetime,
+        version           bigint        not null,
+        price_per_day     numeric(8, 2) not null,
+        created_by        bigint        not null,
+        modified_by       bigint,
+        booking_id        bigint        not null,
+        box_id            bigint        not null,
+        constraint pk_booking_line_id
+            primary key (id),
+        constraint fk_booking_line_account_created_by
+            foreign key (created_by) references account(id),
+        constraint fk_booking_line_account_modified_by
+            foreign key (modified_by) references account(id),
+        constraint fk_booking_line_booking_booking_id
+            foreign key (booking_id) references booking(id),
+        constraint fk_booking_line_box_box_id
+            foreign key (box_id) references box(id),
+        constraint booking_line_price_per_day_check
+            check (price_per_day >= 0)
+        );
+
+    create index ix_booking_line_booking_id
+        on booking_line (booking_id);
+
+    create index ix_booking_line_box_id
+        on booking_line (box_id);
+
+    create index ix_booking_line_created_by
+        on booking_line (created_by);
+
+    create index ix_booking_line_modified_by
+        on booking_line (modified_by);
+
+    create table pending_code
+
+    (
+        id                bigint       not null auto_increment,
+        creation_date     datetime    not null,
+        modification_date datetime,
+        version           bigint       not null,
+        code              varchar(128) not null,
+        code_type         integer      not null,
+        used              boolean      not null,
+        send_attempt      integer      default 0,
+        created_by        bigint       not null,
+        modified_by       bigint,
+        account_id        bigint       not null,
+        constraint pk_pending_code_id
+            primary key (id),
+        constraint uk_pending_code_code
+            unique (code),
+        constraint fk_pending_code_account_created_by
+            foreign key (created_by) references account(id),
+        constraint fk_pending_code_account_modified_by
+            foreign key (modified_by) references account(id),
+        constraint fk_pending_code_account_account_id
+            foreign key (account_id) references account(id)
+    );
+
+
+    create index ix_pending_code_account_id
+        on pending_code (account_id);
+
+    create index ix_pending_code_created_by
+        on pending_code (created_by);
+
+    create index ix_pending_code_modified_by
+        on pending_code (modified_by);
+
+    create table rating
+
+    (
+        id                bigint    not null auto_increment,
+        creation_date     datetime not null,
+        modification_date datetime,
+        version           bigint    not null,
+        comment           varchar(255),
+        hidden            boolean   not null,
+        rate              smallint  not null,
+        created_by        bigint    not null,
+        modified_by       bigint,
+        booking_id        bigint    not null,
+        constraint pk_rating_id
+            primary key (id),
+        constraint uk_rating_booking_id
+            unique (booking_id),
+        constraint fk_rating_account_created_by
+            foreign key (created_by) references account(id),
+        constraint fk_rating_account_modified_by
+            foreign key (modified_by) references account(id),
+        constraint fk_rating_booking_booking_id
+            foreign key (booking_id) references booking(id),
+        constraint rating_rate_check
+            check ((rate <= 5) AND (rate >= 1))
+    );
+
+
+    create index ix_rating_booking_id
+        on rating (booking_id);
+
+    create index ix_rating_created_by
+        on rating (created_by);
+
+    create index ix_rating_modified_by
+        on rating (modified_by);
+
+    create table role
+
+    (
+        access_level      varchar(31) not null,
+        id                bigint      not null auto_increment,
+        creation_date     datetime   not null,
+        modification_date datetime,
+        version           bigint      not null,
+        enabled           boolean     not null,
+        created_by        bigint      not null,
+        modified_by       bigint,
+        account_id        bigint      not null,
+        constraint pk_role_id
+            primary key (id),
+        constraint uk_role_access_level_account_id
+            unique (access_level, account_id),
+        constraint fk_role_account_created_by
+            foreign key (created_by) references account(id),
+        constraint fk_role_account_modified_by
+            foreign key (modified_by) references account(id),
+        constraint fk_role_account_account_id
+            foreign key (account_id) references account(id)
+    );
+
+
+    create index ix_role_account_id
+        on role (account_id);
+
+    create index ix_role_created_by
+        on role (created_by);
+
+    create index ix_role_modified_by
+        on role (modified_by);
+
+    create table admin_data
+
+    (
+        id bigint not null auto_increment,
+        constraint pk_admin_data_id
+            primary key (id),
+        constraint fk_admin_data_role_id
+            foreign key (id) references role(id)
+    );
+
+
+    create table client_data
+
+    (
+        id bigint not null auto_increment,
+        constraint pk_client_data_id
+            primary key (id),
+        constraint fk_client_data_role_id
+            foreign key (id) references role(id)
+    );
+
+
+    create table manager_data
+
+    (
+        id       bigint not null auto_increment,
+        hotel_id bigint,
+        constraint pk_manager_data_id
+            primary key (id),
+        constraint fk_manager_data_role_id
+            foreign key (id) references role(id),
+        constraint fk_manager_data_hotel_hotel_id
+            foreign key (hotel_id) references hotel(id)
+    );
+
+
+    create index ix_manager_data_hotel_id
+        on manager_data (hotel_id);
+
+    create view auth_view (login, password, role) as
+
+    select a.login,
+          a.password,
+          r.access_level as role
+    from account a
+            join role r on a.id = r.account_id
+    where a.confirmed = true
+      and a.enabled = true
+      and r.enabled = true;
+
+    SET NAMES utf8; SET character_set_server = 'utf8';
+
+    INSERT INTO account (id, creation_date, modification_date, version,
+    confirmed, contact_number, enabled,
+                        failed_login_attempts_counter, firstname, language, last_failed_login_date,
+                        last_failed_login_ip_address, theme_color, last_successful_login_date, last_successful_login_ip_address,
+                        lastname, login, email, new_email, password, created_by, modified_by)
+    VALUES (-1, now(), null, 1, true, '999888777', true, 0, 'Admin', 'pl', null,
+    null, 'LIGHT', null, null, 'Adminski', 'admin1', 'admin@ssbd06.pl',
+            null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
+          (-2, now(), null, 1, true, '256987539', true, 0, 'Mateusz', 'pl', null, null, 'LIGHT', null, null, 'Chrzanowski', 'mchrzan','mchrzan@edu.pl',
+            null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
+          (-3, now(), null, 1, true, '154729754', true, 0, 'Michał', 'pl', null, null, 'LIGHT', null, null, 'Masłowski', 'mima', 'mima@edu.pl',
+            null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
+          (-4, now(), null, 1, true, '234978427', true, 0, 'Marcin', 'pl', null, null, 'LIGHT', null, null, 'Borowski', 'marbor', 'marbor@edu.pl',
+            null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
+          (-5, now(), null, 1, true, '543095437', true, 0, 'Dominik', 'pl', null, null, 'DARK', null, null, 'Dąbrowski', 'domino', 'domino@edu.pl',
+            null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
+          (-6, now(), null, 1, true, '356897453', true, 0, 'Zbigniew', 'pl', null, null, 'DARK', null, null, 'Adamczyk', 'zbadam', 'zbadam@edu.pl',
+            null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
+          (-7, now(), null, 1, true, '356892223', true, 0, 'Filip', 'pl', null, null, 'LIGHT', null, null, 'Bąk', 'filipino', 'filipino@edu.pl',
+            null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
+          (-8, now(), null, 1, true, '375003421', true, 0, 'Jakub', 'pl', null, null, 'LIGHT', null, null, 'Trapczak', 'jakub', 'jakub@edu.pl',
+            null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null),
+          (-9, now(), null, 1, true, '111003421', true, 0, 'Jan', 'pl', null, null, 'DARK', null, null, 'Kowalski', 'client1', 'client@edu.pl',
+            null, 'bdd2297f93550f01452cbd838c276f0dd22f498b4661394f1528ab88d6e63e6f', -1, null);
+
+    -- Przypisanie ról użytkownikom
+
+    INSERT INTO role (access_level, id, creation_date, modification_date,
+    version, enabled, created_by, modified_by,
+                      account_id)
+    VALUES ('ADMIN', -1, now(), null, 1, true, -1, null, -1),
+          ('ADMIN', -2, now(), null, 1, true, -1, null, -2),
+          ('MANAGER', -3, now(), null, 1, true, -1, null, -2),
+          ('MANAGER', -4, now(), null, 1, true, -1, null, -3),
+          ('CLIENT', -5, now(), null, 1, true, -1, null, -4),
+          ('MANAGER', -6, now(), null, 1, true, -1, null, -5),
+          ('MANAGER', -7, now(), null, 1, true, -1, null, -6),
+          ('CLIENT', -8, now(), null, 1, true, -1, null, -7),
+          ('MANAGER', -9, now(), null, 1, true, -1, null, -8),
+          ('CLIENT', -10, now(), null, 1, true, -1, null, -9);
+
+
+    -- Inicjalizacja miast
+
+    INSERT INTO city (id, creation_date, modification_date, version,
+    description, name, created_by, modified_by)
+
+    VALUES (-1, now(), null, 1, 'Super perspektywy', 'Łódź', -1, null),
+          (-2, now(), null, 1, 'Stolica Polski', 'Warszawa', -1, null);
+
+    -- Inicjalizacja hoteli
+
+    INSERT INTO hotel (id, creation_date, modification_date, version, address,
+    name, rating, created_by, modified_by, city_id, image, description)
+
+    VALUES (-1, now(), null, 1, 'Krakowska 21', 'Pet-Landia', 3.5, -1, null, -1,
+    '/static/hotel1.jpg', 'Hotel Pet-Landia znajduje się na obrzeżach miasta
+    Łódź. Jest przystosowany do obsługi różnych gatunków zwierząt.'),
+          (-2, now(), null, 1, 'Paderewskiego 3', 'Zwierzogród', 3.0, -1, null, -1, '/static/hotel2.jpg', 'Zwierzogród jest hotelem znajdującym się w dzielnicy Łódź-Górna. Na terenie hotelu znajduje się park do zabaw ze zwierzętami, gdzie nasza obsługa codziennie wyprowadza zwierzęta.'),
+          (-3, now(), null, 1, 'Kredytowa 69', 'Psy i My', null, -1, null, -2, '/static/hotel3.jpg', 'Warszawski hotel przeznaczony głównie dla psów. Przy hotelu znajduje się duży ogrodzony las, gdzie nasi współpracownicy wyprowadzają przechowywane zwierzęta.'),
+          (-4, now(), null, 1, 'Mickiewicza 1', 'Jet Pet', 5.0, -1, null, -2, '/static/hotel4.jpg', 'Jet Pet to hotel znajdujący się na przedmieściach Warszawy. Na terenie hotelu znajduje się tor przeszkód oraz plac zabaw, na terenie którego nasi współpracownicy bawią się z przechowywanymi pupilami.');
+
+    -- Inicjalizacja tabel szczegółowych rozszerzających role
+
+    INSERT INTO admin_data (id)
+
+    VALUES (-1);
+
+    INSERT INTO admin_data (id)
+
+    VALUES (-2);
+
+    INSERT INTO manager_data (id, hotel_id)
+
+    VALUES (-3, -1);
+
+    INSERT INTO manager_data (id, hotel_id)
+
+    VALUES (-4, -2);
+
+    INSERT INTO manager_data (id, hotel_id)
+
+    VALUES (-6, -3);
+
+    INSERT INTO manager_data (id)
+
+    VALUES (-7);
+
+    INSERT INTO manager_data (id)
+
+    VALUES (-9);
+
+    INSERT INTO client_data (id)
+
+    VALUES (-5);
+
+    INSERT INTO client_data (id)
+
+    VALUES (-8);
+
+    INSERT INTO client_data (id)
+
+    VALUES (-9);
+
+
+    -- Inicjalizacja boxów
+
+    INSERT INTO box (id, creation_date, modification_date, version, animal_type,
+    price_per_day, description, deleted, created_by, modified_by, hotel_id)
+
+    VALUES (-1, now(), null, 1, 0, 55.55, 'Duża klatka dla psa', false, -2,
+    null, -1),
+          (-2, now(), null, 1, 0, 55.55, 'Duża klatka dla psa', false, -2, null, -1),
+          (-3, now(), null, 1, 1, 39.99, 'Standardowa klatka dla kota', false, -2, null, -1),
+          (-4, now(), null, 1, 2, 43.90, 'Mała klatka dla gryzonia', false, -2, null, -1),
+          (-5, now(), null, 1, 3, 29.99, 'Mała klatka dla ptaka', false, -3, null, -2),
+          (-6, now(), null, 1, 4, 35.22, 'Duża klatka dla królika', false, -3, null, -2),
+          (-7, now(), null, 1, 5, 49.90, 'Akwarium dla jaszczurki', false, -3, null, -2),
+          (-8, now(), null, 1, 0, 39.90, 'Mała klatka dla psa', false, -5, null, -3),
+          (-9, now(), null, 1, 0, 29.99, 'Mała klatka dla psa', false, -5, null, -3),
+          (-10, now(), null, 1, 0, 34.90, 'Mała klatka dla psa', false, -5, null, -3),
+          (-11, now(), null, 1, 1, 43.44, 'Mała klatka dla kota', false, -6, null, -4),
+          (-12, now(), null, 1, 3, 32.14, 'Standardowa klatka dla ptaka', false, -6, null, -4),
+          (-13, now(), null, 1, 4, 48.49, 'Duża klatka dla królika', false, -6, null, -4),
+          (-14, now(), null, 1, 6, 29.44, 'Akwarium dla żółwia', false, -6, null, -4);
+
+    -- Inicjalizacja rezerwacji
+
+    INSERT INTO booking (id, creation_date, modification_date, version,
+    date_from, date_to, price, status, created_by, modified_by, account_id)
+
+    VALUES (-1, now(), null ,1 , current_timestamp, ADDDATE(current_timestamp,
+    INTERVAL 1 week), 388.85, 2, -4, null, -4),
+          (-2, SUBDATE(now(), INTERVAL 1 week), null ,1 ,SUBDATE(now(), INTERVAL 1 week), SUBDATE(current_timestamp, INTERVAL 5 day), 191.08, 3, -4, null, -4),
+          (-3, now(), null, 1, ADDDATE(current_timestamp, INTERVAL 1 week), ADDDATE(current_timestamp, INTERVAL 2 week), 209.93, 3, -7, null, -7),
+          (-4, SUBDATE(now(), INTERVAL 1 week), null, 1, SUBDATE(now(), INTERVAL 1 week), SUBDATE(current_timestamp, INTERVAL 3 day), 175.60, 3, -9, null, -9),
+          (-5, SUBDATE(now(), INTERVAL 1 week), null, 1, SUBDATE(now(), INTERVAL 1 week), SUBDATE(current_timestamp, INTERVAL 3 day), 267.00, 3, -7, null, -7);
+
+    -- Inicjalizacja booking line
+
+    INSERT INTO booking_line(id, creation_date, modification_date, version,
+    price_per_day, created_by, modified_by,
+                                          booking_id, box_id)
+    VALUES (-1, now(), null, 1, 55.55, -4, null, -1, -1),
+          (-2, SUBDATE(now(), INTERVAL 1 week), null, 1, 55.55, -4, null, -2, -2),
+          (-3, SUBDATE(now(), INTERVAL 1 week), null, 1, 39.99, -4, null, -2, -3),
+          (-4, now(), null, 1, 29.99, -7, null, -3, -5),
+          (-5, SUBDATE(now(), INTERVAL 1 week), null, 1, 43.90, -9, null, -4, -11),
+          (-6, SUBDATE(now(), INTERVAL 1 week), null, 1, 66.75, -7, null, -5, -4);
+
+    -- Inicjalizacja ratingów
+
+    INSERT INTO rating(id, creation_date, modification_date, version, comment,
+    hidden, rate, created_by, modified_by, booking_id)
+
+    VALUES (-1, now(), null, 1, 'Całkiem przystępny hotel', false, 3, -4, null,
+    -2),
+          (-2, now(), null, 1, 'Czadowy hotel! Czadowa obsługa!', false, 4, -7, null, -5),
+          (-3, now(), null, 1, 'Mogłoby być lepiej za te pieniądze. Drogo, że hej!', false, 3, -7, null, -3),
+          (-4, now(), null, 1, 'Profesjonalna obsługa, polecam.', false, 5, -9, null, -4);
+
+    SET NAMES utf8;
+
+    SET character_set_server = 'utf8';
+
+
+    CREATE USER IF NOT EXISTS 'ssbd06admin'@'%' IDENTIFIED BY 'zaq1@WSX';
+
+    CREATE USER IF NOT EXISTS 'ssbd06mok'@'%' IDENTIFIED BY 'zaq1@WSX';
+
+    CREATE USER IF NOT EXISTS 'ssbd06moh'@'%' IDENTIFIED BY 'zaq1@WSX';
+
+    CREATE USER IF NOT EXISTS 'ssbd06auth'@'%' IDENTIFIED BY 'zaq1@WSX';
+
+
+    USE tua03;
+
+
+    GRANT SELECT, UPDATE, DELETE, INSERT ON account TO 'ssbd06mok'@'%';
+
+    GRANT SELECT, UPDATE, DELETE, INSERT ON pending_code TO 'ssbd06mok'@'%';
+
+    GRANT SELECT, UPDATE, DELETE, INSERT ON role TO 'ssbd06mok'@'%';
+
+    GRANT SELECT, UPDATE, DELETE, INSERT ON admin_data TO 'ssbd06mok'@'%';
+
+    GRANT SELECT, UPDATE, DELETE, INSERT ON manager_data TO 'ssbd06mok'@'%';
+
+    GRANT SELECT, UPDATE, DELETE, INSERT ON client_data TO 'ssbd06mok'@'%';
+
+    GRANT SELECT ON booking TO 'ssbd06mok'@'%';
+
+    GRANT SELECT ON booking_line TO 'ssbd06mok'@'%';
+
+    GRANT SELECT ON box TO 'ssbd06mok'@'%';
+
+    GRANT SELECT ON city TO 'ssbd06mok'@'%';
+
+    GRANT SELECT ON hotel TO 'ssbd06mok'@'%';
+
+    GRANT SELECT ON rating TO 'ssbd06mok'@'%';
+
+
+    GRANT SELECT ON account TO 'ssbd06moh'@'%';
+
+    GRANT SELECT ON pending_code TO 'ssbd06moh'@'%';
+
+    GRANT SELECT, UPDATE ON role TO 'ssbd06moh'@'%';
+
+    GRANT SELECT ON admin_data TO 'ssbd06moh'@'%';
+
+    GRANT SELECT ON client_data TO 'ssbd06moh'@'%';
+
+    GRANT SELECT, UPDATE, DELETE, INSERT ON booking TO 'ssbd06moh'@'%';
+
+    GRANT SELECT, UPDATE, DELETE, INSERT ON booking_line TO 'ssbd06moh'@'%';
+
+    GRANT SELECT, UPDATE, DELETE, INSERT ON box TO 'ssbd06moh'@'%';
+
+    GRANT SELECT, UPDATE, DELETE, INSERT ON city TO 'ssbd06moh'@'%';
+
+    GRANT SELECT, UPDATE, DELETE, INSERT ON hotel TO 'ssbd06moh'@'%';
+
+    GRANT SELECT, UPDATE ON manager_data TO 'ssbd06moh'@'%';
+
+    GRANT SELECT, UPDATE, DELETE, INSERT ON rating TO 'ssbd06moh'@'%';
+
+
+    GRANT SELECT ON auth_view TO 'ssbd06auth'@'%';

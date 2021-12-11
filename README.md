@@ -1,12 +1,14 @@
-# Techniki utrzymania aplikacji 2021-03
+# Techniki utrzymania aplikacji, [Sieciowe systemy baz danych](https://github.com/TULbaghia/ssbd)
 
 
-## Cele projektu
-- Payara do Wildfly, PostgreSQL do MariaDB,
+## Projekt: Techniki utrzymania aplikacji
+
+### Cele projektu
+- Migracja Payara do Wildfly, PostgreSQL do MariaDB,
 - Konteneryzacja,
 - Kubernetes
 
-## Autorzy
+### Autorzy
 
 | Imię nazwisko           | GitHub profile                                             |
 | ----------------------- | ---------------------------------------------------------- |
@@ -19,15 +21,14 @@
 | Mateusz Zabroń          | [matee98](https://github.com/matee98)                      |
 
 
-<br><br><br>
-## Kontunuacja projektu:
-### Sieciowe systemy baz danych 2021-06
+<br><br>  
+## Projekt: [Sieciowe systemy baz danych](https://github.com/TULbaghia/ssbd)
 
-
+### Film prezentujący projekt
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/TtcKAKHBJeI/0.jpg)](https://www.youtube.com/embed/TtcKAKHBJeI)
 
 
-#### Autorzy
+### Autorzy
 
 | Imię nazwisko           | GitHub profile                                             |
 | ----------------------- | ---------------------------------------------------------- |
